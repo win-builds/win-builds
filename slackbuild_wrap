@@ -14,7 +14,6 @@ cd $folder
 ### User Settings ###
 ################################################################################
 
-INSTALL_MIRROR="http://notk.org/~adrien/gits/slackware64-current.ext"
 export lt_cv_deplibs_check_method='pass_all'
 
 ################################################################################
