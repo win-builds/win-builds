@@ -23,8 +23,6 @@ function iter {
   comm -13 ${YYOUTPUT}/files_{pre,post} | awk '{ print $2; }' | xargs -n 1 -x yypkg -upgrade -install-new
 }
 
-CWD="$PWD/$(dirname $0)"
-
 export TRIPLET="i686-w64-mingw32"
 export YYPREFIX=/$TRIPLET
 export YYOUTPUT=/tmp/yypackages
