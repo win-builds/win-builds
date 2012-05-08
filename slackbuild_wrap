@@ -4,9 +4,6 @@ set -eux
 
 slackbuild=$1
 folder=$(dirname $slackbuild)
-slackbuild=$(basename $slackbuild)
-# We get the name of the slackbuild, strip trailing digits and starting "lib"
-name=$(echo $slackbuild | rev | cut -d. -f2- | rev | sed -e 's/[[:digit:]]\+$//' -e 's/^lib//')
 
 cd $folder
 
@@ -20,37 +17,22 @@ export lt_cv_deplibs_check_method='pass_all'
 ### Settings ###
 ################################################################################
 
-INSTALL_PREFIX=/$YYPREFIX
-
 if [ "$TRIPLET" = "i686-w64-mingw32" ]; then
-  PREFIX=/opt/$TRIPLET
-  LIBDIRSUFFIX="32"
+  LIBDIRSUFFIX=""
   EXE_FORMAT="PE"
   STRIP=${TRIPLET}-strip
 elif [ "$TRIPLET" = "x86_64-w64-mingw32" ]; then
-  PREFIX=/opt/$TRIPLET
   LIBDIRSUFFIX="64"
   EXE_FORMAT="PE"
   STRIP=${TRIPLET}-strip
 fi
 
-export PKG_CONFIG_LIBDIR=${INSTALL_PREFIX}/${PREFIX}/lib${LIBDIRSUFFIX}/pkgconfig
+LIBDIR="${YYPREFIX}/lib${LIBDIRSUFFIX}"
+export PKG_CONFIG_LIBDIR=${LIBDIR}}/pkgconfig
 export PKG_CONFIG_PATH=""
-export PATH=${INSTALL_PREFIX}/${PREFIX}/bin:${PATH}
-LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
-export LD_LIBRARY_PATH=${INSTALL_PREFIX}/${PREFIX}/lib:${INSTALL_PREFIX}/${PREFIX}/lib64:${INSTALL_PREFIX}/${PREFIX}/lib32:${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=${LIBDIR}
 export EXE_FORMAT
 export STRIP
-
-################################################################################
-### Sanity checks ###
-################################################################################
-
-# Check ${INSTALL_PREFIX} exists
-if [ ! -d ${INSTALL_PREFIX} ]; then
-  echo "${INSTALL_PREFIX} must exist and contain a valid toolchain in bin/."
-  exit 1
-fi
 
 ################################################################################
 ### Fire up the slackbuild ###
