@@ -18,7 +18,7 @@ function iter {
     ( ( "${1}" 3>&1 1>&2 2>&3 ) | tee /dev/tty ) > $3 2>&1
   fi
   sha1sum ${YYOUTPUT}/*.txz | sort > ${YYOUTPUT}/files_post
-  comm -13 ${YYOUTPUT}/files_{pre,post} | awk '{ print $2; }' | xargs yypkg -upgrade -install-new
+  comm -13 ${YYOUTPUT}/files_{pre,post} | awk '{ print $2; }' | xargs -n 1 -x yypkg -upgrade -install-new
 }
 
 CWD="$PWD/$(dirname $0)"
