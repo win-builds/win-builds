@@ -37,8 +37,9 @@ mkdir -p ${YYPREFIX} ${YYOUTPUT} logs
 
 yypkg -init
 
-M="mingw-builds/mingws"
-P="slackware64-current/slackware64-current/source"
+X="$(cd ${CWD}/.. && pwd)"
+M="${X}/mingw-builds/mingws"
+P="${X}/slackware64-current/"
 
 #PKG=mingw-w64; iter ${M}/mingw-w64/mingw-w32_w64.sh ${PKG} logs/${PKG}-${TRIPLET}.log
 
