@@ -11,7 +11,7 @@ set -eux
 # $3: log file
 function iter {
   echo Running $1
-  sha1sum ${YYOUTPUT}/*.txz | sort > ${YYOUTPUT}/files_pre
+  sha1sum ${YYOUTPUT}/*.txz 2>/dev/null | sort > ${YYOUTPUT}/files_pre
   if echo "${1}" | grep -q "\.SlackBuild$"; then
     ( ( PKGNAM=$2 slackbuild_wrap $1 3>&1 1>&2 2>&3 ) | tee /dev/tty ) > $3 2>&1
   else
