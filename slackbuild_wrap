@@ -24,12 +24,12 @@ export lt_cv_deplibs_check_method='pass_all'
 INSTALL_PREFIX=/$YYPREFIX
 
 if [ "$TRIPLET" = "i686-w64-mingw32" ]; then
-  PREFIX=/$TRIPLET
+  PREFIX=/opt/$TRIPLET
   LIBDIRSUFFIX="32"
   EXE_FORMAT="PE"
   STRIP=${TRIPLET}-strip
 elif [ "$TRIPLET" = "x86_64-w64-mingw32" ]; then
-  PREFIX=/$TRIPLET
+  PREFIX=/opt/$TRIPLET
   LIBDIRSUFFIX="64"
   EXE_FORMAT="PE"
   STRIP=${TRIPLET}-strip
