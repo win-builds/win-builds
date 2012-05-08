@@ -27,7 +27,7 @@ export TRIPLET="i686-w64-mingw32"
 export YYPREFIX=/$TRIPLET
 export YYOUTPUT=/tmp/yypackages
 export ARCH=x86_64
-export BUILD="$($CWD/config.guess)"
+export BUILD="x86_64-slackware-linux"
 
 if [ -e ${YYPREFIX} -o -e ${YYPREFIX} ]; then
   echo ${YYPREFIX} already exists. Please rm it. Aborting.
