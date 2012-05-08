@@ -2,6 +2,8 @@
 
 set -eux
 
+CWD="$(cd "$(dirname "${0}")" && pwd)"
+
 # iter: wrap the creation and installation of exactly one package from a slackbuild
 # It first runs the slackbuild, redirecting its output (stdout+stderr) to log, but
 # only its stderr is printed on screen.
@@ -13,7 +15,7 @@ function iter {
   echo Running $1
   sha1sum ${YYOUTPUT}/*.txz 2>/dev/null | sort > ${YYOUTPUT}/files_pre
   if echo "${1}" | grep -q "\.SlackBuild$"; then
-    ( ( PKGNAM=$2 slackbuild_wrap $1 3>&1 1>&2 2>&3 ) | tee /dev/tty ) > $3 2>&1
+    ( ( ${CWD}/slackbuild_wrap $1 3>&1 1>&2 2>&3 ) | tee /dev/tty ) > $3 2>&1
   else
     ( ( "${1}" 3>&1 1>&2 2>&3 ) | tee /dev/tty ) > $3 2>&1
   fi
