@@ -1,0 +1,9 @@
+export TRIPLET="i686-w64-mingw32"
+export YYPREFIX="/opt/mgw32_toolchain"
+export ARCH="x86_64"
+export BUILD="x86_64-slackware-linux"
+export PATH=${YYPREFIX}/bin:${YYPREFIX}/sbin:$PATH
+export LD_LIBRARY_PATH=${YYPREFIX}/lib64
+export YYOUTPUT="${CWD}/output"
+
+YYPKG="yypkg.native"

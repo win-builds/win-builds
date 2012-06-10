@@ -1,0 +1,38 @@
+#!/bin/bash -eux
+
+CWD="$(cd "$(dirname "${0}")" && pwd)"
+
+source $1
+
+if [ ! -e ${YYPREFIX} ]; then
+  ${YYPKG} -init
+fi
+
+mkdir -p ${YYOUTPUT} ${CWD}/logs ${CWD}/processing
+
+# iter: wrap the creation and installation of exactly one package from a slackbuild
+# It first runs the slackbuild, redirecting its output (stdout+stderr) to log, but
+# only its stderr is printed on screen.
+# It then installs the package
+# $1: slackbuild to run (path)
+# $2: log file
+iter() {
+  echo Running $1
+  sha1sum ${YYOUTPUT}/*.txz 2>/dev/null | sort > ${YYOUTPUT}/files_pre
+  (
+    source config
+    ( ${CWD}/slackbuild_wrap $1 3>&1 1>&2 2>&3 ) | tee /dev/tty
+  ) > $2 2>&1
+  sha1sum ${YYOUTPUT}/*.txz | sort > ${YYOUTPUT}/files_post
+  comm -13 ${YYOUTPUT}/files_{pre,post} | awk '{ print $2; }' | xargs -n 1 -x ${YYPKG} -upgrade -install-new
+}
+
+inotifywait -m --format '%w/%f' -e close_write "${PWD}" \
+  | while read FILE; do
+      PKG="$(basename "${FILE}" | sed -e 's/\.tar$//')"
+      echo "Building ${PKG}."
+      (cd processing \
+        && rm -f ${PKG}* \
+        && tar xf ${FILE} \
+        && iter "${PWD}/${PKG}.SlackBuild" "${CWD}/logs/${PKG}")
+    done
