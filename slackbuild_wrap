@@ -1,36 +1,28 @@
-#!/bin/sh
+#!/bin/sh -eux
 
-set -eux
+SLACKBUILD="${1}"
 
-slackbuild=$1
-folder=$(dirname $slackbuild)
-
-cd $folder
-
-################################################################################
-### Settings ###
-################################################################################
-
-if [ "$TRIPLET" = "i686-w64-mingw32" ]; then
-  LIBDIRSUFFIX=""
-  EXE_FORMAT="PE"
-  STRIP=${TRIPLET}-strip
-elif [ "$TRIPLET" = "x86_64-w64-mingw32" ]; then
-  LIBDIRSUFFIX="64"
-  EXE_FORMAT="PE"
-  STRIP=${TRIPLET}-strip
+# If compiling a native program
+if [ "${HST}" = "${BUILD}" ]; then
+  STRIP="strip"
+  if echo "${HST}" | grep -q slackware-linux; then
+    EXE_FORMAT="ELF"
+  fi
+else # cross-compiling
+  if [ "${HST}" = "i686-w64-mingw32" ]; then
+    export PKG_CONFIG_LIBDIR=${YYPREFIX}/lib/pkgconfig
+    EXE_FORMAT="PE"
+    STRIP=${HST}-strip
+  elif [ "${HST}" = "x86_64-w64-mingw32" ]; then
+    export PKG_CONFIG_LIBDIR=${YYPREFIX}/lib64/pkgconfig
+    EXE_FORMAT="PE"
+    STRIP=${HST}-strip
+  fi
 fi
 
-LIBDIR="${YYPREFIX}/lib${LIBDIRSUFFIX}"
-export PKG_CONFIG_LIBDIR=${LIBDIR}}/pkgconfig
-export PKG_CONFIG_PATH=""
-export LD_LIBRARY_PATH=${LIBDIR}
-export EXE_FORMAT
-export STRIP
+export EXE_FORMAT STRIP
+export HST TGT
+export PREFIX="$(echo "${YYPREFIX}" | sed -e 's;^/;;')"
 
-################################################################################
-### Fire up the slackbuild ###
-################################################################################
-
-HST="${HST}" TGT=${TGT} PREFIX=${PREFIX} ./${slackbuild}
+${SLACKBUILD}
 
