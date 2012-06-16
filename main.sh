@@ -106,12 +106,14 @@ if [ ! -e "${SYSTEM}" ]; then
 
   copy_ld_so
 
-  cp "${YYPKG_TGT}" "${MAKEYPKG_TGT}" "${BSDTAR_TGT}" "${SYSTEM_COPY}/sbin"
+  for bin in "${YYPKG_TGT}" "${MAKEYPKG_TGT}" "${BSDTAR_TGT}"; do
+    cp "${bin}" "${SYSTEM_COPY}/sbin/${bin%.native}" 
+  done
 
   find "${INITDIR_FULL}/pkgs" -maxdepth 1 -name '*.txz' -printf '%f\n' \
     | while read PKG; do
       echo "Installing ${PKG}";
-      sudo YYPREFIX="/" PATH="${INITDIR}/host/bin:${PATH}" LD_LIBRARY_PATH="${INITDIR}/host/${LIB}:${INITDIR}/host/usr/${LIB}" chroot "${SYSTEM_COPY}" "/sbin/yypkg.native" "-install" "${INITDIR}/pkgs/${PKG}" || true
+      sudo YYPREFIX="/" PATH="${INITDIR}/host/bin:${PATH}" LD_LIBRARY_PATH="${INITDIR}/host/${LIB}:${INITDIR}/host/usr/${LIB}" chroot "${SYSTEM_COPY}" "/sbin/yypkg" "-install" "${INITDIR}/pkgs/${PKG}" || true
   done
 
   for bin in cc c++ {${ARCH}-,}{gcc,g++}; do
@@ -126,9 +128,8 @@ fi
 trap umounts EXIT SIGINT
 mount_dev_pts_and_procfs "${SYSTEM}"
 
-YYPKG_PACKAGES="${SYSTEM}/root/yypkg_packages"
+mkdir -p "${SYSTEM}/root/yypkg_packages"
+cp build_daemon slackbuild_wrap build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packages"
 
-mkdir -p "${YYPKG_PACKAGES}"
-cp build_daemon build_daemon_config slackbuild_wrap "${YYPKG_PACKAGES}"
-sudo chroot "${SYSTEM}" "/bin/bash" "-c" "cd /root/yypkg_packages && ./build_daemon build_daemon_config"
+sudo chroot "${SYSTEM}" "/bin/bash" "-c" "cd /root/yypkg_packages && ./build_daemon build_daemon_config_toolchain"
 

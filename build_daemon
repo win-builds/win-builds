@@ -5,7 +5,7 @@ CWD="$(cd "$(dirname "${0}")" && pwd)"
 source $1
 
 if [ ! -e ${YYPREFIX} ]; then
-  ${YYPKG} -init
+  yypkg -init
 fi
 
 mkdir -p ${YYOUTPUT} ${CWD}/logs ${CWD}/processing
@@ -24,7 +24,7 @@ iter() {
     ( ${CWD}/slackbuild_wrap $1 3>&1 1>&2 2>&3 ) | tee /dev/tty
   ) > $2 2>&1
   sha1sum ${YYOUTPUT}/*.txz | sort > ${YYOUTPUT}/files_post
-  comm -13 ${YYOUTPUT}/files_{pre,post} | awk '{ print $2; }' | xargs -n 1 -x ${YYPKG} -upgrade -install-new
+  comm -13 ${YYOUTPUT}/files_{pre,post} | awk '{ print $2; }' | xargs -n 1 -x yypkg -upgrade -install-new
 }
 
 inotifywait -m --format '%w/%f' -e close_write "${PWD}" \
