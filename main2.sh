@@ -24,9 +24,9 @@ queue() {
     -C "${PKG_PATH}" .
 }
 
-# queue slackware64-current/d/binutils ""
-#  
-# queue mingw/mingw-w64 "headers"
+queue slackware64-current/d/binutils ""
+ 
+queue mingw/mingw-w64 "headers"
  
 queue slackware64-current/d/gcc "core"
 
