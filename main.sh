@@ -4,7 +4,7 @@ LOCATION="${1}"
 
 mkdir -p "${LOCATION}/packages" "${LOCATION}/logs"
 
-LOCATION="$(cd "${1}" && pwd)"
+LOCATION="$(cd "${LOCATION}" && pwd)"
 
 BIND_MOUNTED_DIRS=""
 SPECIAL_FILESYSTEMS=""
@@ -12,32 +12,27 @@ SPECIAL_FILESYSTEMS=""
 YYPKG_SRC="/home/adrien/projects/yypkg/src"
 YYPKG_HST="${YYPKG_SRC}/yypkg.native"
 
-YYPKG_TGT="${YYPKG_SRC}/yypkg.native"
-MAKEYPKG_TGT="${YYPKG_SRC}/makeypkg.native"
-BSDTAR_TGT="$(which bsdtar)"
+BD_CONFIG="toolchain"
 
-YYPKG_TGT="${PWD}/i486/yypkg.native"
-MAKEYPKG_TGT="${PWD}/i486/makeypkg.native"
-BSDTAR_TGT="${PWD}/i486/bsdtar"
+ARCH="x86_64"
 
-FOO="/home/adrien/t/sbchroot/slackware-current/"
-
-ARCH="i486-slackware-linux"
+if [ "${ARCH}" = "i486" ]; then
+  YYPKG_TGT="${PWD}/i486/yypkg.native"
+  MAKEYPKG_TGT="${PWD}/i486/makeypkg.native"
+  BSDTAR_TGT="${PWD}/i486/bsdtar"
+  FOO="/home/adrien/t/sbchroot/slackware-current/"
+  LIBDIRSUFFIX=""
+else
+  YYPKG_TGT="${YYPKG_SRC}/yypkg.native"
+  MAKEYPKG_TGT="${YYPKG_SRC}/makeypkg.native"
+  BSDTAR_TGT="$(which bsdtar)"
+  FOO="/"
+  LIBDIRSUFFIX="64"
+fi
 
 YYOS_OUTPUT="/home/adrien/projects/yypkg_packages/yy_of_slack/tmp/output"
 SYSTEM_COPY="${LOCATION}/system_copy"
 SYSTEM="${LOCATION}/system"
-
-case "${ARCH}" in
-  x86_64-slackware-linux)
-    LIBDIRSUFFIX="64"
-    LD_LINUX_SO_LOCATION="lib64"
-    ;;
-  i486-slackware-linux)
-    LIBDIRSUFFIX=""
-    LD_LINUX_SO_LOCATION="lib/incoming"
-    ;;
-esac
 
 LIB="lib${LIBDIRSUFFIX}"
 
@@ -116,7 +111,7 @@ if [ ! -e "${SYSTEM}" ]; then
       sudo YYPREFIX="/" PATH="${INITDIR}/host/bin:${PATH}" LD_LIBRARY_PATH="${INITDIR}/host/${LIB}:${INITDIR}/host/usr/${LIB}" chroot "${SYSTEM_COPY}" "/sbin/yypkg" "-install" "${INITDIR}/pkgs/${PKG}" || true
   done
 
-  for bin in cc c++ {${ARCH}-,}{gcc,g++}; do
+  for bin in cc c++ {${ARCH}-slackware-linux-,}{gcc,g++}; do
     ln -s "/usr/bin/ccache" "${SYSTEM_COPY}/usr/local/bin/${bin}"
   done
 
