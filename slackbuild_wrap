@@ -3,25 +3,25 @@
 SLACKBUILD="${1}"
 
 # If compiling a native program
-if [ "${HST}" = "${BUILD}" ]; then
+if [ "${BUILD_TRIPLET}" = "${HOST_TRIPLET}" ]; then
   STRIP="strip"
-  if echo "${HST}" | grep -q slackware-linux; then
+  if echo "${HOST_TRIPLET}" | grep -q slackware-linux; then
     EXE_FORMAT="ELF"
   fi
 else # cross-compiling
-  if [ "${HST}" = "i686-w64-mingw32" ]; then
-    export PKG_CONFIG_LIBDIR=${YYPREFIX}/lib/pkgconfig
-    EXE_FORMAT="PE"
-    STRIP=${HST}-strip
-  elif [ "${HST}" = "x86_64-w64-mingw32" ]; then
-    export PKG_CONFIG_LIBDIR=${YYPREFIX}/lib64/pkgconfig
-    EXE_FORMAT="PE"
-    STRIP=${HST}-strip
+  if echo "${HOST_TRIPLET}" | grep -q 'i.86'; then
+    LIBDIRSUFIX=""
+  elif echo "${HOST_TRIPLET}" | grep -q 'x86_64'; then
+    LIBDIRSUFIX="64"
   fi
+  if echo "${HOST_TRIPLET}" | grep 'mingw'; then
+    EXE_FORMAT="PE"
+  fi
+  STRIP=${HOST_TRIPLET}-strip
+  export PKG_CONFIG_LIBDIR=${YYPREFIX}/lib${LIBDIRSUFIX}/pkgconfig
 fi
 
 export EXE_FORMAT STRIP
-export HST TGT
 export PREFIX="$(echo "${YYPREFIX}" | sed -e 's;^/;;')"
 
 /bin/sh -x ${SLACKBUILD}
