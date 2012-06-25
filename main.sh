@@ -102,7 +102,8 @@ if [ ! -e "${SYSTEM}" ]; then
   copy_ld_so
 
   for bin in "${YYPKG_TGT}" "${MAKEYPKG_TGT}" "${BSDTAR_TGT}"; do
-    cp "${bin}" "${SYSTEM_COPY}/sbin/${bin%.native}" 
+    bin_basename="$(basename "${bin}")"
+    cp "${bin}" "${SYSTEM_COPY}/sbin/${bin_basename%.native}"
   done
 
   find "${INITDIR_FULL}/pkgs" -maxdepth 1 -name '*.txz' -printf '%f\n' \
