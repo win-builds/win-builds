@@ -118,7 +118,7 @@ if [ ! -e "${SYSTEM}" ]; then
 
   umounts
 
-  sudo cp -a "${SYSTEM_COPY}" "${SYSTEM}"
+  sudo cp -r --preserve="mode,timestamps" "${SYSTEM_COPY}" "${SYSTEM}"
 fi
 
 trap umounts EXIT SIGINT
