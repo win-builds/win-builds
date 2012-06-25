@@ -24,5 +24,5 @@ export EXE_FORMAT STRIP
 export HST TGT
 export PREFIX="$(echo "${YYPREFIX}" | sed -e 's;^/;;')"
 
-${SLACKBUILD}
+/bin/sh -x ${SLACKBUILD}
 
