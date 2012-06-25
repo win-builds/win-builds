@@ -71,14 +71,16 @@ populate_slash_dev() {
 }
 
 copy_ld_so() {
-  ARCHIVE="$(cd "${YYOS_OUTPUT}" && echo glibc-2.*.txz)"
+  ARCHIVE="$(find "${YYOS_OUTPUT}" -maxdepth 1 -name "glibc-2.*.txz" -printf '%f\n')"
   VER="$(echo "${ARCHIVE}" |sed -e 's/^glibc-\(2\.[0-9]\+\).*/\1/')"
   mkdir -p "${SYSTEM_COPY}/${LIB}"
-  echo "package-glibc/${LD_LINUX_SO_LOCATION}/ld-${VER}.so" \
-    | xargs bsdtar xf "${YYOS_OUTPUT}/${ARCHIVE}" -q -C ${SYSTEM_COPY} \
-      --strip-components=1
-  mv ${SYSTEM_COPY}/${LD_LINUX_SO_LOCATION}/* ${SYSTEM_COPY}/lib
-  ln -s /lib/ld-${VER}.so ${SYSTEM_COPY}/lib/ld-linux.so.2
+  bsdtar xf "${YYOS_OUTPUT}/${ARCHIVE}" -q -C ${SYSTEM_COPY}/${LIB} \
+    --strip-components=3 "package-glibc/${LIB}/incoming/ld-${VER}.so" 
+  if [ ${ARCH} = "x86_64" ]; then
+    ln -s ld-${VER}.so ${SYSTEM_COPY}/${LIB}/ld-linux-x86-64.so.2
+  else
+    ln -s ld-${VER}.so ${SYSTEM_COPY}/${LIB}/ld-linux.so.2
+  fi
 }
 
 if [ ! -e "${SYSTEM}" ]; then
