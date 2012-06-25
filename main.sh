@@ -30,7 +30,7 @@ else
   LIBDIRSUFFIX="64"
 fi
 
-YYOS_OUTPUT="/home/adrien/projects/yypkg_packages/yy_of_slack/tmp/output"
+YYOS_OUTPUT="/home/adrien/projects/yypkg_packages/yy_of_slack/tmp/output-${ARCH}"
 SYSTEM_COPY="${LOCATION}/system_copy"
 SYSTEM="${LOCATION}/system"
 
