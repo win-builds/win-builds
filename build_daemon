@@ -18,12 +18,16 @@ mkdir -p ${YYOUTPUT} ${CWD}/logs ${CWD}/processing
 # $2: log file
 iter() {
   echo Running $1
-  sha1sum ${YYOUTPUT}/*.txz 2>/dev/null | sort > ${YYOUTPUT}/files_pre
+  find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
+    > ${YYOUTPUT}/files_pre
   (
     source config
+    set -o pipefail
     ( ${CWD}/slackbuild_wrap $1 3>&1 1>&2 2>&3 ) | tee /dev/tty
+    set +o pipefail
   ) > $2 2>&1
-  sha1sum ${YYOUTPUT}/*.txz | sort > ${YYOUTPUT}/files_post
+  find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
+    > ${YYOUTPUT}/files_post
   comm -13 ${YYOUTPUT}/files_{pre,post} | awk '{ print $2; }' | xargs -n 1 -x yypkg -upgrade -install-new
 }
 
