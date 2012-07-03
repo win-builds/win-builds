@@ -36,7 +36,7 @@ inotifywait -m --format '%w/%f' -e close_write "${PWD}" \
       PKG="$(basename "${FILE}" | sed -e 's/\.tar$//')"
       echo "Building ${PKG}."
       (cd processing \
-        && rm -f ${PKG}* \
+        && rm -rf ${PKG}* \
         && tar xf ${FILE} \
         && iter "${PWD}/${PKG}.SlackBuild" "${CWD}/logs/${PKG}")
     done
