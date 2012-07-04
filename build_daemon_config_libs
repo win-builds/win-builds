@@ -1,7 +1,9 @@
-export TRIPLET="i686-w64-mingw32"
+export HOST_TRIPLET="i686-w64-mingw32"
+export HOST_STRIP="${HOST_TRIPLET}-strip"
+export HOST_EXE_FORMAT="PE"
+
 export YYPREFIX="/opt/mgw32_libs"
-export ARCH="x86_64"
-export BUILD="x86_64-slackware-linux"
-export PATH=${YYPREFIX}/bin:${YYPREFIX}/sbin:$PATH
-export LD_LIBRARY_PATH=${YYPREFIX}/lib64
+YYPREFIX_TOOLCHAIN="/opt/mgw32_toolchain"
+export PATH=${YYPREFIX}/bin:${YYPREFIX}/sbin:${YYPREFIX_TOOLCHAIN}/bin:${YYPREFIX_TOOLCHAIN}/sbin:$PATH
+export LD_LIBRARY_PATH=${YYPREFIX}/lib:${YYPREFIX_TOOLCHAIN}/lib
 export YYOUTPUT="${CWD}/output/libs"

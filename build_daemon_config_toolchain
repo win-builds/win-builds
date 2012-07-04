@@ -2,6 +2,12 @@ export BUILD_TRIPLET="x86_64-slackware-linux"
 export HOST_TRIPLET="${BUILD_TRIPLET}"
 export TARGET_TRIPLET="i686-w64-mingw32"
 
+export HOST_STRIP="strip"
+export TARGET_STRIP="${TARGET_TRIPLET}-strip"
+
+export HOST_EXE_FORMAT="ELF"
+export TARGET_EXE_FORMAT="ELF"
+
 export YYPREFIX="/opt/mgw32_toolchain"
 export PATH=${YYPREFIX}/bin:${YYPREFIX}/sbin:$PATH
 export LD_LIBRARY_PATH=${YYPREFIX}/lib64

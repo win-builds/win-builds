@@ -21,9 +21,11 @@ iter() {
   find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
     > ${YYOUTPUT}/files_pre
   (
+    export PKG_CONFIG_LIBDIR="echo ${LD_LIBRARY_PATH} | sed -r -e 's;(:|$);/pkgconfig\0;'"
+    export PREFIX="$(echo "${YYPREFIX}" | sed -e 's;^/;;')"
     source config
     set -o pipefail
-    ( ${CWD}/slackbuild_wrap $1 3>&1 1>&2 2>&3 ) | tee /dev/tty
+    ( /bin/bash -x $1 3>&1 1>&2 2>&3 ) | tee /dev/tty
     set +o pipefail
   ) > $2 2>&1
   find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
