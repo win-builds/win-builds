@@ -127,7 +127,7 @@ trap umounts EXIT SIGINT
 mount_dev_pts_and_procfs "${SYSTEM}"
 
 mkdir -p "${SYSTEM}/root/yypkg_packages"
-cp build_daemon slackbuild_wrap build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packages"
+cp build_daemon build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packages"
 
 sudo chroot "${SYSTEM}" /bin/bash -c "cd /root/yypkg_packages && ./build_daemon build_daemon_config_${BD_CONFIG}"
 
