@@ -6,7 +6,7 @@ export HOST_STRIP="strip"
 export TARGET_STRIP="${TARGET_TRIPLET}-strip"
 
 export HOST_EXE_FORMAT="ELF"
-export TARGET_EXE_FORMAT="ELF"
+export TARGET_EXE_FORMAT="PE"
 
 export YYPREFIX="/opt/mgw32_toolchain"
 export PATH=${YYPREFIX}/bin:${YYPREFIX}/sbin:$PATH
