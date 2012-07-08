@@ -30,7 +30,7 @@ iter() {
     export PKG_CONFIG_LIBDIR="echo ${LD_LIBRARY_PATH} | sed -r -e 's;(:|$);/pkgconfig\0;'"
     export PREFIX="$(echo "${YYPREFIX}" | sed -e 's;^/;;')"
     export DESCR="$(description_of_slack_desc)"
-    source config
+    if [ -e config ]; then source config; fi
     set -o pipefail
     time ( /bin/bash -x ${PWD}/$1.SlackBuild 3>&1 1>&2 2>&3 ) | tee /dev/tty
     set +o pipefail
