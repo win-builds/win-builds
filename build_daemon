@@ -2,6 +2,13 @@
 
 CWD="$(cd "$(dirname "${0}")" && pwd)"
 
+description_of_slack_desc() {
+  sed -n "s/^[-[:alnum:]]\+: //p" slack-desc \
+    | sed -e 's;/;\\/;g' \
+    | sed -e 's;";\\\\";g' \
+    | tr '\n' ' '
+}
+
 source $1
 
 if [ ! -e ${YYPREFIX} ]; then
@@ -14,8 +21,7 @@ mkdir -p ${YYOUTPUT} ${CWD}/logs ${CWD}/processing
 # It first runs the slackbuild, redirecting its output (stdout+stderr) to log, but
 # only its stderr is printed on screen.
 # It then installs the package
-# $1: slackbuild to run (path)
-# $2: log file
+# $1: package to build
 iter() {
   echo Running $1
   find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
@@ -23,11 +29,12 @@ iter() {
   (
     export PKG_CONFIG_LIBDIR="echo ${LD_LIBRARY_PATH} | sed -r -e 's;(:|$);/pkgconfig\0;'"
     export PREFIX="$(echo "${YYPREFIX}" | sed -e 's;^/;;')"
+    export DESCR="$(description_of_slack_desc)"
     source config
     set -o pipefail
-    ( /bin/bash -x $1 3>&1 1>&2 2>&3 ) | tee /dev/tty
+    time ( /bin/bash -x ${PWD}/$1.SlackBuild 3>&1 1>&2 2>&3 ) | tee /dev/tty
     set +o pipefail
-  ) > $2 2>&1
+  ) > ${CWD}/logs/$1 2>&1
   find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
     > ${YYOUTPUT}/files_post
   comm -13 ${YYOUTPUT}/files_{pre,post} | awk '{ print $2; }' | xargs -n 1 -x yypkg -upgrade -install-new
@@ -40,5 +47,5 @@ inotifywait -m --format '%w/%f' -e close_write "${PWD}" \
       (cd processing \
         && rm -rf ${PKG}* \
         && tar xf ${FILE} \
-        && iter "${PWD}/${PKG}.SlackBuild" "${CWD}/logs/${PKG}")
+        && iter "${PKG}")
     done
