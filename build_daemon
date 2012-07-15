@@ -17,13 +17,12 @@ fi
 
 mkdir -p ${YYOUTPUT} ${CWD}/logs ${CWD}/processing
 
-# iter: wrap the creation and installation of exactly one package from a slackbuild
-# It first runs the slackbuild, redirecting its output (stdout+stderr) to log, but
-# only its stderr is printed on screen.
-# It then installs the package
+# iter: wrap the creation and installation of exactly one package from a
+# slackbuild
+# It first runs the slackbuild, redirecting its output (stdout+stderr) to log,
+# but only its stderr is printed on screen and then installs the package.
 # $1: package to build
 iter() {
-  echo Running $1
   find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
     > ${YYOUTPUT}/files_pre
   (
@@ -41,10 +40,16 @@ iter() {
 
 inotifywait -m --format '%w/%f' -e close_write "${PWD}" \
   | while read FILE; do
+      if [ "$(basename "${FILE}")" = "exit-build-daemon" ]; then 
+        (sleep 0.5 && touch "${PWD}/exit-build-daemon")& break
+      fi
+      if ! echo "${FILE}" | grep -q '\.tar$'; then continue; fi
       PKG="$(basename "${FILE}" | sed -e 's/\.tar$//')"
-      echo "Building ${PKG}."
+      echo -e "\n ### Building ${PKG}. ###\n"
       (cd processing \
         && rm -rf ${PKG}* \
         && tar xf ${FILE} \
-        && iter "${PKG}")
+        && iter "${PKG}") || \
+        ((sleep 0.5 && touch "${PWD}/exit-build-daemon")& exit 1)
     done
+
