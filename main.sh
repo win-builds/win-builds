@@ -91,7 +91,7 @@ if [ ! -e "${SYSTEM}" ]; then
 
   mkdir -p ${INITDIR_FULL}/pkgs
 
-  trap umounts EXIT SIGINT
+  trap umounts EXIT SIGINT ERR
 
   for dir in bin ${LIB} usr/${LIB}; do
     mount_bind_ro "${FOO}${dir}" "${INITDIR_FULL}/host/${dir}"
@@ -123,7 +123,7 @@ if [ ! -e "${SYSTEM}" ]; then
   sudo cp -r --preserve="mode,timestamps" "${SYSTEM_COPY}" "${SYSTEM}"
 fi
 
-trap umounts EXIT SIGINT
+trap umounts EXIT SIGINT ERR
 mount_dev_pts_and_procfs "${SYSTEM}"
 
 mkdir -p "${SYSTEM}/root/yypkg_packages"
