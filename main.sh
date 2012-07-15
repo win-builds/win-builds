@@ -48,8 +48,9 @@ mount_dev_pts_and_procfs() {
   BASE="${1}"
   mkdir -p "${BASE}/proc" "${BASE}/dev/pts"
   sudo mount -t proc proc "${BASE}/proc"
+  SPECIAL_FILESYSTEMS="${BASE}/proc ${SPECIAL_FILESYSTEMS}"
   sudo mount -t devpts devpts "${BASE}/dev/pts"
-  SPECIAL_FILESYSTEMS="${BASE}/proc ${BASE}/dev/pts ${SPECIAL_FILESYSTEMS}"
+  SPECIAL_FILESYSTEMS="${BASE}/dev/pts ${SPECIAL_FILESYSTEMS}"
 }
 
 umounts() {
