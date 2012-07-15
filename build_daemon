@@ -27,7 +27,6 @@ iter() {
   find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
     > ${YYOUTPUT}/files_pre
   (
-    export PKG_CONFIG_LIBDIR="echo ${LD_LIBRARY_PATH} | sed -r -e 's;(:|$);/pkgconfig\0;'"
     export PREFIX="$(echo "${YYPREFIX}" | sed -e 's;^/;;')"
     export DESCR="$(description_of_slack_desc)"
     if [ -e config ]; then source config; fi

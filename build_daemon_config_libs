@@ -7,3 +7,5 @@ YYPREFIX_TOOLCHAIN="/opt/mgw32_toolchain"
 export PATH=${YYPREFIX}/bin:${YYPREFIX}/sbin:${YYPREFIX_TOOLCHAIN}/bin:${YYPREFIX_TOOLCHAIN}/sbin:$PATH
 export LD_LIBRARY_PATH=${YYPREFIX}/lib:${YYPREFIX_TOOLCHAIN}/lib
 export YYOUTPUT="${CWD}/output/libs"
+
+export PKG_CONFIG_LIBDIR="${YYPREFIX}/lib/pkgconfig"
