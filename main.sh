@@ -1,6 +1,7 @@
 #!/bin/bash -eux
 
 LOCATION="${1}"
+BD_CONFIG="${2}"
 
 mkdir -p "${LOCATION}/packages" "${LOCATION}/logs"
 
@@ -11,8 +12,6 @@ SPECIAL_FILESYSTEMS=""
 
 YYPKG_SRC="/home/adrien/projects/yypkg/src"
 YYPKG_HST="${YYPKG_SRC}/yypkg.native"
-
-BD_CONFIG="toolchain"
 
 ARCH="x86_64"
 
