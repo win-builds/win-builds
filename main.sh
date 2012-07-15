@@ -131,3 +131,4 @@ cp build_daemon build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packa
 
 sudo chroot "${SYSTEM}" /bin/bash -c "cd /root/yypkg_packages && ./build_daemon build_daemon_config_${BD_CONFIG}"
 
+umounts
