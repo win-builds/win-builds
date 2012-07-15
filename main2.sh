@@ -25,10 +25,19 @@ queue() {
 }
 
 queue slackware64-current/d/binutils ""
+exit_build_daemon() {
+  sudo touch "${YYPKG_PACKAGES}/exit-build-daemon"
+  sleep 4
+}
 
 queue mingw/mingw-w64 "headers"
  
 queue slackware64-current/d/gcc "core"
+start_build_daemon() {
+  (cd mingw-builds && sudo ./main.sh "${LOCATION}" "${1}") &
+  trap exit_build_daemon EXIT SIGINT ERR
+  sleep 4
+}
 
 queue mingw/mingw-w64 "full"
 
