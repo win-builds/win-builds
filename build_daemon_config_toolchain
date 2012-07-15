@@ -9,6 +9,7 @@ export HOST_EXE_FORMAT="ELF"
 export TARGET_EXE_FORMAT="PE"
 
 export YYPREFIX="/opt/mgw32_toolchain"
+export YYPREFIX_libs="/opt/mgw32_libs"
 export PATH=${YYPREFIX}/bin:${YYPREFIX}/sbin:$PATH
 export LD_LIBRARY_PATH=${YYPREFIX}/lib64
 export YYOUTPUT="${CWD}/output/toolchain"
