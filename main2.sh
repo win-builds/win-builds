@@ -44,22 +44,39 @@ queue_cond() {
   fi
 }
 
-queue slackware64-current/d/binutils ""
 exit_build_daemon() {
   sudo touch "${YYPKG_PACKAGES}/exit-build-daemon"
   sleep 4
 }
 
-queue mingw/mingw-w64 "headers"
- 
-queue slackware64-current/d/gcc "core"
 start_build_daemon() {
   (cd mingw-builds && sudo ./main.sh "${LOCATION}" "${1}") &
   trap exit_build_daemon EXIT SIGINT ERR
   sleep 4
 }
 
-queue mingw/mingw-w64 "full"
+if [ x"${KIND}" != x"libs" ]; then
+  start_build_daemon "toolchain"
+  queue_cond slackware64-current/d/binutils ""
+  queue_cond mingw/mingw-w64 "headers"
+  queue_cond slackware64-current/d/gcc "core"
+  queue_cond mingw/mingw-w64 "full"
+  queue_cond slackware64-current/d/gcc "full"
+  exit_build_daemon
+fi
 
-queue slackware64-current/d/gcc "full"
+if [ x"${KIND}" != x"toolchain" ]; then
+  start_build_daemon "libs"
+  queue_cond slackware64-current/a/xz ""
+  queue_cond mingw/win-iconv ""
+  queue_cond slackware64-current/a/gettext ""
+  queue_cond slackware64-current/l/zlib ""
+  queue_cond slackware64-current/l/libjpeg ""
+  queue_cond slackware64-current/l/expat ""
+  queue_cond slackware64-current/l/freetype ""
+  queue_cond slackware64-current/x/fontconfig "" # depends on expat, freetype
+  queue_cond slackware64-current/l/libpng ""
+  exit_build_daemon
+fi
 
+wait
