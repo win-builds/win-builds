@@ -111,7 +111,11 @@ if [ ! -e "${SYSTEM}" ]; then
   find "${INITDIR_FULL}/pkgs" -maxdepth 1 -name '*.txz' -printf '%f\n' \
     | while read PKG; do
       echo "Installing ${PKG}";
-      sudo YYPREFIX="/" PATH="${INITDIR}/host/bin:${PATH}" LD_LIBRARY_PATH="${INITDIR}/host/${LIB}:${INITDIR}/host/usr/${LIB}" chroot "${SYSTEM_COPY}" "/sbin/yypkg" "-install" "${INITDIR}/pkgs/${PKG}" || true
+      sudo \
+        YYPREFIX="/" \
+        PATH="${INITDIR}/host/bin:${PATH}" \
+        LD_LIBRARY_PATH="${INITDIR}/host/${LIB}:${INITDIR}/host/usr/${LIB}" \
+        chroot "${SYSTEM_COPY}" "/sbin/yypkg" "-install" "${INITDIR}/pkgs/${PKG}" || true
   done
 
   for bin in cc c++ {${ARCH}-slackware-linux-,}{gcc,g++}; do
@@ -126,8 +130,8 @@ fi
 trap umounts EXIT SIGINT ERR
 mount_dev_pts_and_procfs "${SYSTEM}"
 
-mkdir -p "${SYSTEM}/root/yypkg_packages"
-cp build_daemon build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packages"
+sudo mkdir -p "${SYSTEM}/root/yypkg_packages"
+sudo cp build_daemon build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packages"
 
 sudo chroot "${SYSTEM}" /bin/bash -c "cd /root/yypkg_packages && ./build_daemon build_daemon_config_${BD_CONFIG}"
 
