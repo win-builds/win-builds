@@ -1,15 +1,20 @@
 #!/bin/sh -eux
 
 LOCATION="${1}"
-KIND="${2:-"both"}"
-shift
-shift
-PKG_LIST=$*
+KIND="${2:-"init-toolchain-libs"}"
 
+if [ $# -ge 3 ]; then
+  shift
+  shift
+  PKG_LIST=$*
+else
+  PKG_LIST=""
+fi
+
+
+mkdir -p "${LOCATION}"
 LOCATION="$(cd "${LOCATION}" && pwd)"
 YYPKG_PACKAGES="${LOCATION}/system/root/yypkg_packages"
-
-cd /home/adrien/projects/yypkg_packages
 
 queue() {
   PKG_PATH="${1}"
@@ -55,7 +60,11 @@ start_build_daemon() {
   sleep 4
 }
 
-if [ x"${KIND}" != x"libs" ]; then
+if echo "${KIND}" | grep -q init && ! [ -d "${LOCATION}/system" ]; then
+  sudo ./mingw-builds/main.sh "${LOCATION}" "whatever"
+fi
+
+if echo "${KIND}" | grep -q toolchain; then
   start_build_daemon "toolchain"
   queue_cond slackware64-current/d/binutils ""
   queue_cond mingw/mingw-w64 "headers"
@@ -63,9 +72,10 @@ if [ x"${KIND}" != x"libs" ]; then
   queue_cond mingw/mingw-w64 "full"
   queue_cond slackware64-current/d/gcc "full"
   exit_build_daemon
+  wait
 fi
 
-if [ x"${KIND}" != x"toolchain" ]; then
+if echo "${KIND}" | grep -q libs; then
   start_build_daemon "libs"
   queue_cond slackware64-current/a/xz ""
   queue_cond mingw/win-iconv ""
@@ -76,7 +86,8 @@ if [ x"${KIND}" != x"toolchain" ]; then
   queue_cond slackware64-current/l/freetype ""
   queue_cond slackware64-current/x/fontconfig "" # depends on expat, freetype
   queue_cond slackware64-current/l/libpng ""
+  queue_cond slackbuilds.org/lua ""
   exit_build_daemon
+  wait
 fi
 
-wait
