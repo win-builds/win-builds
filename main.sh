@@ -3,8 +3,9 @@
 LOCATION="${1}"
 BD_CONFIG="${2}"
 
-mkdir -p "${LOCATION}/packages" "${LOCATION}/logs"
+CWD="$(pwd)"
 
+mkdir -p "${LOCATION}/packages" "${LOCATION}/logs"
 LOCATION="$(cd "${LOCATION}" && pwd)"
 
 BIND_MOUNTED_DIRS=""
@@ -29,7 +30,7 @@ else
   LIBDIRSUFFIX="64"
 fi
 
-YYOS_OUTPUT="/home/adrien/projects/yypkg_packages/yy_of_slack/tmp/output-${ARCH}"
+YYOS_OUTPUT="${CWD}/yy_of_slack/tmp/output-${ARCH}"
 SYSTEM_COPY="${LOCATION}/system_copy"
 SYSTEM="${LOCATION}/system"
 
@@ -125,14 +126,14 @@ if [ ! -e "${SYSTEM}" ]; then
   umounts
 
   sudo cp -r --preserve="mode,timestamps" "${SYSTEM_COPY}" "${SYSTEM}"
+else
+  trap umounts EXIT SIGINT ERR
+  mount_dev_pts_and_procfs "${SYSTEM}"
+
+  sudo mkdir -p "${SYSTEM}/root/yypkg_packages"
+  sudo cp build_daemon build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packages"
+
+  sudo chroot "${SYSTEM}" /bin/bash -c "cd /root/yypkg_packages && ./build_daemon build_daemon_config_${BD_CONFIG}"
+
+  umounts
 fi
-
-trap umounts EXIT SIGINT ERR
-mount_dev_pts_and_procfs "${SYSTEM}"
-
-sudo mkdir -p "${SYSTEM}/root/yypkg_packages"
-sudo cp build_daemon build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packages"
-
-sudo chroot "${SYSTEM}" /bin/bash -c "cd /root/yypkg_packages && ./build_daemon build_daemon_config_${BD_CONFIG}"
-
-umounts
