@@ -1,9 +1,12 @@
 #!/bin/bash -eux
 
 LOCATION="${1}"
-BD_CONFIG="${2}"
+BD_CONFIG="${2:-"libs"}"
+BD="${3:-"no"}"
 
 CWD="$(pwd)"
+
+SOURCE_PATH="$(cd "$(dirname "${0}")" && pwd)"
 
 mkdir -p "${LOCATION}/packages" "${LOCATION}/logs"
 LOCATION="$(cd "${LOCATION}" && pwd)"
@@ -130,10 +133,15 @@ else
   trap umounts EXIT SIGINT ERR
   mount_dev_pts_and_procfs "${SYSTEM}"
 
-  sudo mkdir -p "${SYSTEM}/root/yypkg_packages"
-  sudo cp build_daemon build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packages"
+  if [ x"${BD}" = x"yes" ]; then
+    sudo mkdir -p "${SYSTEM}/root/yypkg_packages"
+    (cd "${SOURCE_PATH}" && sudo cp build_daemon build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packages")
 
-  sudo chroot "${SYSTEM}" /bin/bash -c "cd /root/yypkg_packages && ./build_daemon build_daemon_config_${BD_CONFIG}"
+    sudo chroot "${SYSTEM}" /bin/bash -c "cd /root/yypkg_packages && ./build_daemon build_daemon_config_${BD_CONFIG}"
+  else
+    (source ${SOURCE_PATH}/build_daemon_config_${BD_CONFIG} && \
+      sudo chroot "${SYSTEM}" /bin/bash)
+  fi
 
   umounts
 fi

@@ -55,7 +55,7 @@ exit_build_daemon() {
 }
 
 start_build_daemon() {
-  (cd mingw-builds && sudo ./main.sh "${LOCATION}" "${1}") &
+  (cd mingw-builds && sudo ./main.sh "${LOCATION}" "${1}" "yes") &
   trap exit_build_daemon EXIT SIGINT ERR
   sleep 4
 }
