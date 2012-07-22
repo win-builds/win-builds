@@ -86,6 +86,8 @@ if echo "${KIND}" | grep -q libs; then
   queue_cond slackware64-current/l/freetype ""
   queue_cond slackware64-current/x/fontconfig "" # depends on expat, freetype
   queue_cond slackware64-current/l/libpng ""
+  queue_cond slackware64-current/l/giflib ""
+  queue_cond slackware64-current/l/libtiff ""
   queue_cond slackbuilds.org/lua ""
   queue_cond slackware64-current/n/curl ""
   queue_cond slackbuilds.org/c-ares ""
