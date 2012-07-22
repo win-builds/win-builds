@@ -47,7 +47,7 @@ inotifywait -m --format '%w/%f' -e close_write "${PWD}" \
       PKG="$(basename "${FILE}" | sed -e 's/\.tar$//')"
       echo -e "\n ### Building ${PKG}. ###\n"
       (cd processing \
-        && rm -rf ${PKG}* \
+        && rm -rf ${PKG}* config* \
         && tar xf ${FILE} \
         && iter "${PKG}") || \
         ((sleep 0.5 && touch "${PWD}/exit-build-daemon")& exit 1)
