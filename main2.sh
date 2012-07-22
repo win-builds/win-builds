@@ -87,6 +87,11 @@ if echo "${KIND}" | grep -q libs; then
   queue_cond slackware64-current/x/fontconfig "" # depends on expat, freetype
   queue_cond slackware64-current/l/libpng ""
   queue_cond slackbuilds.org/lua ""
+  queue_cond slackware64-current/n/curl ""
+  queue_cond slackbuilds.org/c-ares ""
+  for efl_lib in evil eina eet evas ecore embryo edje; do
+    queue_cond slackbuilds.org/${efl_lib} ""
+  done
   exit_build_daemon
   wait
 fi
