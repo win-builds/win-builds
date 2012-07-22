@@ -77,9 +77,9 @@ fi
 
 if echo "${KIND}" | grep -q libs; then
   start_build_daemon "libs"
-  queue_cond slackware64-current/a/xz ""
   queue_cond mingw/win-iconv ""
   queue_cond slackware64-current/a/gettext ""
+  queue_cond slackware64-current/a/xz ""
   queue_cond slackware64-current/l/zlib ""
   queue_cond slackware64-current/l/libjpeg ""
   queue_cond slackware64-current/l/expat ""
