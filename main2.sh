@@ -25,7 +25,7 @@ queue() {
   echo "Building ${PKG}${VARIANT}."
 
   if [ -d "${PKG_PATH}" ]; then
-    sudo tar cf "${YYPKG_PACKAGES}/${PKG}${VARIANT}.tar" \
+    tar cf "${YYPKG_PACKAGES}/${PKG}${VARIANT}.tar" \
       --transform="s/config${VARIANT}/config/" \
       --transform="s/${PKG}.SlackBuild/${PKG}${VARIANT}.SlackBuild/" \
       -C "${PKG_PATH}" .
@@ -50,18 +50,18 @@ queue_cond() {
 }
 
 exit_build_daemon() {
-  sudo touch "${YYPKG_PACKAGES}/exit-build-daemon"
+  touch "${YYPKG_PACKAGES}/exit-build-daemon"
   sleep 4
 }
 
 start_build_daemon() {
-  (cd mingw-builds && sudo ./main.sh "${LOCATION}" "${1}" "yes") &
+  (cd mingw-builds && ./main.sh "${LOCATION}" "${1}" "yes") &
   trap exit_build_daemon EXIT SIGINT ERR
   sleep 4
 }
 
 if echo "${KIND}" | grep -q init && ! [ -d "${LOCATION}/system" ]; then
-  sudo ./mingw-builds/main.sh "${LOCATION}" "whatever"
+  ./mingw-builds/main.sh "${LOCATION}" "whatever"
 fi
 
 if echo "${KIND}" | grep -q toolchain; then

@@ -43,23 +43,23 @@ mount_bind_ro() {
   old="$1"
   new="$2"
   mkdir -p "${new}"
-  sudo mount --bind "${old}" "${new}"
+  mount --bind "${old}" "${new}"
   BIND_MOUNTED_DIRS="${new} ${BIND_MOUNTED_DIRS}"
-  sudo mount -o remount,ro "${new}"
+  mount -o remount,ro "${new}"
 }
 
 mount_dev_pts_and_procfs() {
   BASE="${1}"
   mkdir -p "${BASE}/proc" "${BASE}/dev/pts"
-  sudo mount -t proc proc "${BASE}/proc"
+  mount -t proc proc "${BASE}/proc"
   SPECIAL_FILESYSTEMS="${BASE}/proc ${SPECIAL_FILESYSTEMS}"
-  sudo mount -t devpts devpts "${BASE}/dev/pts"
+  mount -t devpts devpts "${BASE}/dev/pts"
   SPECIAL_FILESYSTEMS="${BASE}/dev/pts ${SPECIAL_FILESYSTEMS}"
 }
 
 umounts() {
   if [ -n "${BIND_MOUNTED_DIRS}" -o -n "${SPECIAL_FILESYSTEMS}" ]; then
-    sudo umount ${BIND_MOUNTED_DIRS} ${SPECIAL_FILESYSTEMS}
+    umount ${BIND_MOUNTED_DIRS} ${SPECIAL_FILESYSTEMS}
     BIND_MOUNTED_DIRS=""
     SPECIAL_FILESYSTEMS=""
   fi
@@ -67,11 +67,11 @@ umounts() {
 
 populate_slash_dev() {
   mkdir ${SYSTEM_COPY}/dev
-  sudo mkdir ${SYSTEM_COPY}/dev/pts
-  sudo mknod ${SYSTEM_COPY}/dev/console c 5 1
-  sudo mknod ${SYSTEM_COPY}/dev/null c 1 3
-  sudo mknod ${SYSTEM_COPY}/dev/zero c 1 5
-  sudo chmod 666 ${SYSTEM_COPY}/dev/null ${SYSTEM_COPY}/dev/zero
+  mkdir ${SYSTEM_COPY}/dev/pts
+  mknod ${SYSTEM_COPY}/dev/console c 5 1
+  mknod ${SYSTEM_COPY}/dev/null c 1 3
+  mknod ${SYSTEM_COPY}/dev/zero c 1 5
+  chmod 666 ${SYSTEM_COPY}/dev/null ${SYSTEM_COPY}/dev/zero
 }
 
 copy_ld_so() {
@@ -115,8 +115,7 @@ if [ ! -e "${SYSTEM}" ]; then
   find "${INITDIR_FULL}/pkgs" -maxdepth 1 -name '*.txz' -printf '%f\n' \
     | while read PKG; do
       echo "Installing ${PKG}";
-      sudo \
-        YYPREFIX="/" \
+      YYPREFIX="/" \
         PATH="${INITDIR}/host/bin:${PATH}" \
         LD_LIBRARY_PATH="${INITDIR}/host/${LIB}:${INITDIR}/host/usr/${LIB}" \
         chroot "${SYSTEM_COPY}" "/sbin/yypkg" "-install" "${INITDIR}/pkgs/${PKG}" || true
@@ -128,19 +127,19 @@ if [ ! -e "${SYSTEM}" ]; then
 
   umounts
 
-  sudo cp -r --preserve="mode,timestamps" "${SYSTEM_COPY}" "${SYSTEM}"
+  cp -r --preserve="mode,timestamps" "${SYSTEM_COPY}" "${SYSTEM}"
 else
   trap umounts EXIT SIGINT ERR
   mount_dev_pts_and_procfs "${SYSTEM}"
 
   if [ x"${BD}" = x"yes" ]; then
-    sudo mkdir -p "${SYSTEM}/root/yypkg_packages"
-    (cd "${SOURCE_PATH}" && sudo cp build_daemon build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packages")
+    mkdir -p "${SYSTEM}/root/yypkg_packages"
+    (cd "${SOURCE_PATH}" && cp build_daemon build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packages")
 
-    sudo chroot "${SYSTEM}" /bin/bash -c "cd /root/yypkg_packages && ./build_daemon build_daemon_config_${BD_CONFIG}"
+    chroot "${SYSTEM}" /bin/bash -c "cd /root/yypkg_packages && ./build_daemon build_daemon_config_${BD_CONFIG}"
   else
     (source ${SOURCE_PATH}/build_daemon_config_${BD_CONFIG} && \
-      sudo chroot "${SYSTEM}" /bin/bash)
+      chroot "${SYSTEM}" /bin/bash)
   fi
 
   umounts
