@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 
 LOCATION="${1}"
-BD_CONFIG="${2:-"libs"}"
+BD_CONFIG="${2:-"windows_32"}"
 BD="${3:-"no"}"
 
 CWD="$(pwd)"
@@ -116,6 +116,7 @@ if [ ! -e "${SYSTEM}" ]; then
     | while read PKG; do
       echo "Installing ${PKG}";
       YYPREFIX="/" \
+        LANG="en_US.UTF-8" \
         PATH="${INITDIR}/host/bin:${PATH}" \
         LD_LIBRARY_PATH="${INITDIR}/host/${LIB}:${INITDIR}/host/usr/${LIB}" \
         chroot "${SYSTEM_COPY}" "/sbin/yypkg" "-install" "${INITDIR}/pkgs/${PKG}" || true
@@ -134,12 +135,12 @@ else
 
   if [ x"${BD}" = x"yes" ]; then
     mkdir -p "${SYSTEM}/root/yypkg_packages"
-    (cd "${SOURCE_PATH}" && cp build_daemon build_daemon_config_{toolchain,libs} "${SYSTEM}/root/yypkg_packages")
+    (cd "${SOURCE_PATH}" && cp build_daemon{,_config} "${SYSTEM}/root/yypkg_packages")
 
-    chroot "${SYSTEM}" /bin/bash -c "cd /root/yypkg_packages && ./build_daemon build_daemon_config_${BD_CONFIG}"
+    chroot "${SYSTEM}" /bin/bash -c "cd /root/yypkg_packages && ./build_daemon ${BD_CONFIG}"
   else
-    (source ${SOURCE_PATH}/build_daemon_config_${BD_CONFIG} && \
-      chroot "${SYSTEM}" /bin/bash)
+    (CONFIG=${BD_CONFIG};
+     source ${SOURCE_PATH}/build_daemon_config && chroot "${SYSTEM}" /bin/bash)
   fi
 
   umounts

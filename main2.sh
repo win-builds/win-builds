@@ -1,7 +1,7 @@
 #!/bin/sh -eux
 
 LOCATION="${1}"
-KIND="${2:-"init-toolchain-libs"}"
+KIND="${2:-"init-cross_toolchain_32-windows_32"}"
 
 if [ $# -ge 3 ]; then
   shift
@@ -22,7 +22,7 @@ queue() {
 
   PKG="$(basename "${PKG_PATH}")"
 
-  echo "Building ${PKG}${VARIANT}."
+  echo "Sending ${PKG}${VARIANT}."
 
   if [ -d "${PKG_PATH}" ]; then
     tar cf "${YYPKG_PACKAGES}/${PKG}${VARIANT}.tar" \
@@ -64,36 +64,51 @@ if echo "${KIND}" | grep -q init && ! [ -d "${LOCATION}/system" ]; then
   ./mingw-builds/main.sh "${LOCATION}" "whatever"
 fi
 
-if echo "${KIND}" | grep -q toolchain; then
-  start_build_daemon "toolchain"
-  queue_cond slackware64-current/d/binutils ""
+SBo="slackbuilds.org"
+SLACK="slackware64-current"
+
+if echo "${KIND}" | grep -q cross_toolchain; then
+  start_build_daemon "cross_toolchain"
+  queue_cond ${SLACK}/d/binutils ""
   queue_cond mingw/mingw-w64 "headers"
-  queue_cond slackware64-current/d/gcc "core"
+  queue_cond ${SLACK}/d/gcc "core"
   queue_cond mingw/mingw-w64 "full"
-  queue_cond slackware64-current/d/gcc "full"
+  queue_cond ${SLACK}/d/gcc "full"
   exit_build_daemon
   wait
 fi
 
-if echo "${KIND}" | grep -q libs; then
-  start_build_daemon "libs"
+if echo "${KIND}" | grep -q windows_32; then
+  start_build_daemon "windows_32"
   queue_cond mingw/win-iconv ""
-  queue_cond slackware64-current/a/gettext ""
-  queue_cond slackware64-current/a/xz ""
-  queue_cond slackware64-current/l/zlib ""
-  queue_cond slackware64-current/l/libjpeg ""
-  queue_cond slackware64-current/l/expat ""
-  queue_cond slackware64-current/l/freetype ""
-  queue_cond slackware64-current/x/fontconfig "" # depends on expat, freetype
-  queue_cond slackware64-current/l/libpng ""
-  queue_cond slackware64-current/l/giflib ""
-  queue_cond slackware64-current/l/libtiff ""
-  queue_cond slackbuilds.org/lua ""
-  queue_cond slackware64-current/n/curl ""
-  queue_cond slackbuilds.org/c-ares ""
+  queue_cond ${SLACK}/a/gettext ""
+  queue_cond ${SLACK}/a/xz ""
+  queue_cond ${SLACK}/l/zlib ""
+  queue_cond ${SLACK}/l/libjpeg ""
+  queue_cond ${SLACK}/l/expat ""
+  queue_cond ${SLACK}/l/freetype ""
+  queue_cond ${SLACK}/x/fontconfig "" # depends on expat, freetype
+  queue_cond ${SLACK}/l/libpng ""
+  queue_cond ${SLACK}/l/giflib ""
+  queue_cond ${SLACK}/l/libtiff ""
+  queue_cond ${SBo}/lua ""
+  queue_cond ${SLACK}/n/curl ""
+  queue_cond ${SBo}/c-ares ""
   for efl_lib in evil eina eet evas ecore embryo edje; do
-    queue_cond slackbuilds.org/${efl_lib} ""
+    queue_cond ${SBo}/${efl_lib} ""
   done
+  queue_cond mingw/pixman ""
+  queue_cond ${SLACK}/l/libffi ""
+  queue_cond ${SLACK}/l/glib2 ""
+  queue_cond ${SLACK}/l/cairo ""
+  queue_cond ${SLACK}/l/atk ""
+  queue_cond ${SLACK}/l/pango ""
+  queue_cond ${SLACK}/l/gdk-pixbuf2 ""
+  queue_cond ${SLACK}/l/gtk+2 ""
+  queue_cond ${SLACK}/l/gmp ""
+  queue_cond ${SLACK}/l/mpfr ""
+  queue_cond ${SLACK}/l/libmpc ""
+  queue_cond ${SLACK}/d/gcc "full"
   exit_build_daemon
   wait
 fi
