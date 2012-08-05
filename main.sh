@@ -1,8 +1,8 @@
 #!/bin/bash -eux
 
-LOCATION="${1}"
-BD_CONFIG="${2:-"windows_32"}"
-BD="${3:-"no"}"
+LOCATION="${1}" # Work directory
+BD_CONFIG="${2:-"windows_32"}" # What to build?
+BD="${3:-"no"}" # If "no", start a shell instead of build-daemon
 
 CWD="$(pwd)"
 
@@ -11,12 +11,16 @@ SOURCE_PATH="$(cd "$(dirname "${0}")" && pwd)"
 mkdir -p "${LOCATION}/packages" "${LOCATION}/logs"
 LOCATION="$(cd "${LOCATION}" && pwd)"
 
+# The script mounts several filesystems; these variables keep track of what is
+# mounted in order to always umount everything on exit
 BIND_MOUNTED_DIRS=""
 SPECIAL_FILESYSTEMS=""
 
+# When building the cross-compiler host system, a binary of yypkg is needed.
 YYPKG_SRC="/home/adrien/projects/yypkg/src"
 YYPKG_HST="${YYPKG_SRC}/yypkg.native"
 
+# The architecture of the system inside the chroot
 ARCH="x86_64"
 
 if [ "${ARCH}" = "i486" ]; then
@@ -33,7 +37,10 @@ else
   LIBDIRSUFFIX="64"
 fi
 
+# When building the cross-compiler host system, the location of the slackware
+# binary packages
 YYOS_OUTPUT="${CWD}/yy_of_slack/tmp/output-${ARCH}"
+
 SYSTEM_COPY="${LOCATION}/system_copy"
 SYSTEM="${LOCATION}/system"
 
@@ -73,6 +80,7 @@ populate_slash_dev() {
   chmod 666 ${SYSTEM_COPY}/dev/null ${SYSTEM_COPY}/dev/zero
 }
 
+# copy_ld_so: install the base libc files inside the chroot
 copy_ld_so() {
   ARCHIVE="$(find "${YYOS_OUTPUT}" -maxdepth 1 -name "glibc-2.*.txz" -printf '%f\n')"
   VER="$(echo "${ARCHIVE}" |sed -e 's/^glibc-\(2\.[0-9]\+\).*/\1/')"
@@ -86,10 +94,12 @@ copy_ld_so() {
   fi
 }
 
+# Build the cross-compiler host system if ${SYSTEM} doesn't exist
 if [ ! -e "${SYSTEM}" ]; then
-  INITDIR="/tmp/yypkg_init"
-  INITDIR_FULL="${SYSTEM_COPY}/${INITDIR}"
+  INITDIR="/tmp/yypkg_init" # temp directory
+  INITDIR_FULL="${SYSTEM_COPY}/${INITDIR}" # absolute path; outside the chroot
 
+  # Init yypkg's installation in /
   YYPREFIX="${SYSTEM_COPY}" "${YYPKG_HST}" -init
 
   mkdir -p ${INITDIR_FULL}/pkgs
@@ -111,6 +121,7 @@ if [ ! -e "${SYSTEM}" ]; then
     cp "${bin}" "${SYSTEM_COPY}/sbin/${bin_basename%.native}"
   done
 
+  # Install all packages
   find "${INITDIR_FULL}/pkgs" -maxdepth 1 -name '*.txz' -printf '%f\n' \
     | while read PKG; do
       echo "Installing ${PKG}";
