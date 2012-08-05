@@ -39,13 +39,12 @@ SYSTEM="${LOCATION}/system"
 
 LIB="lib${LIBDIRSUFFIX}"
 
-mount_bind_ro() {
+mount_bind() {
   old="$1"
   new="$2"
   mkdir -p "${new}"
   mount --bind "${old}" "${new}"
   BIND_MOUNTED_DIRS="${new} ${BIND_MOUNTED_DIRS}"
-  mount -o remount,ro "${new}"
 }
 
 mount_dev_pts_and_procfs() {
@@ -98,7 +97,7 @@ if [ ! -e "${SYSTEM}" ]; then
   trap umounts EXIT SIGINT ERR
 
   for dir in bin ${LIB} usr/${LIB}; do
-    mount_bind_ro "${FOO}${dir}" "${INITDIR_FULL}/host/${dir}"
+    mount_bind "${FOO}${dir}" "${INITDIR_FULL}/host/${dir}"
   done
 
   rsync --archive "${YYOS_OUTPUT}/" "${INITDIR_FULL}/pkgs/"
