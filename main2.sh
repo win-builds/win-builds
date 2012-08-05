@@ -67,8 +67,8 @@ fi
 SBo="slackbuilds.org"
 SLACK="slackware64-current"
 
-if echo "${KIND}" | grep -q cross_toolchain; then
-  start_build_daemon "cross_toolchain"
+if echo "${KIND}" | grep -q cross_toolchain_32; then
+  start_build_daemon "cross_toolchain_32"
   queue_cond ${SLACK}/d/binutils ""
   queue_cond mingw/mingw-w64 "headers"
   queue_cond ${SLACK}/d/gcc "core"
@@ -108,7 +108,7 @@ if echo "${KIND}" | grep -q windows_32; then
   queue_cond ${SLACK}/l/gmp ""
   queue_cond ${SLACK}/l/mpfr ""
   queue_cond ${SLACK}/l/libmpc ""
-  queue_cond ${SLACK}/d/gcc "full"
+  # queue_cond ${SLACK}/d/gcc "full"
   exit_build_daemon
   wait
 fi
