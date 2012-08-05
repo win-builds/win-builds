@@ -1,0 +1,258 @@
+= Yypkg's mingw-builds =
+Adrien Nader <adrien@notk.org>
+v1.0, Wed Aug 1 2012
+
+Mingw-builds is an ongoing project that creates a set of open-source
+libraries and tools for windows. Unlike others, it is not merely a
+dump of binaries, but a system that is both clean and reproducible.
+Moreover, it will be used as part of the mingw-64 project.
+This is supported by the yypkg package manager which is
+cross-platform, cross-system and works well for cross-compilation
+setups.
+
+In short: a nice build environment for windows
+(\{i686,x86_64\}-w64-mingw32) with dozens of packages so far, and with
+many more to come.
+
+== Support and coverage ==
+There are currently 38 packages. The toolchain is currently cross-only
+and for i686-w64-mingw32. Native toolchains and support for
+x86_64-w64-mingw32 will be released soon too.
+
+=== Cross-toolchain ===
+
+|======================================================================
+|binutils                                         |2.22.52.0.2
+|gcc, gcc-g++, gcc-gfortran, gcc-gnat, gcc-objc   |4.7.1
+|mingw-w64                                        |2.0.3
+|======================================================================
+
+=== Windows files ===
+
+|======================================================================
+| Package | Version || Package     | Version   || Package    | Version
+| atk     | 2.4.0   || expat       | 2.0.1     || libpng     | 1.4.12
+| c-ares  | 1.9.1   || freetype    | 2.4.10    || libtiff    | 3.9.6
+| cairo   | 1.10.2  || gdk-pixbuf2 | 2.26.1    || lua        | 5.1.5
+| curl    | 7.26.0  || gettext     | 0.18.1.1  || mpfr       | 3.1.0
+| ecore   | 1.2.1   || giflib      | 4.1.6     || pango      | 1.30.1
+| edje    | 1.2.1   || glib2       | 2.32.3    || pixman     | 0.26.2
+| eet     | 1.6.1   || gmp         | 5.0.5     || win-iconv  | 0.0.4
+| eina    | 1.2.1   || gtk+2       | 2.24.10   || xz         | 5.0.4
+| embryo  | 1.2.0   || libffi      | 3.0.11    || zlib       | 1.2.6
+| evas    | 1.2.1   || libjpeg     | v8a       ||            |
+| evil    | 1.1.0   || libmpc      | 0.8.2     ||            |
+|======================================================================
+
+Table generated from the output of:
+
+------------------------------------------------------------------------
+YYPREFIX=/opt/windows_32/ yypkg -list \
+| sed -e 's/-stable.*//' \
+| column -s : \
+| column -t
+------------------------------------------------------------------------
+
+== Overview ==
+The system is built in three steps:
+
+* the cross-compiler host system, installed in /
+* the cross-toolchain, installed in /opt/cross_toolchain_$\{bits\}
+* the host files, installed in /opt/windows_$\{bits\}
+
+The variable "bits" is either "32" or "64". Only i686-w64-mingw* and
+x86_64-w64-mingw* are supported; *-pc-mingw* will never be supported.
+
+The three elements are kept separate. They can be rebuilt independently
+but the software versions have to be kept compatible. For instance,
+cross-compiling with GTK+ requires to have the same GTK+ version
+available for the host.
+
+The host files are usable from anywhere to build for Windows.
+
+=== The cross-compiler host system, YYPREFIX=/ ===
+This project provides a binary package for the cross-toolchain. However,
+such binaries typically don't work across environments because of
+the differences in libraries and versions. A complete system for
+compilation requires even more: executables and program data.
+
+In practice this would require installing thousands of libraries,
+binaries or data files.
+
+The best solution is to not rely on foreign binaries but rebuild the
+cross-toolchain to match the host environment.
+
+Because this wouldn't be compatible with quick tests and because it is
+good to have a reference environment, yypkg-packages also provides a
+system for use inside a 64bit chroot (container support is likely to
+come soon). While it may seem overkill, this is the simplest and most
+reliable way to redistribute binaries.
+
+This host-system is based on a set of packages from slackware64 and can
+be re-created with the yy_of_slack.sh script which is in the source
+repository of the same name.
+
+=== The cross-toolchain, YYPREFIX=/opt/cross_toolchain_$\{bits\} ===
+The cross-toolchain is, unexpectedly, a cross-binutils, a
+cross-compiler, and mingw-w64. It lives in /opt/cross_toolchain_$\{bits\}
+where bits is either 32 or 64.
+
+The build scripts will create a full cross-toolchain automatically and
+can be used on any system.
+
+The pre-built binaries run on slackware64 hosts.
+
+=== The host files, YYPREFIX=/opt/windows_$\{bits\} ===
+These files are usable from any system to build for Windows. Typical
+extensions are dll, dll.a, exe.
+
+It is planned to make these usable from MSVC too but this is a long-term
+goal.
+
+== Getting the system ==
+The system is available in several combinations of build scripts,
+individual packages and tarballs of whole subsystems (cross-toolchain
+host, cross-toolchain and host files).
+
+As of today, it is advised to use:
+
+* the tarball for the cross-toolchain host
+* the tarball for the cross-toolchain
+* either the tarball for the windows host files or individual packages
+
+This is what is described in the following section.
+
+=== Pre-built system images ===
+Pre-build systems require no initial setup or time, but, depending on
+your workflow, can be less flexible.
+
+==== Downloads ====
+The system images have been split into three tarballs:
+
+|========================================================================
+|Download |URI |Size compressed |Size uncompressed
+|cross-toolchain host | http://notk.org/~adrien/yypkg/images/host_rc1.tar.xz | 61MB | 383MB
+|cross toolchain 32 | http://notk.org/~adrien/yypkg/images/cross_toolchain_32.tar.xz | 28MB | 226MB
+|host files | http://notk.org/~adrien/yypkg/images/windows_32.tar.xz | 16MB | 120MB
+|========================================================================
+
+The individual packages are available at:
+http://notk.org/~adrien/yypkg/i686-w64-mingw32/
+
+==== Installation ===
+Enter the directory where you've put everything. Decide on a directory
+name, for instance "moo" (you're strongly advised to find a better name
+:-) ). Create that directory. As root, extract the base system image
+into it as "system": you should have the following path
+"moo/system/bin".
+
+=== Build it yourself ===
+Building it yourself is not hard nor time-consuming. A full build should
+be very easy to setup and take a couple hours on a not-very-fast
+laptop from 5 years ago (a not too recent quad-core will take around than 30
+minutes).
+
+Making this easy and widely used is a major goal of the project (you
+have no reason to trust my binaries). Don't hesitate to report any
+issues or successes.
+
+==== Downloads ====
+Full documentation in progress. If impatient, mail me.
+
+===== Scripts =====
+First, git clone all of these:
+
+* http://cgit.notk.org/adrien/yypkg/mingw-builds.git/
+* http://cgit.notk.org/adrien/yypkg/mingw.git/
+* http://cgit.notk.org/adrien/yypkg/slackbuilds.org.git/
+* http://cgit.notk.org/adrien/yypkg/slackware64-current.git/
+* http://cgit.notk.org/adrien/yypkg/yy_of_slack.git/
+
+===== Source tarballs =====
+Surprise! No doc for this! The current system is not very practical and
+requires a slackware64 (rsync) mirror while we're only interested in a
+few files.
+
+==== Build the packages ====
+Enter the directory where you've put everything. Decide on a directory
+name, for instance "moo" (you're strongly advised to find a better name
+:-) ). Create that directory. As root, extract the base system image
+into it as "system": you should have the following path
+"moo/system/bin".
+
+Running "sudo ./mingw-builds/build-packages.sh cross_toolchain" will build the
+cross-toolchain and install it (and yes it needs to be run as root).
+
+After the "cross_toolchain" step is done, you can pass "windows_32": it
+will build whatever would run on Windows 32bit: .exe, .dll, .dll.a, ...
+
+=== Full from scratch ===
+No doc yet, coming soon.
+
+== Using the system ==
+=== Chroot into the system ===
+Once your system has been setup, run the following as root:
+------------------------------------------------------------------------
+./mingw-builds/main.sh path/to/the/folder/with/system
+------------------------------------------------------------------------
+This will chroot inside the given directory and set a few things (PATH,
+YYPREFIX=/opt/windows_32, PKG_CONFIG_LIBDIR mostly).
+
+=== Quick installation ===
+This following code will download the needed files, extract them in a
+directory named "rc1" and will chroot you into the system with the PATH,
+YYPREFIX, PKG_CONFIG_LIBDIR and a number of other environment variables
+set. This is exactly the same environment as the one used to build all
+the packages.
+------------------------------------------------------------------------
+git clone http://cgit.notk.org/adrien/yypkg/mingw-builds.git/
+cd mingw-builds
+mkdir rc1
+cd rc1
+wget http://notk.org/~adrien/yypkg/images/{host_system_rc1,cross_toolchain_32,windows_32}.tar.xz
+# Extracting with root permissions is required to preserver file permissions
+sudo tar xf host_system_rc1.tar.xz --transform='s/system_rc1/system/'
+sudo tar xf cross_toolchain_32.tar.xz -C system/opt
+sudo tar xf windows_32.tar.xz -C system/opt
+cd -
+# The script needs to run as root since it will invoke chroot
+sudo ./main.sh rc1
+------------------------------------------------------------------------
+
+Now, from another shell (or a bind-mount or an nfs mount, or before, or
+...), you can make source files reachable from inside the chroot and
+build them.
+
+=== Build packages ===
+Building packages means adding a slackbuild. Existing slackbuilds from
+slackware or from slackbuilds.org can be reused with only a few changes.
+
+Detailled steps coming soon.
+
+=== Yypkg cheatsheet ===
+See 'yypkg -help'. =P 
+
+== Comparison with other systems ==
+Work on yypkg and the build scripts along with the infrastructure has
+started several years ago, interrupted several times and already
+rewritten once at least (no second-system effect in any case).
+
+The need for such a system was pretty obvious and at the time, nothing
+came any close. The requirements haven't changed much over the years;
+some other projects have improved but it doesn't look like any of them
+has obsoleted yypkg.
+
+Feel free to send notes for the tables below: it is definitely nor
+perfect nor complete.
+
+|========================================================================
+|Project    |OS portability       |Compiler portability            |Package manager         |QA
+|yypkg      |POSIX and windows    |GCC, mingw-w64; MSVC planned    |Yes                     |Yes
+|coApp      |Windows              |MSVC                            |State unknown           |unknown
+|MXE        |Cross-only           |GCC, mingw.org, 32bit           |No                      |Unknown
+|mingw-get  |Windows              |GCC, mingw.org and mingw-w64    |No (definitely not)     |No
+|========================================================================
+
+A note about mingw-get: it is not a package manager: it is a wrapper
+around wget and tar xf which can only install but not uninstall or
+upgrade.
