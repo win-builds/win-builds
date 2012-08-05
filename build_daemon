@@ -11,7 +11,7 @@ description_of_slack_desc() {
 }
 
 if [ -z "$*" ]; then
-  echo "No build-deamon configuration given, exiting"
+  echo "No build-daemon configuration given, exiting"
   exit 1
 fi
 
@@ -42,6 +42,7 @@ iter() {
   find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
     > ${YYOUTPUT}/files_post
   comm -13 ${YYOUTPUT}/files_{pre,post} | awk '{ print $2; }' | xargs -n 1 -x yypkg -upgrade -install-new
+  rm ${YYOUTPUT}/files_{pre,post}
 }
 
 inotifywait -m --format '%w/%f' -e close_write "${PWD}" \
