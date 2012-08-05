@@ -56,12 +56,16 @@ YYPREFIX=/opt/windows_32/ yypkg -list \
 == Getting and running the system ==
 === The straightest dope ===
 ------------------------------------------------------------------------
-wget http://notk.org/~adrien/yypkg/images/full_system.tar.xz # 99MB
-sudo tar xf full_system.tar.xz # uses 256MB of memory during decompression
+wget http://notk.org/~adrien/yypkg/images/full_system.tar.xz # 105MB
+sudo tar xf full_system.tar.xz # uses 32MB of memory for decompression
 cd mingw-builds
 sudo ./main.sh rc1 # chroots into the rc1/system directory
-
 ------------------------------------------------------------------------
+
+Most things will be setup automatically: read what is written on screen
+by the last command.
+
+=== Modular approach ===
 
 The system is available in several combinations of build scripts,
 individual packages and tarballs of whole subsystems (cross-toolchain
@@ -148,14 +152,6 @@ http://cgit.notk.org/adrien/yypkg/mingw-builds.git/tree/doc.txt .
 // No doc yet, coming soon.
 
 == Using the system ==
-=== Chroot into the system ===
-Once your system has been setup, run the following as root:
-------------------------------------------------------------------------
-./mingw-builds/main.sh path/to/the/folder/with/system
-------------------------------------------------------------------------
-This will chroot inside the given directory and set a few things (PATH,
-YYPREFIX=/opt/windows_32, PKG_CONFIG_LIBDIR mostly).
-
 === Quick installation ===
 This following code will download the needed files, extract them in a
 directory named "rc1" and will chroot you into the system with the PATH,
@@ -168,7 +164,7 @@ cd mingw-builds
 mkdir rc1
 cd rc1
 wget http://notk.org/~adrien/yypkg/images/{host_system_rc1,cross_toolchain_32,windows_32}.tar.xz
-# Extracting with root permissions is required to preserver file permissions
+# Extracting with root permissions is required to preserve file permissions
 sudo tar xf host_system_rc1.tar.xz --transform='s/system_rc1/system/'
 sudo tar xf cross_toolchain_32.tar.xz -C system/opt
 sudo tar xf windows_32.tar.xz -C system/opt
@@ -188,7 +184,30 @@ build them.
 // Detailled steps coming soon.
 
 === Yypkg cheatsheet ===
-See 'yypkg -help'. =P 
+For a cheatsheet, see "yypkg -help".
+
+A quick guide is available at: http://git.ocamlcore.org/cgi-bin/gitweb.cgi?p=yypkg/yypkg.git;a=blob;f=USAGE
+
+=== Demo ===
+In order to build the GTK+ Hello world, run (copy-paste) the following
+from inside the chroot:
+
+------------------------------------------------------------------------
+cat << EOF > gtk_hello_world.c
+#include <gtk/gtk.h>
+
+int main(int argc, char *argv[]) {
+    GtkWidget *window;
+    gtk_init (&argc, &argv);
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_widget_show  (window);
+    gtk_main ();
+    return 0;
+}
+EOF
+
+i686-w64-mingw32-gcc -o gtk_hello_world.o gtk_hello_world.c $(pkg-config --cflags --libs gtk+-2.0)
+------------------------------------------------------------------------
 
 == How it's built ==
 The system is built in three steps:

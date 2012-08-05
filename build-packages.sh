@@ -109,6 +109,8 @@ if echo "${KIND}" | grep -q windows_32; then
   queue_cond ${SLACK}/l/mpfr ""
   queue_cond ${SLACK}/l/libmpc ""
   # queue_cond ${SLACK}/d/gcc "full"
+  # queue_cond ${SLACK}/xap/gucharmap "" # requires GTK+-3
+  # queue_cond ${SLACK}/xap/geeqie "" # includes <pwd.h>
   exit_build_daemon
   wait
 fi
