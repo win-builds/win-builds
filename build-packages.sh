@@ -11,6 +11,11 @@ else
   PKG_LIST=""
 fi
 
+if [ x"${KIND}" = x"init-cross_toolchain_32-windows_32" && -z "${PKG_LIST}" ]; then
+  echo "Warning. Building everything. This will take a while."
+  echo "You have 10 seconds to cancel."
+  sleep 10
+fi
 
 mkdir -p "${LOCATION}"
 LOCATION="$(cd "${LOCATION}" && pwd)"
