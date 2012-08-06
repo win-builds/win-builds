@@ -3,21 +3,18 @@ Adrien Nader <adrien@notk.org>
 v1.0, Wed Aug 1 2012
 
 Mingw-builds is an ongoing project that creates a set of open-source
-libraries and tools for windows. Unlike others, it is not merely a
-dump of binaries, but a system that is both clean and reproducible.
-Moreover, it will be used as part of the mingw-64 project.
-This is supported by the yypkg package manager which is
-cross-platform, cross-system and works well for cross-compilation
-setups.
+libraries and tools for windows in a clean and reproducible way. It uses
+yypkg, a cross-platform, system-agnostic and cross-compilation-friendly
+package manager. Both of them will become official tools and
+repositories for the mingw-w64 project.
 
-In short: a nice build environment for windows
-(\{i686,x86_64\}-w64-mingw32) with dozens of packages so far, and with
-many more to come.
+It makes it possible to install a build environment targetting windows
+(\{i686,x86_64\}-w64-mingw32) in a couple of minutes.
 
 == Support and coverage ==
-There are currently 38 packages. The toolchain is currently cross-only
-and for i686-w64-mingw32. Native toolchains and support for
-x86_64-w64-mingw32 will be released soon too.
+Currently, there are 38 packages and the toolchain is cross-only and for
+i686-w64-mingw32. Native toolchains and support for x86_64-w64-mingw32
+will be released soon too.
 
 === Cross-toolchain ===
 
@@ -30,26 +27,23 @@ x86_64-w64-mingw32 will be released soon too.
 === Windows files ===
 
 |======================================================================
-| Package | Version || Package     | Version   || Package    | Version
-| atk     | 2.4.0   || expat       | 2.0.1     || libpng     | 1.4.12
-| c-ares  | 1.9.1   || freetype    | 2.4.10    || libtiff    | 3.9.6
-| cairo   | 1.10.2  || gdk-pixbuf2 | 2.26.1    || lua        | 5.1.5
-| curl    | 7.26.0  || gettext     | 0.18.1.1  || mpfr       | 3.1.0
-| ecore   | 1.2.1   || giflib      | 4.1.6     || pango      | 1.30.1
-| edje    | 1.2.1   || glib2       | 2.32.3    || pixman     | 0.26.2
-| eet     | 1.6.1   || gmp         | 5.0.5     || win-iconv  | 0.0.4
-| eina    | 1.2.1   || gtk+2       | 2.24.10   || xz         | 5.0.4
-| embryo  | 1.2.0   || libffi      | 3.0.11    || zlib       | 1.2.6
-| evas    | 1.2.1   || libjpeg     | v8a       ||            |
-| evil    | 1.1.0   || libmpc      | 0.8.2     ||            |
+| Package | Version || Package      | Version   || Package  | Version  || Package   | Version
+| atk     | 2.4.0   || embryo       | 1.2.0     || glib2    | 2.32.3   || lua       | 5.1.5
+| c-ares  | 1.9.1   || evas         | 1.2.1     || gmp      | 5.0.5    || mpfr      | 3.1.0
+| cairo   | 1.10.2  || evil         | 1.1.0     || gtk+2    | 2.24.10  || pango     | 1.30.1
+| curl    | 7.26.0  || expat        | 2.0.1     || libffi   | 3.0.11   || pixman    | 0.26.2
+| ecore   | 1.2.1   || freetype     | 2.4.10    || libjpeg  | v8a      || win-iconv | 0.0.4
+| edje    | 1.2.1   || gdk-pixbuf2  | 2.26.1    || libmpc   | 0.8.2    || xz        | 5.0.4
+| eet     | 1.6.1   || gettext      | 0.18.1.1  || libpng   | 1.4.12   || zlib      | 1.2.6
+| eina    | 1.2.1   || giflib       | 4.1.6     || libtiff  | 3.9.6    ||           |
 |======================================================================
 
-Table generated from the output of:
+This table has been generated from the output of:
 
 ------------------------------------------------------------------------
 YYPREFIX=/opt/windows_32/ yypkg -list \
 | sed -e 's/-stable.*//' \
-| column -s : \
+| column -s : -c 100 \
 | column -t
 ------------------------------------------------------------------------
 
@@ -68,8 +62,8 @@ by the last command.
 === Modular approach ===
 
 The system is available in several combinations of build scripts,
-individual packages and tarballs of whole subsystems (cross-toolchain
-host, cross-toolchain and host files).
+individual packages and tarballs of whole subsystems (for
+cross-toolchain host, cross-toolchain and host files).
 
 As of today, it is advised to use the following combination:
 
