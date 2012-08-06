@@ -3,13 +3,15 @@ Adrien Nader <adrien@notk.org>
 v1.0, Wed Aug 1 2012
 
 Mingw-builds is an ongoing project that creates a set of open-source
-libraries and tools for windows in a clean and reproducible way. It uses
-yypkg, a cross-platform, system-agnostic and cross-compilation-friendly
-package manager. Both of them will become official tools and
-repositories for the mingw-w64 project.
+libraries and tools for windows in a clean and reproducible way, making
+it possible to easily build for windows. It uses yypkg, a
+cross-platform, system-agnostic and cross-compilation-friendly package
+manager. Both of them will become official tools and repositories for
+the mingw-w64 project.
 
 It makes it possible to install a build environment targetting windows
-(\{i686,x86_64\}-w64-mingw32) in a couple of minutes.
+(\{i686,x86_64\}-w64-mingw32) in a couple of minutes and unlike SDKs and
+huge tarballs, it can be kept up-to-date easily.
 
 == Support and coverage ==
 Currently, there are 38 packages and the toolchain is cross-only and for
@@ -51,13 +53,37 @@ YYPREFIX=/opt/windows_32/ yypkg -list \
 === The straightest dope ===
 ------------------------------------------------------------------------
 wget http://notk.org/~adrien/yypkg/images/full_system.tar.xz # 105MB
-sudo tar xf full_system.tar.xz # uses 32MB of memory for decompression
+sudo tar xf full_system_32.tar.xz
 cd mingw-builds
 sudo ./main.sh rc1 # chroots into the rc1/system directory
 ------------------------------------------------------------------------
 
 Most things will be setup automatically: read what is written on screen
 by the last command.
+
+==== Demo ====
+In order to build the GTK+ Hello world, run (copy-paste) the following:
+
+------------------------------------------------------------------------
+
+
+cd root
+
+cat << EOF > gtk_hello_world.c
+#include <gtk/gtk.h>
+
+int main(int argc, char *argv[]) {
+    GtkWidget *window;
+    gtk_init (&argc, &argv);
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_widget_show  (window);
+    gtk_main ();
+    return 0;
+}
+EOF
+
+i686-w64-mingw32-gcc -o gtk_hello_world.o gtk_hello_world.c $(pkg-config --cflags --libs gtk+-2.0)
+------------------------------------------------------------------------
 
 === Modular approach ===
 
@@ -181,27 +207,6 @@ build them.
 For a cheatsheet, see "yypkg -help".
 
 A quick guide is available at: http://git.ocamlcore.org/cgi-bin/gitweb.cgi?p=yypkg/yypkg.git;a=blob;f=USAGE
-
-=== Demo ===
-In order to build the GTK+ Hello world, run (copy-paste) the following
-from inside the chroot:
-
-------------------------------------------------------------------------
-cat << EOF > gtk_hello_world.c
-#include <gtk/gtk.h>
-
-int main(int argc, char *argv[]) {
-    GtkWidget *window;
-    gtk_init (&argc, &argv);
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_widget_show  (window);
-    gtk_main ();
-    return 0;
-}
-EOF
-
-i686-w64-mingw32-gcc -o gtk_hello_world.o gtk_hello_world.c $(pkg-config --cflags --libs gtk+-2.0)
-------------------------------------------------------------------------
 
 == How it's built ==
 The system is built in three steps:
