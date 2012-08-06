@@ -1,5 +1,7 @@
 #!/bin/false
 
+set -eux
+
 echo ${ARCH} ${SYSTEM_COPY} ${SYSTEM} ${LIB} > /dev/null
 
 # When building the cross-compiler host system, a binary of yypkg is needed.
@@ -13,7 +15,6 @@ YYOS_OUTPUT="${CWD}/yy_of_slack/tmp/output-${ARCH}"
 # The script mounts several filesystems; these variables keep track of what is
 # mounted in order to always umount everything on exit
 BIND_MOUNTED_DIRS=""
-SPECIAL_FILESYSTEMS=""
 
 if [ "${ARCH}" = "i486" ]; then
   YYPKG_TGT="${PWD}/i486/yypkg.native"
@@ -28,10 +29,9 @@ else
 fi
 
 umounts() {
-  if [ -n "${BIND_MOUNTED_DIRS}" -o -n "${SPECIAL_FILESYSTEMS}" ]; then
-    umount ${BIND_MOUNTED_DIRS} ${SPECIAL_FILESYSTEMS}
+  if [ -n "${BIND_MOUNTED_DIRS}" ]; then
+    umount ${BIND_MOUNTED_DIRS}
     BIND_MOUNTED_DIRS=""
-    SPECIAL_FILESYSTEMS=""
   fi
 }
 
@@ -41,15 +41,6 @@ mount_bind() {
   mkdir -p "${new}"
   mount --bind "${old}" "${new}"
   BIND_MOUNTED_DIRS="${new} ${BIND_MOUNTED_DIRS}"
-}
-
-mount_dev_pts_and_procfs() {
-  BASE="${1}"
-  mkdir -p "${BASE}/proc" "${BASE}/dev/pts"
-  mount -t proc proc "${BASE}/proc"
-  SPECIAL_FILESYSTEMS="${BASE}/proc ${SPECIAL_FILESYSTEMS}"
-  mount -t devpts devpts "${BASE}/dev/pts"
-  SPECIAL_FILESYSTEMS="${BASE}/dev/pts ${SPECIAL_FILESYSTEMS}"
 }
 
 populate_slash_dev() {
