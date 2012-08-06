@@ -23,20 +23,6 @@ YYPKG_HST="${YYPKG_SRC}/yypkg.native"
 # The architecture of the system inside the chroot
 ARCH="x86_64"
 
-if [ "${ARCH}" = "i486" ]; then
-  YYPKG_TGT="${PWD}/i486/yypkg.native"
-  MAKEYPKG_TGT="${PWD}/i486/makeypkg.native"
-  BSDTAR_TGT="${PWD}/i486/bsdtar"
-  FOO="/home/adrien/t/sbchroot/slackware-current/"
-  LIBDIRSUFFIX=""
-else
-  YYPKG_TGT="${YYPKG_SRC}/yypkg.native"
-  MAKEYPKG_TGT="${YYPKG_SRC}/makeypkg.native"
-  BSDTAR_TGT="$(which bsdtar)"
-  FOO="/"
-  LIBDIRSUFFIX="64"
-fi
-
 # When building the cross-compiler host system, the location of the slackware
 # binary packages
 YYOS_OUTPUT="${CWD}/yy_of_slack/tmp/output-${ARCH}"
@@ -44,7 +30,11 @@ YYOS_OUTPUT="${CWD}/yy_of_slack/tmp/output-${ARCH}"
 SYSTEM_COPY="${LOCATION}/system_copy"
 SYSTEM="${LOCATION}/system"
 
-LIB="lib${LIBDIRSUFFIX}"
+if [ "${ARCH}" = "i486" ]; then
+  LIB="lib"
+else
+  LIB="lib64"
+fi
 
 mount_bind() {
   old="$1"
@@ -96,6 +86,18 @@ copy_ld_so() {
 
 # Build the cross-compiler host system if ${SYSTEM} doesn't exist
 if [ ! -e "${SYSTEM}" ]; then
+  if [ "${ARCH}" = "i486" ]; then
+    YYPKG_TGT="${PWD}/i486/yypkg.native"
+    MAKEYPKG_TGT="${PWD}/i486/makeypkg.native"
+    BSDTAR_TGT="${PWD}/i486/bsdtar"
+    FOO="/home/adrien/t/sbchroot/slackware-current/"
+  else
+    YYPKG_TGT="${YYPKG_SRC}/yypkg.native"
+    MAKEYPKG_TGT="${YYPKG_SRC}/makeypkg.native"
+    BSDTAR_TGT="$(which bsdtar)"
+    FOO="/"
+  fi
+
   INITDIR="/tmp/yypkg_init" # temp directory
   INITDIR_FULL="${SYSTEM_COPY}/${INITDIR}" # absolute path; outside the chroot
 
