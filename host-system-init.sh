@@ -102,12 +102,14 @@ find "${INITDIR_FULL}/pkgs" -maxdepth 1 -name '*.txz' -printf '%f\n' \
       chroot "${SYSTEM_COPY}" "/sbin/yypkg" "-install" "${INITDIR}/pkgs/${PKG}" || true
 done
 
-umounts
+chroot "${SYSTEM_COPY}" "/usr/bin/ccache" "--max-size=2G"
 
 rm -r ${SYSTEM_COPY}/tmp/yypkg_init ${SYSTEM_COPY}/tmp/.{ICE,X11}-unix
 
 for bin in cc c++ {${ARCH}-slackware-linux-,}{gcc,g++}; do
   ln -s "/usr/bin/ccache" "${SYSTEM_COPY}/usr/local/bin/${bin}"
 done
+
+umounts
 
 cp -r --preserve="mode,timestamps" "${SYSTEM_COPY}" "${SYSTEM}"
