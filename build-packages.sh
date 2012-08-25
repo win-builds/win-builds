@@ -97,6 +97,7 @@ if echo "${KIND}" | grep -q windows_32; then
   queue_cond ${SLACK}/l/giflib ""
   queue_cond ${SLACK}/l/libtiff ""
   queue_cond ${SBo}/lua ""
+  queue_cond ${SLACK}/n/ca-certificates ""
   queue_cond ${SLACK}/n/curl ""
   queue_cond ${SBo}/c-ares ""
   for efl_lib in evil eina eet evas ecore embryo edje; do
@@ -110,6 +111,9 @@ if echo "${KIND}" | grep -q windows_32; then
   queue_cond ${SLACK}/l/pango ""
   queue_cond ${SLACK}/l/gdk-pixbuf2 ""
   queue_cond ${SLACK}/l/gtk+2 ""
+  queue_cond ${SLACK}/n/nettle ""
+  queue_cond ${SLACK}/n/gnutls ""
+  queue_cond ${SLACK}/l/glib-networking ""
   queue_cond ${SLACK}/l/gmp ""
   queue_cond ${SLACK}/l/mpfr ""
   queue_cond ${SLACK}/l/libmpc ""
