@@ -29,6 +29,8 @@ else
   export PKG_CONFIG_LIBDIR="${YYPREFIX}/lib/pkgconfig"
 fi
 
+export PATH="/usr/local/bin:$(echo "${PATH}" | sed -e 's;/usr/local/bin:;;g')"
+
 export TARGET_TRIPLET="${MINGW_W64_TRIPLET}"
 export TARGET_STRIP="${TARGET_TRIPLET}-strip"
 export TARGET_EXE_FORMAT="PE"
