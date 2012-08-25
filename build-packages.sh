@@ -76,6 +76,12 @@ start_build_daemon() {
   sleep 4
 }
 
+enable_ccache() {
+  for bin in ${TRIPLET}-{gcc,g++}; do
+    ln -s "/usr/bin/ccache" "${LOCATION}/system/usr/local/bin/${bin}"
+  done
+}
+
 if echo "${KIND}" | grep -q init && ! [ -d "${LOCATION}/system" ]; then
   ./mingw-builds/main.sh "${LOCATION}" "whatever"
 fi
@@ -90,6 +96,7 @@ if echo "${KIND}" | grep -q ${CROSS_TOOLCHAIN}; then
   queue_cond ${SLACK}/d/gcc "core"
   queue_cond mingw/mingw-w64 "full"
   queue_cond ${SLACK}/d/gcc "full"
+  enable_ccache
   exit_build_daemon
   wait
 fi
