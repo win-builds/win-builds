@@ -1,7 +1,18 @@
 #!/bin/sh -eux
 
+TRIPLET="${TRIPLET:-i686-w64-mingw32}"
+case "${TRIPLET}" in
+  i686-w64-mingw*) BITS="32";;
+  x86_64-w64-mingw*) BITS="64";;
+esac
+
+CROSS_TOOLCHAIN="cross_toolchain_${BITS}"
+WINDOWS="windows_${BITS}"
+
+DEFAULT_KIND="init-${CROSS_TOOLCHAIN}-${WINDOWS}"
+
 LOCATION="${1}"
-KIND="${2:-"init-cross_toolchain_32-windows_32"}"
+KIND="${2:-"${DEFAULT_KIND}"}"
 
 if [ $# -ge 3 ]; then
   shift
@@ -11,8 +22,8 @@ else
   PKG_LIST=""
 fi
 
-if [ x"${KIND}" = x"init-cross_toolchain_32-windows_32" && -z "${PKG_LIST}" ]; then
-  echo "Warning. Building everything. This will take a while."
+if [ x"${KIND}" = x"${DEFAULT_KIND}" -a -z "${PKG_LIST}" ]; then
+  echo "Warning. Going to build everything. This will take a while."
   echo "You have 10 seconds to cancel."
   sleep 10
 fi
@@ -72,8 +83,8 @@ fi
 SBo="slackbuilds.org"
 SLACK="slackware64-current"
 
-if echo "${KIND}" | grep -q cross_toolchain_32; then
-  start_build_daemon "cross_toolchain_32"
+if echo "${KIND}" | grep -q ${CROSS_TOOLCHAIN}; then
+  start_build_daemon "${CROSS_TOOLCHAIN}"
   queue_cond ${SLACK}/d/binutils ""
   queue_cond mingw/mingw-w64 "headers"
   queue_cond ${SLACK}/d/gcc "core"
@@ -83,8 +94,8 @@ if echo "${KIND}" | grep -q cross_toolchain_32; then
   wait
 fi
 
-if echo "${KIND}" | grep -q windows_32; then
-  start_build_daemon "windows_32"
+if echo "${KIND}" | grep -q ${WINDOWS}; then
+  start_build_daemon "${WINDOWS}"
   queue_cond mingw/win-iconv ""
   queue_cond ${SLACK}/a/gettext ""
   queue_cond ${SLACK}/a/xz ""
