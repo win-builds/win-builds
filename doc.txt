@@ -52,20 +52,23 @@ YYPREFIX=/opt/windows_32/ yypkg -list \
 == Getting and running the system ==
 === The straightest dope ===
 ------------------------------------------------------------------------
-wget http://notk.org/~adrien/yypkg/images/full_system.tar.xz # 105MB
+# Download is 105MB
+wget http://notk.org/~adrien/yypkg/images/full_system_32.tar.xz
 sudo tar xf full_system_32.tar.xz
 cd mingw-builds
-sudo ./main.sh rc1 # chroots into the rc1/system directory
+# This chroots into the rc1/system directory and setups the environment
+sudo ./main.sh rc1
 ------------------------------------------------------------------------
 
 Most things will be setup automatically: read what is written on screen
 by the last command.
 
 ==== Demo ====
-In order to build the GTK+ Hello world, run (copy-paste) the following:
+In order to build the GTK+ Hello world, cd in the mingw-build directory
+and run (copy-paste) the following:
 
 ------------------------------------------------------------------------
-
+sudo ./main.sh rc1
 
 cd root
 
@@ -82,7 +85,7 @@ int main(int argc, char *argv[]) {
 }
 EOF
 
-i686-w64-mingw32-gcc -o gtk_hello_world.o gtk_hello_world.c $(pkg-config --cflags --libs gtk+-2.0)
+i686-w64-mingw32-gcc -o gtk_hello_world.exe gtk_hello_world.c $(pkg-config --cflags --libs gtk+-2.0)
 ------------------------------------------------------------------------
 
 === Modular approach ===
