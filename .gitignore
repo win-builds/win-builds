@@ -1,2 +1,5 @@
 *~
 *.sw[po]
+
+docbook-xsl.css
+doc.html
