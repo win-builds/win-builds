@@ -28,24 +28,15 @@ will be released soon too.
 
 === Windows files ===
 
-|======================================================================
-| Package | Version || Package      | Version   || Package  | Version  || Package   | Version
-| atk     | 2.4.0   || embryo       | 1.2.0     || glib2    | 2.32.3   || lua       | 5.1.5
-| c-ares  | 1.9.1   || evas         | 1.2.1     || gmp      | 5.0.5    || mpfr      | 3.1.0
-| cairo   | 1.10.2  || evil         | 1.1.0     || gtk+2    | 2.24.10  || pango     | 1.30.1
-| curl    | 7.26.0  || expat        | 2.0.1     || libffi   | 3.0.11   || pixman    | 0.26.2
-| ecore   | 1.2.1   || freetype     | 2.4.10    || libjpeg  | v8a      || win-iconv | 0.0.4
-| edje    | 1.2.1   || gdk-pixbuf2  | 2.26.1    || libmpc   | 0.8.2    || xz        | 5.0.4
-| eet     | 1.6.1   || gettext      | 0.18.1.1  || libpng   | 1.4.12   || zlib      | 1.2.6
-| eina    | 1.2.1   || giflib       | 4.1.6     || libtiff  | 3.9.6    ||           |
-|======================================================================
+There are currently 38 non-toolchaing packages with more close on track
+and many more planned. In summary, the packages allow to build GTK+ and
+EFL applications; webkit-gtk support is close.
 
-This table has been generated from the output of:
+The link:package-list.txt[detailled list] is also available.
 
 ------------------------------------------------------------------------
 YYPREFIX=/opt/windows_32/ yypkg -list \
-| sed -e 's/-stable.*//' \
-| column -s : -c 100 \
+| rev | cut -f3- -d- | rev \
 | column -t
 ------------------------------------------------------------------------
 
