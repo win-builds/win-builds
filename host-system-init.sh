@@ -76,13 +76,7 @@ mkdir -p ${INITDIR_FULL}/pkgs
 
 trap umounts EXIT SIGINT ERR
 
-for dir in bin ${LIB} usr/${LIB}; do
-  mount_bind "${FOO}${dir}" "${INITDIR_FULL}/host/${dir}"
-done
-
 rsync --archive "${YYOS_OUTPUT}/" "${INITDIR_FULL}/pkgs/"
-
-populate_slash_dev
 
 copy_ld_so
 
@@ -90,6 +84,12 @@ for bin in "${YYPKG_TGT}" "${MAKEYPKG_TGT}" "${BSDTAR_TGT}"; do
   bin_basename="$(basename "${bin}")"
   cp "${bin}" "${SYSTEM_COPY}/sbin/${bin_basename%.native}"
 done
+
+for dir in bin ${LIB} usr/${LIB}; do
+  mount_bind "${FOO}${dir}" "${INITDIR_FULL}/host/${dir}"
+done
+
+populate_slash_dev
 
 # Install all packages
 find "${INITDIR_FULL}/pkgs" -maxdepth 1 -name '*.txz' -printf '%f\n' \
