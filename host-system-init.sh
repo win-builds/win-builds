@@ -106,7 +106,8 @@ chroot "${SYSTEM_COPY}" "/usr/bin/ccache" "--max-size=2G"
 
 umounts
 
-rm -r ${SYSTEM_COPY}/tmp/yypkg_init ${SYSTEM_COPY}/tmp/.{ICE,X11}-unix
+rmdir -p ${SYSTEM_COPY}/tmp/yypkg_init
+rm ${SYSTEM_COPY}/tmp/.{ICE,X11}-unix
 
 for bin in cc c++ {${ARCH}-slackware-linux-,}{gcc,g++}; do
   ln -s "/usr/bin/ccache" "${SYSTEM_COPY}/usr/local/bin/${bin}"
