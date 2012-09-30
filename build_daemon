@@ -56,7 +56,8 @@ inotifywait -m --format '%w/%f' -e close_write "${PWD}" \
       (cd processing \
         && rm -rf ${PKG}* config* \
         && tar xf ${FILE} \
-        && iter "${PKG}") || \
+        && iter "${PKG}" \
+        && rm -f ${PKG}* config* ../${FILE}) || \
         { (sleep 0.5 && touch "${PWD}/exit-build-daemon")& exit 1; }
     done
 
