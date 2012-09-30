@@ -57,7 +57,7 @@ inotifywait -m --format '%w/%f' -e close_write "${PWD}" \
         && rm -rf ${PKG}* config* \
         && tar xf ${FILE} \
         && iter "${PKG}" \
-        && rm -f ${PKG}* config* ../${FILE}) || \
+        && rm -f *${PKG}* config* ${FILE} slack-desc*) || \
         { (sleep 0.5 && touch "${PWD}/exit-build-daemon")& exit 1; }
     done
 
