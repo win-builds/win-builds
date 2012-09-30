@@ -34,12 +34,6 @@ EFL applications; webkit-gtk support is close.
 
 The link:package-list.txt[detailled list] is also available.
 
-------------------------------------------------------------------------
-YYPREFIX=/opt/windows_32/ yypkg -list \
-| rev | cut -f3- -d- | rev \
-| column -t
-------------------------------------------------------------------------
-
 == Getting and running the system ==
 === The straightest dope ===
 ------------------------------------------------------------------------
