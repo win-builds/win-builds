@@ -1,3 +1,5 @@
+#!/bin/false
+
 if echo "${CONFIG}" | grep -q 32; then
   MINGW_W64_TRIPLET="i686-w64-mingw32"
   BITS="32"
