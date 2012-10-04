@@ -138,6 +138,7 @@ if echo "${KIND}" | grep -q ${WINDOWS}; then
   queue_cond ${SLACK}/l/icu4c ""
   queue_cond ${SLACK}/d/gperf ""
   queue_cond ${SLACK}/l/libxslt ""
+  queue_cond ${SBo}/webkit-gtk ""
   queue_cond ${SLACK}/l/gmp ""
   queue_cond ${SLACK}/l/mpfr ""
   queue_cond ${SLACK}/l/libmpc ""
@@ -146,7 +147,15 @@ if echo "${KIND}" | grep -q ${WINDOWS}; then
   queue_cond ${SLACK}/d/gcc "full"
   # queue_cond ${SLACK}/xap/gucharmap "" # requires GTK+-3
   # queue_cond ${SLACK}/xap/geeqie "" # includes <pwd.h>
+
+  # Mozilla crap, I'll deal with that later, if ever
+  # queue_cond mingw/nspr ""
+  # queue_cond ${SLACK}/l/mozilla-nss ""
   exit_build_daemon
   wait
 fi
 
+for d in "packages" "logs"; do
+  mkdir -p "${LOCATION}/${d}"
+  rsync --verbose --archive --delete-after --progress "${YYPKG_PACKAGES}/${d}/" "${LOCATION}/${d}/"
+done
