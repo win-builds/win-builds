@@ -11,7 +11,7 @@ CWD="$(pwd)"
 
 SOURCE_PATH="$(cd "$(dirname "${0}")" && pwd)"
 
-mkdir -p "${LOCATION}/packages" "${LOCATION}/logs"
+mkdir -p "${LOCATION}"
 LOCATION="$(cd "${LOCATION}" && pwd)"
 
 # The script mounts several filesystems; these variables keep track of what is
