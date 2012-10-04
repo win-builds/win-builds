@@ -16,5 +16,6 @@ for REPO in ${repos}; do
   OUTPUT="${LOCATION}/repositories/${REPO_NAME}"
   mkdir -p "${OUTPUT}"
   "${SHERPA_GEN}" "${REPO}" "${OUTPUT}"
-  rsync --progress --archive --exclude="memo_*" "${OUTPUT}/" "${MIRROR}/${REPO_NAME}/"
+  rsync --archive --progress "${REPO}" "${MIRROR}"
+  rsync --archive --exclude='memo_*' "${OUTPUT}/" "${MIRROR}/${REPO_NAME}/"
 done
