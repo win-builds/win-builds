@@ -18,7 +18,7 @@ if [ "${ARCH}" = "i486" ]; then
   BSDTAR_TGT="${PWD}/i486/bsdtar"
   SLASH="/home/adrien/t/sbchroot/slackware-current/"
 else
-  YYPKG_TGT_BINARIES="${YYPKG_SRC}"
+  YYPKG_TGT_BINARIES="${YYPKG_SRC}/src"
   BSDTAR_TGT="$(which bsdtar)"
   SLASH="/"
 fi
