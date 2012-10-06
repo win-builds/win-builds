@@ -71,8 +71,6 @@ INITDIR_FULL="${SYSTEM_COPY}/${INITDIR}" # absolute path; outside the chroot
 
 mkdir -p ${INITDIR_FULL}/pkgs
 
-trap umounts EXIT SIGINT ERR
-
 rsync --archive "${YYOS_OUTPUT}/" "${INITDIR_FULL}/pkgs/"
 
 copy_ld_so
@@ -81,6 +79,8 @@ for bin in "${YYPKG_TGT}" "${MAKEYPKG_TGT}" "${BSDTAR_TGT}"; do
   bin_basename="$(basename "${bin}")"
   cp "${bin}" "${SYSTEM_COPY}/sbin/${bin_basename%.native}"
 done
+
+trap umounts EXIT SIGINT ERR
 
 for dir in bin ${LIB} usr/${LIB}; do
   mount_bind "${FOO}${dir}" "${INITDIR_FULL}/host/${dir}"
