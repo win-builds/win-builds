@@ -70,6 +70,7 @@ rsync --archive "${YYOS_OUTPUT}/" "${INITDIR_FULL}/pkgs/"
 
 copy_ld_so
 
+mkdir -p "${SYSTEM_COPY}/sbin"
 for bin in "yypkg" "makeypkg" "sherpa" "sherpa_gen"; do
   cp "${YYPKG_TGT_BINARIES}/${bin}.native" "${SYSTEM_COPY}/sbin/${bin}"
 done
