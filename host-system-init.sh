@@ -69,9 +69,6 @@ copy_ld_so() {
 INITDIR="/tmp/yypkg_init" # temp directory
 INITDIR_FULL="${SYSTEM_COPY}/${INITDIR}" # absolute path; outside the chroot
 
-# Init yypkg's installation in /
-YYPREFIX="${SYSTEM_COPY}" "${YYPKG_HST}" -init
-
 mkdir -p ${INITDIR_FULL}/pkgs
 
 trap umounts EXIT SIGINT ERR
@@ -90,6 +87,8 @@ for dir in bin ${LIB} usr/${LIB}; do
 done
 
 populate_slash_dev
+
+YYPREFIX="/" chroot "${SYSTEM_COPY}" "/sbin/yypkg" "-init"
 
 # Install all packages
 find "${INITDIR_FULL}/pkgs" -maxdepth 1 -name '*.txz' -printf '%f\n' \
