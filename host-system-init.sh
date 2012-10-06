@@ -61,6 +61,14 @@ copy_ld_so() {
   fi
 }
 
+chroot_run() {
+  YYPREFIX="/" \
+    LANG="en_US.UTF-8" \
+    PATH="${INITDIR}/host/bin:${PATH}" \
+    LD_LIBRARY_PATH="${INITDIR}/host/${LIB}:${INITDIR}/host/usr/${LIB}" \
+  $*
+}
+
 INITDIR="/tmp/yypkg_init" # temp directory
 INITDIR_FULL="${SYSTEM_COPY}/${INITDIR}" # absolute path; outside the chroot
 
@@ -84,17 +92,12 @@ done
 
 populate_slash_dev
 
-YYPREFIX="/" chroot "${SYSTEM_COPY}" "/sbin/yypkg" "-init"
+chroot_run "${SYSTEM_COPY}" "/sbin/yypkg" "-init"
 
 # Install all packages
 find "${INITDIR_FULL}/pkgs" -maxdepth 1 -name '*.txz' -printf '%f\n' \
   | while read PKG; do
-    echo "Installing ${PKG}";
-    YYPREFIX="/" \
-      LANG="en_US.UTF-8" \
-      PATH="${INITDIR}/host/bin:${PATH}" \
-      LD_LIBRARY_PATH="${INITDIR}/host/${LIB}:${INITDIR}/host/usr/${LIB}" \
-      chroot "${SYSTEM_COPY}" "/sbin/yypkg" "-install" "${INITDIR}/pkgs/${PKG}" || true
+    chroot_run "${SYSTEM_COPY}" "/sbin/yypkg" "-install" "${INITDIR}/pkgs/${PKG}" || true
 done
 
 if [ -e "${SYSTEM_COPY}/usr/bin/ccache" ]; then
