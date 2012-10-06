@@ -138,13 +138,13 @@ if echo "${KIND}" | grep -q ${WINDOWS}; then
   queue_cond ${SLACK}/l/icu4c ""
   queue_cond ${SLACK}/d/gperf ""
   queue_cond ${SLACK}/l/libxslt ""
-  # queue_cond ${SBo}/webkit-gtk ""
   queue_cond ${SLACK}/l/gmp ""
   queue_cond ${SLACK}/l/mpfr ""
   queue_cond ${SLACK}/l/libmpc ""
   queue_cond mingw/mingw-w64 "full"
   queue_cond ${SLACK}/d/binutils ""
   queue_cond ${SLACK}/d/gcc "full"
+  # queue_cond ${SBo}/webkit-gtk ""
   # queue_cond ${SLACK}/xap/gucharmap "" # requires GTK+-3
   # queue_cond ${SLACK}/xap/geeqie "" # includes <pwd.h>
 
