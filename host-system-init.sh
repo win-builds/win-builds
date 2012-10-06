@@ -2,11 +2,8 @@
 
 set -eux
 
-echo ${ARCH} ${SYSTEM_COPY} ${SYSTEM} ${LIB} > /dev/null
-
-# When building the cross-compiler host system, a binary of yypkg is needed.
-YYPKG_SRC="/home/adrien/projects/yypkg/src"
-YYPKG_HST="${YYPKG_SRC}/yypkg.native"
+# Make sure these variables are defined
+echo ${ARCH} ${SYSTEM_COPY} ${SYSTEM} ${LIB} ${CWD} ${YYPKG_SRC} > /dev/null
 
 # When building the cross-compiler host system, the location of the slackware
 # binary packages
@@ -17,13 +14,11 @@ YYOS_OUTPUT="${CWD}/yy_of_slack/tmp/output-${ARCH}"
 BIND_MOUNTED_DIRS=""
 
 if [ "${ARCH}" = "i486" ]; then
-  YYPKG_TGT="${PWD}/i486/yypkg.native"
-  MAKEYPKG_TGT="${PWD}/i486/makeypkg.native"
+  YYPKG_TGT_BINARIES="${PWD}/i486"
   BSDTAR_TGT="${PWD}/i486/bsdtar"
   SLASH="/home/adrien/t/sbchroot/slackware-current/"
 else
-  YYPKG_TGT="${YYPKG_SRC}/yypkg.native"
-  MAKEYPKG_TGT="${YYPKG_SRC}/makeypkg.native"
+  YYPKG_TGT_BINARIES="${YYPKG_SRC}"
   BSDTAR_TGT="$(which bsdtar)"
   SLASH="/"
 fi
@@ -75,10 +70,10 @@ rsync --archive "${YYOS_OUTPUT}/" "${INITDIR_FULL}/pkgs/"
 
 copy_ld_so
 
-for bin in "${YYPKG_TGT}" "${MAKEYPKG_TGT}" "${BSDTAR_TGT}"; do
-  bin_basename="$(basename "${bin}")"
-  cp "${bin}" "${SYSTEM_COPY}/sbin/${bin_basename%.native}"
+for bin in "yypkg" "makeypkg" "sherpa" "sherpa_gen"; do
+  cp "${YYPKG_TGT_BINARIES}/${bin}.native" "${SYSTEM_COPY}/sbin/${bin}"
 done
+cp "${BSDTAR_TGT}" "${SYSTEM_COPY}/sbin/"
 
 trap umounts EXIT SIGINT ERR
 
