@@ -20,12 +20,12 @@ if [ "${ARCH}" = "i486" ]; then
   YYPKG_TGT="${PWD}/i486/yypkg.native"
   MAKEYPKG_TGT="${PWD}/i486/makeypkg.native"
   BSDTAR_TGT="${PWD}/i486/bsdtar"
-  FOO="/home/adrien/t/sbchroot/slackware-current/"
+  SLASH="/home/adrien/t/sbchroot/slackware-current/"
 else
   YYPKG_TGT="${YYPKG_SRC}/yypkg.native"
   MAKEYPKG_TGT="${YYPKG_SRC}/makeypkg.native"
   BSDTAR_TGT="$(which bsdtar)"
-  FOO="/"
+  SLASH="/"
 fi
 
 umounts() {
@@ -83,7 +83,7 @@ done
 trap umounts EXIT SIGINT ERR
 
 for dir in bin ${LIB} usr/${LIB}; do
-  mount_bind "${FOO}${dir}" "${INITDIR_FULL}/host/${dir}"
+  mount_bind "${SLASH}${dir}" "${INITDIR_FULL}/host/${dir}"
 done
 
 populate_slash_dev
