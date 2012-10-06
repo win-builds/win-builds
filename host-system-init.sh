@@ -97,7 +97,9 @@ find "${INITDIR_FULL}/pkgs" -maxdepth 1 -name '*.txz' -printf '%f\n' \
       chroot "${SYSTEM_COPY}" "/sbin/yypkg" "-install" "${INITDIR}/pkgs/${PKG}" || true
 done
 
-chroot "${SYSTEM_COPY}" "/usr/bin/ccache" "--max-size=2G"
+if [ -e "${SYSTEM_COPY}/usr/bin/ccache" ]; then
+  chroot "${SYSTEM_COPY}" "/usr/bin/ccache" "--max-size=2G"
+fi
 
 umounts
 
