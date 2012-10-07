@@ -13,11 +13,9 @@ BIND_MOUNTED_DIRS=""
 
 if [ "${ARCH}" = "i486" ]; then
   YYPKG_TGT_BINARIES="${PWD}/i486"
-  BSDTAR_TGT="${PWD}/i486/bsdtar"
   SLASH="/home/adrien/t/sbchroot/slackware-current/"
 else
   YYPKG_TGT_BINARIES="${YYPKG_SRC}/src"
-  BSDTAR_TGT="$(which bsdtar)"
   SLASH="/"
 fi
 
@@ -82,7 +80,6 @@ mkdir -p "${SYSTEM_COPY}/sbin"
 for bin in "yypkg" "makeypkg" "sherpa" "sherpa_gen"; do
   cp "${YYPKG_TGT_BINARIES}/${bin}.native" "${SYSTEM_COPY}/sbin/${bin}"
 done
-cp "${BSDTAR_TGT}" "${SYSTEM_COPY}/sbin/"
 
 trap umounts EXIT SIGINT ERR
 
