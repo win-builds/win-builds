@@ -62,11 +62,13 @@ copy_ld_so() {
 }
 
 chroot_run() {
+  DIR="${1}"
+  shift
   YYPREFIX="/" \
     LANG="en_US.UTF-8" \
     PATH="${INITDIR}/host/bin:${PATH}" \
     LD_LIBRARY_PATH="${INITDIR}/host/${LIB}:${INITDIR}/host/usr/${LIB}" \
-  $*
+  chroot "${DIR}" $*
 }
 
 INITDIR="/tmp/yypkg_init" # temp directory
