@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 
 LOCATION="${1}" # Work directory
 BD_CONFIG="${2:-"windows_32"}" # What to build?
