@@ -1,7 +1,5 @@
 #!/bin/false
 
-set -eux
-
 # Make sure these variables are defined
 echo ${ARCH} ${SYSTEM_COPY} ${SYSTEM} ${LIB} ${CWD} ${YYPKG_SRC} > /dev/null
 

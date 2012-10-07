@@ -1,4 +1,4 @@
-#!/bin/sh -eux
+#!/bin/sh -eu
 
 TRIPLET="${TRIPLET:-i686-w64-mingw32}"
 case "${TRIPLET}" in
