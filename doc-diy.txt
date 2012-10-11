@@ -1,0 +1,37 @@
+= Building yourself =
+
+== Scripts ==
+Run the following to get all the source files:
+------------------------------------------------------------------------
+NOTK="http://git.notk.org/adrien/yypkg"
+
+mkdir -p "yypkg" "yypkg_packages"
+
+git clone "http://git.ocamlcore.org/yypkg/yypkg.git" && cd yypkg && git checkout -b mingw origin/mingw
+git clone "${NOTK}/mingw-builds.git"
+git clone "${NOTK}/yy_of_slack.git"
+git clone "${NOTK}/slackware64-current.git"
+git clone "${NOTK}/mingw.git"
+git clone "${NOTK}/slackbuilds.org.git"
+------------------------------------------------------------------------
+
+== Building the host system ==
+This requires a slackware64 14.0 system currently. You also need a
+mirror of the sources.
+------------------------------------------------------------------------
+MIRROR="${PWD}/mirror/slackware64-current" \
+  ARCH=x86_64 \
+  ./yy_of_slack/yy_of_slack.sh
+------------------------------------------------------------------------
+
+== Downloading source tarballs ==
+You need to copy the same source files and patches as those in
+slackware64 14.0 except for gnutls which has to be version 3.1.2. All
+these files go in slackware64-current/ and follow the same hierarchy as
+in slackware64 sources.
+
+The mingw/ and slackbuilds.org/ directory also need sources.
+
+This is not terribly practical and a simpler solution is being worked on
+but won't be available before a few weeks.
+

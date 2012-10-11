@@ -111,4 +111,8 @@ for bin in cc c++ {${ARCH}-slackware-linux-,}{gcc,g++}; do
   ln -s "/usr/bin/ccache" "${SYSTEM_COPY}/usr/local/bin/${bin}"
 done
 
+cp "${CWD}/get-prebuilt-binaries-i686.sh" "${SYSTEM_COPY}/root"
+
+echo 'nameserver 208.67.222.222' > /etc/resolv.conf
+
 cp -r --preserve="mode,timestamps" "${SYSTEM_COPY}" "${SYSTEM}"
