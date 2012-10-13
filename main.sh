@@ -14,13 +14,11 @@ SOURCE_PATH="$(cd "$(dirname "${0}")" && pwd)"
 mkdir -p "${LOCATION}"
 LOCATION="$(cd "${LOCATION}" && pwd)"
 
-YYPKG_SRC="$(cd "${SOURCE_PATH}/../yypkg/" && pwd)"
+SYSTEM="${LOCATION}/system"
 
 # The script mounts several filesystems; these variables keep track of what is
 # mounted in order to always umount everything on exit
 SPECIAL_FILESYSTEMS=""
-
-SYSTEM="${LOCATION}/system"
 
 if [ "${ARCH}" = "i486" ]; then
   LIB="lib"
@@ -46,6 +44,8 @@ umounts() {
 
 # Build the cross-compiler host system if ${SYSTEM} doesn't exist
 if [ ! -e "${SYSTEM}" ]; then
+  YYPKG_SRC="$(cd "${SOURCE_PATH}/../yypkg/" && pwd)"
+
   ARCH="${ARCH}" LIB="${LIB}" CWD="${CWD}" YYPKG_SRC="${YYPKG_SRC}" \
   SYSTEM="${SYSTEM}" SOURCE_PATH="${SOURCE_PATH}" \
   sh ${SOURCE_PATH}/host-system-init.sh
