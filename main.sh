@@ -20,7 +20,6 @@ YYPKG_SRC="$(cd "${SOURCE_PATH}/../yypkg/" && pwd)"
 # mounted in order to always umount everything on exit
 SPECIAL_FILESYSTEMS=""
 
-SYSTEM_COPY="${LOCATION}/system_copy"
 SYSTEM="${LOCATION}/system"
 
 if [ "${ARCH}" = "i486" ]; then
@@ -48,7 +47,7 @@ umounts() {
 # Build the cross-compiler host system if ${SYSTEM} doesn't exist
 if [ ! -e "${SYSTEM}" ]; then
   ARCH="${ARCH}" LIB="${LIB}" CWD="${CWD}" YYPKG_SRC="${YYPKG_SRC}" \
-  SYSTEM="${SYSTEM}" SYSTEM_COPY="${SYSTEM_COPY}" \
+  SYSTEM="${SYSTEM}" \
   sh ${SOURCE_PATH}/host-system-init.sh
 else
   trap umounts EXIT SIGINT ERR
