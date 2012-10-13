@@ -14,11 +14,11 @@ BIND_MOUNTED_DIRS=""
 if [ "${ARCH}" = "i486" ]; then
   YYPKG_TGT_BINARIES="${PWD}/i486"
   BSDTAR_TGT="${PWD}/i486/bsdtar"
-  SLASH="/home/adrien/t/sbchroot/slackware-current/"
+  ROOT_FS="/home/adrien/t/sbchroot/slackware-current/"
 else
   YYPKG_TGT_BINARIES="${YYPKG_SRC}/src"
   BSDTAR_TGT="$(which bsdtar)"
-  SLASH="/"
+  ROOT_FS="/"
 fi
 
 umounts() {
@@ -87,7 +87,7 @@ cp "${BSDTAR_TGT}" "${SYSTEM}/sbin/"
 trap umounts EXIT SIGINT ERR
 
 for dir in bin ${LIB} usr/${LIB}; do
-  mount_bind "${SLASH}${dir}" "${INITDIR_FULL}/host/${dir}"
+  mount_bind "${ROOT_FS}${dir}" "${INITDIR_FULL}/host/${dir}"
 done
 
 populate_slash_dev
