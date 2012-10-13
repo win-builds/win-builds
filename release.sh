@@ -10,9 +10,9 @@ SHERPA_GEN="${CWD}/yypkg/src/sherpa_gen.native"
 
 mkdir -p "${LOCATION}/repositories"
 
-repos="$(find "${LOCATION}/packages" -mindepth 1 -maxdepth 1 -type d)"
+rsync --progress "${LOCATION}/system.tar.xz" "${MIRROR}"
 
-for REPO in ${repos}; do
+for REPO in $(find "${LOCATION}/packages" -mindepth 1 -maxdepth 1 -type d); do
   echo "Setting up ${REPO}"
   REPO_NAME="$(basename "${REPO}")"
   OUTPUT="${LOCATION}/repositories/${REPO_NAME}"

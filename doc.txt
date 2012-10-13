@@ -39,7 +39,7 @@ cross-compilation to i686-w64-mingw32.
 
 First, download the base system:
 ------------------------------------------------------------------------
-wget http://notk.org/~adrien/yypkg/latest/system.tar.xz
+wget http://notk.org/~adrien/yypkg/latest/packages/system.tar.xz
 ------------------------------------------------------------------------
 
 Extract it somewhere (here in "rc2_32/"):
