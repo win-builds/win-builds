@@ -6,9 +6,9 @@ is supported by the yypkg package manager. Both of them will become
 official tools and repositories for the mingw-w64 project.
 
 * targets windows 32bit, 64 bit soon
+* works on both windows and linux
 * GTK+, EFLs, curl, libsoup, ...
 * binary packages
-* used the same from windows or linux
 * build scripts available for everything
 
 == Support and coverage ==
@@ -62,7 +62,7 @@ sudo ./mingw-builds/main.sh rc2_32
 The first time you get into the sytem, download and setup the
 cross-toolchain and all the cross-compiled tools and libraries:
 ------------------------------------------------------------------------
-/root/get-prebuilt-binaries-i686.sh
+/root/get-all-prebuilt-binaries-i686.sh
 ------------------------------------------------------------------------
 
 // === Yypkg cheatsheet ===
