@@ -118,4 +118,6 @@ cp "${SOURCE_PATH}/get-all-prebuilt-binaries-i686.sh" "${SYSTEM}/root"
 echo 'nameserver 208.67.222.222' > "${SYSTEM}/etc/resolv.conf"
 
 SYSTEM_TAR_XZ="$(echo "${SYSTEM}" | sed 's;/$;;').tar.xz"
-tar c "${SYSTEM}" | xz -9vv > "${SYSTEM_TAR_XZ}"
+tar c -C "$(dirname "${SYSTEM}")" "$(basename "${SYSTEM}")" \
+  | xz -9vv > "${SYSTEM_TAR_XZ}"
+
