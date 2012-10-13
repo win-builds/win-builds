@@ -47,7 +47,7 @@ umounts() {
 # Build the cross-compiler host system if ${SYSTEM} doesn't exist
 if [ ! -e "${SYSTEM}" ]; then
   ARCH="${ARCH}" LIB="${LIB}" CWD="${CWD}" YYPKG_SRC="${YYPKG_SRC}" \
-  SYSTEM="${SYSTEM}" \
+  SYSTEM="${SYSTEM}" SOURCE_PATH="${SOURCE_PATH}" \
   sh ${SOURCE_PATH}/host-system-init.sh
 else
   trap umounts EXIT SIGINT ERR

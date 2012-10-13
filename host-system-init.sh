@@ -1,7 +1,7 @@
 #!/bin/false
 
 # Make sure these variables are defined
-echo ${ARCH} ${SYSTEM} ${LIB} ${CWD} ${YYPKG_SRC} > /dev/null
+echo ${ARCH} ${SYSTEM} ${SOURCE_PATH} ${LIB} ${CWD} ${YYPKG_SRC} > /dev/null
 
 # When building the cross-compiler host system, the location of the slackware
 # binary packages
@@ -114,7 +114,7 @@ for bin in cc c++ {${ARCH}-slackware-linux-,}{gcc,g++}; do
   ln -s "/usr/bin/ccache" "${SYSTEM}/usr/local/bin/${bin}"
 done
 
-cp "${CWD}/get-all-prebuilt-binaries-i686.sh" "${SYSTEM}/root"
+cp "${SOURCE_PATH}/get-all-prebuilt-binaries-i686.sh" "${SYSTEM}/root"
 echo 'nameserver 208.67.222.222' > /etc/resolv.conf
 
 SYSTEM_TAR_XZ="$(echo "${SYSTEM}" | sed 's;/$;;')"
