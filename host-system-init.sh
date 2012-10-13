@@ -37,25 +37,25 @@ mount_bind() {
 }
 
 populate_slash_dev() {
-  mkdir ${SYSTEM}/dev
-  mkdir ${SYSTEM}/dev/pts
-  mknod ${SYSTEM}/dev/console c 5 1
-  mknod ${SYSTEM}/dev/null c 1 3
-  mknod ${SYSTEM}/dev/zero c 1 5
-  chmod 666 ${SYSTEM}/dev/null ${SYSTEM}/dev/zero
+  mkdir "${SYSTEM}/dev"
+  mkdir "${SYSTEM}/dev/pts"
+  mknod "${SYSTEM}/dev/console" c 5 1
+  mknod "${SYSTEM}/dev/null" c 1 3
+  mknod "${SYSTEM}/dev/zero" c 1 5
+  chmod 666 "${SYSTEM}/dev/null" "${SYSTEM}/dev/zero"
 }
 
 # copy_ld_so: install the base libc files inside the chroot
 copy_ld_so() {
   ARCHIVE="$(find "${YYOS_OUTPUT}" -maxdepth 1 -name "glibc-2.*.txz" -printf '%f\n')"
-  VER="$(echo "${ARCHIVE}" |sed -e 's/^glibc-\(2\.[0-9]\+\).*/\1/')"
+  VER="$(echo "${ARCHIVE}" | sed -e 's/^glibc-\(2\.[0-9]\+\).*/\1/')"
   mkdir -p "${SYSTEM}/${LIB}"
   bsdtar xf "${YYOS_OUTPUT}/${ARCHIVE}" -q -C ${SYSTEM}/${LIB} \
     --strip-components=3 "package-glibc/${LIB}/incoming/ld-${VER}.so"
   if [ ${ARCH} = "x86_64" ]; then
-    ln -s ld-${VER}.so ${SYSTEM}/${LIB}/ld-linux-x86-64.so.2
+    ln -s "ld-${VER}.so" "${SYSTEM}/${LIB}/ld-linux-x86-64.so.2"
   else
-    ln -s ld-${VER}.so ${SYSTEM}/${LIB}/ld-linux.so.2
+    ln -s "ld-${VER}.so" "${SYSTEM}/${LIB}/ld-linux.so.2"
   fi
 }
 
@@ -72,7 +72,7 @@ chroot_run() {
 INITDIR="/tmp/yypkg_init" # temp directory
 INITDIR_FULL="${SYSTEM}/${INITDIR}" # absolute path; outside the chroot
 
-mkdir -p ${INITDIR_FULL}/pkgs
+mkdir -p "${INITDIR_FULL}/pkgs"
 
 rsync --archive "${YYOS_OUTPUT}/" "${INITDIR_FULL}/pkgs/"
 
@@ -86,7 +86,7 @@ cp "${BSDTAR_TGT}" "${SYSTEM}/sbin/"
 
 trap umounts EXIT SIGINT ERR
 
-for dir in bin ${LIB} usr/${LIB}; do
+for dir in "bin" "${LIB}" "usr/${LIB}"; do
   mount_bind "${ROOT_FS}${dir}" "${INITDIR_FULL}/host/${dir}"
 done
 
