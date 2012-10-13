@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -eu
 
 for d in cross_toolchain_32 windows_32; do
   yypkg -prefix /opt/${d} -init
