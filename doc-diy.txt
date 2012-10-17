@@ -7,7 +7,7 @@ NOTK="http://git.notk.org/adrien/yypkg"
 
 mkdir -p "yypkg" "yypkg_packages"
 
-git clone "http://git.ocamlcore.org/yypkg/yypkg.git" && cd yypkg && git checkout -b mingw origin/mingw
+git clone "http://git.ocamlcore.org/yypkg/yypkg.git"
 git clone "${NOTK}/mingw-builds.git"
 git clone "${NOTK}/yy_of_slack.git"
 git clone "${NOTK}/slackware64-current.git"
