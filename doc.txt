@@ -24,8 +24,8 @@ is available.
 === Windows files ===
 
 There are currently 42 non-toolchain packages with many more planned.
-There are enough packages to build GTK+ and EFL applications, GCC itself
-and several network components; webkit-gtk support is close too.
+There are enough packages to build GTK+ and EFL applications, several
+network components and GCC itself; webkit-gtk support is close.
 
 The link:packages/windows_32/package_list.html[detailed list] is
 available.
@@ -117,15 +117,29 @@ perfect nor complete.
 [grid="rows"]
 [options="header"]
 |=======================================================================
-|Project    |OS portability       |Compiler portability            |Package manager         |Number of packages    |QA
-|yypkg      |POSIX and windows    |GCC, mingw-w64; MSVC planned    |Yes                     |Around 50, increasing |Yes
-|coApp      |Windows              |MSVC                            |State unknown           |Unknown               |unknown
-|MXE        |Cross-only           |GCC, mingw.org, 32bit           |No                      |Quite high            |Unknown
-|mingw-get  |Windows              |GCC, mingw.org (and mingw-w64?) |No (definitely not)     |High                  |No
-|opensuse's |OpenSuse             |GCC, mingw-w64                  |Yes                     |High (~200)           |Yes
+|Project                                                                   |OS portability       |Compiler portability            |Package manager         |Number of packages    |QA
+|yypkg                                                                     |POSIX and windows    |GCC, mingw-w64; MSVC planned    |Yes                     |Around 50, increasing |Yes
+|link:http://coapp.org[coApp]                                              |Windows              |MSVC                            |State unknown           |Unknown               |unknown
+|link:http://mxe.cc[MXE]                                                   |Cross-only           |GCC, mingw.org, 32bit           |No                      |Quite high            |Unknown
+|mingw-get                                                                 |Windows              |GCC, mingw.org (and mingw-w64?) |No (definitely not)     |High                  |No
+|link:http://download.opensuse.org/repositories/windows:/mingw[opensuse's] |OpenSuse             |GCC, mingw-w64                  |Yes                     |High (~200)           |Yes
 |========================================================================
 
-A note about mingw-get: it is not a package manager but merely a wrapper
-around wget and tar xf which can only install but not uninstall nor
-upgrade.
+mingw-get is not a package manager but merely a wrapper around wget and
+tar xf: it can install packages but cannot uninstall or upgrade them.
 
+== Roadmap and history ==
+=== Roadmap ===
+* 1.2, beginning of November 2012: stable i686-w64-mingw32 native
+  compiler, Qt 4.8 binaries
+* 1.3, November 2012: OCaml cross-compiler
+* 1.4, January 2013: VLC and corresponding codec libraries
+* 2.0, early 2013: x86_64-w64-mingw32 support
+
+=== History ===
+* 1.1 RC1, released 09/10/2012: experimental i686-w64-mingw32 native
+  compiler, around 50 packages (GTK+, EFL, curl, ...), uses yypkg 1.6
+  and sherpa frontend.
+* 1.0 RC1, released 06/08/2012: initial public-ready release,
+  i686-w64-mingw32 cross-compiler from linux 64, around 40 packages,
+  uses yypkg 1.5.
