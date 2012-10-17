@@ -11,6 +11,8 @@ CWD="$(pwd)"
 
 SOURCE_PATH="$(cd "$(dirname "${0}")" && pwd)"
 
+umask 022
+
 mkdir -p "${LOCATION}"
 LOCATION="$(cd "${LOCATION}" && pwd)"
 
