@@ -145,6 +145,9 @@ if echo "${KIND}" | grep -q ${WINDOWS}; then
   queue_cond ${SLACK}/d/binutils ""
   queue_cond ${SLACK}/d/gcc "full"
   queue_cond ${SLACK}/n/openssl ""
+  queue_cond ${SLACK}/l/libogg ""
+  queue_cond ${SLACK}/l/libvorbis ""
+  queue_cond ${SLACK}/l/libtheora ""
   # queue_cond ${SBo}/webkit-gtk ""
   # queue_cond ${SLACK}/xap/gucharmap "" # requires GTK+-3
   # queue_cond ${SLACK}/xap/geeqie "" # includes <pwd.h>
