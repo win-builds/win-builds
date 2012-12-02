@@ -1,5 +1,7 @@
 #!/bin/false
 
+set -eu
+
 # Make sure these variables are defined
 echo ${ARCH} ${SYSTEM} ${SOURCE_PATH} ${LIB} ${CWD} ${YYPKG_SRC} > /dev/null
 
