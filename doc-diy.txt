@@ -15,6 +15,10 @@ git clone "${NOTK}/mingw.git"
 git clone "${NOTK}/slackbuilds.org.git"
 ------------------------------------------------------------------------
 
+Note that this will fail with git 1.7.2 because of a bug that has been
+fixed in git 1.8.0 (see commit "http: fix segfault in
+handle_curl_result", 188923f0d1c8148415b3173986cd1e21871c947e).
+
 == Building the host system ==
 This requires a slackware64 14.0 system currently. You also need a
 mirror of the sources.
@@ -33,5 +37,13 @@ in slackware64 sources.
 The mingw/ and slackbuilds.org/ directory also need sources.
 
 This is not terribly practical and a simpler solution is being worked on
-but won't be available before a few weeks.
+but won't be available before a few weeks. In the meantime, the
+following can help copy sources:
+------------------------------------------------------------------------
+(cd slackware64-current && find . -mindepth 2 -type d -name .git -prune
+-o -type f -name '*.yypkg.meta' -printf '%h\n') | while read dir; do
+rsync --verbose --ignore-existing -r
+mirror/slackware64-current/source/${dir}/ slackware64-current/${dir}/;
+done
+------------------------------------------------------------------------
 
