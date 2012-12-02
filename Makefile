@@ -2,7 +2,7 @@ all:
 	@echo "Nothing to build besides the doc."
 	true
 
-DOCS:=doc
+DOCS:=doc doc-diy
 DOCS_TXT:=$(DOCS:%=%.txt)
 DOCS_HTML:=$(DOCS:%=%.html)
 
@@ -12,4 +12,4 @@ DOCS_HTML:=$(DOCS:%=%.html)
 doc: $(DOCS_HTML) package-list.txt
 
 doc-upload: doc
-	rsync $(DOCS_HTML) $(DOCS_TXT) docbook-xsl.css notk.org:public_html/yypkg/
+	rsync $(DOCS_HTML) $(DOCS_TXT) docbook-xsl.css notk.org:public_html/yypkg/latest
