@@ -91,6 +91,8 @@ fi
 SBo="slackbuilds.org"
 SLACK="slackware64-current"
 
+enable_ccache
+
 if echo "${KIND}" | grep -q ${CROSS_TOOLCHAIN}; then
   start_build_daemon "${CROSS_TOOLCHAIN}"
   queue_cond ${SLACK}/d/binutils ""
@@ -98,7 +100,6 @@ if echo "${KIND}" | grep -q ${CROSS_TOOLCHAIN}; then
   queue_cond ${SLACK}/d/gcc "core"
   queue_cond mingw/mingw-w64 "full"
   queue_cond ${SLACK}/d/gcc "full"
-  enable_ccache
   exit_build_daemon
   wait
 fi
