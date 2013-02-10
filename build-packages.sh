@@ -6,10 +6,11 @@ case "${TRIPLET}" in
   x86_64-w64-mingw*) BITS="64";;
 esac
 
+NATIVE_TOOLCHAIN="native_toolchain"
 CROSS_TOOLCHAIN="cross_toolchain_${BITS}"
 WINDOWS="windows_${BITS}"
 
-DEFAULT_KIND="init-${CROSS_TOOLCHAIN}-${WINDOWS}"
+DEFAULT_KIND="init-${NATIVE_TOOLCHAIN}-${CROSS_TOOLCHAIN}-${WINDOWS}"
 
 LOCATION="${1}"
 KIND="${2:-"${DEFAULT_KIND}"}"
@@ -92,6 +93,13 @@ SBo="slackbuilds.org"
 SLACK="slackware64-current"
 
 enable_ccache
+
+if echo "${KIND}" | grep -q ${NATIVE_TOOLCHAIN}; then
+  start_build_daemon "${NATIVE_TOOLCHAIN}"
+  queue_cond ${SBo}/ocaml ""
+  exit_build_daemon
+  wait
+fi
 
 if echo "${KIND}" | grep -q ${CROSS_TOOLCHAIN}; then
   start_build_daemon "${CROSS_TOOLCHAIN}"
