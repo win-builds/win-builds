@@ -2,7 +2,7 @@ all:
 	@echo "Nothing to build besides the doc."
 	true
 
-DOCS:=doc doc-diy
+DOCS:=doc doc-diy doc-packaging
 DOCS_TXT:=$(DOCS:%=%.txt)
 DOCS_HTML:=$(DOCS:%=%.html)
 

@@ -1,0 +1,69 @@
+= Packaging =
+
+== Import a package script from slackware or slackbuilds.org ==
+
+=== Environment ===
+Build the existing packages. This will ensure you have everything needed
+in a working state; documentation for this is on
+link:doc-diy.html[doc-diy].
+
+=== Import the build script ===
+Currently you have to ask me to make the slackware or slackbuilds.org
+file appear in the mingw-builds tree.
+
+=== Port the build script (mostly search-replace) ===
+* Replace all occurences of 'usr' wit '$\{PREFIX\}' (verbatim, don't
+  expand the variable)
+
+* Replace the block of code that sets SLKCFLAGS and LIBDIRSUFFIX with:
++
+------------------------------------------------------------------------
+case "${HOST_TRIPLET}" in
+  i686-w64-mingw32) LIBDIRSUFFIX="" ;;
+  x86_64-w64-mingw32) LIBDIRSUFFIX="64" ;;
+esac
+------------------------------------------------------------------------
+
+* Replace occurences of '$SLKCFLAGS' with '-O2'
+* Add '--host=$\{HOST_TRIPLET\}' to the configure invocation.
+
+* Replace 'grep ELF' with 'grep $\{HOST_EXE_FORMAT\}'
+* Replace 'xargs strip' with 'xargs $\{HOST_STRIP\}'
+
+* Add a .yypkg.meta file to the package directory; most usually you'll
+  only have to 'cp' another one (like libogg's libogg.yypkg.meta); don't
+  forget to give it a proper name.
+* Replace the 'makepkg' call with a makeypkg one:
++
+------------------------------------------------------------------------
+cat ${CWD}/${PKGNAM}.yypkg.meta | sed \
+  -e "s/%{PKG}/${PKGNAM}/" \
+  -e "s/%{HST}/${HOST_TRIPLET}/" \
+  -e "s/%{TGT}//" \
+  -e "s/%{VER}/$(echo ${VERSION} | tr . ' ')/" \
+  -e "s/%{BUILD}/${BUILD}/" \
+  -e "s/%{DESCR}/${DESCR:-"No description"}/" \
+  | makeypkg -o ${YYOUTPUT} -meta - "${PKG}/${PREFIX}"
+------------------------------------------------------------------------
++
+Some packages don't set the 'PKGNAM' variable but instead hardcode the
+package name throughout the script; in that case, use the package name
+instead '$\{PKGNAM\}'.
+
+* If there are many source files, replace the 'find + chmod'
+  commands which are used to reset file permissions to sane default with
+  'chmod -R u+w,go+r-w,a-s .'.
+
+=== List your package ===
+Edit mingw-builds/build-packages.sh and add your package to the
+appropriate list; you need to put your package after all the other
+packages it depends on.
+
+=== Test your package ===
+You can now build your package like any other package. See the
+link:doc-diy.html#Start-the-build[documentation on building packages]
+for a howto.
+
+
+== Create a new package ==
+TBD
