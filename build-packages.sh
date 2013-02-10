@@ -80,7 +80,7 @@ start_build_daemon() {
 
 enable_ccache() {
   for bin in ${TRIPLET}-{gcc,g++}; do
-    ln -s "/usr/bin/ccache" "${LOCATION}/system/usr/local/bin/${bin}"
+    ln -sf "/usr/bin/ccache" "${LOCATION}/system/usr/local/bin/${bin}"
   done
 }
 
