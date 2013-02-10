@@ -47,3 +47,40 @@ mirror/slackware64-current/source/${dir}/ slackware64-current/${dir}/;
 done
 ------------------------------------------------------------------------
 
+== Start the build ==
+
+=== Building everything ===
+As root, run:
+------------------------------------------------------------------------
+./mingw-builds/build-packages.sh rc2_32
+------------------------------------------------------------------------
+
+You can change the directory where files will be put; here it is
+"rc2_32".
+
+=== Building only a series ===
+It is possible to only build one category out of: init,
+native_toolchain, cross_toolchain_32/cross_toolchain_64,
+windows_32/windows_64.
+
+* init is required; it sets up the build environment
+* native_toolchain adds new native tools on the build system that
+  slackware doesn't have; for instance, it installs ocaml because
+  building the ocaml cross-compiler requires an ocaml native compiler
+* cross_toolchain_* build the cross-toolchain
+* windows_* cross-compiles the binaries that will run on windows (this
+  include the GCC native compiler)
+
+An example invocation is:
+------------------------------------------------------------------------
+./mingw-builds/build-packages.sh rc2_32 windows_32
+------------------------------------------------------------------------
+
+=== Building only one package ===
+You can further refine what will be built by appending the package name
+after the series.
+
+An example invocation is:
+------------------------------------------------------------------------
+./mingw-builds/build-packages.sh rc2_32 windows_32 libjpeg
+------------------------------------------------------------------------
