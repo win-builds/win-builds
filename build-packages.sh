@@ -109,6 +109,7 @@ if echo "${KIND}" | grep -q ${CROSS_TOOLCHAIN}; then
   queue_cond mingw/mingw-w64 "full"
   queue_cond ${SLACK}/d/gcc "full"
   queue_cond mingw/flexdll ""
+  queue_cond ${SBo}/ocaml ""
   exit_build_daemon
   wait
 fi
