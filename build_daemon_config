@@ -42,11 +42,17 @@ case "${CONFIG}" in
     ;;
 esac
 
-export PATH="/usr/local/bin:$(echo "${PATH}" | sed -e 's;/usr/local/bin:;;g')"
+if [ x"${CONFIG}" = x"native" ]; then
+  export TARGET_TRIPLET="${BUILD_TRIPLET}"
+  export TARGET_STRIP="strip"
+  export TARGET_EXE_FORMAT="ELF"
+else
+  export TARGET_TRIPLET="${MINGW_W64_TRIPLET}"
+  export TARGET_STRIP="${TARGET_TRIPLET}-strip"
+  export TARGET_EXE_FORMAT="PE"
+fi
 
-export TARGET_TRIPLET="${MINGW_W64_TRIPLET}"
-export TARGET_STRIP="${TARGET_TRIPLET}-strip"
-export TARGET_EXE_FORMAT="PE"
+export PATH="/usr/local/bin:$(echo "${PATH}" | sed -e 's;/usr/local/bin:;;g')"
 
 export LOGS="${CWD}/logs/${CONFIG}"
 export YYOUTPUT="${CWD}/packages/${CONFIG}"
