@@ -48,4 +48,5 @@ export TARGET_TRIPLET="${MINGW_W64_TRIPLET}"
 export TARGET_STRIP="${TARGET_TRIPLET}-strip"
 export TARGET_EXE_FORMAT="PE"
 
+export LOGS="${CWD}/logs/${CONFIG}"
 export YYOUTPUT="${CWD}/packages/${CONFIG}"

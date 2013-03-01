@@ -21,7 +21,7 @@ if [ ! -e ${YYPREFIX} ]; then
   yypkg -init
 fi
 
-mkdir -p ${YYOUTPUT} ${CWD}/logs ${CWD}/processing
+mkdir -p ${YYOUTPUT} ${LOGS} ${CWD}/processing
 
 # iter: wrap the creation and installation of exactly one package from a
 # slackbuild
@@ -38,7 +38,7 @@ iter() {
     set -o pipefail
     time ( /bin/bash -x ${PWD}/$1.SlackBuild 3>&1 1>&2 2>&3 ) | tee /dev/tty
     set +o pipefail
-  ) > ${CWD}/logs/$1 2>&1
+  ) > ${LOGS}/$1 2>&1
   find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
     > ${YYOUTPUT}/files_post
   comm -13 ${YYOUTPUT}/files_{pre,post} | awk '{ print $2; }' | xargs -n 1 -x yypkg -upgrade -install-new
