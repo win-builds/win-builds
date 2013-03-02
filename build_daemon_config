@@ -39,6 +39,7 @@ case "${CONFIG}" in
     export YYPREFIX="${YYPREFIX_TARGET_PREFIX}"
     export PATH="/${YYPREFIX_CROSS_TOOLCHAIN}/bin:/${YYPREFIX_NATIVE_TOOLCHAIN}/bin:${PATH}"
     export PKG_CONFIG_LIBDIR="${YYPREFIX}/lib/pkgconfig"
+    export -n PKG_CONFIG_PATH
     ;;
 esac
 
