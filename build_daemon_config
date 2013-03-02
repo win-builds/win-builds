@@ -42,7 +42,7 @@ case "${CONFIG}" in
     ;;
 esac
 
-if [ x"${CONFIG}" = x"native" ]; then
+if [ x"${CONFIG}" = x"native_toolchain" ]; then
   export TARGET_TRIPLET="${BUILD_TRIPLET}"
   export TARGET_STRIP="strip"
   export TARGET_EXE_FORMAT="ELF"
