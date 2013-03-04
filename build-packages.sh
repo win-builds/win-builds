@@ -36,10 +36,10 @@ LOCATION="$(cd "${LOCATION}" && pwd)"
 YYPKG_PACKAGES="${LOCATION}/system/root/yypkg_packages"
 
 queue() {
-  PKG_PATH="${1}"
-  VARIANT="${2}"
+  local PKG_PATH="${1}"
+  local VARIANT="${2}"
 
-  PKG="$(basename "${PKG_PATH}")"
+  local PKG="$(basename "${PKG_PATH}")"
 
   echo "Sending ${PKG}${VARIANT}."
 
@@ -54,14 +54,14 @@ queue() {
 }
 
 queue_cond() {
-  PKG_PATH="${1}"
+  local PKG_PATH="${1}"
   if [ -n "${2}" ]; then
-    VARIANT="-${2}"
+    local VARIANT="-${2}"
   else
-    VARIANT=""
+    local VARIANT=""
   fi
 
-  PKG="$(basename "${PKG_PATH}")"
+  local PKG="$(basename "${PKG_PATH}")"
 
   if [ -z "${PKG_LIST}" ] || echo ${PKG_LIST} | grep -q "${PKG}${VARIANT}"; then
     queue "${PKG_PATH}" "${VARIANT}"
@@ -97,6 +97,7 @@ enable_ccache
 if echo "${KIND}" | grep -q ${NATIVE_TOOLCHAIN}; then
   start_build_daemon "${NATIVE_TOOLCHAIN}"
   queue_cond ${SBo}/ocaml ""
+  queue_cond ${SBo}/ocaml-findlib ""
   exit_build_daemon
   wait
 fi
