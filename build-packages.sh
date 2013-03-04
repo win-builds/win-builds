@@ -162,6 +162,8 @@ if echo "${KIND}" | grep -q ${WINDOWS}; then
   queue_cond ${SLACK}/l/libvorbis ""
   queue_cond ${SLACK}/l/libtheora ""
   queue_cond ${SLACK}/d/pkg-config ""
+  queue_cond ${SLACK}/l/libarchive ""
+  queue_cond ${SLACK}/n/wget ""
   # queue_cond ${SLACK}/l/sdl "base"
   # queue_cond ${SLACK}/l/sdl "others"
   # queue_cond ${SBo}/webkit-gtk ""
