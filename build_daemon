@@ -29,6 +29,7 @@ mkdir -p ${YYOUTPUT} ${LOGS} ${CWD}/processing
 # but only its stderr is printed on screen and then installs the package.
 # $1: package to build
 iter() {
+  local PKG="${1}"
   find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
     > ${YYOUTPUT}/files_pre
   (
@@ -36,9 +37,9 @@ iter() {
     export DESCR="$(description_of_slack_desc)"
     if [ -e config ]; then source config; fi
     set -o pipefail
-    time ( /bin/bash -x ${PWD}/$1.SlackBuild 3>&1 1>&2 2>&3 ) | tee /dev/tty
+    time ( /bin/bash -x ${PWD}/${PKG}.SlackBuild 3>&1 1>&2 2>&3 ) | tee /dev/tty
     set +o pipefail
-  ) > ${LOGS}/$1 2>&1
+  ) > ${LOGS}/${PKG} 2>&1
   find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
     > ${YYOUTPUT}/files_post
   comm -13 ${YYOUTPUT}/files_{pre,post} | awk '{ print $2; }' | xargs -n 1 -x yypkg -upgrade -install-new
