@@ -125,12 +125,12 @@ i686-w64-mingw32-gcc -o gtk_hello_world.exe gtk_hello_world.c $(pkg-config --cfl
 Building everything yourself is not difficult nor time-consuming: a full
 build is very easy to setup and takes a couple hours on an old machine
 and one hour on a quad-core from 2 to 3 years ago. The documentation is
-available on a separate page link:doc-diy.html[doc-diy].
+available on a separate page link:diy.html[doc-diy].
 
 === Advanced usage: Package yourself ===
 It is fairly easy to create new packages. The usual way is to port
 Slackware build scripts to yypkg and mingw. Please refer to the
-link:doc-packaging.html[packager documentation].
+link:packaging.html[packager documentation].
 
 == Comparison with other systems ==
 Work on yypkg and the build scripts along with the infrastructure has

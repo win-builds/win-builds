@@ -1,6 +1,6 @@
 HOST:="notk.org:/var/www/yypkg.org/rc3_32"
 
-DOCS:=doc doc-diy doc-packaging
+DOCS:=index diy packaging
 DOCS_TXT:=$(DOCS:%=%.txt)
 DOCS_HTML:=$(DOCS:%=%.html)
 
