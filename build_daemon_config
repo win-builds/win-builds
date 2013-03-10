@@ -37,7 +37,11 @@ case "${CONFIG}" in
     export HOST_STRIP="${HOST_TRIPLET}-strip"
     export HOST_EXE_FORMAT="PE"
     export YYPREFIX="${YYPREFIX_TARGET_PREFIX}"
-    export PATH="/${YYPREFIX_CROSS_TOOLCHAIN}/bin:/${YYPREFIX_NATIVE_TOOLCHAIN}/bin:${PATH}"
+    # ${YYPREFIX_TARGET_PREFIX}/bin has to be in $PATH because otherwise
+    # libtool won't find libraries without being given an additional -L switch.
+    # Setting it by hand everywhere would be too much work and would actually be
+    # ugly hardcoding so put the directory in $PATH even if that's a bit ugly.
+    export PATH="${YYPREFIX_CROSS_TOOLCHAIN}/bin:${YYPREFIX_NATIVE_TOOLCHAIN}/bin:${PATH}:${YYPREFIX_TARGET_PREFIX}/bin"
     export PKG_CONFIG_LIBDIR="${YYPREFIX}/lib/pkgconfig"
     export -n PKG_CONFIG_PATH
     ;;
@@ -53,6 +57,7 @@ else
   export TARGET_EXE_FORMAT="PE"
 fi
 
+# Symlinks for ccache are in /usr/local/bin so prepend this directory.
 export PATH="/usr/local/bin:$(echo "${PATH}" | sed -e 's;/usr/local/bin:;;g')"
 
 export LOGS="${CWD}/logs/${CONFIG}"
