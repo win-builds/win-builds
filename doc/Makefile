@@ -1,4 +1,4 @@
-HOST:="notk.org:public_html/yypkg/rc3_32"
+HOST:="notk.org:/var/www/yypkg.org/rc3_32"
 
 DOCS:=doc doc-diy doc-packaging
 DOCS_TXT:=$(DOCS:%=%.txt)

@@ -5,7 +5,7 @@ LOCATION="$(cd "${LOCATION}" && pwd)"
 
 CWD="$(pwd)"
 
-MIRROR="notk.org:public_html/yypkg/latest/packages"
+MIRROR="notk.org:/var/www/yypkg.org/latest/packages"
 SHERPA_GEN="${CWD}/yypkg/src/sherpa_gen.native"
 
 mkdir -p "${LOCATION}/repositories"

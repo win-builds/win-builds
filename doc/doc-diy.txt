@@ -52,11 +52,11 @@ done
 === Building everything ===
 As root, run:
 ------------------------------------------------------------------------
-./mingw-builds/build-packages.sh rc2_32
+./mingw-builds/build-packages.sh rc3_32
 ------------------------------------------------------------------------
 
 You can change the directory where files will be put; here it is
-"rc2_32".
+"rc3_32".
 
 === Building only a series ===
 It is possible to only build one category out of: init,
@@ -73,7 +73,7 @@ windows_32/windows_64.
 
 An example invocation is:
 ------------------------------------------------------------------------
-./mingw-builds/build-packages.sh rc2_32 windows_32
+./mingw-builds/build-packages.sh rc3_32 windows_32
 ------------------------------------------------------------------------
 
 === Building only one package ===
@@ -82,5 +82,5 @@ after the series.
 
 An example invocation is:
 ------------------------------------------------------------------------
-./mingw-builds/build-packages.sh rc2_32 windows_32 libjpeg
+./mingw-builds/build-packages.sh rc3_32 windows_32 libjpeg
 ------------------------------------------------------------------------

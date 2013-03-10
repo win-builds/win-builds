@@ -7,23 +7,29 @@ official tools and repositories for the mingw-w64 project.
 
 * targets windows 32bit, 64 bit soon
 * works on both windows and linux
-* GTK+, EFLs, curl, libsoup, ...
+* GTK+, EFLs, curl, libsoup, openssl, zlib, xz...
 * binary packages
 * build scripts available for everything
 
 == Support and coverage ==
-There are currently 52 packages. There are both cross and native
+There are currently 63 packages. There are both cross and native
 toolchains. The native one is new and less tested than the cross one.
 
+=== Native toolchain supplements ===
+This provides additions to the slackware packages, e.g. an OCaml native
+compiler (which is needed to build the cross one).
+
+The link:packages/native_toolchain/package_list.html[detailed list]
+is available.
+
 === Cross-toolchain ===
-The toolchain provides binutils 2.22.52.0.2, GCC 4.7.1 with C and C++,
-mingw-w64 2.0.3.
+The toolchain provides binutils 2.23.52.0.1, GCC 4.7.2 with C and C++,
+mingw-w64 2.0.7.
 The link:packages/cross_toolchain_32/package_list.html[detailed list]
 is available.
 
 === Windows files ===
-
-There are currently 42 non-toolchain packages with many more planned.
+There are currently 54 non-toolchain packages with many more planned.
 There are enough packages to build GTK+ and EFL applications, several
 network components and GCC itself; webkit-gtk support is close.
 
@@ -32,20 +38,40 @@ available.
 
 == Getting and running the system ==
 
-=== Simple use (prebuilt binaries) ===
+=== Simple use with native compilation and prebuilt binaries ===
+First,
+link:http://yypkg.org/rc3_32/packages/yypkg-bin-1.2-rc1.tar.xz[download
+the yypkg binaries].
+
+Then, extract them anywhere you want. Open "cmd.exe", navigate to the
+extract location and run the following commands. In this example, the
+installation directory is C:/yypkg_32.
+------------------------------------------------------------------------
+set YYPREFIX=C:/yypkg_32
+yypkg -init
+yypkg -config -setpreds host="x86_64-slackware-linux"
+yypkg -config -setpreds target="x86_64-slackware-linux"
+sherpa -set-mirror http://yypkg.org/rc3_32/packages/windows_32
+sherpa -install *
+------------------------------------------------------------------------
+
+Finally, add C:/yypkg_32/bin to your PATH and you will be able to use
+all the tools.
+
+=== Simple use with cross-compilation and prebuilt binaries ===
 
 The following commands will download and setup a system ready for
 cross-compilation to i686-w64-mingw32.
 
 First, download the base system:
 ------------------------------------------------------------------------
-wget http://notk.org/~adrien/yypkg/latest/packages/system.tar.xz
+wget http://yypkg.org/rc3_32/packages/system.tar.xz
 ------------------------------------------------------------------------
 
-Extract it somewhere (here in "rc2_32/"):
+Extract it somewhere (here in "rc3_32/"):
 ------------------------------------------------------------------------
-mkdir rc2_32
-sudo tar xf system.tar.xz -C rc2_32
+mkdir rc3_32
+sudo tar xf system.tar.xz -C rc3_32
 ------------------------------------------------------------------------
 
 Get the project main scripts:
@@ -56,7 +82,7 @@ git clone http://git.notk.org/adrien/yypkg/mingw-builds.git
 Chroot into the base environment with several environment variables set
 automatically:
 ------------------------------------------------------------------------
-sudo ./mingw-builds/main.sh rc2_32
+sudo ./mingw-builds/main.sh rc3_32
 ------------------------------------------------------------------------
 
 The first time you get into the sytem, download and setup the
@@ -75,7 +101,7 @@ In order to build the GTK+ Hello world, cd in the mingw-build directory
 and run (copy-paste) the following:
 
 ------------------------------------------------------------------------
-sudo ./main.sh rc2_32
+sudo ./main.sh rc3_32
 
 cd root
 
@@ -135,16 +161,16 @@ tar xf: it can install packages but cannot uninstall or upgrade them.
 
 == Roadmap and history ==
 === Roadmap ===
-* 1.2, beginning of November 2012: stable i686-w64-mingw32 native
-  compiler, Qt 4.8 binaries
-* 1.3, November 2012: OCaml cross-compiler
-* 1.4, January 2013: VLC and corresponding codec libraries
-* 2.0, early 2013: x86_64-w64-mingw32 support
+* 1.2, May 2013: codec libraries for VLC
+* 1.3: Qt binaries
+* 2.0: x86_64-w64-mingw32 support
 
 === History ===
+* 1.2, beginning of March 2013: stable i686-w64-mingw32 native compiler,
+  OCaml cross-compiler
 * 1.1 RC1, released 09/10/2012: experimental i686-w64-mingw32 native
   compiler, around 50 packages (GTK+, EFL, curl, ...), uses yypkg 1.6
   and sherpa frontend.
-* 1.0 RC1, released 06/08/2012: initial public-ready release,
+* 1.0 RC1, released 06/08/2012: first public-ready release,
   i686-w64-mingw32 cross-compiler from linux 64, around 40 packages,
   uses yypkg 1.5.
