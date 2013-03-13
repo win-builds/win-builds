@@ -17,5 +17,5 @@ for d in cross_toolchain_32 windows_32; do
   fi; fi
 
   echo "Downloading and installing packages for ${d}."
-  sherpa -install '*'
+  sherpa -install 'all'
 done
