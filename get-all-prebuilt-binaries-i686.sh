@@ -6,7 +6,7 @@ for d in cross_toolchain_32 windows_32; do
   echo "Initializing yypkg in ${YYPREFIX}."
   yypkg -init
 
-  sed -i "s/SERIES/${d}/" "${YYPREFIX}/etc/yypkg.d/sherpa.conf"
+  sherpa -set-mirror 'http://yypkg.org/mingw-builds/current/packages/windows_32'
 
   echo "Setting up predicates for ${d}."
   if [ "${d}" = "cross_toolchain_32" ]; then
