@@ -39,9 +39,7 @@ available.
 == Getting and running the system ==
 
 === Simple use with native compilation and prebuilt binaries ===
-First,
-link:http://yypkg.org/rc3_32/packages/yypkg-bin-1.2-rc1.tar.xz[download
-the yypkg binaries].
+First, link:yypkg-bin-1.2-rc1.tar.xz[download the yypkg binaries].
 
 Then, extract them anywhere you want. Open "cmd.exe", navigate to the
 extract location and run the following commands. In this example, the
@@ -51,7 +49,7 @@ set YYPREFIX=C:/yypkg_32
 yypkg -init
 yypkg -config -setpreds host="x86_64-slackware-linux"
 yypkg -config -setpreds target="x86_64-slackware-linux"
-sherpa -set-mirror http://yypkg.org/rc3_32/packages/windows_32
+sherpa -set-mirror http://yypkg.org/mingw-builds/rc3_32/packages/windows_32
 sherpa -install *
 ------------------------------------------------------------------------
 
@@ -65,7 +63,7 @@ cross-compilation to i686-w64-mingw32.
 
 First, download the base system:
 ------------------------------------------------------------------------
-wget http://yypkg.org/rc3_32/packages/system.tar.xz
+wget http://yypkg.org/mingw-builds/rc3_32/system.tar.xz
 ------------------------------------------------------------------------
 
 Extract it somewhere (here in "rc3_32/"):
