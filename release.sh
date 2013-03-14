@@ -1,23 +1,19 @@
 #!/bin/sh -eu
 
-LOCATION="${1}"
+DEST="${1}"
+LOCATION="${2}"
 LOCATION="$(cd "${LOCATION}" && pwd)"
 
 CWD="$(pwd)"
 
-MIRROR="notk.org:/var/www/yypkg.org/latest/packages"
 SHERPA_GEN="${CWD}/yypkg/src/sherpa_gen.native"
 
-mkdir -p "${LOCATION}/repositories"
+mkdir -p "${DEST}"
 
-rsync -avzP "${LOCATION}/system.tar.xz" "${MIRROR}/"
+cp "${LOCATION}/system.tar.xz" "${DEST}"
 
-for REPO in $(find "${LOCATION}/packages" -mindepth 1 -maxdepth 1 -type d); do
+for REPO in $(find "${LOCATION}/packages" -mindepth 1 -maxdepth 1 -type d -printf '%P\n'); do
   echo "Setting up ${REPO}"
-  REPO_NAME="$(basename "${REPO}")"
-  OUTPUT="${LOCATION}/repositories/${REPO_NAME}"
-  mkdir -p "${OUTPUT}"
-  "${SHERPA_GEN}" "${REPO}" "${OUTPUT}"
-  rsync -avzP "${REPO}" "${MIRROR}/"
-  rsync -avzP --exclude='memo_*' "${OUTPUT}/" "${MIRROR}/${REPO_NAME}/"
+  cp -a "${REPO}" "${DEST}/${REPO}"
+  "${SHERPA_GEN}" "${DEST}/${REPO}"
 done
