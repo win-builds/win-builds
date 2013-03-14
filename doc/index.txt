@@ -47,8 +47,8 @@ installation directory is C:/yypkg_32.
 ------------------------------------------------------------------------
 set YYPREFIX=C:/yypkg_32
 yypkg -init
-yypkg -config -setpreds host="x86_64-slackware-linux"
-yypkg -config -setpreds target="x86_64-slackware-linux"
+yypkg -config -setpreds host="i686-w64-mingw32"
+yypkg -config -setpreds target="i686-w64-mingw32"
 sherpa -set-mirror http://yypkg.org/mingw-builds/rc3_32/packages/windows_32
 sherpa -install *
 ------------------------------------------------------------------------
