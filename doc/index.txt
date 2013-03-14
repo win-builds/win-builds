@@ -50,7 +50,7 @@ yypkg -init
 yypkg -config -setpreds host="i686-w64-mingw32"
 yypkg -config -setpreds target="i686-w64-mingw32"
 sherpa -set-mirror http://yypkg.org/mingw-builds/rc3_32/packages/windows_32
-sherpa -install *
+sherpa -install all
 ------------------------------------------------------------------------
 
 Finally, add C:/yypkg_32/bin to your PATH and you will be able to use
