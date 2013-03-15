@@ -8,7 +8,10 @@ CWD="$(pwd)"
 
 SHERPA_GEN="${CWD}/yypkg/src/sherpa_gen.native"
 
-rmdir "${DEST}"
+if [ -d "${DEST}" ]; then
+  echo "Directory ${DEST} not empty."
+  exit 1
+fi
 
 mkdir "${DEST}" "${DEST}/packages"
 
