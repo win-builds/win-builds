@@ -14,6 +14,6 @@ cp "${LOCATION}/system.tar.xz" "${DEST}"
 
 for REPO in $(find "${LOCATION}/packages" -mindepth 1 -maxdepth 1 -type d -printf '%P\n'); do
   echo "Setting up ${REPO}"
-  cp -a "${REPO}" "${DEST}/${REPO}"
+  cp -a "${LOCATION}/packages/${REPO}" "${DEST}/${REPO}"
   "${SHERPA_GEN}" "${DEST}/${REPO}"
 done
