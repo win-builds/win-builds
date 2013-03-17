@@ -117,6 +117,8 @@ fi
 
 if echo "${KIND}" | grep -q ${WINDOWS}; then
   start_build_daemon "${WINDOWS}"
+  queue_cond ${SLACK}/l/libarchive "yypkg"
+  queue_cond ${SLACK}/n/wget "yypkg"
   queue_cond mingw/win-iconv ""
   queue_cond ${SLACK}/a/gettext ""
   queue_cond ${SLACK}/a/xz ""
@@ -163,9 +165,8 @@ if echo "${KIND}" | grep -q ${WINDOWS}; then
   queue_cond ${SLACK}/l/libvorbis ""
   queue_cond ${SLACK}/l/libtheora ""
   queue_cond ${SLACK}/d/pkg-config ""
-  queue_cond ${SLACK}/l/libarchive "yypkg"
   queue_cond ${SLACK}/l/libarchive "full"
-  queue_cond ${SLACK}/n/wget ""
+  queue_cond ${SLACK}/n/wget "full"
   # queue_cond ${SLACK}/l/sdl "base"
   # queue_cond ${SLACK}/l/sdl "others"
   # queue_cond ${SBo}/webkit-gtk ""
