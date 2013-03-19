@@ -134,7 +134,7 @@ if echo "${KIND}" | grep -q ${WINDOWS}; then
   queue_cond ${SLACK}/n/ca-certificates ""
   queue_cond ${SLACK}/n/curl ""
   queue_cond ${SBo}/c-ares ""
-  for efl_lib in evil eina eet evas ecore embryo edje; do
+  for efl_lib in evil eina eet evas ecore embryo edje elementary; do
     queue_cond ${SBo}/${efl_lib} ""
   done
   queue_cond mingw/pixman ""
