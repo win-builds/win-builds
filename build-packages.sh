@@ -98,6 +98,7 @@ if echo "${KIND}" | grep -q ${NATIVE_TOOLCHAIN}; then
   start_build_daemon "${NATIVE_TOOLCHAIN}"
   queue_cond ${SBo}/ocaml ""
   queue_cond ${SBo}/ocaml-findlib ""
+  queue_cond ${SBo}/lua ""
   for efl_lib in eina eet evas ecore embryo edje; do
     queue_cond ${SBo}/${efl_lib} ""
   done
