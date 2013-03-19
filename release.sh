@@ -8,16 +8,6 @@ CWD="$(pwd)"
 
 SHERPA_GEN="${CWD}/yypkg/src/sherpa_gen.native"
 
-if [ -d "${DEST}" ]; then
-  echo "Directory ${DEST} not empty."
-  exit 1
-fi
-
-mkdir "${DEST}"
-
-echo "Copying base system."
-cp "${LOCATION}/system.tar.xz" "${DEST}"
-
 for d in "packages" "logs"; do
   echo "Copying ${d}."
   rsync -avP --delete-after --exclude='memo_*' "${LOCATION}/${d}" "${DEST}/${d}"
