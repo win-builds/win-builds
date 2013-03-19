@@ -180,7 +180,4 @@ if echo "${KIND}" | grep -q ${WINDOWS}; then
   wait
 fi
 
-for d in "packages" "logs"; do
-  mkdir -p "${LOCATION}/${d}"
-  rsync --verbose --archive --delete-after --progress "${YYPKG_PACKAGES}/${d}/" "${LOCATION}/${d}/"
-done
+./mingw-builds/release.sh "${LOCATION}" "${YYPKG_PACKAGES}"

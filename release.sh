@@ -13,15 +13,18 @@ if [ -d "${DEST}" ]; then
   exit 1
 fi
 
-mkdir "${DEST}" "${DEST}/packages" "${DEST}/logs"
+mkdir "${DEST}"
 
+echo "Copying base system."
 cp "${LOCATION}/system.tar.xz" "${DEST}"
 
-find "${LOCATION}/packages" -mindepth 1 -maxdepth 1 -type d -printf '%P\n' \
+for d in "packages" "logs"; do
+  echo "Copying ${d}."
+  rsync -avP --delete-after --exclude='memo_*' "${LOCATION}/${d}" "${DEST}/${d}"
+done
+
+find "${DEST}/packages" -mindepth 1 -maxdepth 1 -type d -printf '%P\n' \
   | while read REPO; do
       echo "Setting up ${REPO}."
-      for d in logs packages; do 
-        cp -a "${LOCATION}/${d}/${REPO}" "${DEST}/${d}/${REPO}"
-      done
       "${SHERPA_GEN}" "${DEST}/packages/${REPO}"
     done
