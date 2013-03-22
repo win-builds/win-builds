@@ -14,27 +14,31 @@ official tools and repositories for the mingw-w64 project.
 == Support and coverage ==
 There are currently 63 packages. There are both cross and native
 toolchains. The native one is new and less tested than the cross one.
+The cross toolchain requires a Linux system with a 64bit kernel (not
+userspace).
 
-=== Native toolchain supplements ===
-This provides additions to the slackware packages, e.g. an OCaml native
-compiler (which is needed to build the cross one).
+The toolchain targetting x86_64-w64-mingw32 and the corresponding
+packages are currently experimental.
 
-The link:packages/native_toolchain/package_list.html[detailed list]
-is available.
+=== Native Linux toolchain supplements ===
+The OCaml cross-compiler also requires a native compiler; that's
+typically what this section provides.
+
+link:packages/native_toolchain/package_list.html[Package list]
 
 === Cross-toolchain ===
-The toolchain provides binutils 2.23.52.0.1, GCC 4.7.2 with C and C++,
-mingw-w64 2.0.7.
-The link:packages/cross_toolchain_32/package_list.html[detailed list]
-is available.
+The toolchain provides binutils 2.23.52.0.1, GCC 4.7.2 with C and C++
+support along with mingw-w64 2.0.7.
+link:packages/cross_toolchain_32/package_list.html[Package list (i686)]
+link:packages/cross_toolchain_64/package_list.html[Package list (x86_64)]
 
 === Windows files ===
-There are currently 54 non-toolchain packages with many more planned.
-There are enough packages to build GTK+ and EFL applications, several
-network components and GCC itself; webkit-gtk support is close.
+There are currently 54 non-toolchain packages with many more planned;
+they are sufficient to build GTK+ and EFL applications, several network
+components and GCC itself; webkit-gtk support is close.
 
-The link:packages/windows_32/package_list.html[detailed list] is
-available.
+link:packages/windows_32/package_list.html[Detailed list (i686)]
+link:packages/windows_64/package_list.html[Detailed list (x86_64)]
 
 == Getting and running the system ==
 
