@@ -5,7 +5,7 @@ in a clean and reproducible way, making building for windows easier. It
 is supported by the yypkg package manager. Both of them will become
 official tools and repositories for the mingw-w64 project.
 
-* targets windows 32bit, 64 bit soon
+* targets windows 32bit, 64 bit experimental
 * works on both windows and linux
 * GTK+, EFLs, curl, libsoup, openssl, zlib, xz...
 * binary packages
@@ -133,14 +133,14 @@ link:packaging.html[packager documentation].
 == Comparison with other systems ==
 Work on yypkg and the build scripts along with the infrastructure has
 started several years ago, interrupted several times and already
-rewritten once at least (no second-system effect in any case).
+rewritten at least once (no second-system effect :-) ).
 
 The need for such a system was pretty obvious and at the time, nothing
 came any close. The requirements haven't changed much over the years;
 some other projects have improved but it doesn't look like any of them
 has obsoleted yypkg.
 
-Feel free to send notes for the tables below: it is definitely nor
+Feel free to send notes for the tables below: it is definitely not
 perfect nor complete.
 
 [grid="rows"]
