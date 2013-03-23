@@ -14,11 +14,13 @@ if [ x"${CONFIG}" = x"native_toolchain" ]; then
   export TARGET_EXE_FORMAT="ELF"
   export YYPREFIX="${YYPREFIX_NATIVE_TOOLCHAIN}"
   export PATH="${YYPREFIX}/bin:${PATH}"
-  export PKG_CONFIG_PATH="${YYPREFIX}/lib/pkgconfig"
+  export PKG_CONFIG_PATH="${YYPREFIX}/lib64/pkgconfig"
 else
   case "${CONFIG}" in
-    *-i686-w64-mingw32)   MINGW_W64_TRIPLET="i686-w64-mingw32"; BITS="32";;
-    *-x86_64-w64-mingw32) MINGW_W64_TRIPLET="x86_64-w64-mingw32"; BITS="64";;
+    *-i686-w64-mingw32) 
+      MINGW_W64_TRIPLET="i686-w64-mingw32"; BITS="32"; LIBDIRSUFFIX="";;
+    *-x86_64-w64-mingw32)
+      MINGW_W64_TRIPLET="x86_64-w64-mingw32"; BITS="64"; LIBDIRSUFFIX="64";;
   esac
   NICKNAME_CROSS_TOOLCHAIN="cross_toolchain_${BITS}"
   NICKNAME_WINDOWS="windows_${BITS}"
@@ -47,7 +49,7 @@ else
       # actually be ugly hardcoding so put the directory in $PATH even if
       # that's a bit ugly.
       export PATH="${YYPREFIX_CROSS_TOOLCHAIN}/bin:${YYPREFIX_NATIVE_TOOLCHAIN}/bin:${PATH}:${YYPREFIX_TARGET_PREFIX}/bin"
-      export PKG_CONFIG_LIBDIR="${YYPREFIX}/lib/pkgconfig"
+      export PKG_CONFIG_LIBDIR="${YYPREFIX}/lib${LIBDIRSUFFIX}/pkgconfig"
       export -n PKG_CONFIG_PATH ;;
   esac
 fi
