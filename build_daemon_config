@@ -12,15 +12,18 @@ if [ x"${CONFIG}" = x"native_toolchain" ]; then
   export TARGET_TRIPLET="${BUILD_TRIPLET}"
   export TARGET_STRIP="strip"
   export TARGET_EXE_FORMAT="ELF"
+  export LIBDIRSUFFIX="64"
   export YYPREFIX="${YYPREFIX_NATIVE_TOOLCHAIN}"
   export PATH="${YYPREFIX}/bin:${PATH}"
-  export PKG_CONFIG_PATH="${YYPREFIX}/lib64/pkgconfig"
+  export PKG_CONFIG_PATH="${YYPREFIX}/lib${LIBDIRSUFFIX}/pkgconfig"
 else
   case "${CONFIG}" in
     *-i686-w64-mingw32) 
-      MINGW_W64_TRIPLET="i686-w64-mingw32"; BITS="32"; LIBDIRSUFFIX="";;
+      MINGW_W64_TRIPLET="i686-w64-mingw32"; BITS="32";
+      export LIBDIRSUFFIX="";;
     *-x86_64-w64-mingw32)
-      MINGW_W64_TRIPLET="x86_64-w64-mingw32"; BITS="64"; LIBDIRSUFFIX="64";;
+      MINGW_W64_TRIPLET="x86_64-w64-mingw32"; BITS="64";
+      export LIBDIRSUFFIX="64";;
   esac
   NICKNAME_CROSS_TOOLCHAIN="cross_toolchain_${BITS}"
   NICKNAME_WINDOWS="windows_${BITS}"
