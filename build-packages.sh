@@ -1,14 +1,10 @@
 #!/bin/sh -eu
 
 TRIPLET="${TRIPLET:-i686-w64-mingw32}"
-case "${TRIPLET}" in
-  i686-w64-mingw*) BITS="32";;
-  x86_64-w64-mingw*) BITS="64";;
-esac
 
 NATIVE_TOOLCHAIN="native_toolchain"
-CROSS_TOOLCHAIN="cross_toolchain_${BITS}"
-WINDOWS="windows_${BITS}"
+CROSS_TOOLCHAIN="cross_toolchain-${TRIPLET}"
+WINDOWS="windows-${TRIPLET}"
 
 DEFAULT_KIND="init-${NATIVE_TOOLCHAIN}-${CROSS_TOOLCHAIN}-${WINDOWS}"
 

@@ -1,6 +1,7 @@
 #!/bin/bash -eu
 
 CWD="$(cd "$(dirname "${0}")" && pwd)"
+# ${CONFIG} is used in build_daemon_config which is sourced by this script
 CONFIG="${1}"
 
 description_of_slack_desc() {
@@ -15,7 +16,7 @@ if [ -z "$*" ]; then
   exit 1
 fi
 
-source build_daemon_config
+. build_daemon_config
 
 if [ ! -e ${YYPREFIX} ]; then
   yypkg -init

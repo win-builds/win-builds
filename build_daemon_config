@@ -1,65 +1,59 @@
 #!/bin/false
 
-if echo "${CONFIG}" | grep -q 32; then
-  MINGW_W64_TRIPLET="i686-w64-mingw32"
-  BITS="32"
-else
-  MINGW_W64_TRIPLET="x86_64-w64-mingw32"
-  BITS="64"
-fi
-
-CROSS_TOOLCHAIN="cross_toolchain_${BITS}"
-TARGET_PREFIX="windows_${BITS}"
-
 export BUILD_TRIPLET="x86_64-slackware-linux"
 
 export YYPREFIX_NATIVE_TOOLCHAIN="/opt/native"
-export YYPREFIX_CROSS_TOOLCHAIN="/opt/${CROSS_TOOLCHAIN}"
-export YYPREFIX_TARGET_PREFIX="/opt/${TARGET_PREFIX}"
-
-case "${CONFIG}" in
-  native_toolchain)
-    export HOST_TRIPLET="${BUILD_TRIPLET}"
-    export HOST_STRIP="strip"
-    export HOST_EXE_FORMAT="ELF"
-    export YYPREFIX="${YYPREFIX_NATIVE_TOOLCHAIN}"
-    export PATH="${YYPREFIX}/bin:${PATH}"
-    export PKG_CONFIG_PATH="${YYPREFIX}/lib/pkgconfig"
-    ;;
-  cross_toolchain_*)
-    export HOST_TRIPLET="${BUILD_TRIPLET}"
-    export HOST_STRIP="strip"
-    export HOST_EXE_FORMAT="ELF"
-    export YYPREFIX="${YYPREFIX_CROSS_TOOLCHAIN}"
-    export PATH="${YYPREFIX}/bin:${YYPREFIX_NATIVE_TOOLCHAIN}/bin:${PATH}"
-    ;;
-  windows_*)
-    export HOST_TRIPLET="${MINGW_W64_TRIPLET}"
-    export HOST_STRIP="${HOST_TRIPLET}-strip"
-    export HOST_EXE_FORMAT="PE"
-    export YYPREFIX="${YYPREFIX_TARGET_PREFIX}"
-    # ${YYPREFIX_TARGET_PREFIX}/bin has to be in $PATH because otherwise
-    # libtool won't find libraries without being given an additional -L switch.
-    # Setting it by hand everywhere would be too much work and would actually be
-    # ugly hardcoding so put the directory in $PATH even if that's a bit ugly.
-    export PATH="${YYPREFIX_CROSS_TOOLCHAIN}/bin:${YYPREFIX_NATIVE_TOOLCHAIN}/bin:${PATH}:${YYPREFIX_TARGET_PREFIX}/bin"
-    export PKG_CONFIG_LIBDIR="${YYPREFIX}/lib/pkgconfig"
-    export -n PKG_CONFIG_PATH
-    ;;
-esac
 
 if [ x"${CONFIG}" = x"native_toolchain" ]; then
+  NICKNAME="native_toolchain"
+  export HOST_TRIPLET="${BUILD_TRIPLET}"
+  export HOST_STRIP="strip"
+  export HOST_EXE_FORMAT="ELF"
   export TARGET_TRIPLET="${BUILD_TRIPLET}"
   export TARGET_STRIP="strip"
   export TARGET_EXE_FORMAT="ELF"
+  export YYPREFIX="${YYPREFIX_NATIVE_TOOLCHAIN}"
+  export PATH="${YYPREFIX}/bin:${PATH}"
+  export PKG_CONFIG_PATH="${YYPREFIX}/lib/pkgconfig"
 else
+  case "${CONFIG}" in
+    *-i686-w64-mingw32)   MINGW_W64_TRIPLET="i686-w64-mingw32"; BITS="32";;
+    *-x86_64-w64-mingw32) MINGW_W64_TRIPLET="x86_64-w64-mingw32"; BITS="64";;
+  esac
+  NICKNAME_CROSS_TOOLCHAIN="cross_toolchain_${BITS}"
+  NICKNAME_WINDOWS="windows_${BITS}"
+  export YYPREFIX_CROSS_TOOLCHAIN="/opt/${NICKNAME_CROSS_TOOLCHAIN}"
+  export YYPREFIX_TARGET_PREFIX="/opt/${NICKNAME_WINDOWS}"
   export TARGET_TRIPLET="${MINGW_W64_TRIPLET}"
   export TARGET_STRIP="${TARGET_TRIPLET}-strip"
   export TARGET_EXE_FORMAT="PE"
+  case "${CONFIG}" in
+    cross_toolchain-*)
+      NICKNAME="${NICKNAME_CROSS_TOOLCHAIN}"
+      export HOST_TRIPLET="${BUILD_TRIPLET}"
+      export HOST_STRIP="strip"
+      export HOST_EXE_FORMAT="ELF"
+      export YYPREFIX="${YYPREFIX_CROSS_TOOLCHAIN}"
+      export PATH="${YYPREFIX}/bin:${YYPREFIX_NATIVE_TOOLCHAIN}/bin:${PATH}" ;;
+    windows-*)
+      NICKNAME="${NICKNAME_WINDOWS}"
+      export HOST_TRIPLET="${MINGW_W64_TRIPLET}"
+      export HOST_STRIP="${HOST_TRIPLET}-strip"
+      export HOST_EXE_FORMAT="PE"
+      export YYPREFIX="${YYPREFIX_TARGET_PREFIX}"
+      # ${YYPREFIX_TARGET_PREFIX}/bin has to be in $PATH because otherwise
+      # libtool won't find libraries without being given an additional -L
+      # switch.  Setting it by hand everywhere would be too much work and would
+      # actually be ugly hardcoding so put the directory in $PATH even if
+      # that's a bit ugly.
+      export PATH="${YYPREFIX_CROSS_TOOLCHAIN}/bin:${YYPREFIX_NATIVE_TOOLCHAIN}/bin:${PATH}:${YYPREFIX_TARGET_PREFIX}/bin"
+      export PKG_CONFIG_LIBDIR="${YYPREFIX}/lib/pkgconfig"
+      export -n PKG_CONFIG_PATH ;;
+  esac
 fi
 
 # Symlinks for ccache are in /usr/local/bin so prepend this directory.
 export PATH="/usr/local/bin:$(echo "${PATH}" | sed -e 's;/usr/local/bin:;;g')"
 
-export LOGS="${CWD}/logs/${CONFIG}"
-export YYOUTPUT="${CWD}/packages/${CONFIG}"
+export LOGS="${CWD}/logs/${NICKNAME}"
+export YYOUTPUT="${CWD}/packages/${NICKNAME}"
