@@ -2,11 +2,7 @@
 
 TRIPLET="${TRIPLET:-i686-w64-mingw32}"
 
-NATIVE_TOOLCHAIN="native_toolchain"
-CROSS_TOOLCHAIN="cross_toolchain-${TRIPLET}"
-WINDOWS="windows-${TRIPLET}"
-
-DEFAULT_KIND="init-${NATIVE_TOOLCHAIN}-${CROSS_TOOLCHAIN}-${WINDOWS}"
+DEFAULT_KIND="init-native_toolchain-cross_toolchain-windows"
 
 LOCATION="${1}"
 KIND="${2:-"${DEFAULT_KIND}"}"
@@ -90,8 +86,8 @@ SLACK="slackware64-current"
 
 enable_ccache
 
-if echo "${KIND}" | grep -q ${NATIVE_TOOLCHAIN}; then
-  start_build_daemon "${NATIVE_TOOLCHAIN}"
+if echo "${KIND}" | grep -q "native_toolchain"; then
+  start_build_daemon "native_toolchain"
   queue_cond ${SBo}/ocaml ""
   queue_cond ${SBo}/ocaml-findlib ""
   queue_cond ${SBo}/lua ""
@@ -102,8 +98,8 @@ if echo "${KIND}" | grep -q ${NATIVE_TOOLCHAIN}; then
   wait
 fi
 
-if echo "${KIND}" | grep -q ${CROSS_TOOLCHAIN}; then
-  start_build_daemon "${CROSS_TOOLCHAIN}"
+if echo "${KIND}" | grep -q "cross_toolchain"; then
+  start_build_daemon "cross_toolchain-${TRIPLET}"
   queue_cond ${SLACK}/d/binutils ""
   queue_cond mingw/mingw-w64 "headers"
   queue_cond ${SLACK}/d/gcc "core"
@@ -115,8 +111,8 @@ if echo "${KIND}" | grep -q ${CROSS_TOOLCHAIN}; then
   wait
 fi
 
-if echo "${KIND}" | grep -q ${WINDOWS}; then
-  start_build_daemon "${WINDOWS}"
+if echo "${KIND}" | grep -q "windows"; then
+  start_build_daemon "windows-${TRIPLET}"
   queue_cond ${SLACK}/l/libarchive "yypkg"
   queue_cond ${SLACK}/n/wget "yypkg"
   queue_cond mingw/win-iconv ""
