@@ -31,6 +31,10 @@ mkdir -p ${YYOUTPUT} ${LOGS} ${CWD}/processing
 # $1: package to build
 iter() {
   local PKG="${1}"
+  # Remove the previous packages before building.
+  # This prevents them from staying when the version or build number changes.
+  find "${YYOUTPUT}" \( -name "${PKG}-[0-9]*" -o -name "${PKG}-v[0-9]*" \) \
+    -exec rm {} + || true
   find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
     > ${YYOUTPUT}/files_pre
   (
