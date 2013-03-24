@@ -29,6 +29,7 @@ link:packages/native_toolchain/package_list.html[Package list]
 === Cross-toolchain ===
 The toolchain provides binutils 2.23.52.0.1, GCC 4.7.2 with C and C++
 support along with mingw-w64 2.0.7.
+
 link:packages/cross_toolchain_32/package_list.html[Package list (i686)]
 link:packages/cross_toolchain_64/package_list.html[Package list (x86_64)]
 
@@ -59,6 +60,9 @@ sherpa -install all
 
 Finally, add C:/yypkg_32/bin to your PATH and you will be able to use
 all the tools.
+
+Steps for x86_64-w64-mingw32 are the same except for the triplet and
+"64" instead of "32".
 
 === Simple use with cross-compilation and prebuilt binaries ===
 
@@ -173,6 +177,8 @@ Main goals are:
 * Various caches are not created when installing on Windows (fc-cache,
   pango, gtk, ...)
 * libgcc_s_sjlj-1.dll is not in bin/
+* less and elvis don't work well; this is probably an issue in the
+  installation of the terminfo package in the host system.
 
 == Roadmap and history ==
 === Roadmap ===
