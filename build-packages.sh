@@ -134,9 +134,6 @@ if echo "${KIND}" | grep -q ${WINDOWS}; then
   queue_cond ${SLACK}/n/ca-certificates ""
   queue_cond ${SLACK}/n/curl ""
   queue_cond ${SBo}/c-ares ""
-  for efl_lib in evil eina eet evas ecore embryo edje elementary; do
-    queue_cond ${SBo}/${efl_lib} ""
-  done
   queue_cond mingw/pixman ""
   queue_cond ${SLACK}/l/libffi ""
   queue_cond ${SLACK}/l/glib2 ""
@@ -164,6 +161,9 @@ if echo "${KIND}" | grep -q ${WINDOWS}; then
   queue_cond ${SLACK}/l/libogg ""
   queue_cond ${SLACK}/l/libvorbis ""
   queue_cond ${SLACK}/l/libtheora ""
+  for efl_lib in evil eina eet evas ecore embryo edje elementary; do
+    queue_cond ${SBo}/${efl_lib} ""
+  done
   queue_cond ${SLACK}/d/pkg-config ""
   queue_cond ${SLACK}/l/libarchive "full"
   queue_cond ${SLACK}/n/wget "full"
