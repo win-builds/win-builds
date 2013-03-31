@@ -5,7 +5,7 @@
 === Environment ===
 Build the existing packages. This will ensure you have everything needed
 in a working state; documentation for this is on
-link:doc-diy.html[doc-diy].
+link:diy.html[doc-diy].
 
 === Import the build script ===
 Currently you have to ask me to make the slackware or slackbuilds.org
@@ -61,7 +61,7 @@ packages it depends on.
 
 === Test your package ===
 You can now build your package like any other package. See the
-link:doc-diy.html#Start-the-build[documentation on building packages]
+link:diy.html#Start-the-build[documentation on building packages]
 for a howto.
 
 
