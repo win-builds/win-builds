@@ -43,12 +43,21 @@ There are two notable build failures for x64: GTK+2 and Elementary.
 
 == Getting and running the system ==
 
-=== Simple use with native compilation and prebuilt binaries ===
-First, link:yypkg-bin-1.2-rc1.tar.xz[download the yypkg binaries].
+=== Simple use with native compilation and pre-built binaries ===
+These don't change system settings so you will have to set variables
+like %PATH%.
 
-Then, extract them anywhere you want. Open "cmd.exe", navigate to the
-extract location and run the following commands. In this example, the
-installation directory is C:/yypkg_32.
+==== Windows Installer ====
+There are two installers available, one for a native i686 toolchain and
+another one for a native x86_64 toolchain (which will require Windows
+x64 to run). They automate the steps mentionned in the next section.
+link:yypkg-1.2-rc1-i686.exe[Installer for i686-w64-mingw32]
+
+link:yypkg-1.2-rc1-x86_64.exe[Installer for x86_64-w64-mingw32]
+
+==== Manual steps ====
+Download and extract link:yypkg-bin-1.2-rc1.tar.xz[the yypkg binaries].
+Then, run:
 ------------------------------------------------------------------------
 set YYPREFIX=C:/yypkg_32
 yypkg -init
@@ -57,12 +66,6 @@ yypkg -config -setpreds target="i686-w64-mingw32"
 sherpa -set-mirror http://yypkg.org/mingw-builds/rc3_32/packages/windows_32
 sherpa -install all
 ------------------------------------------------------------------------
-
-Finally, add C:/yypkg_32/bin to your PATH and you will be able to use
-all the tools.
-
-Steps for x86_64-w64-mingw32 are the same except for the triplet and
-"64" instead of "32".
 
 === Simple use with cross-compilation and prebuilt binaries ===
 
