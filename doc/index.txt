@@ -63,7 +63,7 @@ set YYPREFIX=C:/yypkg_32
 yypkg -init
 yypkg -config -setpreds host="i686-w64-mingw32"
 yypkg -config -setpreds target="i686-w64-mingw32"
-sherpa -set-mirror http://yypkg.org/mingw-builds/rc3_32/packages/windows_32
+sherpa -set-mirror http://yypkg.org/mingw-builds/1.2-beta2/packages/windows_32
 sherpa -install all
 ------------------------------------------------------------------------
 
@@ -74,9 +74,9 @@ cross-compilation to i686-w64-mingw32.
 
 Download the base system and extract it somewhere:
 ------------------------------------------------------------------------
-wget http://yypkg.org/mingw-builds/1.2-beta1/system.tar.xz
-mkdir 1.2-beta1
-sudo tar xf system.tar.xz -C 1.2-beta1
+wget http://yypkg.org/mingw-builds/1.2-beta2/system.tar.xz
+mkdir 1.2-beta2
+sudo tar xf system.tar.xz -C 1.2-beta2
 ------------------------------------------------------------------------
 
 Get the project main scripts:
@@ -87,7 +87,7 @@ git clone http://git.notk.org/adrien/yypkg/mingw-builds.git
 Chroot into the base environment with several environment variables set
 automatically:
 ------------------------------------------------------------------------
-sudo ./mingw-builds/main.sh 1.2-beta1
+sudo ./mingw-builds/main.sh 1.2-beta2
 ------------------------------------------------------------------------
 
 The first time you get into the sytem, download and setup the
@@ -106,7 +106,7 @@ In order to build the GTK+ Hello world, cd in the mingw-build directory
 and run (copy-paste) the following:
 
 ------------------------------------------------------------------------
-sudo ./main.sh 1.2-beta1
+sudo ./main.sh 1.2-beta2
 
 cd root
 
