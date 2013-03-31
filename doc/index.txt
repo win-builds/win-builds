@@ -6,7 +6,7 @@ toolchains. The native one is new and less tested than the cross one.
 The cross toolchain requires a Linux system with a 64bit kernel (not
 userspace).
 
-The toolchain targetting x86_64-w64-mingw32 and the corresponding
+The toolchain targeting x86_64-w64-mingw32 and the corresponding
 packages are currently experimental.
 
 === Native Linux toolchain supplements ===
