@@ -1,7 +1,7 @@
 = Yypkg's mingw-builds =
 
 == Support and coverage ==
-There are currently 63 packages. There are both cross and native
+There are currently around 70 packages. There are both cross and native
 toolchains. The native one is new and less tested than the cross one.
 The cross toolchain requires a Linux system with a 64bit kernel (not
 userspace).
