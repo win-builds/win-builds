@@ -139,12 +139,15 @@ Slackware build scripts to yypkg and mingw. Please refer to the
 link:packaging.html[packager documentation].
 
 == Current release status (1.2 beta1) ==
-Main goals are:
+=== Main goals ===
 * stable i686-w64-mingw32 native compiler
+* experimental x86_64-w64-mingw32 toolchain (both cross and native)
 * OCaml cross-compiler
-* yypkg and its deps built without external binaries
+* yypkg and its deps built with only the binaries here
+* SFX installer for windows
 * more packages
 * updated packages
+
 === Known issues ===
 * Link errors with the native toolchain
 * Various caches are not created when installing on Windows (fc-cache,
@@ -152,6 +155,8 @@ Main goals are:
 * libgcc_s_sjlj-1.dll is not in bin/
 * less and elvis don't work well; this is probably an issue in the
   installation of the terminfo package in the host system.
+* GCC has to be invoked with its fullest name (like
+  i686-w64-mingw32-gcc-4.7.2) because the other files are symlinks.
 
 == Roadmap and history ==
 === Roadmap ===
