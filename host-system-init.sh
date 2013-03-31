@@ -44,6 +44,7 @@ populate_slash_dev() {
   mknod "${SYSTEM}/dev/console" c 5 1
   mknod "${SYSTEM}/dev/null" c 1 3
   mknod "${SYSTEM}/dev/zero" c 1 5
+  mknod "${SYSTEM}/dev/tty" c 5 0
   chmod 666 "${SYSTEM}/dev/null" "${SYSTEM}/dev/zero"
 }
 
