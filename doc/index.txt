@@ -138,33 +138,6 @@ It is fairly easy to create new packages. The usual way is to port
 Slackware build scripts to yypkg and mingw. Please refer to the
 link:packaging.html[packager documentation].
 
-== Comparison with other systems ==
-Work on yypkg and the build scripts along with the infrastructure has
-started several years ago, interrupted several times and already
-rewritten at least once (no second-system effect :-) ).
-
-The need for such a system was pretty obvious and at the time, nothing
-came any close. The requirements haven't changed much over the years;
-some other projects have improved but it doesn't look like any of them
-has obsoleted yypkg.
-
-Feel free to send notes for the tables below: it is definitely not
-perfect nor complete.
-
-[grid="rows"]
-[options="header"]
-|=======================================================================
-|Project                                                                   |OS portability     |Compiler portability            |Package manager         |Number of packages    |QA
-|yypkg                                                                     |Linux and windows  |GCC, mingw-w64; MSVC planned    |Yes                     |Around 50, increasing |Yes
-|link:http://coapp.org[coApp]                                              |Windows            |MSVC                            |State unknown           |Unknown               |unknown
-|link:http://mxe.cc[MXE]                                                   |Cross-only         |GCC, mingw.org, 32bit           |No                      |Quite high            |Unknown
-|mingw-get                                                                 |Windows            |GCC, mingw.org (and mingw-w64?) |No (definitely not)     |High                  |No
-|link:http://download.opensuse.org/repositories/windows:/mingw[opensuse's] |OpenSuse           |GCC, mingw-w64                  |Yes                     |High (~200)           |Yes
-|========================================================================
-
-mingw-get is not a package manager but merely a wrapper around wget and
-tar xf: it can install packages but cannot uninstall or upgrade them.
-
 == Current release status (1.2 beta1) ==
 Main goals are:
 * stable i686-w64-mingw32 native compiler
