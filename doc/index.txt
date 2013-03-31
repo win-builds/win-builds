@@ -1,16 +1,5 @@
 = Yypkg's mingw-builds =
 
-Mingw-builds creates binary packages of libraries and tools for windows
-in a clean and reproducible way, making building for windows easier. It
-is supported by the yypkg package manager. Both of them will become
-official tools and repositories for the mingw-w64 project.
-
-* targets windows 32bit, 64 bit experimental
-* works on both windows and linux
-* GTK+, EFLs, curl, libsoup, openssl, zlib, xz...
-* binary packages
-* build scripts available for everything
-
 == Support and coverage ==
 There are currently 63 packages. There are both cross and native
 toolchains. The native one is new and less tested than the cross one.
