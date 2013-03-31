@@ -14,21 +14,32 @@ The OCaml cross-compiler also requires a native compiler; that's
 typically what this section provides.
 
 link:packages/native_toolchain/package_list.html[Package list]
+link:logs/native_toolchain/[Build logs]
 
 === Cross-toolchain ===
 The toolchain provides binutils 2.23.52, GCC 4.7.2 with C and C++
 support along with mingw-w64 2.0.7.
 
-link:packages/cross_toolchain_32/package_list.html[Package list (i686)]
-link:packages/cross_toolchain_64/package_list.html[Package list (x86_64)]
+* i686:
+link:packages/cross_toolchain_32/package_list.html[Package list]
+link:logs/cross_toolchain_32/[Build logs]
+* x86_64:
+link:packages/cross_toolchain_64/package_list.html[Package list]
+link:logs/cross_toolchain_64/[Build logs]
 
 === Windows files ===
 There are currently 54 non-toolchain packages with many more planned;
 they are sufficient to build GTK+ and EFL applications, several network
 components and GCC itself; webkit-gtk support is close.
 
-link:packages/windows_32/package_list.html[Detailed list (i686)]
-link:packages/windows_64/package_list.html[Detailed list (x86_64)]
+* i686:
+link:packages/windows_32/package_list.html[Detailed list]
+link:logs/windows_32/[Build logs]
+* x86_64:
+link:packages/windows_64/package_list.html[Detailed list]
+link:logs/windows_64/[Build logs]
+
+There are two notable build failures for x64: GTK+2 and Elementary.
 
 == Getting and running the system ==
 
