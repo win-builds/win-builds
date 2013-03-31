@@ -69,15 +69,11 @@ Steps for x86_64-w64-mingw32 are the same except for the triplet and
 The following commands will download and setup a system ready for
 cross-compilation to i686-w64-mingw32.
 
-First, download the base system:
+Download the base system and extract it somewhere:
 ------------------------------------------------------------------------
-wget http://yypkg.org/mingw-builds/rc3_32/system.tar.xz
-------------------------------------------------------------------------
-
-Extract it somewhere (here in "rc3_32/"):
-------------------------------------------------------------------------
-mkdir rc3_32
-sudo tar xf system.tar.xz -C rc3_32
+wget http://yypkg.org/mingw-builds/1.2-beta1/system.tar.xz
+mkdir 1.2-beta1
+sudo tar xf system.tar.xz -C 1.2-beta1
 ------------------------------------------------------------------------
 
 Get the project main scripts:
@@ -88,7 +84,7 @@ git clone http://git.notk.org/adrien/yypkg/mingw-builds.git
 Chroot into the base environment with several environment variables set
 automatically:
 ------------------------------------------------------------------------
-sudo ./mingw-builds/main.sh rc3_32
+sudo ./mingw-builds/main.sh 1.2-beta1
 ------------------------------------------------------------------------
 
 The first time you get into the sytem, download and setup the
@@ -107,7 +103,7 @@ In order to build the GTK+ Hello world, cd in the mingw-build directory
 and run (copy-paste) the following:
 
 ------------------------------------------------------------------------
-sudo ./main.sh rc3_32
+sudo ./main.sh 1.2-beta1
 
 cd root
 
