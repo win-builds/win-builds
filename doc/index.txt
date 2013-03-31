@@ -16,7 +16,7 @@ typically what this section provides.
 link:packages/native_toolchain/package_list.html[Package list]
 
 === Cross-toolchain ===
-The toolchain provides binutils 2.23.52.0.1, GCC 4.7.2 with C and C++
+The toolchain provides binutils 2.23.52, GCC 4.7.2 with C and C++
 support along with mingw-w64 2.0.7.
 
 link:packages/cross_toolchain_32/package_list.html[Package list (i686)]
