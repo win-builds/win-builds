@@ -27,48 +27,29 @@ mkdir -p "${LOCATION}"
 LOCATION="$(cd "${LOCATION}" && pwd)"
 YYPKG_PACKAGES="${LOCATION}/system/root/yypkg_packages"
 
-queue() {
-  local PKG_PATH="${1}"
-  local VARIANT="${2}"
-
-  local PKG="$(basename "${PKG_PATH}")"
-
-  echo "Sending ${PKG}${VARIANT}."
-
-  if [ -d "${PKG_PATH}" ]; then
-    tar cf "${YYPKG_PACKAGES}/${PKG}${VARIANT}.tar" \
-      --transform="s/config${VARIANT}/config/" \
-      --transform="s/${PKG}.SlackBuild/${PKG}${VARIANT}.SlackBuild/" \
-      -C "${PKG_PATH}" .
-  else
-    return 1
-  fi
-}
+QUEUED_PACKAGES=""
 
 queue_cond() {
   local PKG_PATH="${1}"
-  if [ -n "${2}" ]; then
-    local VARIANT="-${2}"
-  else
-    local VARIANT=""
-  fi
+  local VARIANT="${2:+-${2}}"
 
-  local PKG="$(basename "${PKG_PATH}")"
+  local PKG="${PKG_PATH##*/}"
 
-  if [ -z "${PKG_LIST}" ] || echo ${PKG_LIST} | grep -q "${PKG}${VARIANT}"; then
-    queue "${PKG_PATH}" "${VARIANT}"
-  fi
-}
+  case "${PKG_LIST}" in
+    ""|*${PKG}${VARIANT}*)
+      echo "Sending ${PKG}${VARIANT}."
 
-exit_build_daemon() {
-  touch "${YYPKG_PACKAGES}/exit-build-daemon"
-  sleep 4
+      tar cf "${YYPKG_PACKAGES}/${PKG}${VARIANT}.tar" \
+        --transform="s/config${VARIANT}/config/" \
+        --transform="s/${PKG}.SlackBuild/${PKG}${VARIANT}.SlackBuild/" \
+        -C "${PKG_PATH}" .
+
+      QUEUED_PACKAGES="${QUEUED_PACKAGES} ${PKG}${VARIANT}.tar" ;;
+  esac
 }
 
 start_build_daemon() {
-  (cd mingw-builds && ./main.sh "${LOCATION}" "${1}" "yes") &
-  trap exit_build_daemon EXIT SIGINT ERR
-  sleep 4
+  (cd mingw-builds && ./main.sh "${LOCATION}" "${1}" "yes" ${QUEUED_PACKAGES})
 }
 
 enable_ccache() {
@@ -87,19 +68,18 @@ SLACK="slackware64-current"
 enable_ccache
 
 if echo "${KIND}" | grep -q "native_toolchain"; then
-  start_build_daemon "native_toolchain"
+  QUEUED_PACKAGES=""
   queue_cond ${SBo}/ocaml ""
   queue_cond ${SBo}/ocaml-findlib ""
   queue_cond ${SBo}/lua ""
   for efl_lib in eina eet evas ecore embryo edje; do
     queue_cond ${SBo}/${efl_lib} ""
   done
-  exit_build_daemon
-  wait
+  start_build_daemon "native_toolchain"
 fi
 
 if echo "${KIND}" | grep -q "cross_toolchain"; then
-  start_build_daemon "cross_toolchain-${TRIPLET}"
+  QUEUED_PACKAGES=""
   queue_cond ${SLACK}/d/binutils ""
   queue_cond mingw/mingw-w64 "headers"
   queue_cond ${SLACK}/d/gcc "core"
@@ -107,12 +87,11 @@ if echo "${KIND}" | grep -q "cross_toolchain"; then
   queue_cond ${SLACK}/d/gcc "full"
   queue_cond mingw/flexdll ""
   queue_cond ${SBo}/ocaml ""
-  exit_build_daemon
-  wait
+  start_build_daemon "cross_toolchain-${TRIPLET}"
 fi
 
 if echo "${KIND}" | grep -q "windows"; then
-  start_build_daemon "windows-${TRIPLET}"
+  QUEUED_PACKAGES=""
   queue_cond ${SLACK}/l/libarchive "yypkg"
   queue_cond ${SLACK}/n/wget "yypkg"
   queue_cond mingw/win-iconv ""
@@ -172,8 +151,7 @@ if echo "${KIND}" | grep -q "windows"; then
   # Mozilla crap, I'll deal with that later, if ever
   # queue_cond mingw/nspr ""
   # queue_cond ${SLACK}/l/mozilla-nss ""
-  exit_build_daemon
-  wait
+  start_build_daemon "windows-${TRIPLET}"
 fi
 
 ./mingw-builds/release.sh "${LOCATION}" "${YYPKG_PACKAGES}"

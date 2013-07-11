@@ -3,6 +3,8 @@
 CWD="$(cd "$(dirname "${0}")" && pwd)"
 # ${CONFIG} is used in build_daemon_config which is sourced by this script
 CONFIG="${1}"
+shift
+FILES="${*}"
 
 description_of_slack_desc() {
   sed -n "s/^[-[:alnum:]]\+: //p" slack-desc \
@@ -51,19 +53,13 @@ iter() {
   rm ${YYOUTPUT}/files_{pre,post}
 }
 
-inotifywait -m --format '%w/%f' -e close_write "${PWD}" \
-  | while read FILE; do
-      if [ "$(basename "${FILE}")" = "exit-build-daemon" ]; then 
-        (sleep 0.5 && touch "${PWD}/exit-build-daemon")& break
-      fi
-      if ! echo "${FILE}" | grep -q '\.tar$'; then continue; fi
-      PKG="$(basename "${FILE}" | sed -e 's/\.tar$//')"
-      echo -e "\n ### Building ${PKG}. ###\n"
-      (cd processing \
-        && rm -rf ${PKG}* config* *patch* *diff* \
-        && tar xf ${FILE} \
-        && iter "${PKG}" \
-        && rm -rf *${PKG}* config* ${FILE} slack-desc* *patch* *diff*) || \
-        { (sleep 0.5 && touch "${PWD}/exit-build-daemon")& exit 1; }
-    done
+for FILE in ${*}; do
+  PKG="$(basename "${FILE}" | sed -e 's/\.tar$//')"
+  echo -e "\n ### Building ${PKG}. ###\n"
+  (cd processing \
+    && rm -rf ${PKG}* config* *patch* *diff* \
+    && tar xf ../${FILE} \
+    && iter "${PKG}" \
+    && rm -rf *${PKG}* config* ../${FILE} slack-desc* *patch* *diff*)
+done
 

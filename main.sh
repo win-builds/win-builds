@@ -59,8 +59,10 @@ else
     mkdir -p "${SYSTEM}/root/yypkg_packages"
     cp "${SOURCE_PATH}"/build_daemon{,_config} "${SYSTEM}/root/yypkg_packages"
 
+    shift; shift; shift
+
     chroot "${SYSTEM}" /bin/bash \
-      -c "cd /root/yypkg_packages && ./build_daemon ${BD_CONFIG}"
+      -c "cd /root/yypkg_packages && ./build_daemon ${BD_CONFIG} ${*}"
   else
     (CONFIG=${BD_CONFIG};
      source ${SOURCE_PATH}/build_daemon_config && chroot "${SYSTEM}" /bin/bash)
