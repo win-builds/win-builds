@@ -49,7 +49,9 @@ queue_cond() {
 }
 
 start_build_daemon() {
-  (cd mingw-builds && ./main.sh "${LOCATION}" "${1}" "yes" ${QUEUED_PACKAGES})
+  if [ -n "${QUEUED_PACKAGES}" ]; then
+    (cd mingw-builds && ./main.sh "${LOCATION}" "${1}" "yes" ${QUEUED_PACKAGES})
+  fi
 }
 
 enable_ccache() {
