@@ -144,8 +144,11 @@ if echo "${KIND}" | grep -q "windows"; then
   queue_cond ${SLACK}/d/pkg-config ""
   queue_cond ${SLACK}/l/libarchive "full"
   queue_cond ${SLACK}/n/wget "full"
-  # queue_cond ${SLACK}/l/sdl "base"
-  # queue_cond ${SLACK}/l/sdl "others"
+  queue_cond ${SLACK}/l/sdl "base"
+  queue_cond ${SLACK}/l/sdl "image"
+  # queue_cond ${SLACK}/l/sdl "mixer"
+  queue_cond ${SLACK}/l/sdl "net"
+  # queue_cond ${SLACK}/l/sdl "ttf"
   # queue_cond ${SBo}/webkit-gtk ""
   # queue_cond ${SLACK}/xap/gucharmap "" # requires GTK+-3
   # queue_cond ${SLACK}/xap/geeqie "" # includes <pwd.h>
