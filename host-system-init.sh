@@ -35,6 +35,7 @@ mount_bind() {
   new="$2"
   mkdir -p "${new}"
   mount --bind "${old}" "${new}"
+  mount -o remount,ro "${new}"
   BIND_MOUNTED_DIRS="${new} ${BIND_MOUNTED_DIRS}"
 }
 
