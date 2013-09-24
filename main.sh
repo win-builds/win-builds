@@ -1,7 +1,7 @@
 #!/bin/bash -eu
 
 LOCATION="${1}" # Work directory
-BD_CONFIG="${2:-"windows_32"}" # What to build?
+BD_CONFIG="${2:-"windows-i686-w64-mingw32"}" # What to build?
 BD="${3:-"no"}" # If "no", start a shell instead of build-daemon
 
 # The architecture of the system inside the chroot
