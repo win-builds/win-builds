@@ -63,7 +63,7 @@ set YYPREFIX=C:/yypkg_32
 yypkg -init
 yypkg -config -setpreds host="i686-w64-mingw32"
 yypkg -config -setpreds target="i686-w64-mingw32"
-sherpa -set-mirror http://yypkg.org/mingw-builds/1.2-beta2/packages/windows_32
+sherpa -set-mirror http://yypkg.org/mingw-builds/1.2-rc1/packages/windows_32
 sherpa -install all
 ------------------------------------------------------------------------
 
@@ -74,9 +74,9 @@ cross-compilation to i686-w64-mingw32.
 
 Download the base system and extract it somewhere:
 ------------------------------------------------------------------------
-wget http://yypkg.org/mingw-builds/1.2-beta2/system.tar.xz
-mkdir 1.2-beta2
-sudo tar xf system.tar.xz -C 1.2-beta2
+wget http://yypkg.org/mingw-builds/1.2-rc1/system.tar.xz
+mkdir 1.2-rc1
+sudo tar xf system.tar.xz -C 1.2-rc1
 ------------------------------------------------------------------------
 
 Get the project main scripts:
@@ -87,7 +87,7 @@ git clone http://git.notk.org/adrien/yypkg/mingw-builds.git
 Chroot into the base environment with several environment variables set
 automatically:
 ------------------------------------------------------------------------
-sudo ./mingw-builds/main.sh 1.2-beta2
+sudo ./mingw-builds/main.sh 1.2-rc1
 ------------------------------------------------------------------------
 
 The first time you get into the sytem, download and setup the
@@ -106,7 +106,7 @@ In order to build the GTK+ Hello world, cd in the mingw-build directory
 and run (copy-paste) the following:
 
 ------------------------------------------------------------------------
-sudo ./main.sh 1.2-beta2
+sudo ./main.sh 1.2-rc1
 
 cd root
 
@@ -137,7 +137,7 @@ It is fairly easy to create new packages. The usual way is to port
 Slackware build scripts to yypkg and mingw. Please refer to the
 link:packaging.html[packager documentation].
 
-== Current release status (1.2 beta2) ==
+== Current status (1.2 rc1) ==
 === Main changes ===
 * stable i686-w64-mingw32 native compiler
 * experimental x86_64-w64-mingw32 toolchain (both cross and native)
@@ -148,26 +148,30 @@ link:packaging.html[packager documentation].
 * updated packages
 
 === Known issues ===
-* libgcc_s_sjlj-1.dll is not in bin/
 * GCC has to be invoked with its fullest name (like
   i686-w64-mingw32-gcc-4.7.2) because the other files are symlinks.
+* Update a package is broken if there are symlinks in it.
+* curl is built without SSL support (it's built before the corresponding
+  libs).
 
-=== Changes in 1.2 beta2 ===
-* Link errors with the native toolchain was pebkac (--as-needed).
+=== Changes in 1.2 rc1 ===
+* Link errors I had with the native toolchain was pebkac (--as-needed).
 * less is fixed by creating /dev/tty.
 * elvis doesn't work well in tmux; not specific to this project.
-* Pango and GTK+ caches won't be created automatically in this release.
+* Pango and GTK+ caches are created automatically by the SFX installers.
+* libgcc_s_sjlj-1.dll is moved at packaging time in bin/.
 * fc-cache seems unneeded and won't be run automatically.
 
 == Roadmap and history ==
 === Roadmap ===
-* 1.2, Q1 2013: stable i686-w64-mingw32 native compiler, OCaml
-  cross-compiler, experimental x86_64-w64-mingw32 support
-* 1.3: Q3 2013: Qt binaries, VLC GUI
-* 1.4, Q2 2013: codec libraries for VLC
+* 1.3: Q2 2013: Qt binaries, GStreamer
+* 1.4, Q3 2013: VLC
 * 2.0: Q4 2013: stable toolchain support for x86_64-w64-mingw32
 
 === History ===
+* 1.2, April 2013: stable i686-w64-mingw32 native compiler, OCaml
+  cross-compiler, experimental x86_64-w64-mingw32 support and installers
+  for Windows.
 * 1.1 RC1, released 09/10/2012: experimental i686-w64-mingw32 native
   compiler, around 50 packages (GTK+, EFL, curl, ...), uses yypkg 1.6
   and sherpa frontend.
