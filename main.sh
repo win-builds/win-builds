@@ -22,12 +22,6 @@ SYSTEM="${LOCATION}/system"
 # mounted in order to always umount everything on exit
 SPECIAL_FILESYSTEMS=""
 
-if [ "${ARCH}" = "i486" ]; then
-  LIB="lib"
-else
-  LIB="lib64"
-fi
-
 mount_dev_pts_and_procfs() {
   BASE="${1}"
   mkdir -p "${BASE}/proc" "${BASE}/dev/pts"
@@ -48,7 +42,7 @@ umounts() {
 if [ ! -e "${SYSTEM}" ]; then
   YYPKG_SRC="$(cd "${SOURCE_PATH}/../yypkg/" && pwd)"
 
-  ARCH="${ARCH}" LIB="${LIB}" CWD="${CWD}" YYPKG_SRC="${YYPKG_SRC}" \
+  CWD="${CWD}" YYPKG_SRC="${YYPKG_SRC}" \
   SYSTEM="${SYSTEM}" SOURCE_PATH="${SOURCE_PATH}" \
   sh ${SOURCE_PATH}/host-system-init.sh
 else

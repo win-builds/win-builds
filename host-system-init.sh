@@ -3,25 +3,19 @@
 set -eu
 
 # Make sure these variables are defined
-echo ${ARCH} ${SYSTEM} ${SOURCE_PATH} ${LIB} ${CWD} ${YYPKG_SRC} > /dev/null
+echo ${SYSTEM} ${SOURCE_PATH} ${CWD} ${YYPKG_SRC} > /dev/null
 
 # When building the cross-compiler host system, the location of the slackware
 # binary packages
-YYOS_OUTPUT="${CWD}/yy_of_slack/tmp/output-${ARCH}"
+YYOS_OUTPUT="${CWD}/yy_of_slack/tmp/output-x86_64"
 
 # The script mounts several filesystems; these variables keep track of what is
 # mounted in order to always umount everything on exit
 BIND_MOUNTED_DIRS=""
 
-if [ "${ARCH}" = "i486" ]; then
-  YYPKG_TGT_BINARIES="${PWD}/i486"
-  BSDTAR_TGT="${PWD}/i486/bsdtar"
-  ROOT_FS="/home/adrien/t/sbchroot/slackware-current/"
-else
-  YYPKG_TGT_BINARIES="${YYPKG_SRC}/src"
-  BSDTAR_TGT="$(which bsdtar)"
-  ROOT_FS="/"
-fi
+YYPKG_TGT_BINARIES="${YYPKG_SRC}/src"
+BSDTAR_TGT="$(which bsdtar)"
+ROOT_FS="/"
 
 umounts() {
   if [ -n "${BIND_MOUNTED_DIRS}" ]; then
@@ -53,14 +47,10 @@ populate_slash_dev() {
 copy_ld_so() {
   ARCHIVE="$(find "${YYOS_OUTPUT}" -maxdepth 1 -name "glibc-2.*.txz" -printf '%f\n')"
   VER="$(echo "${ARCHIVE}" | sed -e 's/^glibc-\(2\.[0-9]\+\).*/\1/')"
-  mkdir -p "${SYSTEM}/${LIB}"
-  bsdtar xf "${YYOS_OUTPUT}/${ARCHIVE}" -q -C ${SYSTEM}/${LIB} \
-    --strip-components=3 "package-glibc/${LIB}/incoming/ld-${VER}.so"
-  if [ ${ARCH} = "x86_64" ]; then
-    ln -s "ld-${VER}.so" "${SYSTEM}/${LIB}/ld-linux-x86-64.so.2"
-  else
-    ln -s "ld-${VER}.so" "${SYSTEM}/${LIB}/ld-linux.so.2"
-  fi
+  mkdir -p "${SYSTEM}/lib64"
+  bsdtar xf "${YYOS_OUTPUT}/${ARCHIVE}" -q -C ${SYSTEM}/lib64 \
+    --strip-components=3 "package-glibc/lib64/incoming/ld-${VER}.so"
+  ln -s "ld-${VER}.so" "${SYSTEM}/lib64/ld-linux-x86-64.so.2"
 }
 
 chroot_run() {
@@ -69,7 +59,7 @@ chroot_run() {
   YYPREFIX="/" \
     LANG="en_US.UTF-8" \
     PATH="${INITDIR}/host/bin:${PATH}" \
-    LD_LIBRARY_PATH="${INITDIR}/host/${LIB}:${INITDIR}/host/usr/${LIB}" \
+    LD_LIBRARY_PATH="${INITDIR}/host/lib64:${INITDIR}/host/usr/lib64" \
   chroot "${DIR}" $*
 }
 
@@ -90,7 +80,7 @@ cp "${BSDTAR_TGT}" "${SYSTEM}/sbin/"
 
 trap umounts EXIT SIGINT ERR
 
-for dir in "bin" "${LIB}" "usr/${LIB}"; do
+for dir in "bin" "lib64" "usr/lib64"; do
   mount_bind "${ROOT_FS}${dir}" "${INITDIR_FULL}/host/${dir}"
 done
 
@@ -114,7 +104,7 @@ umounts
 rm -r yypkg_init/pkgs
 rmdir yypkg_init/host/{bin,lib64,usr/lib64,usr} .{ICE,X11}-unix)
 
-for bin in cc c++ {${ARCH}-slackware-linux-,}{gcc,g++}; do
+for bin in cc c++ {x86_64-slackware-linux-,}{gcc,g++}; do
   ln -s "/usr/bin/ccache" "${SYSTEM}/usr/local/bin/${bin}"
 done
 
