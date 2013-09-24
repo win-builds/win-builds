@@ -50,14 +50,17 @@ like %PATH%.
 ==== Windows Installer ====
 There are two installers available, one for a native i686 toolchain and
 another one for a native x86_64 toolchain (which will require Windows
-x64 to run). They automate the steps mentionned in the next section.
+x64 to run). They automate the steps mentionned in the next section;
+they will download all the available packages in the mirror (57MB for
+i686 and 50MB for x86_64).
 link:yypkg-1.2-rc1-i686.exe[Installer for i686-w64-mingw32]
 
 link:yypkg-1.2-rc1-x86_64.exe[Installer for x86_64-w64-mingw32]
 
 ==== Manual steps ====
 Download and extract link:yypkg-bin-1.2-rc1.tar.xz[the yypkg binaries].
-Then, run:
+Then, start a command prompte (cmd.exe), enter the directory where
+you've extracted the files and run:
 ------------------------------------------------------------------------
 set YYPREFIX=C:/yypkg_32
 yypkg -init
@@ -70,7 +73,9 @@ sherpa -install all
 === Simple use with cross-compilation and prebuilt binaries ===
 
 The following commands will download and setup a system ready for
-cross-compilation to i686-w64-mingw32.
+cross-compilation to i686-w64-mingw32. It goes through a chroot in order
+to provide the matching versions of not only glibc but also GTK+, pango,
+edje, Ocaml, ...
 
 Download the base system and extract it somewhere:
 ------------------------------------------------------------------------
@@ -95,6 +100,10 @@ cross-toolchain and all the cross-compiled tools and libraries:
 ------------------------------------------------------------------------
 /root/get-all-prebuilt-binaries-i686.sh
 ------------------------------------------------------------------------
+
+My typical workflow is to work outside of the chroot and only use it to
+build; I use "mount bind" to make the build directory available
+inside the chroot.
 
 // === Yypkg cheatsheet ===
 // See "yypkg -help" for a quick reference and
