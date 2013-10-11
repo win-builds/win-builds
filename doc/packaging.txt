@@ -9,7 +9,7 @@ link:diy.html[doc-diy].
 
 === Import the build script ===
 Currently you have to ask me to make the slackware or slackbuilds.org
-file appear in the mingw-builds tree.
+file appear in the win-builds tree.
 
 === Port the build script (mostly search-replace) ===
 * Replace all occurences of 'usr' with '$\{PREFIX\}' (verbatim, don't
@@ -55,7 +55,7 @@ instead '$\{PKGNAM\}'.
   'chmod -R u+w,go+r-w,a-s .'.
 
 === List your package ===
-Edit mingw-builds/build-packages.sh and add your package to the
+Edit win-builds/build-packages.sh and add your package to the
 appropriate list; you need to put your package after all the other
 packages it depends on.
 

@@ -1,4 +1,4 @@
-HOST:="notk.org:/var/www/yypkg.org/mingw-builds/1.2-rc1"
+HOST:="notk.org:/var/www/win-builds.org/1.3-alpha1"
 
 DOCS:=index diy packaging
 DOCS_TXT:=$(DOCS:%=%.txt)

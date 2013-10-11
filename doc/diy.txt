@@ -8,7 +8,7 @@ NOTK="http://git.notk.org/adrien/yypkg"
 mkdir -p "yypkg" "yypkg_packages"
 
 git clone "http://git.ocamlcore.org/yypkg/yypkg.git"
-git clone "${NOTK}/mingw-builds.git"
+git clone "${NOTK}/win-builds.git"
 git clone "${NOTK}/yy_of_slack.git"
 git clone "${NOTK}/slackware64-current.git"
 git clone "${NOTK}/mingw.git"
@@ -52,11 +52,11 @@ done
 === Building everything ===
 As root, run:
 ------------------------------------------------------------------------
-./mingw-builds/build-packages.sh 1.2-rc1
+./win-builds/build-packages.sh 1.3-alpha1
 ------------------------------------------------------------------------
 
 You can change the directory where files will be put; here it is
-"1.2-rc1".
+"1.3-alpha1".
 
 === Building only a series ===
 It is possible to only build one category out of: init,
@@ -73,7 +73,7 @@ windows_32/windows_64.
 
 An example invocation is:
 ------------------------------------------------------------------------
-./mingw-builds/build-packages.sh 1.2-rc1 windows
+./win-builds/build-packages.sh 1.3-alpha1 windows
 ------------------------------------------------------------------------
 
 === Building only one package ===
@@ -82,5 +82,5 @@ after the series.
 
 An example invocation is:
 ------------------------------------------------------------------------
-./mingw-builds/build-packages.sh 1.2-rc1 windows libjpeg
+./win-builds/build-packages.sh 1.3-alpha1 windows libjpeg
 ------------------------------------------------------------------------
