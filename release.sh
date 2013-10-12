@@ -2,6 +2,11 @@
 
 DEST="${1}"
 LOCATION="${2}"
+
+if [ ! -d "${LOCATION}" ]; then
+  exit 0
+fi
+
 LOCATION="$(cd "${LOCATION}" && pwd)"
 
 CWD="$(pwd)"
