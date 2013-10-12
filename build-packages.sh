@@ -55,8 +55,10 @@ start_build_daemon() {
 }
 
 enable_ccache() {
-  for bin in ${TRIPLET}-{gcc,g++}; do
-    ln -sf "/usr/bin/ccache" "${LOCATION}/system/usr/local/bin/${bin}"
+  for triplet in {i686,x86_64}-w64-mingw32; do
+    for bin in ${triplet}-{gcc,g++}; do
+      ln -sf "/usr/bin/ccache" "${LOCATION}/system/usr/local/bin/${bin}"
+    done
   done
 }
 
