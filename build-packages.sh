@@ -35,8 +35,8 @@ queue_cond() {
 
   local PKG="${PKG_PATH##*/}"
 
-  case "${PKG_LIST}" in
-    ""|*${PKG}${VARIANT}*)
+  case " ${PKG_LIST} " in
+    "  "|*" ${PKG}${VARIANT} "*)
       echo "Sending ${PKG}${VARIANT}."
 
       tar cf "${YYPKG_PACKAGES}/${PKG}${VARIANT}.tar" \
