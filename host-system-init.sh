@@ -109,7 +109,13 @@ for bin in cc c++ {x86_64-slackware-linux-,}{gcc,g++}; do
 done
 
 cp "${SOURCE_PATH}/get-all-prebuilt-binaries-i686.sh" "${SYSTEM}/root"
-echo 'nameserver 208.67.222.222' > "${SYSTEM}/etc/resolv.conf"
+cat > "${SYSTEM}/etc/resolv.conf" << EOF
+# noc.toile-libre.net
+nameserver 195.88.84.100
+# OpenDNS
+nameserver 208.67.222.222
+nameserver 208.67.220.220
+EOF
 
 SYSTEM_TAR_XZ="$(echo "${SYSTEM}" | sed 's;/$;;').tar.xz"
 tar c -C "$(dirname "${SYSTEM}")" "$(basename "${SYSTEM}")" \
