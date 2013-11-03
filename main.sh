@@ -37,10 +37,9 @@ umounts() {
 
 # Build the cross-compiler host system if ${SYSTEM} doesn't exist
 if [ ! -e "${SYSTEM}" ]; then
-  YYPKG_SRC="$(cd "${SOURCE_PATH}/../yypkg/" && pwd)"
 
   YYOS_OUTPUT="${CWD}/../yy_of_slack/tmp/output-x86_64" \
-  YYPKG_SRC="${YYPKG_SRC}" \
+  YYPKG_SRC="${SOURCE_PATH}/../yypkg" \
   SYSTEM="${SYSTEM}" SOURCE_PATH="${SOURCE_PATH}" \
   sh ${SOURCE_PATH}/host-system-init.sh
 else
