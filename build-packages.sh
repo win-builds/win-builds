@@ -37,8 +37,9 @@ queue_cond() {
 
   case " ${PKG_LIST} " in
     "  "|*" ${PKG}${VARIANT} "*)
-      echo "Sending ${PKG}${VARIANT}."
+      echo "Copying ${PKG}${VARIANT}."
 
+      mkdir -p "${YYPKG_PACKAGES}"
       tar cf "${YYPKG_PACKAGES}/${PKG}${VARIANT}.tar" \
         --transform="s/config${VARIANT}/config/" \
         --transform="s/${PKG}.SlackBuild/${PKG}${VARIANT}.SlackBuild/" \
