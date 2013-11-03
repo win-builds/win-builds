@@ -115,5 +115,6 @@ EOF
 
 SYSTEM_TAR_XZ="$(echo "${SYSTEM}" | sed 's;/$;;').tar.xz"
 tar c -C "$(dirname "${SYSTEM}")" "$(basename "${SYSTEM}")" \
+  --exclude 'root/yypkg_packages' \
   | xz -9vv > "${SYSTEM_TAR_XZ}"
 
