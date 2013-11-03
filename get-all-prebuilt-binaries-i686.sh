@@ -6,7 +6,7 @@ for d in native_toolchain cross_toolchain_32 windows_32; do
   echo "Initializing yypkg in ${YYPREFIX}."
   yypkg -init
 
-  sherpa -set-mirror "http://yypkg.org/mingw-builds/current/packages/${d}"
+  sherpa -set-mirror "http://win-builds.org/current/packages/${d}"
 
   echo "Setting up predicates for ${d}."
   if [ "${d}" = "cross_toolchain_32" ]; then

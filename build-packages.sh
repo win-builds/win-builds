@@ -50,7 +50,7 @@ queue_cond() {
 
 start_build_daemon() {
   if [ -n "${QUEUED_PACKAGES}" ]; then
-    (cd mingw-builds && ./main.sh "${LOCATION}" "${1}" "yes" ${QUEUED_PACKAGES})
+    (cd win-builds && ./main.sh "${LOCATION}" "${1}" "yes" ${QUEUED_PACKAGES})
   fi
 }
 
@@ -161,4 +161,4 @@ if echo "${KIND}" | grep -q "windows"; then
   start_build_daemon "windows-${TRIPLET}"
 fi
 
-./mingw-builds/release.sh "${LOCATION}" "${YYPKG_PACKAGES}"
+./win-builds/release.sh "${LOCATION}" "${YYPKG_PACKAGES}"
