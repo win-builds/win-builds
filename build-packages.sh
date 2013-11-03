@@ -62,10 +62,6 @@ enable_ccache() {
   done
 }
 
-if echo "${KIND}" | grep -q init && ! [ -d "${LOCATION}/system" ]; then
-  ./mingw-builds/main.sh "${LOCATION}" "whatever"
-fi
-
 SBo="slackbuilds.org"
 SLACK="slackware64-current"
 
