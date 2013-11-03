@@ -3,11 +3,7 @@
 set -eu
 
 # Make sure these variables are defined
-echo ${SYSTEM} ${SOURCE_PATH} ${CWD} ${YYPKG_SRC} > /dev/null
-
-# When building the cross-compiler host system, the location of the slackware
-# binary packages
-YYOS_OUTPUT="${CWD}/yy_of_slack/tmp/output-x86_64"
+echo ${SYSTEM} ${SOURCE_PATH} ${YYOS_OUTPUT} ${YYPKG_SRC} > /dev/null
 
 # The script mounts several filesystems; these variables keep track of what is
 # mounted in order to always umount everything on exit

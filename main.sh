@@ -39,7 +39,8 @@ umounts() {
 if [ ! -e "${SYSTEM}" ]; then
   YYPKG_SRC="$(cd "${SOURCE_PATH}/../yypkg/" && pwd)"
 
-  CWD="${CWD}" YYPKG_SRC="${YYPKG_SRC}" \
+  YYOS_OUTPUT="${CWD}/../yy_of_slack/tmp/output-x86_64" \
+  YYPKG_SRC="${YYPKG_SRC}" \
   SYSTEM="${SYSTEM}" SOURCE_PATH="${SOURCE_PATH}" \
   sh ${SOURCE_PATH}/host-system-init.sh
 else
