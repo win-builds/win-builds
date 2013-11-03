@@ -24,7 +24,6 @@ This requires a slackware64 14.0 system currently. You also need a
 mirror of the sources.
 ------------------------------------------------------------------------
 MIRROR="${PWD}/mirror/slackware64-current" \
-  ARCH=x86_64 \
   ./yy_of_slack/yy_of_slack.sh
 ------------------------------------------------------------------------
 
