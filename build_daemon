@@ -54,12 +54,11 @@ iter() {
 }
 
 for FILE in ${*}; do
-  PKG="$(basename "${FILE}" | sed -e 's/\.tar$//')"
-  echo -e "\n ### Building ${PKG}. ###\n"
+  PKG="$(basename "${FILE%%.tar}")"
+  printf "\n ### Building ${PKG}. ###\n\n"
   (cd processing \
     && rm -rf "${PKG}" && mkdir -p "${PKG}" \
     && cd "${PKG}" \
     && tar xf "../../${FILE}" \
     && iter "${PKG}")
 done
-
