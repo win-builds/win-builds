@@ -36,28 +36,35 @@ umounts() {
 }
 
 # Build the cross-compiler host system if ${SYSTEM} doesn't exist
-if [ ! -e "${SYSTEM}" ]; then
-
-  YYOS_OUTPUT="${CWD}/../yy_of_slack/tmp/output-x86_64" \
-  YYPKG_SRC="${SOURCE_PATH}/../yypkg" \
-  SYSTEM="${SYSTEM}" SOURCE_PATH="${SOURCE_PATH}" \
-  sh ${SOURCE_PATH}/host-system-init.sh
-else
-  trap umounts EXIT SIGINT ERR
-  mount_dev_pts_and_procfs "${SYSTEM}"
-
-  if [ x"${BD}" = x"yes" ]; then
-    mkdir -p "${SYSTEM}/root/yypkg_packages"
-    cp "${SOURCE_PATH}"/build_daemon{,_config} "${SYSTEM}/root/yypkg_packages"
-
-    shift; shift; shift
-
-    chroot "${SYSTEM}" /bin/bash \
-      -c "cd /root/yypkg_packages && ./build_daemon ${BD_CONFIG} ${*}"
+if [ ! -e "${SYSTEM}/bin/bash" ]; then
+  printf "Either system directory or /bin/bash doesn't exist, "
+  if [ -e "${SYSTEM}.tar.xz" ]; then
+    printf "restoring it from existing tarball.\n"
+    tar xf "${SYSTEM}.tar.xz" -C "${LOCATION}"
   else
-    (CONFIG=${BD_CONFIG};
-     source ${SOURCE_PATH}/build_daemon_config && chroot "${SYSTEM}" /bin/bash)
-  fi
+    printf "re-creating it from scratch.\n"
 
-  umounts
+    YYOS_OUTPUT="${CWD}/../yy_of_slack/tmp/output-x86_64" \
+    YYPKG_SRC="${SOURCE_PATH}/../yypkg" \
+    SYSTEM="${SYSTEM}" SOURCE_PATH="${SOURCE_PATH}" \
+    sh ${SOURCE_PATH}/host-system-init.sh
+  fi
 fi
+
+trap umounts EXIT SIGINT ERR
+mount_dev_pts_and_procfs "${SYSTEM}"
+
+if [ x"${BD}" = x"yes" ]; then
+  mkdir -p "${SYSTEM}/root/yypkg_packages"
+  cp "${SOURCE_PATH}"/build_daemon{,_config} "${SYSTEM}/root/yypkg_packages"
+
+  shift; shift; shift
+
+  chroot "${SYSTEM}" /bin/bash \
+    -c "export YYLOWCOMPRESS=1; cd /root/yypkg_packages && ./build_daemon ${BD_CONFIG} ${*}"
+else
+  (CONFIG=${BD_CONFIG};
+   source ${SOURCE_PATH}/build_daemon_config && chroot "${SYSTEM}" /bin/bash)
+fi
+
+umounts
