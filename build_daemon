@@ -57,9 +57,9 @@ for FILE in ${*}; do
   PKG="$(basename "${FILE}" | sed -e 's/\.tar$//')"
   echo -e "\n ### Building ${PKG}. ###\n"
   (cd processing \
-    && rm -rf ${PKG}* config* *patch* *diff* \
-    && tar xf ../${FILE} \
-    && iter "${PKG}" \
-    && rm -rf *${PKG}* config* ../${FILE} slack-desc* *patch* *diff*)
+    && rm -rf "${PKG}" && mkdir -p "${PKG}" \
+    && cd "${PKG}" \
+    && tar xf "../../${FILE}" \
+    && iter "${PKG}")
 done
 
