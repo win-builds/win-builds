@@ -55,18 +55,8 @@ start_build_daemon() {
   fi
 }
 
-enable_ccache() {
-  for triplet in {i686,x86_64}-w64-mingw32; do
-    for bin in ${triplet}-{gcc,g++}; do
-      ln -sf "/usr/bin/ccache" "${LOCATION}/system/usr/local/bin/${bin}"
-    done
-  done
-}
-
 SBo="slackbuilds.org"
 SLACK="slackware64-current"
-
-enable_ccache
 
 if echo "${KIND}" | grep -q "native_toolchain"; then
   QUEUED_PACKAGES=""
@@ -89,6 +79,10 @@ if echo "${KIND}" | grep -q "cross_toolchain"; then
   queue_cond mingw/flexdll ""
   queue_cond ${SBo}/ocaml ""
   start_build_daemon "cross_toolchain-${TRIPLET}"
+
+  for X in gcc g++; do
+    ln -sf "/usr/bin/ccache" "${LOCATION}/system/usr/local/bin/${TRIPLET}-${X}"
+  done
 fi
 
 if echo "${KIND}" | grep -q "windows"; then
