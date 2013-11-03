@@ -64,6 +64,71 @@ You can now build your package like any other package. See the
 link:diy.html#Start-the-build[documentation on building packages]
 for a howto.
 
+=== Add the tarballs to git ===
+You need a local branch for the remote "binaries" branch:
+------------------------------------------------------------------------
+git branch binaries origin/binaries
+------------------------------------------------------------------------
+
+Now you need to commit the tarballs in this branch. In order to commit
+to this branch without doing many operations, I've created a script that
+commits to a different branch without checking it out.
+Usage is:
+------------------------------------------------------------------------
+git ctb <branch> <files...>
+------------------------------------------------------------------------
+Example:
+------------------------------------------------------------------------
+git ctb binaries flexdll/flexdll-0.30.tar.gz mingw-w64/mingw-w64-v2.0.7.tar.gz
+------------------------------------------------------------------------
+
+Here, "ctb" is an alias in my ~/.gitconfig:
+
+------------------------------------------------------------------------
+[alias]
+  ctb = !commit-to-branch.sh
+------------------------------------------------------------------------
+
+In turn, "commit-to-branch.sh" is a shell script which I store in my
+$PATH and which content is:
+------------------------------------------------------------------------
+#!/bin/sh -eux
+
+OPERATION="${1}"
+BRANCH="${2}"
+shift; shift
+FILES="$@"
+
+case "${OPERATION}" in
+  "add") COMMIT_MESSAGE_PREFIX="Adding" ;;
+  "rm")  COMMIT_MESSAGE_PREFIX="Removing" ;;
+  *) echo "Action is neither 'add' nor 'rm'. Cannot proceed."; exit 1 ;;
+esac
+
+for file in ${FILES}; do
+  (
+    printf "commit refs/heads/${BRANCH}\n"
+    printf "committer <${USER}@${HOSTNAME}> now\n"
+    printf "data <<EOC\n"
+    printf "${COMMIT_MESSAGE_PREFIX} $(basename ${file}).\n"
+    printf "EOC\n"
+    if git branch 2>/dev/null | grep -q "${BRANCH}"; then
+      printf "from refs/heads/${BRANCH}^0\n"
+    fi
+    case "${OPERATION}" in
+      "add")
+        printf "M 100644 inline ${file}\n"
+        printf "data $(stat --format='%s' ${file})\n"
+        cat ${file}
+      ;;
+      "rm")
+        printf "D ${file}\n"
+      ;;
+    esac
+  ) \
+  | git fast-import --quiet --date-format=now
+done
+------------------------------------------------------------------------
 
 == Create a new package ==
 TBD
