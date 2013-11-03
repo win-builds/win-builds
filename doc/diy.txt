@@ -28,23 +28,20 @@ MIRROR="${PWD}/mirror/slackware64-current" \
 ------------------------------------------------------------------------
 
 == Downloading source tarballs ==
-You need to copy the same source files and patches as those in
-slackware64 14.0 except for gnutls which has to be version 3.1.2. All
-these files go in slackware64-current/ and follow the same hierarchy as
-in slackware64 sources.
-
-The mingw/ and slackbuilds.org/ directory also need sources.
-
-This is not terribly practical and a simpler solution is being worked on
-but won't be available before a few weeks. In the meantime, the
-following can help copy sources:
+In order to retrieve the tarballs, you need to use the following git
+command:
 ------------------------------------------------------------------------
-(cd slackware64-current && find . -mindepth 2 -type d -name .git -prune
--o -type f -name '*.yypkg.meta' -printf '%h\n') | while read dir; do
-rsync --verbose --ignore-existing -r
-mirror/slackware64-current/source/${dir}/ slackware64-current/${dir}/;
-done
+git merge origin/tarballs
 ------------------------------------------------------------------------
+
+In order to update your git repository, you will then have to run:
+------------------------------------------------------------------------
+git pull --rebase
+git merge origin/tarballs
+------------------------------------------------------------------------
+
+If you've started doing changes, you should first learn how to use git
+well.
 
 == Start the build ==
 
