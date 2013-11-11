@@ -64,7 +64,7 @@ if [ x"${BD}" = x"yes" ]; then
     -c "export YYLOWCOMPRESS=1; cd /root/yypkg_packages && ./build_daemon ${BD_CONFIG} ${*}"
 else
   (CONFIG=${BD_CONFIG};
-   source ${SOURCE_PATH}/build_daemon_config && chroot "${SYSTEM}" /bin/bash)
+   . ${SOURCE_PATH}/build_daemon_config && chroot "${SYSTEM}" /bin/bash)
 fi
 
 umounts
