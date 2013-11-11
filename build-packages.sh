@@ -21,6 +21,8 @@ if [ x"${KIND}" = x"${DEFAULT_KIND}" -a -z "${PKG_LIST}" ]; then
   sleep 10
 fi
 
+echo "Building packages with TRIPLET=${TRIPLET}."
+
 umask 022
 
 mkdir -p "${LOCATION}"

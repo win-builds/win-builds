@@ -20,6 +20,8 @@ fi
 
 . build_daemon_config
 
+echo "Build daemon configured for ${HOST_TRIPLET} => ${TARGET_TRIPLET}."
+
 if [ ! -e ${YYPREFIX} ]; then
   yypkg -init
 fi
