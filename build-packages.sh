@@ -130,9 +130,9 @@ if echo "${KIND}" | grep -q "windows"; then
   queue_cond ${SLACK}/l/zlib ""
   queue_cond ${SLACK}/l/libjpeg ""
   queue_cond ${SLACK}/l/expat ""
+  queue_cond ${SLACK}/l/libpng ""
   queue_cond ${SLACK}/l/freetype ""
   queue_cond ${SLACK}/x/fontconfig "" # depends on expat, freetype
-  queue_cond ${SLACK}/l/libpng ""
   queue_cond ${SLACK}/l/giflib ""
   queue_cond ${SLACK}/l/libtiff ""
   queue_cond ${SBo}/lua ""
