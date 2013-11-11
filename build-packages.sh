@@ -49,7 +49,7 @@ queue_cond() {
   esac
 }
 
-start_build_daemon() {
+build() {
   if [ -n "${QUEUED_PACKAGES}" ]; then
     (cd win-builds && ./main.sh "${LOCATION}" "${1}" "yes" ${QUEUED_PACKAGES})
   fi
@@ -66,7 +66,7 @@ if echo "${KIND}" | grep -q "native_toolchain"; then
   for efl_lib in eina eet evas ecore embryo edje; do
     queue_cond ${SBo}/${efl_lib} ""
   done
-  start_build_daemon "native_toolchain"
+  build "native_toolchain"
 fi
 
 if echo "${KIND}" | grep -q "cross_toolchain"; then
@@ -78,7 +78,7 @@ if echo "${KIND}" | grep -q "cross_toolchain"; then
   queue_cond ${SLACK}/d/gcc "full"
   queue_cond mingw/flexdll ""
   queue_cond ${SBo}/ocaml ""
-  start_build_daemon "cross_toolchain-${TRIPLET}"
+  build "cross_toolchain-${TRIPLET}"
 
   for X in gcc g++; do
     ln -sf "/usr/bin/ccache" "${LOCATION}/system/usr/local/bin/${TRIPLET}-${X}"
@@ -149,7 +149,7 @@ if echo "${KIND}" | grep -q "windows"; then
   # Mozilla crap, I'll deal with that later, if ever
   # queue_cond mingw/nspr ""
   # queue_cond ${SLACK}/l/mozilla-nss ""
-  start_build_daemon "windows-${TRIPLET}"
+  build "windows-${TRIPLET}"
 fi
 
 ./win-builds/release.sh "${LOCATION}" "${YYPKG_PACKAGES}"
