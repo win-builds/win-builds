@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <meta name="description" "Up-to-date, comprehensive and easy-to-use packaging system for Windows."/>
+  <title>Win-builds.org - (Free) Software Packaging For Windows</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+  <div id="page">
+    <div id="header">
+      <h2>
+        <span id="title">Win-builds - (Free) Software Packaging For Windows</span>
+        <br/><br/>
+        <a href="current">Documentation/Downloads</a>
+        -
+        <a href="bugs">Bug Tracker</a>
+        -
+        <a href="http://cgit.notk.org/adrien/yypkg/">Gitweb</a>
+      </h2>
+    </div>
+    <div id="corps-wrap">
+      <div id="corps">
+        <p>
+          Win-builds creates binary packages of libraries and tools for
+          Windows. It is supported by the yypkg package manager. Both of them
+          will become official tools and repositories for the mingw-w64
+          project.
+        </p>
+        <ul>
+          <li>targets windows 32bit, 64 bit soon</li>
+          <li>works from both windows and linux</li>
+          <li>GTK+, EFL, curl, libsoup, openssl, zlib, xz, ...</li>
+          <li>binary packages</li>
+          <li>100% reproducible</li>
+          <li>build scripts available for everything, based on Slackware and SlackBuilds.org</li>
+        </ul>
+        <p>
+          Look at the <a href="current">Documentation</a> for more information and downloads.
+        </p>
+        <br/>
+        <p>
+          <table border="1px" width="100%" style="border-collapse:collapse;" summary="Comparison of various projects with similar goals">
+            <caption><em>Comparison of various projects with similar goals</em></caption>
+            <tr>
+              <th/>
+              <th>Runs on</th>
+              <th>Compilers</th>
+              <th>Package mgmt.</th>
+              <th>Packages</th>
+              <th>Doc</th>
+              <th>Q&amp;A</th>
+              <th>GUI</th>
+              <th>Notes</th>
+            </tr>
+            <tr>
+              <th>win-builds</th>
+              <td bgcolor="palegreen">Linux,<br/>Windows</td>
+              <td bgcolor="gold">GCC, mingw-w64, 32/64</td>
+              <td bgcolor="palegreen">Yes</td>
+              <td bgcolor="gold"><a href="current/packages/windows_32/package_list.html">Around 65</a></td>
+              <td bgcolor="palegreen">Yes</td>
+              <td bgcolor="palegreen">Yes</td>
+              <td bgcolor="gold">WIP</td>
+            </tr>
+            <tr>
+              <th><a href="http://coapp.org">coApp</a></th>
+              <td bgcolor="gold">Windows</td>
+              <td bgcolor="gold">MSVC</td>
+              <td bgcolor="darkorange">Yes-No:<br/>MSI-based</td>
+              <td bgcolor="gold"><a href="http://coapp.org/pages/packages.html">Around 69</a></td>
+              <td bgcolor="palegreen">Yes</td>
+              <td bgcolor="palegreen">Yes</td>
+              <td bgcolor="palegreen">Yes</td>
+              <td bgcolor="gold">Includes non-free<br/>software, repackages</td>
+            </tr>
+            <tr>
+              <th><a href="http://mxe.cc">MXE</a></th>
+              <td bgcolor="gold">Linux, Mac OS X</td>
+              <td bgcolor="gold">GCC, mingw.org, 32b/64b</td>
+              <td bgcolor="orangered">No</td>
+              <td bgcolor="palegreen">Around 280</td>
+              <td bgcolor="palegreen">Yes</td>
+              <td bgcolor="darkorange">No</td>
+              <td bgcolor="darkorange">No</td>
+              <td bgcolor="darkorange">Mostly supports static builds;<br/>source-based</td>
+            </tr>
+            <tr>
+              <th>mingw-get</th>
+              <td bgcolor="gold">Windows</td>
+              <td bgcolor="peachpuff">Repository-dependent</td>
+              <td bgcolor="palegreen">Yes</td>
+              <td bgcolor="palegreen">High</td>
+              <td bgcolor="orangered">No</td>
+              <td bgcolor="orangered">No</td>
+              <td bgcolor="palegreen">Yes</td>
+            </tr>
+            <tr>
+              <th><a href="http://download.opensuse.org/repositories/windows:/mingw">OpenSuse</a></th>
+              <td bgcolor="darkorange">OpenSuse</td>
+              <td bgcolor="gold">GCC, mingw-w64</td>
+              <td bgcolor="palegreen">Yes (rpm/yum)</td>
+              <td bgcolor="palegreen">Around 200</td>
+              <td bgcolor="palegreen">Yes</td>
+              <td bgcolor="palegreen">Yes</td>
+              <td bgcolor="palegreen">Yes</td>
+            </tr>
+          </table>
+          <br/>
+          <center>
+            <table border="1px" width="100%" style="border-collapse:collapse;">
+              <tr>
+                <td width="20%" bgcolor="palegreen">Good state</td>
+                <td width="20%" bgcolor="gold">Room for improvement</td>
+                <td width="20%" bgcolor="darkorange">Bad because of design</td>
+                <td width="20%" bgcolor="orangered">Blocker issue</td>
+                <td width="20%" bgcolor="peachpuff">Not applicable</td>
+              </tr>
+            </table>
+          </center>
+        </p>
+        <br/>
+        <ul>
+          <li>02/04/2013 - <a href="1.2-rc1">1.2 rc1</a>: fixes an issue with less, GCC's spec file, its --libdir on i686, the location of libgcc_s_sjlj-1.dll and creates the GTK+ and Pango caches automatically .</li>
+          <li>29/03/2013 - <a href="1.2-beta1">1.2 beta1</a>: stabilizes the native i686 compiler and adds an experimental x86_64 one. It includes a WIP OCaml cross-compiler to i686 and new yypkg binaries, built with it. On Windows, an SFX installer is provided.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
