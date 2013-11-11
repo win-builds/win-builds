@@ -84,8 +84,14 @@ build() {
   fi
 }
 
+copy_logs() {
+  copy_from_system "logs"
+}
+
 SBo="slackbuilds.org"
 SLACK="slackware64-current"
+
+trap copy_logs ERR
 
 if echo "${KIND}" | grep -q "native_toolchain"; then
   QUEUED_PACKAGES=""
