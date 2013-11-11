@@ -1,6 +1,10 @@
 #!/bin/sh -eu
 
 TRIPLET="${TRIPLET:-i686-w64-mingw32}"
+case "${TRIPLET}" in
+  i686*)   BITS="32";;
+  x86_64*) BITS="64";;
+esac
 
 DEFAULT_KIND="init-native_toolchain-cross_toolchain-windows"
 
@@ -28,6 +32,7 @@ umask 022
 mkdir -p "${LOCATION}"
 LOCATION="$(cd "${LOCATION}" && pwd)"
 YYPKG_PACKAGES="${LOCATION}/system/root/yypkg_packages"
+SHERPA_GEN="${PWD}/yypkg/src/sherpa_gen.native"
 
 QUEUED_PACKAGES=""
 
@@ -51,9 +56,31 @@ queue_cond() {
   esac
 }
 
+copy_from_system() {
+  local DIR="${1}"
+
+  echo "Copying ${DIR}."
+
+  rsync -avP --delete-after --exclude='memo_*' \
+    "${YYPKG_PACKAGES}/${DIR}/" "${LOCATION}/${DIR}/"
+}
+
 build() {
+  local KIND="${1}"
+
   if [ -n "${QUEUED_PACKAGES}" ]; then
-    (cd win-builds && ./main.sh "${LOCATION}" "${1}" "yes" ${QUEUED_PACKAGES})
+    (cd win-builds && ./main.sh "${LOCATION}" "${KIND}" "yes" ${QUEUED_PACKAGES})
+
+    case "${KIND}" in
+      "native") local KIND_DIR="${KIND}" ;;
+      *)        local KIND_DIR="${KIND%%-*-*-*}_${BITS}" ;;
+    esac
+
+    copy_from_system "logs/${KIND_DIR}"
+    copy_from_system "packages/${KIND_DIR}"
+
+    echo "Setting up ${KIND_DIR}."
+    "${SHERPA_GEN}" "${LOCATION}/packages/${KIND_DIR}"
   fi
 }
 
@@ -153,5 +180,3 @@ if echo "${KIND}" | grep -q "windows"; then
   # queue_cond ${SLACK}/l/mozilla-nss ""
   build "windows-${TRIPLET}"
 fi
-
-./win-builds/release.sh "${LOCATION}" "${YYPKG_PACKAGES}"
