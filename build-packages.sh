@@ -27,6 +27,8 @@ fi
 
 echo "Building packages with TRIPLET=${TRIPLET}."
 
+# This is the only acceptable umask when building packets. Any other gives wrong
+# permissions in the packets, like 711 for /usr, and will break systems.
 umask 022
 
 mkdir -p "${LOCATION}"
