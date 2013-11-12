@@ -143,7 +143,10 @@ if echo "${KIND}" | grep -q "windows"; then
   queue_cond ${SLACK}/l/atk ""
   queue_cond ${SLACK}/l/pango ""
   queue_cond ${SLACK}/l/gdk-pixbuf2 ""
-  queue_cond ${SLACK}/l/gtk+2 ""
+  # GTK+2 simply doesn't work for x86_64-w64-mingw32
+  if [ x"${TRIPLET}" = x"i686-w64-mingw32" ]; then
+    queue_cond ${SLACK}/l/gtk+2 ""
+  fi
   queue_cond ${SLACK}/l/gmp ""
   queue_cond ${SLACK}/n/nettle ""
   queue_cond ${SLACK}/n/gnutls ""
