@@ -93,7 +93,7 @@ copy_logs() {
 SBo="slackbuilds.org"
 SLACK="slackware64-current"
 
-trap copy_logs ERR
+trap copy_logs EXIT
 
 if echo "${KIND}" | grep -q "native_toolchain"; then
   QUEUED_PACKAGES=""
@@ -188,3 +188,5 @@ if echo "${KIND}" | grep -q "windows"; then
   # queue_cond ${SLACK}/l/mozilla-nss ""
   build "windows-${TRIPLET}"
 fi
+
+trap "" EXIT
