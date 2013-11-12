@@ -61,7 +61,7 @@ if [ x"${BD}" = x"yes" ]; then
   shift; shift; shift
 
   chroot "${SYSTEM}" /bin/bash \
-    -c "export YYLOWCOMPRESS=1; cd /root/yypkg_packages && ./build_daemon ${BD_CONFIG} ${*}"
+    -c "cd /root/yypkg_packages && ./build_daemon ${BD_CONFIG} ${*}"
 else
   (CONFIG=${BD_CONFIG};
    . ${SOURCE_PATH}/build_daemon_config && chroot "${SYSTEM}" /bin/bash)
