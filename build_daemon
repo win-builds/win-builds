@@ -64,3 +64,6 @@ for FILE in ${*}; do
     && tar xf "../../${FILE}" \
     && iter "${PKG}")
 done
+
+echo "Setting up ${KIND_DIR}."
+sherpa_gen "${YYOUTPUT}"

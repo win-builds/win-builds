@@ -34,8 +34,6 @@ umask 022
 mkdir -p "${LOCATION}"
 LOCATION="$(cd "${LOCATION}" && pwd)"
 YYPKG_PACKAGES="${LOCATION}/system/root/yypkg_packages"
-SHERPA_GEN="${PWD}/yypkg/src/sherpa_gen.native"
-
 QUEUED_PACKAGES=""
 
 queue_cond() {
@@ -80,9 +78,6 @@ build() {
 
     copy_from_system "logs/${KIND_DIR}"
     copy_from_system "packages/${KIND_DIR}"
-
-    echo "Setting up ${KIND_DIR}."
-    "${SHERPA_GEN}" "${LOCATION}/packages/${KIND_DIR}"
   fi
 }
 
