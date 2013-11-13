@@ -5,8 +5,6 @@ Run the following to get all the source files:
 ------------------------------------------------------------------------
 NOTK="http://git.notk.org/adrien/yypkg"
 
-mkdir -p "yypkg" "yypkg_packages"
-
 git clone "http://git.ocamlcore.org/yypkg/yypkg.git"
 git clone "${NOTK}/win-builds.git"
 git clone "${NOTK}/yy_of_slack.git"
