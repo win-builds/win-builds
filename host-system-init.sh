@@ -114,11 +114,10 @@ nameserver 208.67.220.220
 EOF
 
 SYSTEM_TAR_XZ="$(echo "${SYSTEM}" | sed 's;/$;;').tar.xz"
-if [ -n "${YYLOWCOMPRESS}" ]; then
-  XZ_OPT="-0vv"
-else
-  XZ_OPT="-9vv"
-fi
+case "${YYLOWCOMPRESS:-""}" in
+  "") XZ_OPT="-9vv" ;;
+  *)  XZ_OPT="-0vv" ;;
+esac
 tar c -C "$(dirname "${SYSTEM}")" "$(basename "${SYSTEM}")" \
   --exclude 'root/yypkg_packages' \
   | xz "${XZ_OPT}" > "${SYSTEM_TAR_XZ}"
