@@ -72,8 +72,8 @@ build() {
     (cd win-builds && ./main.sh "${LOCATION}" "${KIND}" "yes" ${QUEUED_PACKAGES})
 
     case "${KIND}" in
-      "native") local KIND_DIR="${KIND}" ;;
-      *)        local KIND_DIR="${KIND%%-*-*-*}_${BITS}" ;;
+      "native_toolchain") local KIND_DIR="${KIND}" ;;
+      *)                  local KIND_DIR="${KIND%%-*-*-*}_${BITS}" ;;
     esac
 
     copy_from_system "logs/${KIND_DIR}"
