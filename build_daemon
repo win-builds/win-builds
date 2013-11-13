@@ -65,5 +65,5 @@ for FILE in ${*}; do
     && iter "${PKG}")
 done
 
-echo "Setting up ${KIND_DIR}."
+echo "Setting up ${YYOUTPUT}."
 sherpa_gen "${YYOUTPUT}"
