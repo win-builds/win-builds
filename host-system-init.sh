@@ -104,7 +104,7 @@ for bin in cc c++ {x86_64-slackware-linux-,}{gcc,g++}; do
   ln -s "/usr/bin/ccache" "${SYSTEM}/usr/local/bin/${bin}"
 done
 
-cp "${SOURCE_PATH}/get-all-prebuilt-binaries-i686.sh" "${SYSTEM}/root"
+cp "${SOURCE_PATH}/get-all-prebuilt-binaries.sh" "${SYSTEM}/root"
 cat > "${SYSTEM}/etc/resolv.conf" << EOF
 # noc.toile-libre.net
 nameserver 195.88.84.100

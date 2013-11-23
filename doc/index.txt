@@ -98,7 +98,7 @@ sudo ./win-builds/main.sh 1.3-alpha1
 The first time you get into the sytem, download and setup the
 cross-toolchain and all the cross-compiled tools and libraries:
 ------------------------------------------------------------------------
-/root/get-all-prebuilt-binaries-i686.sh
+/root/get-all-prebuilt-binaries.sh
 ------------------------------------------------------------------------
 
 My typical workflow is to work outside of the chroot and only use it to
