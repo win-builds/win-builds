@@ -139,6 +139,10 @@ if echo "${KIND}" | grep -q "windows"; then
   queue_cond ${SLACK}/l/libtiff ""
   queue_cond ${SBo}/lua ""
   queue_cond ${SLACK}/n/ca-certificates ""
+  queue_cond ${SLACK}/n/openssl ""
+  queue_cond ${SLACK}/l/gmp ""
+  queue_cond ${SLACK}/n/nettle ""
+  queue_cond ${SLACK}/n/gnutls ""
   queue_cond ${SLACK}/n/curl ""
   queue_cond ${SBo}/c-ares ""
   queue_cond mingw/pixman ""
@@ -152,9 +156,6 @@ if echo "${KIND}" | grep -q "windows"; then
   if [ x"${TRIPLET}" = x"i686-w64-mingw32" ]; then
     queue_cond ${SLACK}/l/gtk+2 ""
   fi
-  queue_cond ${SLACK}/l/gmp ""
-  queue_cond ${SLACK}/n/nettle ""
-  queue_cond ${SLACK}/n/gnutls ""
   queue_cond ${SLACK}/l/glib-networking ""
   queue_cond ${SLACK}/l/libxml2 ""
   queue_cond ${SLACK}/ap/sqlite ""
@@ -167,7 +168,6 @@ if echo "${KIND}" | grep -q "windows"; then
   queue_cond mingw/mingw-w64 "full"
   queue_cond ${SLACK}/d/binutils ""
   queue_cond ${SLACK}/d/gcc "full"
-  queue_cond ${SLACK}/n/openssl ""
   queue_cond ${SLACK}/l/libogg ""
   queue_cond ${SLACK}/l/libvorbis ""
   queue_cond ${SLACK}/l/libtheora ""
