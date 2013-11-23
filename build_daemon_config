@@ -2,7 +2,7 @@
 
 export BUILD_TRIPLET="x86_64-slackware-linux"
 
-export YYPREFIX_NATIVE_TOOLCHAIN="/opt/native"
+export YYPREFIX_NATIVE_TOOLCHAIN="/opt/native_toolchain"
 
 if [ x"${CONFIG}" = x"native_toolchain" ]; then
   NICKNAME="native_toolchain"
