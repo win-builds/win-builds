@@ -1,7 +1,8 @@
-= Building yourself =
+= Build yourself =
 
 == Scripts ==
 Run the following to get all the source files:
+
 ------------------------------------------------------------------------
 NOTK="http://git.notk.org/adrien/yypkg"
 
@@ -14,25 +15,19 @@ git clone "${NOTK}/slackbuilds.org.git"
 ------------------------------------------------------------------------
 
 Note that this will fail with git 1.7.2 because of a bug that has been
-fixed in git 1.8.0 (see commit "http: fix segfault in
-handle_curl_result", 188923f0d1c8148415b3173986cd1e21871c947e).
+fixed in git 1.8.0 (commit "http: fix segfault in handle_curl_result",
+188923f0d1c8148415b3173986cd1e21871c947e).
 
-== Building the host system ==
-This requires a slackware64 14.0 system currently. You also need a
-mirror of the sources.
-------------------------------------------------------------------------
-MIRROR="${PWD}/mirror/slackware64-current" \
-  ./yy_of_slack/yy_of_slack.sh
-------------------------------------------------------------------------
-
-== Downloading source tarballs ==
+== Download source tarballs ==
 In order to retrieve the tarballs, you need to use the following git
 command:
+
 ------------------------------------------------------------------------
 git merge origin/tarballs
 ------------------------------------------------------------------------
 
 In order to update your git repository, you will then have to run:
+
 ------------------------------------------------------------------------
 git pull --rebase
 git merge origin/tarballs
@@ -43,38 +38,61 @@ well.
 
 == Start the build ==
 
-=== Building everything ===
+=== Build everything ===
 As root, run:
+
 ------------------------------------------------------------------------
-./win-builds/build-packages.sh 1.3-alpha1
+./win-builds/build-packages.sh 1.3-alpha2
 ------------------------------------------------------------------------
 
-You can change the directory where files will be put; here it is
-"1.3-alpha1".
+=== Build only a series ===
+It is possible to only build a subset of the available series:
+native, cross_toolchain, windows.
 
-=== Building only a series ===
-It is possible to only build one category out of: init,
-native_toolchain, cross_toolchain_32/cross_toolchain_64,
-windows_32/windows_64.
-
-* init is required; it sets up the build environment
-* native_toolchain adds new native tools on the build system that
-  slackware doesn't have; for instance, it installs ocaml because
-  building the ocaml cross-compiler requires an ocaml native compiler
-* cross_toolchain_* build the cross-toolchain
-* windows_* cross-compiles the binaries that will run on windows (this
+* native adds new native tools on the build system that slackware doesn't
+  have; for instance, it installs ocaml because building the ocaml
+  cross-compiler requires an ocaml native compiler
+* cross_toolchain builds the cross-toolchain
+* windows cross-compiles the binaries that will run on windows (this
   include the GCC native compiler)
 
-An example invocation is:
+The series are given in the second argument to the `build-packages.sh` script
+as a dash-separated list.
+
+An example invocation which goes over `cross_tooolchain` and `windows` is:
+
 ------------------------------------------------------------------------
-./win-builds/build-packages.sh 1.3-alpha1 windows
+./win-builds/build-packages.sh 1.3-alpha2 cross_toolchain-windows
 ------------------------------------------------------------------------
 
-=== Building only one package ===
-You can further refine what will be built by appending the package name
-after the series.
+Another one which only goes over the packages in `windows` is:
+
+------------------------------------------------------------------------
+./win-builds/build-packages.sh 1.3-alpha2 windows
+------------------------------------------------------------------------
+
+=== Build only one package ===
+You can further refine what will be built by appending the package names
+after the series. Each package name is given as a separate argument to the
+script.
 
 An example invocation is:
+
 ------------------------------------------------------------------------
-./win-builds/build-packages.sh 1.3-alpha1 windows libjpeg
+./win-builds/build-packages.sh 1.3-alpha2 windows libjpeg
+------------------------------------------------------------------------
+
+For multiple packages, the invocation becomes:
+
+------------------------------------------------------------------------
+./win-builds/build-packages.sh 1.3-alpha2 windows libjpeg libpng lua
+------------------------------------------------------------------------
+
+== Build the host system (only if you really want to redo everything) ==
+This requires running a slackware64 14.1 system currently. You also need a
+mirror of the sources:.
+
+------------------------------------------------------------------------
+MIRROR="${PWD}/mirror/slackware64-current" \
+  ./yy_of_slack/yy_of_slack.sh
 ------------------------------------------------------------------------
