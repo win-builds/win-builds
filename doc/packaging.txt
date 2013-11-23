@@ -1,18 +1,29 @@
 = Packaging =
 
-== Import a package script from slackware or slackbuilds.org ==
-
-=== Environment ===
+== Environment ==
 Build the packages that already exist. This will ensure you have
 everything needed in a working state; documentation for this is on
 link:diy.html[doc-diy].
 
-=== Import the build script ===
-Currently you have to ask me to make the slackware or slackbuilds.org
-file appear in the win-builds tree.
+== Check whether a Linux build script already exists ==
 
-=== Port the build script (mostly search-replace) ===
-* Replace all occurences of 'usr' with '$\{PREFIX\}' (verbatim, don't
+- In one of the subdirectory (a "series) of
+  link:http://cgit.notk.org/adrien/slackware-git-track/slackware64-current.ext.git/tree/slackware64-current/source[slackware]
+- On link:http://slackbuilds.org[slackbuilds.org] (community repository of
+  build scripts
+
+If such a build script exist, read <<Existing>>. Otherwise, read <<New>>.
+
+[[Existing]]
+== Port an existing build script ==
+=== Do the initial import ===
+Copy the directory in the corresponding git repository: either
+link:http://cgit.notk.org/adrien/yypkg/slackware64-current.git/[slackware64-current]
+or
+link:http://cgit.notk.org/adrien/yypkg/slackbuilds.org.git/[slackbuilds.org].
+
+== Port the build script (mostly search-replace) ==
+* Replace all occurrences of 'usr' with '$\{PREFIX\}' (verbatim, don't
   expand the variable)
 
 * Replace the block of code that sets SLKCFLAGS and LIBDIRSUFFIX with:
@@ -24,23 +35,24 @@ case "${HOST_TRIPLET}" in
 esac
 ------------------------------------------------------------------------
 
-* Replace occurences of '$SLKCFLAGS' with '-O2'
+* Replace occurrences of '$SLKCFLAGS' with '-O2'
 * Add '--host=$\{HOST_TRIPLET\}' to the configure invocation.
 
 * Replace 'grep ELF' with 'grep $\{HOST_EXE_FORMAT\}'
 * Replace 'xargs strip' with 'xargs $\{HOST_STRIP\}'
 
-* Add a .yypkg.meta file to the package directory; most usually you'll
-  only have to 'cp' another one (like libogg's libogg.yypkg.meta); don't
+* Add a .yypkg.script file to the package directory; if you have nothing
+  specific to set for the packaging (by far the usual case), you only have to
+  'cp' another one (like libogg's libogg.yypkg.script); don't
   forget to give it a proper name.
-* Replace the 'makepkg' call with a makeypkg one:
+* Replace the 'makepkg' call at the end of the script with a makeypkg one:
 +
 ------------------------------------------------------------------------
-cat ${CWD}/${PKGNAM}.yypkg.meta | sed \
+cat ${CWD}/${PKGNAM}.yypkg.script | sed \
   -e "s/%{PKG}/${PKGNAM}/" \
   -e "s/%{HST}/${HOST_TRIPLET}/" \
   -e "s/%{TGT}//" \
-  -e "s/%{VER}/$(echo ${VERSION} | tr . ' ')/" \
+  -e "s/%{VER}/${VERSION}/" \
   -e "s/%{BUILD}/${BUILD}/" \
   -e "s/%{DESCR}/${DESCR:-"No description"}/" \
   | makeypkg -o ${YYOUTPUT} -meta - "${PKG}/${PREFIX}"
@@ -48,13 +60,13 @@ cat ${CWD}/${PKGNAM}.yypkg.meta | sed \
 +
 Some packages don't set the 'PKGNAM' variable but instead hardcode the
 package name throughout the script; in that case, use the package name
-instead '$\{PKGNAM\}'.
+instead of '$\{PKGNAM\}'.
 
 * If there are many source files, replace the 'find + chmod'
   commands which are used to reset file permissions to sane default with
   'chmod -R u+w,go+r-w,a-s .'.
 
-=== List your package ===
+=== Add your package to the list ===
 Edit win-builds/build-packages.sh and add your package to the
 appropriate list; you need to put your package after all the other
 packages it depends on.
@@ -95,5 +107,6 @@ $PATH and which content is:
 include::../commit-to-branch.sh[]
 ------------------------------------------------------------------------
 
-== Create a new package ==
+[[New]]
+== Create A New Package ==
 TBD
