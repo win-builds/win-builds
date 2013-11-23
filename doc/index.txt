@@ -2,35 +2,12 @@
 
 == Support and coverage ==
 There are currently around 70 packages. There are both cross and native
-toolchains. The native one is new and less tested than the cross one.
-The cross toolchain requires a Linux system with a 64bit kernel (not
-userspace).
+toolchains. The cross toolchain requires a Linux system with a 64bit kernel
+(not userspace).
 
-The toolchain targeting x86_64-w64-mingw32 and the corresponding
-packages are currently experimental.
-
-=== Native Linux toolchain supplements ===
-The OCaml cross-compiler also requires a native compiler; that's
-typically what this section provides.
-
-link:packages/native_toolchain/package_list.html[Package list]
-link:logs/native_toolchain/[Build logs]
-
-=== Cross-toolchain ===
-The toolchain provides binutils 2.23.52, GCC 4.7.2 with C and C++
-support along with mingw-w64 2.0.7.
-
-* i686:
-link:packages/cross_toolchain_32/package_list.html[Package list]
-link:logs/cross_toolchain_32/[Build logs]
-* x86_64:
-link:packages/cross_toolchain_64/package_list.html[Package list]
-link:logs/cross_toolchain_64/[Build logs]
-
-=== Windows files ===
-There are currently 54 non-toolchain packages with many more planned;
-they are sufficient to build GTK+ and EFL applications, several network
-components and GCC itself; webkit-gtk support is close.
+.1 Windows files
+This section provides 54 non-toolchain packages; they are sufficient to build
+GTK+ and EFL applications, several network components and GCC itself.
 
 * i686:
 link:packages/windows_32/package_list.html[Detailed list]
@@ -39,64 +16,85 @@ link:logs/windows_32/[Build logs]
 link:packages/windows_64/package_list.html[Detailed list]
 link:logs/windows_64/[Build logs]
 
-There are two notable build failures for x64: GTK+2 and Elementary.
+.2 Cross-toolchain
+
+GCC 4.8.2 (C, C++, ObjC), Mingw-w64 3.0.1
+
+* i686:
+link:packages/cross_toolchain_32/package_list.html[Package list]
+link:logs/cross_toolchain_32/[Build logs]
+* x86_64:
+link:packages/cross_toolchain_64/package_list.html[Package list]
+link:logs/cross_toolchain_64/[Build logs]
+
+.3 Linux supplements
+
+Additional tools for builds which cannot bootstrap themselves.
+
+* x86_64:
+link:packages/native_toolchain/package_list.html[Package list]
+link:logs/native_toolchain/[Build logs]
 
 == Getting and running the system ==
 
-=== Simple use with native compilation and pre-built binaries ===
+=== From Windows ===
 These don't change system settings so you will have to set variables
 like %PATH%.
 
-==== Windows Installer ====
+==== Installer ====
 There are two installers available, one for a native i686 toolchain and
 another one for a native x86_64 toolchain (which will require Windows
-x64 to run). They automate the steps mentionned in the next section;
-they will download all the available packages in the mirror (57MB for
-i686 and 50MB for x86_64).
+x64 to run). They automate the steps mentioned in the next section; they
+will download all the available packages in the mirror (around 60MB).
+
 link:yypkg-1.2-rc1-i686.exe[Installer for i686-w64-mingw32]
 
 link:yypkg-1.2-rc1-x86_64.exe[Installer for x86_64-w64-mingw32]
 
 ==== Manual steps ====
 Download and extract link:yypkg-bin-1.2-rc1.tar.xz[the yypkg binaries].
-Then, start a command prompte (cmd.exe), enter the directory where
+Then, start a command prompt (cmd.exe), enter the directory where
 you've extracted the files and run:
+
 ------------------------------------------------------------------------
 set YYPREFIX=C:/win-builds-32
 yypkg -init
 yypkg -config -setpreds host="i686-w64-mingw32"
 yypkg -config -setpreds target="i686-w64-mingw32"
-sherpa -set-mirror http://win-builds.org/1.3-alpha1/packages/windows_32
+sherpa -set-mirror http://win-builds.org/1.3-alpha2/packages/windows_32
 sherpa -install all
 ------------------------------------------------------------------------
 
-=== Simple use with cross-compilation and prebuilt binaries ===
+=== From Linux 64b ===
 
 The following commands will download and setup a system ready for
 cross-compilation to i686-w64-mingw32. It goes through a chroot in order
 to provide the matching versions of not only glibc but also GTK+, pango,
 edje, Ocaml, ...
 
-Download the base system and extract it somewhere:
-------------------------------------------------------------------------
-wget http://win-builds.org/1.3-alpha1/system.tar.xz
-mkdir 1.3-alpha1
-sudo tar xf system.tar.xz -C 1.3-alpha1
-------------------------------------------------------------------------
-
 Get the project main scripts:
+
 ------------------------------------------------------------------------
 git clone http://git.notk.org/adrien/yypkg/win-builds.git
 ------------------------------------------------------------------------
 
+Download the base system and extract it somewhere:
+
+------------------------------------------------------------------------
+mkdir 1.3-alpha2
+wget -P 1.3-alpha2 http://win-builds.org/1.3-alpha2/system.tar.xz
+------------------------------------------------------------------------
+
 Chroot into the base environment with several environment variables set
 automatically:
+
 ------------------------------------------------------------------------
-sudo ./win-builds/main.sh 1.3-alpha1
+sudo ./win-builds/main.sh 1.3-alpha2
 ------------------------------------------------------------------------
 
 The first time you get into the sytem, download and setup the
 cross-toolchain and all the cross-compiled tools and libraries:
+
 ------------------------------------------------------------------------
 /root/get-all-prebuilt-binaries.sh
 ------------------------------------------------------------------------
@@ -115,7 +113,7 @@ In order to build the GTK+ Hello world, cd in the mingw-build directory
 and run (copy-paste) the following:
 
 ------------------------------------------------------------------------
-sudo ./main.sh 1.3-alpha1
+sudo ./main.sh 1.3-alpha2
 
 cd root
 
@@ -142,9 +140,13 @@ and one hour on a quad-core from 2 to 3 years ago. The documentation is
 available on a separate page link:diy.html[doc-diy].
 
 === Advanced usage: Package yourself ===
-It is fairly easy to create new packages. The usual way is to port
-Slackware build scripts to yypkg and mingw. Please refer to the
-link:packaging.html[packager documentation].
+It is fairly easy to create new packages: the usual way is to port existing
+Slackware build scripts to yypkg and mingw with a few simple serch-and-replace
+operations.
+
+You first need to have an environment setup for building packages; this step
+is described on the link:diy.html[doc-diy] page. Once you have it, have a look
+at the link:packaging.html[packager documentation] page.
 
 == Current status (1.2 rc1) ==
 === Main changes ===
