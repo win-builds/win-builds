@@ -8,7 +8,7 @@ setup() {
   echo "Initializing yypkg in ${YYPREFIX}."
   yypkg -init
 
-  sherpa -set-mirror "http://win-builds.org/1.3-alpha2/packages/${D}"
+  sherpa -set-mirror "http://win-builds.org/1.3-beta1/packages/${D}"
 
   echo "Setting up predicates for ${D}."
   case "${D}" in
