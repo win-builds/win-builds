@@ -160,7 +160,7 @@ if echo "${KIND}" | grep -q "windows"; then
   queue_cond ${SLACK}/l/libxml2 ""
   queue_cond ${SLACK}/ap/sqlite ""
   # queue_cond ${SLACK}/l/libsoup ""
-  queue_cond ${SLACK}/l/icu4c ""
+  # queue_cond ${SLACK}/l/icu4c ""
   queue_cond ${SLACK}/d/gperf ""
   # queue_cond ${SLACK}/l/libxslt ""
   queue_cond ${SLACK}/l/mpfr ""
