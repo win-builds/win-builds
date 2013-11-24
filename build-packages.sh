@@ -95,7 +95,6 @@ trap copy_logs EXIT
 if echo "${KIND}" | grep -q "native_toolchain"; then
   QUEUED_PACKAGES=""
   queue_cond ${SBo}/ocaml ""
-  queue_cond ${SBo}/ocaml-findlib ""
   queue_cond ${SBo}/lua ""
   for efl_lib in eina eet evas ecore embryo edje; do
     queue_cond ${SBo}/${efl_lib} ""
@@ -114,6 +113,7 @@ if echo "${KIND}" | grep -q "cross_toolchain"; then
   # The cross-ocaml isn't available yet for 64b.
   if [ x"${TRIPLET}" = x"i686-w64-mingw32" ]; then
     queue_cond ${SBo}/ocaml ""
+    queue_cond ${SBo}/ocaml-findlib ""
   fi
   build "cross_toolchain-${TRIPLET}"
 
