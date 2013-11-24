@@ -68,11 +68,13 @@ rsync --archive "${YYOS_OUTPUT}/" "${INITDIR_FULL}/pkgs/"
 
 copy_ld_so
 
+bsdtar xf "${YYOS_OUTPUT}/${ARCHIVE}" -q -C "${SYSTEM}/sbin" \
+  --strip-components=3 "package-bsdtar/usr/bin/bsdtar"
+
 mkdir -p "${SYSTEM}/sbin"
 for bin in "yypkg" "makeypkg" "sherpa" "sherpa_gen"; do
   cp "${YYPKG_TGT_BINARIES}/${bin}.native" "${SYSTEM}/sbin/${bin}"
 done
-cp "${BSDTAR_TGT}" "${SYSTEM}/sbin/"
 
 trap umounts EXIT SIGINT ERR
 
