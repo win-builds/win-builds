@@ -49,6 +49,14 @@ copy_ld_so() {
   ln -s "ld-${VER}.so" "${SYSTEM}/lib64/ld-linux-x86-64.so.2"
 }
 
+# copy_bsdtar: extract bsdtar into the system's /sbin
+copy_bsdtar() {
+  ARCHIVE="$(find "${YYOS_OUTPUT}" -maxdepth 1 -name "libarchive-stable-*.txz" -printf '%f\n')"
+  mkdir -p "${SYSTEM}/sbin"
+  bsdtar xf "${YYOS_OUTPUT}/${ARCHIVE}" -q -C "${SYSTEM}/sbin" \
+    --strip-components=3 "package-libarchive/usr/bin/bsdtar"
+}
+
 chroot_run() {
   DIR="${1}"
   shift
@@ -67,9 +75,7 @@ mkdir -p "${INITDIR_FULL}/pkgs"
 rsync --archive "${YYOS_OUTPUT}/" "${INITDIR_FULL}/pkgs/"
 
 copy_ld_so
-
-bsdtar xf "${YYOS_OUTPUT}/${ARCHIVE}" -q -C "${SYSTEM}/sbin" \
-  --strip-components=3 "package-bsdtar/usr/bin/bsdtar"
+copy_bsdtar
 
 mkdir -p "${SYSTEM}/sbin"
 for bin in "yypkg" "makeypkg" "sherpa" "sherpa_gen"; do
