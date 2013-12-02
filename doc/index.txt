@@ -59,7 +59,7 @@ you've extracted the files and run:
 ------------------------------------------------------------------------
 set YYPREFIX=C:/win-builds-32
 yypkg -init
-sherpa -set-mirror http://win-builds.org/1.3-alpha2/packages/windows_32
+sherpa -set-mirror http://win-builds.org/1.3-beta1/packages/windows_32
 sherpa -install all
 ------------------------------------------------------------------------
 
@@ -79,15 +79,15 @@ git clone http://git.notk.org/adrien/yypkg/win-builds.git
 Download the base system and extract it somewhere:
 
 ------------------------------------------------------------------------
-mkdir 1.3-alpha2
-wget -P 1.3-alpha2 http://win-builds.org/1.3-alpha2/system.tar.xz
+mkdir 1.3-beta1
+wget -P 1.3-beta1 http://win-builds.org/1.3-beta1/system.tar.xz
 ------------------------------------------------------------------------
 
 Chroot into the base environment with several environment variables set
 automatically:
 
 ------------------------------------------------------------------------
-sudo ./win-builds/main.sh 1.3-alpha2
+sudo ./win-builds/main.sh 1.3-beta1
 ------------------------------------------------------------------------
 
 The first time you get into the sytem, download and setup the
@@ -111,7 +111,7 @@ In order to build the GTK+ Hello world, cd in the mingw-build directory
 and run (copy-paste) the following:
 
 ------------------------------------------------------------------------
-sudo ./main.sh 1.3-alpha2
+sudo ./main.sh 1.3-beta1
 
 cd root
 
