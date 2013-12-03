@@ -126,6 +126,7 @@ if echo "${KIND}" | grep -q "windows"; then
   QUEUED_PACKAGES=""
   queue_cond ${SLACK}/l/libarchive "yypkg"
   queue_cond ${SLACK}/n/wget "yypkg"
+  queue_cond mingw/winpthreads ""
   queue_cond mingw/win-iconv ""
   queue_cond ${SLACK}/a/gettext ""
   queue_cond ${SLACK}/a/xz ""
