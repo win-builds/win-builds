@@ -38,32 +38,37 @@ link:logs/native_toolchain/[Build logs]
 == Getting and running the system ==
 
 === From Windows ===
-These don't change system settings so you will have to set variables
-like %PATH%.
+Note that these don't change system settings nor setup shell tools (for now).
+This means you need to install msys, msys2, cygwin or nothing if your IDE
+doesn't need anything besides the toolchain. You also need to set variables
+like %PATH% yourself.
 
-==== Installer ====
-There are two installers available, one for a native i686 toolchain and
-another one for a native x86_64 toolchain (which will require Windows
-x64 to run). They automate the steps mentioned in the next section; they
-will download all the available packages in the mirror (around 60MB).
-
-link:yypkg-1.2-rc1-i686.exe[Installer for i686-w64-mingw32]
-
-link:yypkg-1.2-rc1-x86_64.exe[Installer for x86_64-w64-mingw32]
+// ==== Installer ====
+// There are two installers available, one for a native i686 toolchain and
+// another one for a native x86_64 toolchain (which will require Windows
+// x64 to run). They automate the steps mentioned in the next section; they
+// will download all the available packages in the mirror (around 60MB).
+//
+// link:yypkg-1.2-rc1-i686.exe[Installer for i686-w64-mingw32]
+//
+// link:yypkg-1.2-rc1-x86_64.exe[Installer for x86_64-w64-mingw32]
 
 ==== Manual steps ====
-Download and extract link:yypkg-bin-1.2-rc1.tar.xz[the yypkg binaries].
-Then, start a command prompt (cmd.exe), enter the directory where
-you've extracted the files and run:
+Download and extract link:win-builds-bundle-1.3-beta2.zip[the yypkg binaries].
+Then, start a command prompt (cmd.exe), enter the directory where you've
+extracted the files and run:
 
 ------------------------------------------------------------------------
 set YYPREFIX=C:/win-builds-32
 yypkg -init
 yypkg -config -setpreds host="i686-w64-mingw32"
 yypkg -config -setpreds target="i686-w64-mingw32"
-sherpa -set-mirror http://win-builds.org/1.3-beta1/packages/windows_32
+sherpa -set-mirror http://win-builds.org/1.3-beta2/packages/windows_32
 sherpa -install all
 ------------------------------------------------------------------------
+
+The toolchain is now setup and can be used in combination with either msys,
+msys2, cygwin or an IDE.
 
 === From Linux 64b ===
 
@@ -81,15 +86,15 @@ git clone http://git.notk.org/adrien/yypkg/win-builds.git
 Download the base system and extract it somewhere:
 
 ------------------------------------------------------------------------
-mkdir 1.3-beta1
-wget -P 1.3-beta1 http://win-builds.org/1.3-beta1/system.tar.xz
+mkdir 1.3-beta2
+wget -P 1.3-beta2 http://win-builds.org/1.3-beta2/system.tar.xz
 ------------------------------------------------------------------------
 
 Chroot into the base environment with several environment variables set
 automatically:
 
 ------------------------------------------------------------------------
-sudo ./win-builds/main.sh 1.3-beta1
+sudo ./win-builds/main.sh 1.3-beta2
 ------------------------------------------------------------------------
 
 The first time you get into the sytem, download and setup the
@@ -113,7 +118,7 @@ In order to build the GTK+ Hello world, cd in the mingw-build directory
 and run (copy-paste) the following:
 
 ------------------------------------------------------------------------
-sudo ./main.sh 1.3-beta1
+sudo ./main.sh 1.3-beta2
 
 cd root
 
@@ -148,38 +153,22 @@ You first need to have an environment setup for building packages; this step
 is described on the link:diy.html[doc-diy] page. Once you have it, have a look
 at the link:packaging.html[packager documentation] page.
 
-== Current status (1.2 rc1) ==
+== Current status (1.3 beta2) ==
 === Main changes ===
-* stable i686-w64-mingw32 native compiler
-* experimental x86_64-w64-mingw32 toolchain (both cross and native)
-* OCaml cross-compiler
-* yypkg and its deps built with only the binaries here
-* SFX installer for windows
-* more packages
-* updated packages
+* checked x86_64-w64-mingw32 toolchain
+* emulation of symlinks on windows
+* updated packages: GCC 4.8, Mingw-w64 v3
+* faster build infrastructure
 
 === Known issues ===
-* GCC has to be invoked with its fullest name (like
-  i686-w64-mingw32-gcc-4.7.2) because the other files are symlinks.
-* Update a package is broken if there are symlinks in it.
-* curl is built without SSL support (it's built before the corresponding
-  libs).
+* On Windows, packages with symlinks to directories cannot be updated; this
+  will be fixed in a later yypkg release.
+* Graphical installer is being reworked and is not available yet.
 
-=== Changes in 1.2 rc1 ===
-* Link errors I had with the native toolchain was pebkac (--as-needed).
-* less is fixed by creating /dev/tty.
-* elvis doesn't work well in tmux; not specific to this project.
-* Pango and GTK+ caches are created automatically by the SFX installers.
-* libgcc_s_sjlj-1.dll is moved at packaging time in bin/.
-* fc-cache seems unneeded and won't be run automatically.
+=== Roadmap to next version ===
+* Installer update and creation of Pango, GTK+ and font caches.
 
-== Roadmap and history ==
-=== Roadmap ===
-* 1.3: Q2 2013: Qt binaries, GStreamer
-* 1.4, Q3 2013: VLC
-* 2.0: Q4 2013: stable toolchain support for x86_64-w64-mingw32
-
-=== History ===
+== History ==
 * 1.2, April 2013: stable i686-w64-mingw32 native compiler, OCaml
   cross-compiler, experimental x86_64-w64-mingw32 support and installers
   for Windows.
