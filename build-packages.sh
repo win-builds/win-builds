@@ -116,10 +116,6 @@ if echo "${KIND}" | grep -q "cross_toolchain"; then
     queue_cond ${SBo}/ocaml-findlib ""
   fi
   build "cross_toolchain-${TRIPLET}"
-
-  for X in gcc g++; do
-    ln -sf "/usr/bin/ccache" "${LOCATION}/system/usr/local/bin/${TRIPLET}-${X}"
-  done
 fi
 
 if echo "${KIND}" | grep -q "windows"; then
