@@ -57,8 +57,5 @@ else
   esac
 fi
 
-# Symlinks for ccache are in /usr/local/bin so prepend this directory.
-export PATH="/usr/local/bin:$(echo "${PATH}" | sed -e 's;/usr/local/bin:;;g')"
-
 export LOGS="${CWD}/logs/${NICKNAME}"
 export YYOUTPUT="${CWD}/packages/${NICKNAME}"

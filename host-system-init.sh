@@ -98,19 +98,11 @@ find "${INITDIR_FULL}/pkgs" -maxdepth 1 -name '*.txz' -printf '%f\n' \
     chroot_run "${SYSTEM}" "/sbin/yypkg" "-install" "${INITDIR}/pkgs/${PKG}" || true
 done
 
-if [ -e "${SYSTEM}/usr/bin/ccache" ]; then
-  chroot "${SYSTEM}" "/usr/bin/ccache" "--max-size=2G"
-fi
-
 umounts
 
 (cd ${SYSTEM}/tmp/
 rm -r yypkg_init/pkgs
 rmdir yypkg_init/host/{bin,lib64,usr/lib64,usr} .{ICE,X11}-unix)
-
-for bin in cc c++ {x86_64-slackware-linux-,}{gcc,g++}; do
-  ln -s "/usr/bin/ccache" "${SYSTEM}/usr/local/bin/${bin}"
-done
 
 cp "${SOURCE_PATH}/get-all-prebuilt-binaries.sh" "${SYSTEM}/root"
 cat > "${SYSTEM}/etc/resolv.conf" << EOF
