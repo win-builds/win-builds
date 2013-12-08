@@ -7,6 +7,8 @@
 <body>
 <?php include 'header.html'; ?>
 
+<h1>News</h1>
+
 <h3><a href="1.3-beta1">1.3-beta1 - 27/11/2013</a></h3>
   Improved symlink fallbacks on Windows, proofread documentation, new yypkg binaries for Windows, improved OCaml cross-compiler setup, general improvements and bug fixes.
 
