@@ -41,17 +41,17 @@ populate_slash_dev() {
 
 # copy_ld_so: install the base libc files inside the chroot
 copy_ld_so() {
-  ARCHIVE="$(find "${YYOS_OUTPUT}" -maxdepth 1 -name "glibc-stable-2.*.txz" -printf '%f\n')"
-  VER="$(echo "${ARCHIVE}" | sed -e 's/^glibc-stable-\(2\.[0-9]\+\).*/\1/')"
+  ARCHIVE="$(find "${YYOS_OUTPUT}" -maxdepth 1 -name "glibc-2.*.txz" -printf '%f\n')"
+  VER="$(echo "${ARCHIVE}" | sed -e 's/^glibc-\(2\.[0-9]\+\).*/\1/')"
   mkdir -p "${SYSTEM}/lib64"
-  bsdtar xf "${YYOS_OUTPUT}/${ARCHIVE}" -q -C ${SYSTEM}/lib64 \
+  bsdtar xf "${YYOS_OUTPUT}/${ARCHIVE}" -q -C "${SYSTEM}/lib64" \
     --strip-components=3 "package-glibc/lib64/incoming/ld-${VER}.so"
   ln -s "ld-${VER}.so" "${SYSTEM}/lib64/ld-linux-x86-64.so.2"
 }
 
 # copy_bsdtar: extract bsdtar into the system's /sbin
 copy_bsdtar() {
-  ARCHIVE="$(find "${YYOS_OUTPUT}" -maxdepth 1 -name "libarchive-stable-*.txz" -printf '%f\n')"
+  ARCHIVE="$(find "${YYOS_OUTPUT}" -maxdepth 1 -name "libarchive-*.txz" -printf '%f\n')"
   mkdir -p "${SYSTEM}/sbin"
   bsdtar xf "${YYOS_OUTPUT}/${ARCHIVE}" -q -C "${SYSTEM}/sbin" \
     --strip-components=3 "package-libarchive/usr/bin/bsdtar"
