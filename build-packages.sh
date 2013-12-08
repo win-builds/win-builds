@@ -176,7 +176,6 @@ if echo "${KIND}" | grep -q "windows"; then
   queue_cond ${SLACK}/l/libarchive "full"
   queue_cond ${SLACK}/n/wget "full"
   queue_cond mingw/mingw-w64 "full"
-  queue_cond mingw/winpthreads ""
   queue_cond ${SLACK}/d/binutils ""
   queue_cond ${SLACK}/d/gcc "full"
   queue_cond ${SBo}/x264 ""
