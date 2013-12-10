@@ -9,6 +9,14 @@
 
 <h1>News</h1>
 
+<h3><a href="1.3-beta3">1.3-beta1 - 27/11/2013</a></h3>
+  Corrections for dbus and yypkg.exe which was an old binary in 1.2, improved
+  documentation, documentation for using with MSYS. The package metadata format
+  changes (the version field is now a free-form string).
+
+<h3><a href="1.3-beta2">1.3-beta1 - 27/11/2013</a></h3>
+  Several fixes and mostly documentation or usability improvements.
+
 <h3><a href="1.3-beta1">1.3-beta1 - 27/11/2013</a></h3>
   Improved symlink fallbacks on Windows, proofread documentation, new yypkg binaries for Windows, improved OCaml cross-compiler setup, general improvements and bug fixes.
 
