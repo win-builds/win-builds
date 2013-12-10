@@ -1,6 +1,6 @@
 HOST:="notk.org:/var/www/win-builds.org/1.3-beta3"
 
-DOCS:=index diy packaging
+DOCS:=index diy packaging msys
 DOCS_TXT:=$(DOCS:%=%.txt)
 DOCS_HTML:=$(DOCS:%=%.html)
 

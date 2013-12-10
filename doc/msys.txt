@@ -1,0 +1,76 @@
+= Installation For Use With MSYS =
+
+This tutorial will guide you through a typical installation of MSYS and
+Win-builds. It has been contributed by Vincent Torri.
+ 
+== MSYS Installation ==
+1. Download
+link:http://sourceforge.net/projects/mingw/files/Installer/mingw-get-setup.exe/download[mingw-get-setup.exe]
+and run it.
+
+2. Click on "Install".
+
+3. Click on "Change" to chose another installation directory, go to C:/ and
+make a new directory named "win_builds and validate". You are free to install
+anywhere else but remember to keep the various paths consistent.
+
+4. Click on "Continue".
+
+5. Once the progress reaches 100%, click on "Next".
+
+6. In the new window, select "All packages" and then "MSYS Base System".
+
+7. On the right of the window, right-click on "msys-base" and select "Mark for
+installation".
+
+8. Now click on "Installation" in the menu bar at the top of the window and
+then "Apply Changes".
+
+9. In the new window, click on "Apply". Once everything is installed, use the
+"Close" button and exit the installer.
+
+== Win-builds Installation ==
+
+1. Run MSYS from C:/win_builds/msys/1.0/msys.bat. You might want to create a
+shortcut on the desktop (right-click on msys.bat then mouse over
+"Send To" and click on "Desktop (Create Shortcut)".
+
+2. Download link:win-builds-bundle-1.3-beta3.zip[the yypkg binaries] and
+extract them into the home directory of MSYS
+(C:/win_builds/msys/1.0/home/{your_account_name}).
+
+3. In the MSYS prompt, enter the directory where you've extracted the yypkg
+binaries (typically `win-builds-bundle') and run one of:
++
+------------------------------------------------------------------------
+# To install for both i686 and x86_64:
+./msys-install.sh
+# To install for only i686:
+./msys-install.sh i686
+# To install for only x86_64:
+./msys-install.sh x86_64
+------------------------------------------------------------------------
+
+4. Check gcc is running well:
++
+------------------------------------------------------------------------
+gcc --version
+------------------------------------------------------------------------
+
+5. Set a default toolchain (optional):
++
+------------------------------------------------------------------------
+echo '. win-builds-switch.sh 32' >> ~/.profile
+------------------------------------------------------------------------
+
+== Change toolchain on-the-fly ==
+
+The `win-builds-switch.sh' script takes care of everything; run it in your
+shell like:
+
+------------------------------------------------------------------------
+# To switch to the i686 toolchain
+. win-builds-switch.sh 32
+# To switch to the x86_64 toolchain
+. win-builds-switch.sh 32
+------------------------------------------------------------------------
