@@ -1,5 +1,5 @@
 body {
-  width: 70%;
+  width: 80%;
   margin-left: auto;
   margin-right: auto;
   font-family: DejaVu Sans, Helvetica;
@@ -22,8 +22,6 @@ h3 {
 }
 
 .content {
-  border: 1px solid;
-  display: table;
   padding-left: 1em;
   padding-right: 1em;
   padding-bottom: 1em;
@@ -32,16 +30,13 @@ h3 {
 .navbar {
   border-color: black;
   border: 1px solid;
-  width: 18%;
   height: 100%;
-  margin-left: 0em;
-  margin-right: 2em;
-  float: left;
-  display: table;
 }
 
 .navlist {
   padding-left: 0em;
+  margin-top: 0em;
+  margin-bottom: 0em;
 }
 
 .navbar-el {
@@ -49,12 +44,13 @@ h3 {
   padding: 0.5em;
   padding-left: 1em;
   padding-right: 1em;
+  display: inline-block;
+  font-weight: bold;
 }
 
 .hl {
   margin-bottom: 0.5em;
-  padding: 0.5em;
-  width: 31%;
+  width: 32%;
   display: inline-table;
 }
 
@@ -63,7 +59,8 @@ h3 {
 }
 
 .hl-list {
-  padding-left: 0.2em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
 
 .hl-el {
