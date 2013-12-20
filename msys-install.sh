@@ -12,8 +12,12 @@ for ARCH in ${ARCHS}; do
     "x86_64") BITS="64" ;;
     *) ;;
   esac
-  echo "Installing win-builds for ${ARCH} in /opt/win_builds_${BITS}."
-  export YYPREFIX="/c/win_builds/msys/1.0/opt/windows_${BITS}"
+  if cygpath --help 2>/dev/null >/dev/null; then
+    export YYPREFIX="$(cygpath -m "/opt/windows_${BITS}")"
+  else
+    export YYPREFIX="/opt/windows_${BITS}"
+  fi
+  echo "Installing win-builds for ${ARCH} in ${YYPREFIX}."
   yypkg -init
   yypkg -config -setpreds host="${ARCH}-w64-mingw32"
   yypkg -config -setpreds target="${ARCH}-w64-mingw32"
