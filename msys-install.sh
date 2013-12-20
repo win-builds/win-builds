@@ -25,5 +25,5 @@ for ARCH in ${ARCHS}; do
   sherpa -install all
 done
 
-mkdir -p /sbin
+mkdir -p /bin
 cp yypkg.exe sherpa.exe win-builds-switch.sh /bin
