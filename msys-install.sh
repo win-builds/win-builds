@@ -1,6 +1,10 @@
 #!/bin/sh -e
 
-ARCHS=${1:-"i686 x86_64"}
+if echo "${COMSPEC}" | grep -q 'SysWOW64'; then
+  ARCHS=${1:-"i686 x86_64"}
+else
+  ARCHS=${1:-"i686"}
+fi
 
 for ARCH in ${ARCHS}; do
   case "${ARCH}" in
