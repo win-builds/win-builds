@@ -1,4 +1,23 @@
-#!/bin/sh
+#!/bin/awk /^#_/ { print gensub("^#_", "", "1") } END { exit 1 }
+# The shebang above will display the message below for people who run the
+# script in a new shell instead of sourcing it in their current shell.
+
+#_!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#_
+#_  ERROR!
+#_
+#_  This script is being executed in a separate shell while it has to execute
+#_  in an already existing one.
+#_
+#_  This means you have started this script as "win-builds-switch 64" (or 32)
+#_  while you need to prepend ". " in front of that command for it to be
+#_  effective:
+#_    . win-builds-switch 64
+#_
+#_  (and before you ask, while your mistake has been noticed automatically, it
+#_  cannot be corrected automatically)
+#_
+#_!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 case "$1" in
   "32") BITS="$1"; LIBDIRSUFFIX="" ;;
