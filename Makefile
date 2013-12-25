@@ -1,8 +1,10 @@
+include Makefile.data
+
 all:
 	@echo "Nothing to build besides the doc."
 	true
 
-doc:
-	$(MAKE) -C doc doc
+doc doc-upload:
+	$(MAKE) -C doc $@
 
 .PHONY: doc

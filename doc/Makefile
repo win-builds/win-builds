@@ -1,11 +1,23 @@
-HOST:="notk.org:/var/www/win-builds.org/1.3-beta3"
+include ../Makefile.data
+
+HOST:=notk.org:/var/www/win-builds.org/$(VERSION)
 
 DOCS:=index diy packaging msys
 DOCS_TXT:=$(DOCS:%=%.txt)
 DOCS_HTML:=$(DOCS:%=%.html)
 
-%.html: %.txt
-	a2x -f xhtml $<
+version.config: ../Makefile.data Makefile
+	echo '[blockdef-listing]' > $@
+	echo 'subs=specialcharacters,callouts,replacements' >> $@
+	echo '[replacements]' >> $@
+	echo '@@VERSION@@=$(VERSION)' >> $@
+
+%.html: %.txt version.config
+	a2x -f xhtml \
+	  --stylesheet="docbook-xsl.css style.css" \
+	  --resource=../web \
+	  --asciidoc-opts="--conf-file version.config" \
+	  $<
 
 doc: $(DOCS_HTML)
 
