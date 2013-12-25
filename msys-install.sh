@@ -21,7 +21,7 @@ for ARCH in ${ARCHS}; do
   yypkg -init
   yypkg -config -setpreds host="${ARCH}-w64-mingw32"
   yypkg -config -setpreds target="${ARCH}-w64-mingw32"
-  sherpa -set-mirror "http://win-builds.org/1.3-rc1/packages/windows_${BITS}"
+  sherpa -set-mirror "http://win-builds.org/@@VERSION@@/packages/windows_${BITS}"
   sherpa -install all
 done
 
