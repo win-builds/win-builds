@@ -3,5 +3,8 @@
 
 docbook-xsl.css
 doc/*.html
+doc/style.css
+doc/version.config
 
 win-builds-bundle
+win-builds-bundle-*.zip
