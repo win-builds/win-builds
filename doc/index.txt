@@ -171,20 +171,16 @@ You first need to have an environment setup for building packages; this step
 is described on the link:diy.html[doc-diy] page. Once you have it, have a look
 at the link:packaging.html[packager documentation] page.
 
-== Current status (1.3 beta3) ==
+== Current status (1.3 rc1) ==
 === Main changes ===
 * checked x86_64-w64-mingw32 toolchain
 * emulation of symlinks on windows
 * updated packages: GCC 4.8, Mingw-w64 v3 and all libraries
 * faster build infrastructure
+* helper scripts to install on native windows or in msys
 
 === Known issues ===
-* On Windows, packages with symlinks to directories cannot be updated; this
-  will be fixed in a later yypkg release.
 * Graphical installer is being reworked and is not available yet.
-
-=== Roadmap to next version ===
-* Installer update and creation of Pango, GTK+ and font caches.
 
 == History ==
 * 1.3, December 2013: stable x86_64-w64-mingw32 native and cross compilers,
