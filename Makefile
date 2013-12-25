@@ -29,4 +29,7 @@ bundle:
 doc doc-upload:
 	$(MAKE) -C doc $@
 
+web-upload:
+	$(MAKE) -C web $@
+
 .PHONY: doc

@@ -74,7 +74,7 @@
 </video>
 <div id="captions">
   <div id="caption-9" class="caption">
-    First thing is to <a href=http://win-builds.org/1.3-beta1>download the bootstrap binaries</a>.
+    First thing is to <a href=http://win-builds.org/@@VERSION@@>download the bootstrap binaries</a>.
   </div>
   <div id="caption-16" class="caption">
     This puts us on the documentation page which covers most scenarios and provides the detailled installation instructions.

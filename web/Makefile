@@ -1,8 +1,12 @@
-DEST="notk.org:/var/www/win-builds.org"
+include ../Makefile.data
 
-upload:
+web-upload:
 	mkdir -p 'temp'
-	for f in $$(git ls-files '*.php'); do php "$${f}" > "temp/$${f%%.php}.html"; done
+	for f in $$(git ls-files '*.php'); do \
+	  php "$${f}" \
+	  | sed 's/@@VERSION@@/$(VERSION)/g' \
+	  > "temp/$${f%%.php}.html"; \
+	done
 	cp *.css temp
-	rsync -avzLP 'temp/' "$(DEST)/"
+	rsync -avzLP 'temp/' "$(WEB)/"
 	rm -r 'temp'

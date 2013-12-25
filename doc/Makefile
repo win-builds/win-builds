@@ -1,7 +1,5 @@
 include ../Makefile.data
 
-HOST:=notk.org:/var/www/win-builds.org/$(VERSION)
-
 DOCS:=index diy packaging msys
 DOCS_TXT:=$(DOCS:%=%.txt)
 DOCS_HTML:=$(DOCS:%=%.html)
@@ -22,7 +20,7 @@ version.config: ../Makefile.data Makefile
 doc: $(DOCS_HTML)
 
 doc-upload: doc
-	rsync -avLP $(DOCS_HTML) $(DOCS_TXT) docbook-xsl.css ../web/style.css "$(HOST)/"
+	rsync -avLP $(DOCS_HTML) $(DOCS_TXT) docbook-xsl.css ../web/style.css "$(WEB)/$(VERSION)/"
 
 clean:
 	rm -f $(DOCS_HTML)
