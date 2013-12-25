@@ -25,6 +25,8 @@ case "$1" in
   *) ;;
 esac
 
+CYG='$(uname | grep -q "^CYGWIN")'
+
 if [ -n "${BITS}" ]; then
   YYPREFIX="/opt/windows_${BITS}"
   YYPATH="${YYPREFIX}/bin"
@@ -32,7 +34,7 @@ if [ -n "${BITS}" ]; then
     echo "The ${YYPATH} directory doesn't exist; there cannot be a valid setup there." 1>&2
     exit
   fi
-  if ! cygpath --help 2>/dev/null >/dev/null; then
+  if ${CYG}; then
     case ":${PATH}:" in
       *:/opt/windows_??/bin:*)
         PATH="$(echo "${PATH}" | sed "s;/opt/windows_../bin;${YYPATH};g")" ;;

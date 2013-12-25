@@ -6,6 +6,8 @@ else
   ARCHS=${1:-"i686"}
 fi
 
+CYG='$(uname | grep -q "^CYGWIN")'
+
 OLD_PATH="${PATH}"
 
 for ARCH in ${ARCHS}; do
@@ -14,7 +16,7 @@ for ARCH in ${ARCHS}; do
     "x86_64") BITS="64" ;;
     *) ;;
   esac
-  if cygpath --help 2>/dev/null >/dev/null; then
+  if ${CYG}; then
     export YYPREFIX="$(cygpath -m "/opt/windows_${BITS}")"
   else
     export YYPREFIX="/opt/windows_${BITS}"
