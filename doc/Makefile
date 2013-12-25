@@ -22,7 +22,7 @@ version.config: ../Makefile.data Makefile
 doc: $(DOCS_HTML)
 
 doc-upload: doc
-	rsync -avP $(DOCS_HTML) $(DOCS_TXT) docbook-xsl.css $(HOST)/
+	rsync -avLP $(DOCS_HTML) $(DOCS_TXT) docbook-xsl.css ../web/style.css "$(HOST)/"
 
 clean:
 	rm -f $(DOCS_HTML)
