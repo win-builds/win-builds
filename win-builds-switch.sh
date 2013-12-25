@@ -32,13 +32,15 @@ if [ -n "${BITS}" ]; then
     echo "The ${YYPATH} directory doesn't exist; there cannot be a valid setup there." 1>&2
     exit
   fi
-  case ":${PATH}:" in
-    *:/opt/windows_??/bin:*)
-      PATH="$(echo "${PATH}" | sed "s;/opt/windows_../bin;${YYPATH};g")" ;;
-    *) PATH="${YYPATH}:${PATH}" ;;
-  esac
+  if ! cygpath --help 2>/dev/null >/dev/null; then
+    case ":${PATH}:" in
+      *:/opt/windows_??/bin:*)
+        PATH="$(echo "${PATH}" | sed "s;/opt/windows_../bin;${YYPATH};g")" ;;
+      *) PATH="${YYPATH}:${PATH}" ;;
+    esac
+    export PATH
+  fi
   export YYPREFIX
-  export PATH
   export PKG_CONFIG_LIBDIR="${YYPREFIX}/lib${LIBDIRSUFFIX}/pkgconfig"
 else
   echo 'You must either specify "32" or "64" on the command-line.' 1>&2
