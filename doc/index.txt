@@ -43,9 +43,35 @@ This means you need to install msys, msys2, cygwin or nothing if your IDE
 doesn't need anything besides the toolchain. You also need to set variables
 like %PATH% yourself.
 
+==== Automated install ====
+As a stop-gap measure for the lack of an up-to-date installer, a .bat file has
+been written.
+Simply download the link:win-builds-bundle-@@VERSION@@.zip[the win-builds
+binaries], extract them and run `win-install.bat'. It will install files in
+`C:\win-builds-32' and `C:\win-builds-64'; if you want to change the path,
+simply edit the .bat file in any text editor.
+
+The toolchain will then be setup and can be used standalone or from an IDE.
+The only settings needed is to set the PATH and PKG_CONFIG_LIBDIR environment
+variable to chose between the 32 bits and 64 bits toolchain:
+
+* for 32 bits:
+** prepend C:\win-builds-32\bin to PATH
+** set PKG_CONFIG_LIBDIR to C:\win-builds-32\lib\pkgconfig
+
+* for 64 bits:
+** prepend C:\win-builds-64\bin to PATH
+** set PKG_CONFIG_LIBDIR to C:\win-builds-64\lib64\pkgconfig
+
+[NOTE]
+The 64 bits toolchain requires a 64 bits host to run.
 
 ==== Manual steps ====
-Download and extract link:win-builds-bundle-1.3-beta3.zip[the yypkg binaries].
+The code below is a summary of what is done at installation on Windows. If you
+want all the details, you should look at the source of
+link:http://cgit.notk.org/adrien/yypkg/win-builds.git/tree/win-install.bat[win-install.bat].
+
+Download and extract link:win-builds-bundle-@@VERSION@@.zip[the yypkg binaries].
 Then, start a command prompt (cmd.exe), enter the directory where you've
 extracted the files and run:
 
@@ -54,12 +80,10 @@ set YYPREFIX=C:/win-builds-32
 yypkg -init
 yypkg -config -setpreds host="i686-w64-mingw32"
 yypkg -config -setpreds target="i686-w64-mingw32"
-sherpa -set-mirror http://win-builds.org/1.3-beta3/packages/windows_32
+sherpa -set-mirror http://win-builds.org/@@VERSION@@/packages/windows_32
 sherpa -install all
 ------------------------------------------------------------------------
 
-The toolchain is now setup and can be used in combination with either msys,
-msys2, cygwin or an IDE.
 
 === From Windows for MSYS ===
 The how-to for use with MSYS is available on a link:msys.html[dedicated page].
