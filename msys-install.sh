@@ -6,6 +6,8 @@ else
   ARCHS=${1:-"i686"}
 fi
 
+OLD_PATH="${PATH}"
+
 for ARCH in ${ARCHS}; do
   case "${ARCH}" in
     "i686")   BITS="32" ;;
@@ -17,12 +19,21 @@ for ARCH in ${ARCHS}; do
   else
     export YYPREFIX="/opt/windows_${BITS}"
   fi
+
+  export PATH="${YYPREFIX}/bin:${OLD_PATH}"
+
   echo "Installing win-builds for ${ARCH} in ${YYPREFIX}."
   yypkg -init
   yypkg -config -setpreds host="${ARCH}-w64-mingw32"
   yypkg -config -setpreds target="${ARCH}-w64-mingw32"
   sherpa -set-mirror "http://win-builds.org/@@VERSION@@/packages/windows_${BITS}"
   sherpa -install all
+
+  echo 'Updating GDK, GTK, Pango and font caches (this may take a while).'
+  gdk-pixbuf-query-loaders --update-cache
+  gtk-query-immodules-2.0 --update-cache
+  pango-querymodules --update-cache
+  fc-cache
 done
 
 mkdir -p /bin
