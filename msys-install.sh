@@ -33,10 +33,10 @@ for ARCH in ${ARCHS}; do
   ./sherpa -install all
 
   echo 'Updating GDK, GTK, Pango and font caches (this may take a while).'
+  fc-cache
+  pango-querymodules --update-cache
   gdk-pixbuf-query-loaders --update-cache
   gtk-query-immodules-2.0 --update-cache
-  pango-querymodules --update-cache
-  fc-cache
 done
 
 mkdir -p /bin
