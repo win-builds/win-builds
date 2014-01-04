@@ -42,7 +42,7 @@ for ARCH in ${ARCHS}; do
   if yypkg -list | grep -q 'pango'; then
     # Pango doesn't respect --libdir for the module cache so simply update the
     # list in /etc (for now).
-    pango-querymodules --update-cache > ${YYPREFIX}/etc/pango/pango.modules
+    pango-querymodules > ${YYPREFIX}/etc/pango/pango.modules
   fi
   if yypkg -list | grep -q 'gtk+'; then
     gdk-pixbuf-query-loaders --update-cache
