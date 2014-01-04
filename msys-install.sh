@@ -28,12 +28,12 @@ for ARCH in ${ARCHS}; do
   export PATH="${YYPREFIX}/bin:${OLD_PATH}"
 
   echo "Installing win-builds for ${ARCH} in ${YYPREFIX}."
-  ./yypkg -init
-  ./yypkg -config -setpreds host="${ARCH}-w64-mingw32"
-  ./yypkg -config -setpreds target="${ARCH}-w64-mingw32"
-  ./sherpa -set-mirror "http://win-builds.org/@@VERSION@@/packages/windows_${BITS}"
+  yypkg -init
+  yypkg -config -setpreds host="${ARCH}-w64-mingw32"
+  yypkg -config -setpreds target="${ARCH}-w64-mingw32"
+  sherpa -set-mirror "http://win-builds.org/@@VERSION@@/packages/windows_${BITS}"
   echo 'Downloading and installing packages.'
-  ./sherpa -install all
+  sherpa -install all
 
   echo 'Updating GDK, GTK, Pango and font caches (this may take a while).'
   fc-cache
