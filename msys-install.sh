@@ -36,9 +36,13 @@ for ARCH in ${ARCHS}; do
   sherpa -install all
 
   echo 'Updating GDK, GTK, Pango and font caches (this may take a while).'
-  fc-cache
-  pango-querymodules --update-cache
-  if [ x"${ARCH}" != x"86_64" ]; then
+  if yypkg -list | grep -q 'fontconfig'; then
+    fc-cache
+  fi
+  if yypkg -list | grep -q 'pango'; then
+    pango-querymodules --update-cache
+  fi
+  if yypkg -list | grep -q 'gtk+'; then
     gdk-pixbuf-query-loaders --update-cache
     gtk-query-immodules-2.0 --update-cache
   fi
