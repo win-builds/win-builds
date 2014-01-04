@@ -61,7 +61,7 @@ copy_from_system() {
 
   echo "Copying ${DIR}."
 
-  mkdir -p "${LOCATION}/${DIR}"
+  mkdir -p "${LOCATION}/${DIR}" "${YYPKG_PACKAGES}"
 
   rsync -avP --delete-after --exclude='memo_*' \
     "${YYPKG_PACKAGES}/${DIR}/" "${LOCATION}/${DIR}/"
