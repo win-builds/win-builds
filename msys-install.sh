@@ -22,6 +22,7 @@ for ARCH in ${ARCHS}; do
 
   YYPREFIX="/opt/windows_${BITS}"
   PANGO_CACHE="${YYPREFIX}/etc/pango/pango.modules"
+  export PATH="${YYPREFIX}/bin:${OLD_PATH}"
 
   # On Cygwin we need to translate YYPREFIX explicitely; on msys it is
   # automatic.
@@ -30,8 +31,6 @@ for ARCH in ${ARCHS}; do
   else
     export YYPREFIX
   fi
-
-  export PATH="${YYPREFIX}/bin:${OLD_PATH}"
 
   echo "Installing win-builds for ${ARCH} in ${YYPREFIX}."
   yypkg -init
