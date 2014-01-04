@@ -35,17 +35,20 @@ for ARCH in ${ARCHS}; do
   echo 'Downloading and installing packages.'
   sherpa -install all
 
-  echo 'Updating GDK, GTK, Pango and font caches (this may take a while).'
   if yypkg -list | grep -q 'fontconfig'; then
+    echo "Updating fontconfig's cache (this may take a while)."
     fc-cache
   fi
   if yypkg -list | grep -q 'pango'; then
+    echo "Updating pango's module cache."
     # Pango doesn't respect --libdir for the module cache so simply update the
     # list in /etc (for now).
     pango-querymodules > ${YYPREFIX}/etc/pango/pango.modules
   fi
   if yypkg -list | grep -q 'gtk+'; then
+    echo "Updating gdk's pixbuf cache."
     gdk-pixbuf-query-loaders --update-cache
+    echo "Updating gtk's immodules cache."
     gtk-query-immodules-2.0 --update-cache
   fi
 done
