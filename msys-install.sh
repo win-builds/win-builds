@@ -10,6 +10,9 @@ CYG='grep ^CYGWIN /proc/version'
 
 OLD_PATH="${PATH}"
 
+mkdir -p /bin
+cp yypkg.exe sherpa.exe win-builds-switch.sh /bin
+
 for ARCH in ${ARCHS}; do
   case "${ARCH}" in
     "i686")   BITS="32" ;;
@@ -41,5 +44,3 @@ for ARCH in ${ARCHS}; do
   fi
 done
 
-mkdir -p /bin
-cp yypkg.exe sherpa.exe win-builds-switch.sh /bin
