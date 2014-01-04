@@ -19,10 +19,16 @@ for ARCH in ${ARCHS}; do
     "x86_64") BITS="64" ;;
     *) ;;
   esac
+
+  YYPREFIX="/opt/windows_${BITS}"
+  PANGO_CACHE="${YYPREFIX}/etc/pango/pango.modules"
+
+  # On Cygwin we need to translate YYPREFIX explicitely; on msys it is
+  # automatic.
   if ${CYG} >/dev/null 2>/dev/null; then
-    export YYPREFIX="$(cygpath -m "/opt/windows_${BITS}")"
+    export YYPREFIX="$(cygpath -m "${YYPREFIX}")"
   else
-    export YYPREFIX="/opt/windows_${BITS}"
+    export YYPREFIX
   fi
 
   export PATH="${YYPREFIX}/bin:${OLD_PATH}"
@@ -43,7 +49,7 @@ for ARCH in ${ARCHS}; do
     echo "Updating pango's module cache."
     # Pango doesn't respect --libdir for the module cache so simply update the
     # list in /etc (for now).
-    pango-querymodules > ${YYPREFIX}/etc/pango/pango.modules
+    pango-querymodules > ${PANGO_CACHE}
   fi
   if yypkg -list | grep -q 'gtk+'; then
     echo "Updating gdk's pixbuf cache."
