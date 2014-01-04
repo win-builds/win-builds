@@ -22,7 +22,7 @@ for ARCH in ${ARCHS}; do
 
   YYPREFIX="/opt/windows_${BITS}"
   PANGO_CACHE="${YYPREFIX}/etc/pango/pango.modules"
-  export PATH="${YYPREFIX}/bin:${OLD_PATH}"
+  export PATH="${YYPREFIX}/bin:.:${OLD_PATH}"
 
   # On Cygwin we need to translate YYPREFIX explicitely; on msys it is
   # automatic.
