@@ -6,6 +6,12 @@ else
   ARCHS=${1:-"i686"}
 fi
 
+case " ${ARCHS} " in
+  *" i686 "*)   ;;
+  *" x86_64 "*) ;;
+  *) echo "Unknown arch \`${ARCH}' specificied. Aborting." 1>&2; exit 1 ;;
+esac
+
 CYG='grep ^CYGWIN /proc/version'
 
 OLD_PATH="${PATH}"
