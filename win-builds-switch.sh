@@ -22,12 +22,17 @@
 case "$1" in
   "32") BITS="$1"; LIBDIRSUFFIX="" ;;
   "64") BITS="$1"; LIBDIRSUFFIX="64";;
-  *) ;;
+  "clean") ;;
+  *) echo "Unknown arch \`${1}' specificied. Aborting." 1>&2; exit 1 ;;
 esac
 
-CYG='grep ^CYGWIN /proc/version'
+if [ x"$1" = x"clean" ]; then
+  export PATH="$(echo "${PATH}" | sed -e 's;/opt/windows_../bin;;g' -e 's/::/:/g')"
+  unset YYPREFIX
+  unset PKG_CONFIG_LIBDIR
+else
+  CYG='grep ^CYGWIN /proc/version'
 
-if [ -n "${BITS}" ]; then
   YYPREFIX="/opt/windows_${BITS}"
   YYPATH="${YYPREFIX}/bin"
   if [ ! -d "${YYPATH}" ]; then
@@ -44,7 +49,4 @@ if [ -n "${BITS}" ]; then
   fi
   export YYPREFIX
   export PKG_CONFIG_LIBDIR="${YYPREFIX}/lib${LIBDIRSUFFIX}/pkgconfig"
-else
-  echo 'You must either specify "32" or "64" on the command-line.' 1>&2
-  false
 fi
