@@ -35,8 +35,10 @@ for ARCH in ${ARCHS}; do
   echo 'Updating GDK, GTK, Pango and font caches (this may take a while).'
   fc-cache
   pango-querymodules --update-cache
-  gdk-pixbuf-query-loaders --update-cache
-  gtk-query-immodules-2.0 --update-cache
+  if [ x"${ARCH}" != x"86_64" ]; then
+    gdk-pixbuf-query-loaders --update-cache
+    gtk-query-immodules-2.0 --update-cache
+  fi
 done
 
 mkdir -p /bin
