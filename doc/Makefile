@@ -1,6 +1,6 @@
 include ../Makefile.data
 
-DOCS:=index diy packaging msys
+DOCS:=index diy packaging msys-cygwin
 DOCS_TXT:=$(DOCS:%=%.txt)
 DOCS_HTML:=$(DOCS:%=%.html)
 

@@ -44,11 +44,11 @@ binaries (typically `win-builds-bundle') and run one of:
 +
 ------------------------------------------------------------------------
 # To install for both i686 and x86_64:
-./msys-install.sh
+./msys-cygwin-install.sh
 # To install for only i686:
-./msys-install.sh i686
+./msys-cygwin-install.sh i686
 # To install for only x86_64:
-./msys-install.sh x86_64
+./msys-cygwin-install.sh x86_64
 ------------------------------------------------------------------------
 
 4. Check gcc is running well:

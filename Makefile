@@ -7,7 +7,7 @@ BUNDLE_FILES= \
   ./yypkg.exe \
   ./sherpa.exe \
   ./win-install.bat \
-  ./msys-install.sh \
+  ./msys-cygwin-install.sh \
   ./win-builds-switch.sh
 
 all:
