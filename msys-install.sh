@@ -1,9 +1,19 @@
 #!/bin/sh -e
 
-if echo "${COMSPEC}" | grep -q 'SysWOW64'; then
-  ARCHS=${1:-"i686 x86_64"}
+CYG='grep ^CYGWIN /proc/version'
+
+if $CYG >/dev/null 2>/dev/null; then
+  if grep -q -e 'WOW64' -e 'x86_64' '/proc/version'; then
+    ARCHS=${1:-"i686 x86_64"}
+  else
+    ARCHS=${1:-"i686"}
+  fi
 else
-  ARCHS=${1:-"i686"}
+  if echo "${COMSPEC}" | grep -q 'SysWOW64'; then
+    ARCHS=${1:-"i686 x86_64"}
+  else
+    ARCHS=${1:-"i686"}
+  fi
 fi
 
 case " ${ARCHS} " in
@@ -11,8 +21,6 @@ case " ${ARCHS} " in
   *" x86_64 "*) ;;
   *) echo "Unknown arch \`${ARCHS}' specificied. Aborting." 1>&2; exit 1 ;;
 esac
-
-CYG='grep ^CYGWIN /proc/version'
 
 OLD_PATH="${PATH}"
 
