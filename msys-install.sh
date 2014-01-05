@@ -9,7 +9,7 @@ fi
 case " ${ARCHS} " in
   *" i686 "*)   ;;
   *" x86_64 "*) ;;
-  *) echo "Unknown arch \`${ARCH}' specificied. Aborting." 1>&2; exit 1 ;;
+  *) echo "Unknown arch \`${ARCHS}' specificied. Aborting." 1>&2; exit 1 ;;
 esac
 
 CYG='grep ^CYGWIN /proc/version'
