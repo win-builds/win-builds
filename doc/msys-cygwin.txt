@@ -1,9 +1,27 @@
-= Installation For Use With MSYS =
+= Installation For Use With MSYS or Cygwin =
 
-This tutorial will guide you through a typical installation of MSYS and
-Win-builds. It has been contributed by Vincent Torri.
- 
-== MSYS Installation ==
+This tutorial will guide you through a typical installation of Win-builds with
+MSYS or Cygwin. Most of it has been contributed by Vincent Torri.
+
+== Installation of a POSIX-like environment ==
+
+=== Cygwin Installation ===
+1. Download either link:http://cygwin.com/setup-x86.exe[setup-x86.exe]
+link:http://cygwin.com/setup-x86_64.exe[setup-x86_64.exe] (setup-x86.exe will
+work fine on both 32b and 64b systems).
+
+2. Run the installer. In the examples below, Cygwin is supposed to have been
+installed in 'C:/Cygwin'.
+
+3. When prompted for the list of packages to install, chose at least one of
+'mingw-w64-i686-gcc-g\+\+' or 'mingw-w64-x86_64-gcc-g\+\+' which are located in
+the 'Devel' category; also install 'pkg-config' which is in the same category.
+You are of course free to install more packages to satisfy the needs of your
+projects.
+
+4. Proceed until the end of the installation (downloading takes some time).
+
+=== MSYS Installation ===
 1. Download
 link:http://sourceforge.net/projects/mingw/files/Installer/mingw-get-setup.exe/download[mingw-get-setup.exe]
 and run it.
@@ -29,18 +47,20 @@ then "Apply Changes".
 9. In the new window, click on "Apply". Once everything is installed, use the
 "Close" button and exit the installer.
 
+10. Go to 'C:/win_builds/msys/1.0/' , right-click on 'msys.bat', hover over
+'Send To' and chose 'Desktop (create shortcut)'.
+
 == Win-builds Installation ==
 
-1. Run MSYS from C:/win_builds/msys/1.0/msys.bat. You might want to create a
-shortcut on the desktop (right-click on msys.bat then mouse over
-"Send To" and click on "Desktop (Create Shortcut)".
+1. Run either MSYS or Cygwin according to what you have installed.
 
 2. Download link:win-builds-bundle-@@VERSION@@.zip[the yypkg binaries] and
-extract them into the home directory of MSYS
-(C:/win_builds/msys/1.0/home/{your_account_name}).
+extract them into the home directory of MSYS/Cygwin:
+* for MSYS: 'C:/win_builds/msys/1.0/home/[your_account_name]'
+* for Cygwin: 'C:/Cygwin/home/[your_account_name]'
 
-3. In the MSYS prompt, enter the directory where you've extracted the yypkg
-binaries (typically `win-builds-bundle') and run one of:
+3. In the MSYS/Cygwin prompt, enter the directory where you've extracted the
+yypkg binaries (typically 'win-builds-bundle') and run one of:
 +
 ------------------------------------------------------------------------
 # To install for both i686 and x86_64:
@@ -54,6 +74,11 @@ binaries (typically `win-builds-bundle') and run one of:
 4. Check gcc is running well:
 +
 ------------------------------------------------------------------------
+# First, switch to the 32-bit toolchain (see next section for details):
+. win-builds-switch.sh 32
+gcc --version
+# Then, switch to the 64-bit toolchain: (see next section for details)
+. win-builds-switch.sh 64
 gcc --version
 ------------------------------------------------------------------------
 
@@ -65,7 +90,7 @@ echo '. win-builds-switch.sh 32' >> ~/.profile
 
 == Change toolchain on-the-fly ==
 
-The `win-builds-switch.sh' script takes care of everything; run it in your
+The 'win-builds-switch.sh' script takes care of everything; run it in your
 shell like:
 
 ------------------------------------------------------------------------
