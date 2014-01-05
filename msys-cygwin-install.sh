@@ -3,12 +3,16 @@
 CYG='grep ^CYGWIN /proc/version'
 
 if $CYG >/dev/null 2>/dev/null; then
+  echo "Cygwin detected."
+
   if grep -q -e 'WOW64' -e 'x86_64' '/proc/version'; then
     ARCHS=${1:-"i686 x86_64"}
   else
     ARCHS=${1:-"i686"}
   fi
 else
+  echo "Msys detected."
+
   if echo "${COMSPEC}" | grep -q 'SysWOW64'; then
     ARCHS=${1:-"i686 x86_64"}
   else
@@ -21,6 +25,8 @@ case " ${ARCHS} " in
   *" x86_64 "*) ;;
   *) echo "Unknown arch \`${ARCHS}' specificied. Aborting." 1>&2; exit 1 ;;
 esac
+
+echo "Installing for $(echo ${ARCHS} | sed 's/ / and /')."
 
 OLD_PATH="${PATH}"
 
@@ -46,7 +52,10 @@ for ARCH in ${ARCHS}; do
     export YYPREFIX
   fi
 
+  echo "*************************************************"
   echo "Installing win-builds for ${ARCH} in ${YYPREFIX}."
+  echo "*************************************************"
+
   yypkg -init
   yypkg -config -setpreds host="${ARCH}-w64-mingw32"
   yypkg -config -setpreds target="${ARCH}-w64-mingw32"
@@ -55,7 +64,7 @@ for ARCH in ${ARCHS}; do
   sherpa -install all
 
   if yypkg -list | grep -q 'fontconfig'; then
-    echo "Updating fontconfig's cache (this is slow and uses lots of RAM on Windows >= 7)."
+    echo "Updating fontconfig's cache (takes lot of time and memory on Windows >= 7)."
     fc-cache
   fi
   if yypkg -list | grep -q 'pango'; then
@@ -71,4 +80,10 @@ for ARCH in ${ARCHS}; do
     gtk-query-immodules-2.0 --update-cache
   fi
 done
+
+cat << EOF
+Win-builds has been installed for $(echo ${ARCHS} | sed 's/ / and /').
+However no setting has been changed on the computer.
+Remember to select a environment as described at http://win-builds.org/@@VERSION@@/msys-cygwin.html .
+EOF
 
