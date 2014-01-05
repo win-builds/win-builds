@@ -47,7 +47,7 @@ for ARCH in ${ARCHS}; do
   sherpa -install all
 
   if yypkg -list | grep -q 'fontconfig'; then
-    echo "Updating fontconfig's cache (this may take a while)."
+    echo "Updating fontconfig's cache (this is slow and uses lots of RAM on Windows >= 7)."
     fc-cache
   fi
   if yypkg -list | grep -q 'pango'; then
