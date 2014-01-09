@@ -84,9 +84,8 @@ sherpa -set-mirror http://win-builds.org/@@VERSION@@/packages/windows_32
 sherpa -install all
 ------------------------------------------------------------------------
 
-
-=== From Windows for MSYS ===
-The how-to for use with MSYS is available on a link:msys.html[dedicated page].
+=== From Windows for MSYS or Cygwin===
+The how-to for use with MSYS or Cygwin is available on a link:msys-cygwin.html[dedicated page].
 
 === From Linux 64b ===
 
