@@ -97,5 +97,5 @@ shell like:
 # To switch to the i686 toolchain
 . win-builds-switch.sh 32
 # To switch to the x86_64 toolchain
-. win-builds-switch.sh 32
+. win-builds-switch.sh 64
 ------------------------------------------------------------------------
