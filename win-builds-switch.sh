@@ -20,8 +20,8 @@
 #_!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 case "$1" in
-  "32") BITS="$1"; LIBDIRSUFFIX="" ;;
-  "64") BITS="$1"; LIBDIRSUFFIX="64";;
+  "32" | "i686")   BITS="$1"; LIBDIRSUFFIX="" ;;
+  "64" | "x86_64") BITS="$1"; LIBDIRSUFFIX="64";;
   "clean") ;;
   *) echo "Unknown arch \`${1}' specificied. Aborting." 1>&2; exit 1 ;;
 esac
