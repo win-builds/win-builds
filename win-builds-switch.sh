@@ -23,7 +23,7 @@ case "$1" in
   "32" | "i686")   BITS="$1"; LIBDIRSUFFIX="" ;;
   "64" | "x86_64") BITS="$1"; LIBDIRSUFFIX="64";;
   "clean") ;;
-  *) echo "Unknown arch \`${1}' specificied. Aborting." 1>&2; exit 1 ;;
+  *) echo "Unknown arch \`${1}' specificied. Aborting." 1>&2; return 1 ;;
 esac
 
 if [ x"$1" = x"clean" ]; then
@@ -37,7 +37,7 @@ else
   YYPATH="${YYPREFIX}/bin"
   if [ ! -d "${YYPATH}" ]; then
     echo "The ${YYPATH} directory doesn't exist; there cannot be a valid setup there." 1>&2
-    exit
+    return 1
   fi
   if ! ${CYG} >/dev/null 2>/dev/null; then
     case ":${PATH}:" in
