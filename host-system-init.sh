@@ -105,7 +105,7 @@ rm -r yypkg_init/pkgs
 rmdir yypkg_init/host/{bin,lib64,usr/lib64,usr} .{ICE,X11}-unix)
 
 cp "${SOURCE_PATH}/get-all-prebuilt-binaries.sh" "${SYSTEM}/root"
-VERSION="$(sed -n '/VERSION:=/' 's/.*:=// p')"
+VERSION="$(sed -n '/VERSION:=/ s/.*:=// p' "${SOURCE_PATH}/Makefile.data")"
 sed -i "s/@@VERSION@@/${VERSION}/g" "${SYSTEM}/root/get-all-prebuilt-binaries.sh"
 
 cat > "${SYSTEM}/etc/resolv.conf" << EOF
