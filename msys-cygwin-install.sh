@@ -74,8 +74,13 @@ for ARCH in ${ARCHS}; do
     pango-querymodules > ${PANGO_CACHE}
   fi
   if yypkg -list | grep -q 'gtk+'; then
-    echo "Updating gdk's pixbuf cache."
-    gdk-pixbuf-query-loaders --update-cache
+    if ! grep -q '^CYGWIN_NT-5' '/proc/version'; then
+      echo "Updating gdk's pixbuf cache."
+      gdk-pixbuf-query-loaders --update-cache
+    else
+      echo "Updating gdk's pixbuf cache..; IMPOSSIBLE on Cygwin on XP/2k3!"
+      echo "Please run 'gdk-pixbuf-query-loaders --update-cache' from a new cmd.exe."
+    fi
     echo "Updating gtk's immodules cache."
     gtk-query-immodules-2.0 --update-cache
   fi
