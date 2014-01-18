@@ -8,6 +8,12 @@
 <?php include 'header.html'; ?>
 
 <h1>News</h1>
+<h3><a href="1.3.0">1.3.0 - 11/01/2014</a></h3>
+  All executables in bin/ have the .exe extension now (applies to gcc.exe, openssl.exe, xmlwf.exe from expat).<br>
+  Many small fixes to the installer scripts for windows platforms.<br>
+  Update to mingw-w64 3.1.0 (maintenance release).<br>
+  Don't run gtk and gdk cache update tools on Cygwin on XP/2k3 (they crash); ask the user to run them from a fresh cmd.exe.<br>
+  The 'win-builds-switch' script used 'exit'; it now uses 'return'.
 
 <h3><a href="1.3-rc1">1.3-rc1 - 22/12/2013</a></h3>
   Fixed the "mingw" symlink in the root dir on windows.<br>

@@ -48,6 +48,11 @@ h3 {
   font-weight: bold;
 }
 
+.navbar-el h2 {
+  margin-bottom: 0.2em;
+  margin-top: 0.2em;
+}
+
 .hl {
   margin-bottom: 0.5em;
   width: 32%;

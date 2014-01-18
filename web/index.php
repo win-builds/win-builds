@@ -7,12 +7,12 @@
 <body>
 <?php include 'header.html'; ?>
 
-<h1>Win-builds - (Free) Software Packaging For Windows</h1>
+<h1>Win-builds - (Free) Software Packaging and Building For Windows</h1>
 
 <p>
   Win-builds creates binary packages of libraries and tools for native
-  Windows. It is supported by the yypkg package manager and runs on
-  Windows, MSYS, MSYS2, Cygwin and Linux.
+  Windows from source. It is supported by the yypkg package manager and
+  runs on Windows, MSYS, MSYS2, Cygwin and Linux.
 </p>
 
 <div class="highlights">
@@ -20,7 +20,7 @@
     <h2 class="hl-title">For 32bits and 64bits</h2>
     <ul class="hl-list">
       <li class="hl-el">GCC 4.8.2 - C, C++</li>
-      <li class="hl-el">Mingw-w64 3.0.1</li>
+      <li class="hl-el">Mingw-w64 3.1.0</li>
     </ul>
     <div class="hl-text">
     </div>
@@ -42,7 +42,7 @@
   <div class="hl">
     <h2 class="hl-title">Quick installs</h2>
     <ul class="hl-list">
-      <li class="hl-el">Set up the whole system in 5 minutes on a broadband connection</li>
+      <li class="hl-el">Set up a complete development environment in 5 minutes on a broadband connection</li>
     </ul>
   </div>
   <div class="hl">
