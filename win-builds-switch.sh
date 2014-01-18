@@ -46,7 +46,9 @@ else
       *) PATH="${YYPATH}:${PATH}" ;;
     esac
     export PATH
+    export YYPREFIX
+  else
+    export YYPREFIX="$(cygpath -m "${YYPREFIX}")"
   fi
-  export YYPREFIX
   export PKG_CONFIG_LIBDIR="${YYPREFIX}/lib${LIBDIRSUFFIX}/pkgconfig"
 fi
