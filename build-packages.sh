@@ -6,7 +6,7 @@ case "${TRIPLET}" in
   x86_64*) BITS="64";;
 esac
 
-DEFAULT_KIND="init-native_toolchain-cross_toolchain-windows"
+DEFAULT_KIND="native_toolchain-cross_toolchain-windows"
 
 LOCATION="${1}"
 KIND="${2:-"${DEFAULT_KIND}"}"
