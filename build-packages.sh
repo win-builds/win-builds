@@ -11,6 +11,10 @@ DEFAULT_KIND="init-native_toolchain-cross_toolchain-windows"
 LOCATION="${1}"
 KIND="${2:-"${DEFAULT_KIND}"}"
 
+SOURCE_PATH="$(cd "$(dirname "${0}")" && pwd)"
+
+USE_CHROOT="$( . "${SOURCE_PATH}/config"; echo ${USE_CHROOT:-"false"})"
+
 if [ $# -ge 3 ]; then
   shift
   shift
@@ -33,7 +37,13 @@ umask 022
 
 mkdir -p "${LOCATION}"
 LOCATION="$(cd "${LOCATION}" && pwd)"
-YYPKG_PACKAGES="${LOCATION}/system/root/yypkg_packages"
+
+if "${USE_CHROOT}"; then
+  WORK_DIR="${LOCATION}/system/root/yypkg_packages"
+else
+  WORK_DIR="${LOCATION}"
+fi
+
 QUEUED_PACKAGES=""
 
 queue_cond() {
@@ -46,8 +56,8 @@ queue_cond() {
     "  "|*" ${PKG}${VARIANT} "*)
       echo "Copying ${PKG}${VARIANT}."
 
-      mkdir -p "${YYPKG_PACKAGES}"
-      tar cf "${YYPKG_PACKAGES}/${PKG}${VARIANT}.tar" \
+      mkdir -p "${WORK_DIR}"
+      tar cf "${WORK_DIR}/${PKG}${VARIANT}.tar" \
         --transform="s/config${VARIANT}/config/" \
         --transform="s/${PKG}.SlackBuild/${PKG}${VARIANT}.SlackBuild/" \
         -C "${PKG_PATH}" .
@@ -59,19 +69,27 @@ queue_cond() {
 copy_from_system() {
   local DIR="${1}"
 
-  echo "Copying ${DIR}."
+  if "${USE_CHROOT}"; then
+    echo "Copying ${DIR}."
 
-  mkdir -p "${LOCATION}/${DIR}" "${YYPKG_PACKAGES}"
+    mkdir -p "${LOCATION}/${DIR}" "${WORK_DIR}"
 
-  rsync -avP --delete-after --exclude='memo_*' \
-    "${YYPKG_PACKAGES}/${DIR}/" "${LOCATION}/${DIR}/"
+    rsync -avP --delete-after --exclude='memo_*' \
+      "${WORK_DIR}/${DIR}/" "${LOCATION}/${DIR}/"
+  fi
 }
 
 build() {
   local KIND="${1}"
 
   if [ -n "${QUEUED_PACKAGES}" ]; then
-    (cd win-builds && ./main.sh "${LOCATION}" "${KIND}" "yes" ${QUEUED_PACKAGES})
+    if "${USE_CHROOT}"; then
+      (cd win-builds \
+        && ./chroot.sh "${LOCATION}" "${KIND}" "yes" ${QUEUED_PACKAGES})
+    else
+      cp "${SOURCE_PATH}"/build_daemon{,_config} "${WORK_DIR}"
+      (cd "${WORK_DIR}" && ./build_daemon "${KIND}" ${QUEUED_PACKAGES})
+    fi
 
     case "${KIND}" in
       "native_toolchain") local KIND_DIR="${KIND}" ;;
