@@ -88,7 +88,7 @@ build() {
         && ./chroot.sh "${LOCATION}" "${KIND}" "yes" ${QUEUED_PACKAGES})
     else
       cp "${SOURCE_PATH}"/build_daemon{,_config} "${WORK_DIR}"
-      (cd "${WORK_DIR}" && ./build_daemon "${KIND}" ${QUEUED_PACKAGES})
+      "${WORK_DIR}"/build_daemon "${KIND}" ${QUEUED_PACKAGES}
     fi
 
     case "${KIND}" in

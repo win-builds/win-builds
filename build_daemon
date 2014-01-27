@@ -1,6 +1,8 @@
 #!/bin/bash -eu
 
 CWD="$(cd "$(dirname "${0}")" && pwd)"
+cd "$(dirname "${0}")"
+
 # ${CONFIG} is used in build_daemon_config which is sourced by this script
 CONFIG="${1}"
 shift
@@ -18,7 +20,7 @@ if [ -z "$*" ]; then
   exit 1
 fi
 
-. build_daemon_config
+. ./build_daemon_config
 
 echo "Build daemon configured for ${HOST_TRIPLET} => ${TARGET_TRIPLET}."
 
