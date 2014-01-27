@@ -22,18 +22,20 @@ fi
 
 . ./build_daemon_config
 
-echo "Build daemon configured for ${HOST_TRIPLET} => ${TARGET_TRIPLET}."
+mkdir -p "${YYOUTPUT}" "${LOGS}" "${PROCESSING}"
+
+echo "Build daemon configured for ${HOST_TRIPLET} => ${TARGET_TRIPLET}." \
+  > "${PROCESSING}/stderr.log"
 
 if [ ! -e ${YYPREFIX} ]; then
   yypkg -init
 fi
 
-mkdir -p ${YYOUTPUT} ${LOGS} ${CWD}/processing
-
 # iter: wrap the creation and installation of exactly one package from a
 # slackbuild
-# It first runs the slackbuild, redirecting its output (stdout+stderr) to log,
-# but only its stderr is printed on screen and then installs the package.
+# It first runs the slackbuild, redirecting its output (stdout+stderr) to a
+# per-packagelog, and also writes its stderr (and only stderr) to a shared log
+# for quick checks of issues.
 # $1: package to build
 iter() {
   local PKG="${1}"
@@ -47,10 +49,8 @@ iter() {
     export PREFIX="$(echo "${YYPREFIX}" | sed -e 's;^/;;')"
     export DESCR="$(description_of_slack_desc)"
     if [ -e config ]; then source config; fi
-    set -o pipefail
-    time ( /bin/bash -x ${PWD}/${PKG}.SlackBuild 3>&1 1>&2 2>&3 ) | tee /dev/tty
-    set +o pipefail
-  ) > ${LOGS}/${PKG} 2>&1
+    /bin/bash -x ${PWD}/${PKG}.SlackBuild
+  )
   find ${YYOUTPUT} -maxdepth 1 -name '*.txz' | xargs sha1sum | sort \
     > ${YYOUTPUT}/files_post
   comm -13 ${YYOUTPUT}/files_{pre,post} | awk '{ print $2; }' | xargs -n 1 -x yypkg -upgrade -install-new
@@ -58,13 +58,19 @@ iter() {
 }
 
 for FILE in ${*}; do
-  PKG="$(basename "${FILE%%.tar}")"
-  printf "\n ### Building ${PKG}. ###\n\n"
-  (cd processing \
-    && rm -rf "${PKG}" && mkdir -p "${PKG}" \
-    && cd "${PKG}" \
-    && tar xf "../../${FILE}" \
-    && iter "${PKG}")
+  PKG="$(basename "${FILE}")"
+  printf " ### Building ${PKG} (${HOST_TRIPLET} => ${TARGET_TRIPLET}). ###\n"
+  (
+    set -o pipefail
+    time
+    (
+      cd "${PROCESSING}" \
+        && rm -rf "${PKG}" && mkdir -p "${PKG}" \
+        && cd "${PKG}" \
+        && tar xf "${CWD}/${FILE}.tar" \
+        && iter "${PKG}"
+    ) 3>&1 1>&2 2>&3 | tee -a "${PROCESSING}/stderr.log"
+  ) > ${LOGS}/${PKG} 2>&1
 done
 
 echo "Setting up ${YYOUTPUT}."

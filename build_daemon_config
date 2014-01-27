@@ -59,3 +59,4 @@ fi
 
 export LOGS="${CWD}/logs/${NICKNAME}"
 export YYOUTPUT="${CWD}/packages/${NICKNAME}"
+export PROCESSING="${CWD}/processing/${HOST_TRIPLET}-${TARGET_TRIPLET}"
