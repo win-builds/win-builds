@@ -301,12 +301,13 @@ let () =
    * wrong permissions in the packages, like 711 for /usr, and will break
    * systems. *)
   ignore (Unix.umask 0o022);
+  let f ~kind ~triplet =
+    let env = [| sp "TMP=/tmp/win-builds-%s" triplet |] in
+    let kind, available = kind ~triplet in
+    build ~env ~work_dir ~kind ~available ~wishes ()
+  in
   let kind, available = native_toolchain in
   may waitpid (build ~work_dir ~kind ~available ~wishes ());
-  let pids = ListLabels.map triplets ~f:(fun triplet ->
-    let env = [| sp "TMP=/tmp/win-builds-%s" triplet |] in
-    let kind, available = cross_toolchain ~triplet in
-    build ~env ~work_dir ~kind ~available ~wishes ()
+  ListLabels.iter [ cross_toolchain; windows ] ~f:(fun kind ->
+    List.iter (may waitpid) (List.map (fun triplet -> f ~kind ~triplet) triplets);
   )
-  in
-  List.iter (may waitpid) pids
