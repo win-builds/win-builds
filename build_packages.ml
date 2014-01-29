@@ -89,7 +89,7 @@ end
 module Options = struct
   let chroot = false
   let triplets = [ "i686-w64-mingw32"; "x86_64-w64-mingw32" ]
-  let all_kinds = [ "native"; "cross_toolchain"; "windows" ]
+  let all_kinds = [ "native_toolchain"; "cross_toolchain"; "windows" ]
 end
 
 module Args = struct
@@ -191,8 +191,8 @@ let add_package q =
       name = (match variant with None -> package | Some variant -> sp "%s-%s" package variant)
     } q
 
-let native =
-  let name = "native" in
+let native_toolchain =
+  let name = "native_toolchain" in
   let q = Queue.create () in
   let f = add_package q in
   f ~dir:sbo "ocaml";
@@ -222,7 +222,7 @@ let cross_toolchain ~triplet =
   name, queue_to_list q
 
 let windows ~triplet =
-  let name = sp "cross_toolchain-%s" triplet in
+  let name = sp "windows-%s" triplet in
   let q = Queue.create () in
   let f = add_package q in
   f ~dir:(slack "l") ~variant:"yypkg" "libarchive";
@@ -301,7 +301,7 @@ let () =
    * wrong permissions in the packages, like 711 for /usr, and will break
    * systems. *)
   ignore (Unix.umask 0o022);
-  let kind, available = native in
+  let kind, available = native_toolchain in
   may waitpid (build ~work_dir ~kind ~available ~wishes ());
   let pids = ListLabels.map triplets ~f:(fun triplet ->
     let env = [| sp "TMP=/tmp/win-builds-%s" triplet |] in
