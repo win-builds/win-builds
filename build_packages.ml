@@ -158,8 +158,8 @@ let build ~work_dir ~kind ~available ~wishes ?env () =
     ListLabels.iter packages ~f:(fun p ->
       create_process_sync [|
         "tar"; "cf"; sp "%s/%s.tar" work_dir p.name;
-        sp "--transform=s/config-%s/config/" (default ~default:"" p.variant);
-        sp "--transform=s/%s.SlackBuild/%s.SlackBuild/" p.package p.name;
+        sp "--transform=s/\\<config-%s$/config/" (default ~default:"" p.variant);
+        sp "--transform=s/\\<%s.SlackBuild$/%s.SlackBuild/" p.package p.name;
         "-C"; Filename.concat p.dir p.package; "."
       |]
     );
