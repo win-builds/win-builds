@@ -271,7 +271,7 @@ let windows ~triplet =
   f ~dir:(slack "l") "libvorbis";
   f ~dir:(slack "l") "libtheora";
   List.iter (f ~dir:sbo)
-    [ "evil"; "eina"; "eet"; "evas"; "ecore"; "edje"; "elementary" ];
+    [ "evil"; "eina"; "eet"; "evas"; "ecore"; "embryo"; "edje"; "elementary" ];
   f ~dir:(slack "d") "pkg-config";
   f ~dir:(slack "l") ~variant:"full" "libarchive";
   f ~dir:(slack "n") ~variant:"full" "wget";
