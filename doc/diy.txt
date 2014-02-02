@@ -103,7 +103,7 @@ done
 
 == Download source tarballs ==
 In order to retrieve the tarballs, you need to use the following git
-command:
+command in the 'mingw', 'slackware64-current' and 'slackbuilds' directories:
 
 ------------------------------------------------------------------------
 git merge origin/tarballs
