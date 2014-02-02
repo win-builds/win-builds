@@ -7,10 +7,11 @@ link:diy.html[doc-diy].
 
 == Check whether a Linux build script already exists ==
 
-- In one of the subdirectory (a "series) of
+There is a fairly large number of slackware build scripts, either
+- In one of the subdirectory (a "series") of
   link:http://cgit.notk.org/adrien/slackware-git-track/slackware64-current.ext.git/tree/slackware64-current/source[slackware]
 - On link:http://slackbuilds.org[slackbuilds.org] (community repository of
-  build scripts
+  build scripts)
 
 If such a build script exist, read <<Existing>>. Otherwise, read <<New>>.
 
@@ -22,11 +23,30 @@ link:http://cgit.notk.org/adrien/yypkg/slackware64-current.git/[slackware64-curr
 or
 link:http://cgit.notk.org/adrien/yypkg/slackbuilds.org.git/[slackbuilds.org].
 
-== Port the build script (mostly search-replace) ==
+In our example, we'll reuse the speex package from slackbuilds.org.  A simple
+way to copy it is to run the following from the parent directory of
+win-builds:
+
+------------------------------------------------------------------------
+cd slackbuilds.org
+lftp -c 'connect http://slackbuilds.org/slackbuilds/14.1/audio; mirror speex'
+------------------------------------------------------------------------
+
+=== Port the build script (mostly search-replace) ===
 * Replace all occurrences of 'usr' with '$\{PREFIX\}' (verbatim, don't
   expand the variable)
 
-* Replace the block of code that sets SLKCFLAGS and LIBDIRSUFFIX with:
+* Locate the block of code that sets SLKCFLAGS and LIBDIRSUFFIX; it starts
+like:
++
+------------------------------------------------------------------------
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+------------------------------------------------------------------------
++
+Replace it with:
 +
 ------------------------------------------------------------------------
 case "${HOST_TRIPLET}" in
@@ -38,14 +58,31 @@ esac
 * Replace occurrences of '$SLKCFLAGS' with '-O2'
 * Add '--host=$\{HOST_TRIPLET\}' to the configure invocation.
 
-* Replace 'grep ELF' with 'grep $\{HOST_EXE_FORMAT\}'
-* Replace 'xargs strip' with 'xargs $\{HOST_STRIP\}'
+* Locate the 'strip' invocation; it looks like:
++
+------------------------------------------------------------------------
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+------------------------------------------------------------------------
++
+Replace 'grep ELF' with 'grep $\{HOST_EXE_FORMAT\}' and 'xargs strip' with
+'xargs $\{HOST_STRIP\}'.
 
 * Add a .yypkg.script file to the package directory; if you have nothing
   specific to set for the packaging (by far the usual case), you only have to
-  'cp' another one (like libogg's libogg.yypkg.script); don't
-  forget to give it a proper name.
-* Replace the 'makepkg' call at the end of the script with a makeypkg one:
+  'cp' another one; any except gcc's will do; don't forget to give it a proper
+  name.
+* Go near the end of the file and replace:
++
+------------------------------------------------------------------------
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
+------------------------------------------------------------------------
++
+with
 +
 ------------------------------------------------------------------------
 cat ${CWD}/${PKGNAM}.yypkg.script | sed \
@@ -74,7 +111,8 @@ packages it depends on.
 === Test your package ===
 You can now build your package like any other package. See the
 link:diy.html#Start-the-build[documentation on building packages]
-for a howto.
+for a howto. Remember to put the source tarball in the directory of the build
+scripts, i.e. next to the .SlackBuild file.
 
 === Add the tarballs to git ===
 You need a local branch for the remote "binaries" branch:
