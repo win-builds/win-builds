@@ -1,0 +1,9 @@
+slackware/d binutils
+mingw mingw-w64:headers
+slackware/d gcc:core
+mingw mingw-w64:full
+slackware/d gcc:full
+mingw widl
+mingw flexdll
+sbo ocaml
+sbo ocaml-findlib

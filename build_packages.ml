@@ -37,14 +37,16 @@ module Lib = struct
   }
 
   let waitpid command =
+    let f = log err in
     match snd (Unix.waitpid [] command.pid) with
+    | Unix.WEXITED i when i <> 0 ->
+        f "Command `%s' returned %d.\n%!" command.cmd i
     | Unix.WEXITED i ->
-        if i <> 0 then
-          log err "Command `%s' returned %d.\n%!" command.cmd i
+        ()
     | Unix.WSIGNALED i ->
-        log err "Command `%s' has been signaled with signal %d.\n%!" command.cmd i
+        f "Command `%s' has been signaled with signal %d.\n%!" command.cmd i
     | Unix.WSTOPPED i ->
-        log err "Command `%s' has been stopped with signal %d.\n%!" command.cmd i
+        f "Command `%s' has been stopped with signal %d.\n%!" command.cmd i
 
   let add_to_current_environment = function
     | None -> Unix.environment ()
@@ -55,6 +57,7 @@ module Lib = struct
     log dbg "Going to run and wait for `%s'.\n%!" cmd;
     let env = add_to_current_environment env in
     let pid = Unix.create_process_env a.(0) a env Unix.stdin stdout stderr in
+    log dbg "Created process; pid: %d.\n%!" pid;
     waitpid { pid = pid; cmd = cmd }
 
   let create_process_async ?(stdout=Unix.stdout) ?(stderr=Unix.stderr) ?env a =
@@ -82,8 +85,7 @@ module Lib = struct
     | Some x -> f x
     | None -> ()
 
-  let queue_to_list q =
-    List.rev (Queue.fold (fun l e -> e :: l) [] q)
+  let filename_concat l = List.fold_left Filename.concat "" l
 end
 
 module Options = struct
@@ -135,7 +137,6 @@ module Args = struct
 end
 
 open Lib
-open Options
 open Args
 
 let filter ~kind ~available ~wishes =
@@ -171,7 +172,7 @@ let build ~work_dir ~kind ?env packages =
   if packages <> [] then (
     log dbg "Building: %s.\n%!"
       (String.concat ", " (List.map (fun p -> p.name) packages));
-    if chroot then
+    if Options.chroot then
       assert false
     else (
       Some (create_process_async ?env (Array.concat [
@@ -183,122 +184,33 @@ let build ~work_dir ~kind ?env packages =
   else
     None
 
-let sbo = "slackbuilds.org"
-let slack d = Filename.concat "slackware64-current" d
-let mingw = "mingw"
-
-let add_package q =
-  fun ?variant ~dir package ->
-    Queue.push {
-      dir = dir;
-      package = package;
-      variant = variant;
-      name = (match variant with None -> package | Some variant -> sp "%s-%s" package variant)
-    } q
-
-let native_toolchain =
-  let name = "native_toolchain" in
-  let q = Queue.create () in
-  let f = add_package q in
-  f ~dir:sbo "ocaml";
-  f ~dir:sbo "lua";
-  f ~dir:sbo "eina";
-  f ~dir:sbo "eet";
-  f ~dir:sbo "evas";
-  f ~dir:sbo "ecore";
-  f ~dir:sbo "embryo";
-  f ~dir:sbo "edje";
-  name, queue_to_list q
-
-let cross_toolchain ~triplet =
-  let name = sp "cross_toolchain-%s" triplet in
-  let q = Queue.create () in
-  let f = add_package q in
-  f ~dir:(slack "d") "binutils";
-  f ~dir:mingw ~variant:"headers" "mingw-w64";
-  f ~dir:(slack "d") ~variant:"core" "gcc";
-  f ~dir:mingw ~variant:"full" "mingw-w64";
-  f ~dir:(slack "d") ~variant:"full" "gcc";
-  f ~dir:mingw "flexdll";
-  if triplet = "i686-w64-mingw32" then (
-    f ~dir:sbo "ocaml";
-    f ~dir:sbo "ocaml-findlib";
-  );
-  name, queue_to_list q
-
-let windows ~triplet =
-  let name = sp "windows-%s" triplet in
-  let q = Queue.create () in
-  let f = add_package q in
-  f ~dir:(slack "l") ~variant:"yypkg" "libarchive";
-  f ~dir:(slack "n") ~variant:"yypkg" "wget";
-  f ~dir:mingw "winpthreads";
-  f ~dir:mingw "win-iconv";
-  f ~dir:(slack "a") "gettext";
-  f ~dir:(slack "a") "xz";
-  f ~dir:(slack "l") "zlib";
-  f ~dir:(slack "l") "libjpeg";
-  f ~dir:(slack "l") "expat";
-  f ~dir:(slack "l") "libpng";
-  f ~dir:(slack "l") "freetype";
-  f ~dir:(slack "x") "fontconfig"; (* depends on expat, freetype *)
-  f ~dir:(slack "l") "giflib";
-  f ~dir:(slack "l") "libtiff";
-  f ~dir:sbo "lua";
-  f ~dir:(slack "n") "ca-certificates";
-  f ~dir:(slack "n") "openssl";
-  f ~dir:(slack "l") "gmp";
-  f ~dir:(slack "n") "nettle";
-  f ~dir:(slack "n") "gnutls";
-  f ~dir:(slack "n") "curl";
-  f ~dir:sbo "c-ares";
-  f ~dir:mingw "pixman";
-  f ~dir:(slack "l") "libffi";
-  f ~dir:(slack "l") "glib2";
-  f ~dir:(slack "l") "cairo";
-  f ~dir:(slack "l") "atk";
-  f ~dir:(slack "l") "pango";
-  f ~dir:(slack "l") "gdk-pixbuf2";
-  (* GTK+2 simply doesn't work for x86_64-w64-mingw32 *)
-  if triplet = "i686-w64-mingw32" then (
-    f ~dir:(slack "l") "gtk+2"
-  );
-  f ~dir:(slack "l") "glib-networking";
-  f ~dir:(slack "l") "libxml2";
-  f ~dir:(slack "ap") "sqlite";
-  f ~dir:(slack "l") "libsoup";
-  f ~dir:(slack "l") "icu4c";
-  f ~dir:(slack "d") "gperf";
-  (* f ~dir:(slack "l") "libxslt"; *)
-  f ~dir:(slack "l") "mpfr";
-  f ~dir:(slack "l") "libmpc";
-  f ~dir:(slack "l") "libogg";
-  f ~dir:(slack "l") "libvorbis";
-  f ~dir:(slack "l") "libtheora";
-  List.iter (f ~dir:sbo)
-    [ "evil"; "eina"; "eet"; "evas"; "ecore"; "embryo"; "edje"; "elementary" ];
-  f ~dir:(slack "d") "pkg-config";
-  f ~dir:(slack "l") ~variant:"full" "libarchive";
-  f ~dir:(slack "n") ~variant:"full" "wget";
-  f ~dir:mingw ~variant:"full" "mingw-w64";
-  f ~dir:(slack "d") "binutils";
-  f ~dir:(slack "d") ~variant:"full" "gcc";
-  f ~dir:sbo "x264";
-  (* f ~dir:(slack "a") "file"; *)
-  (* f ~dir:sbo/ffmpeg; *)
-  (* f ~dir:(slack "l") "sdl" "base"; *)
-  (* f ~dir:(slack "l") "sdl" "image"; *)
-  (* f ~dir:(slack "l") "sdl" "mixer"; *)
-  (* f ~dir:(slack "l") "sdl" "net"; *)
-  (* f ~dir:(slack "l") "sdl" "ttf"; *)
-  f ~dir:(slack "a") "dbus";
-  (* f ~dir:(slack "l") "dbus-glib"; *)
-  (* f ~dir:sbo/webkit-gtk; *)
-  (* f ~dir:slack/xap/gucharmap; (* requires GTK+-3 *) *)
-  (* f ~dir:slack/xap/geeqie; (* includes <pwd.h> *) *)
-  (* f ~dir:sbo/luajit; *)
-  name, queue_to_list q
-
+let parse_package_list file =
+  let ic = open_in_bin (filename_concat [source_path; "package_list"; file]) in
+  let rec aux accu =
+    match (try Some (input_line ic) with End_of_file -> None) with
+    | None -> List.rev accu
+    | Some s ->
+        let open Scanf in
+        if String.length s < 1 || s.[0] = '#' then
+          aux accu
+        else
+          try
+            let package = sscanf s "%s %s" (fun dir s2 ->
+              let package, variant, name =
+                try sscanf s2 "%s:%s" (fun p v -> p, Some v, p ^ "-" ^ v) with
+                Scan_failure _ | End_of_file -> s2, None, s2
+              in
+              { dir; package; variant; name }
+            )
+            in
+            aux (package :: accu)
+          with Scanf.Scan_failure s as e ->
+            Printf.eprintf "Cannot parse %S.\n" s;
+            raise e
+  in
+  let l = aux [] in
+  close_in ic;
+  l
 
 let () =
   Printexc.record_backtrace true;
@@ -306,13 +218,15 @@ let () =
    * wrong permissions in the packages, like 711 for /usr, and will break
    * systems. *)
   ignore (Unix.umask 0o022);
-  let kind, available = native_toolchain in
+  let kind = "native_toolchain" in
+  let available = parse_package_list kind in
   let packages = filter ~kind ~available ~wishes in
   prepare ~packages;
   may waitpid (build ~work_dir ~kind packages);
-  ListLabels.iter [ cross_toolchain; windows ] ~f:(fun kind ->
-    let packages = ListLabels.map triplets ~f:(fun triplet ->
-      let kind, available = kind ~triplet in
+  ListLabels.iter [ "cross_toolchain"; "windows" ] ~f:(fun kind ->
+    let packages = ListLabels.map Options.triplets ~f:(fun triplet ->
+      let kind = kind ^ "-" ^ triplet in
+      let available = parse_package_list kind in
       triplet, filter ~kind ~available ~wishes
     )
     in
@@ -320,7 +234,7 @@ let () =
     prepare (List.sort_uniq compare l);
     let pids = ListLabels.map packages ~f:(fun (triplet, packages) ->
       let env = [| sp "TMP=/tmp/win-builds-%s" triplet |] in
-      let kind, _ = kind ~triplet in
+      let kind = kind ^ "-" ^ triplet in
       build ~env ~work_dir ~kind packages
     )
     in

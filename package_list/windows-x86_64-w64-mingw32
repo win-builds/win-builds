@@ -1,0 +1,86 @@
+slackware/l libarchive:yypkg
+slackware/n wget:yypkg
+mingw winpthreads
+mingw widl
+mingw win-iconv
+slackware/a gettext
+slackware/a xz
+slackware/l zlib
+slackware/l libjpeg
+slackware/l expat
+slackware/l libpng
+slackware/l freetype
+slackware/x fontconfig (* depends on expat, freetype *)
+slackware/l giflib
+slackware/l libtiff
+slackbuilds.org lua
+slackware/n ca-certificates
+slackware/n openssl
+slackware/l gmp
+slackware/n nettle
+slackware/n gnutls
+slackware/n curl
+slackbuilds.org c-ares
+mingw pixman
+slackware/l libffi
+slackware/l glib2
+slackware/l cairo
+slackware/l atk
+slackware/l pango
+slackware/l gdk-pixbuf2
+slackware/l glib-networking
+slackware/l libxml2
+slackware/ap sqlite
+slackware/l libsoup
+slackware/l icu4c
+slackware/d gperf
+# slackware/l "libxslt"
+slackware/l mpfr
+slackware/l libmpc
+slackware/l libogg
+slackware/l libvorbis
+slackware/l libtheora
+# slackbuilds.org evil
+# slackbuilds.org eina
+# slackbuilds.org eet
+# slackbuilds.org evas
+# slackbuilds.org ecore
+# slackbuilds.org embryo
+# slackbuilds.org edje
+# slackbuilds.org elementary
+slackbuilds.org efl
+slackware/d pkg-config
+slackware/l libarchive:full
+slackware/n wget:full
+mingw mingw-w64:full
+slackware/d binutils
+slackware/d gcc-full
+slackbuilds.org x264
+slackware/l pcre
+slackware/ap flac
+slackware/ap cdparanoia
+slackware/d gdb
+slackware/l fribidi
+slackware/l libao
+# slackware/l "libcdio" (* requires ddk *)
+slackware/l libdvdread
+slackware/l libidn
+slackware/l libmad
+slackware/l libsndfile
+slackware/l libtasn1
+slackware/l harfbuzz
+slackware/l libcddb
+slackware/l qt
+# slackware/a "file"
+# slackbuilds.org/ffmpeg
+# slackware/l "sdl" "base"
+# slackware/l "sdl" "image"
+# slackware/l "sdl" "mixer"
+# slackware/l "sdl" "net"
+# slackware/l "sdl" "ttf"
+slackware/a dbus
+# slackware/l "dbus-glib"
+# slackbuilds.org/webkit-gtk
+# slack/xap/gucharmap (* requires GTK+-3 *)
+# slack/xap/geeqie (* includes <pwd.h> *)
+# slackbuilds.org/luajit

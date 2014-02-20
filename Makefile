@@ -32,4 +32,7 @@ doc doc-upload:
 web-upload:
 	$(MAKE) -C web $@
 
+build_packages: build_packages.ml
+	ocamlopt -g str.cmxa unix.cmxa build_packages.ml -o build_packages
+
 .PHONY: doc
