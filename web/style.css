@@ -5,20 +5,12 @@ body {
   font-family: DejaVu Sans, Helvetica;
 }
 
+}
+
+}
+
 h1, h2, h3 {
-  font-weight: 500;
-}
-
-h1 {
-  font-size: 36px;
-}
-
-h2 {
-  font-size: 30px;
-}
-
-h3 {
-  font-size: 24px;
+  font-weight: normal;
 }
 
 .content {
