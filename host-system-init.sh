@@ -90,12 +90,12 @@ done
 
 populate_slash_dev
 
-chroot_run "${SYSTEM}" "/sbin/yypkg" "-init"
+chroot_run "${SYSTEM}" "/sbin/yypkg" "--init"
 
 # Install all packages
 find "${INITDIR_FULL}/pkgs" -maxdepth 1 -name '*.txz' -printf '%f\n' \
   | while read PKG; do
-    chroot_run "${SYSTEM}" "/sbin/yypkg" "-install" "${INITDIR}/pkgs/${PKG}" || true
+    chroot_run "${SYSTEM}" "/sbin/yypkg" "--install" "${INITDIR}/pkgs/${PKG}" || true
 done
 
 umounts
