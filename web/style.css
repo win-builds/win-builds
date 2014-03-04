@@ -5,8 +5,16 @@ body {
   font-family: DejaVu Sans, Helvetica, Arial;
 }
 
+@media screen and (max-width: 70em), screen and (orientation: portrait) {
+  body {
+    width: 98%;
+  }
 }
 
+@media screen and (min-width: 70em) {
+  body {
+    width: 70em;
+  }
 }
 
 h1, h2, h3 {
