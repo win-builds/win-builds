@@ -57,6 +57,7 @@ h1, h2, h3 {
   margin-bottom: 0.5em;
   width: 32%;
   display: inline-table;
+  vertical-align: top; /* required for Chrome <= 22 (and matching WebKits) */
 }
 
 .hl-title {
