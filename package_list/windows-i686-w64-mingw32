@@ -50,7 +50,7 @@ slackware/l libtheora
 # slackbuilds.org ecore
 # slackbuilds.org embryo
 # slackbuilds.org edje
-# slackbuilds.org elementary
+slackbuilds.org elementary
 slackbuilds.org efl
 slackware/d pkg-config
 slackware/l libarchive:full
