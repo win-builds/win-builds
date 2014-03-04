@@ -7,7 +7,7 @@
 <body>
 <?php include 'header.html'; ?>
 
-<h1>Contact</h1>
+<h1>Support</h1>
 
 <h2>Bug Tracker</h2>
 For most issues, you can use the <a href="bugs">bug tracker</a>.
