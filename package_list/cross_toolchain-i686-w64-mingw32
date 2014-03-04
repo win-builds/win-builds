@@ -5,5 +5,5 @@ mingw mingw-w64:full
 slackware/d gcc:full
 mingw widl
 mingw flexdll
-sbo ocaml
-sbo ocaml-findlib
+slackbuilds.org ocaml
+slackbuilds.org ocaml-findlib
