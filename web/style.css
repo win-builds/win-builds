@@ -34,23 +34,25 @@ h1, h2, h3 {
 }
 
 .navlist {
-  padding-left: 0em;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 0em;
   margin-bottom: 0em;
 }
 
-.navbar-el {
-  display: block;
-  padding: 0.5em;
-  padding-left: 1em;
-  padding-right: 1em;
-  display: inline-block;
-  font-weight: bold;
+.navlist {
+  margin-bottom: 0.4em;
+  margin-top: 0.4em;
+  font-size: x-large;
 }
 
-.navbar-el h2 {
-  margin-bottom: 0.2em;
-  margin-top: 0.2em;
+.navlist span {
+  word-spacing: 1em;
+}
+
+.navlist span a {
+  word-spacing: normal;
 }
 
 .hl {
@@ -69,7 +71,7 @@ h1, h2, h3 {
   padding-right: 0.5em;
 }
 
-.hl-el {
+.hl-list li {
   display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
