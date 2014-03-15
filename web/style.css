@@ -56,25 +56,29 @@ h1, h2, h3 {
 }
 
 .hl {
-  margin-bottom: 0.5em;
-  width: 32%;
+  margin-top: 1.5em;
+  margin-left: 1%;
+  margin-right: 0em;
+  width: 31%;
   display: inline-table;
   vertical-align: top; /* required for Chrome <= 22 (and matching WebKits) */
+  border-top: 1px black solid;
 }
 
 .hl-title {
-  margin-bottom: 0.2em;
+  margin-bottom: 0em;
+  margin-top: 0.2em;
 }
 
 .hl-list {
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+  padding-left: 0em;
+  padding-right: 0em;
+  margin-top: 0em;
 }
 
 .hl-list li {
   display: block;
   margin-top: 0.5em;
-  margin-bottom: 0.5em;
 }
 
 #caption {
