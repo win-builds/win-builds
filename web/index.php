@@ -50,6 +50,13 @@
       <li>Customize as you wish</li>
     </ul>
   </div>
+  <div class="hl">
+    <h2 class="hl-title">Security updates</h2>
+    <ul class="hl-list">
+      <li>Packages get security updates</li>
+      <li><a href="support.html">Announces and security advisories through mailing-lists</a></li>
+    </ul>
+  </div>
 </div>
 
 <?php include 'footer.html'; ?>
