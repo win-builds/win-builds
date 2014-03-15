@@ -10,10 +10,12 @@ BUNDLE_FILES= \
   ./msys-cygwin-install.sh \
   ./win-builds-switch.sh
 
+BUNDLE_FILES_PATH:=$(subst ./,win-builds-bundle/,$(BUNDLE_FILES))
+
 all:
 	@echo "Explicitely state what you want to build: bundle or doc."
 
-bundle:
+bundle win-builds-bundle-$(VERSION).zip: $(BUNDLE_FILES_PATH) Makefile.data
 	mkdir -p win-builds-bundle
 	for f in $(BUNDLE_FILES); do \
 	  if [ -e "$${f}" ] && [ "$${f}" -nt "win-builds-bundle/$${f}" ]; then \
@@ -24,7 +26,10 @@ bundle:
 	    fi; \
 	  fi; \
 	done
-	zip win-builds-bundle-$(VERSION).zip $(subst ./,win-builds-bundle/,$(BUNDLE_FILES))
+	zip win-builds-bundle-$(VERSION).zip $(BUNDLE_FILES_PATH)
+
+bundle-upload: win-builds-bundle-$(VERSION).zip
+	rsync -avLP $< "$(WEB)/$(VERSION)/"
 
 doc doc-upload:
 	$(MAKE) -C doc $@
