@@ -10,7 +10,7 @@
 <h1>Support</h1>
 
 <h2>Bug Tracker</h2>
-For most issues, you can use the <a href="bugs">bug tracker</a>.
+For most issues and feature wishes, you can use the <a href="bugs">bug tracker</a>.
 
 <h2>IRC</h2>
 You can also join the #mingw-w64 channel on OFTC (or on freenode where messages 
