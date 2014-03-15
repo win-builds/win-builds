@@ -22,12 +22,7 @@ module Lib = struct
         | s -> try int_of_string s with _ -> 0
       with _ -> 0
     in
-    let print_callstack oc =
-      Printexc.print_raw_backtrace oc (Printexc.get_callstack 100)
-    in
-    (if threshold >= level then Printf.kfprintf else Printf.ikfprintf)
-    (if threshold >= level then print_callstack else (fun _ -> ()))
-    stderr
+    (if threshold >= level then Printf.fprintf else Printf.ifprintf) stderr
 
   let sp = Printf.sprintf
 
