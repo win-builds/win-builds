@@ -37,6 +37,16 @@ doc doc-upload:
 web-upload:
 	$(MAKE) -C web $@
 
+release-upload:
+	cd .. && \
+	  rsync -avzP \
+	  --include='/$(VERSION)' \
+	  --include='/$(VERSION)/system.tar.xz' \
+	  --include='/$(VERSION)/logs' \
+	  --include='/$(VERSION)/packages' \
+	  --exclude='/$(VERSION)/*' \
+	  1.3.0 $(WEB)/
+
 build_packages: build_packages.ml
 	ocamlopt -g str.cmxa unix.cmxa build_packages.ml -o build_packages
 
