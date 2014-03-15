@@ -35,6 +35,35 @@ Additional tools for builds which cannot bootstrap themselves.
 link:packages/native_toolchain/package_list.html[Package list]
 link:logs/native_toolchain/[Build logs]
 
+== Support ==
+
+=== Security advisories and updates ===
+Security advisories are sent through the corresponding mailing-list:
+`security@`. To subscribe, send an empty mail titled `subscribe` to
+mailto:security-requests@lists.win-builds.org?subject:subscribe[security-requests@lists.win-builds.org].
+
+Similarly, updates are notified through the `announce@` mailing-list.
+To subscribe, send an empty mail titled 'subscribe' to
+mailto:announce-requests@lists.win-builds.org?subject:subscribe[announce-requests@lists.win-builds.org].
+
+=== Bug tracker and user@ mailing-list ===
+
+The `users@` mailing-list is available for questions and help requests.
+To subscribe, send an empty mail titled 'subscribe' to
+mailto:users-requests@lists.win-builds.org?subject:subscribe[users-requests@lists.win-builds.org].
+
+It is also possible to get support through the
+links:https://lists.sourceforge.net/lists/listinfo/mingw-w64-public[Mingw-w64
+mailing-list].
+
+Bug reports are handled through the link:http://win-builds.org/bugs[Bug
+tracker].
+
+=== IRC channels ===
+
+The `#mingw-w64` IRC channels on Freenode and OFTC are appropriate places for
+win-builds-related discussions.
+
 == Getting and running the system ==
 
 === From Windows ===
