@@ -22,8 +22,6 @@
       <li>GCC 4.8.2 - C, C++</li>
       <li>Mingw-w64 3.1.0</li>
     </ul>
-    <div class="hl-text">
-    </div>
   </div>
   <div class="hl">
     <h2 class="hl-title">From Windows or Linux</h2>
