@@ -21,17 +21,17 @@ will be relayed to OFTC).
 <?php
 function print_list($name, $description) {
   printf('<li>');
-  printf('%s: <code>%s AT lists.win-builds.org</code><br>', $description, $name);
-  printf('Subscribe by sending an email titled <code>subscribe</code> to <code>%s-request AT lists.win-builds.org</code>. Unscribe instructions are similar.<br>',
-    $name);
-  printf('<a href="/lists/%s">Archives can be browsed freely</a>.', $name);
+  printf('%s: <code>%s@lists.win-builds.org</code><br>', $description, $name);
+  printf('Send an empty mail titled <code>subscribe</code> to <a href="mailto:%s-request@lists.win-builds.org?subscribe">%s-request@lists.win-builds.org</a>. Unsubscribe works the same way.<br>',
+    $name, $name);
+  printf('<a href="/lists/%s">Browse archives</a>.', $name);
   printf('</li>');
 }
 ?>
 <?php
-print_list('users', 'For all questions related to win-builds');
-print_list('security', 'To receive notifications about security updates');
-print_list('announce', 'To receive notifications about new versions');
+print_list('users', 'For all questions');
+print_list('security', 'Announces for security updates');
+print_list('announce', 'Announces for updates');
 ?>
   <li>The <a href="https://lists.sourceforge.net/lists/listinfo/mingw-w64-public">mingw-w64 mailing-list</a> can also be appropriate.
 </ul>
