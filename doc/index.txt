@@ -39,7 +39,7 @@ link:logs/native_toolchain/[Build logs]
 
 === Security advisories and updates ===
 Security advisories are sent through the corresponding mailing-list:
-`security@`. To subscribe, send an empty mail titled `subscribe` to
+`security@`. To subscribe, send an empty mail titled 'subscribe' to
 mailto:security-requests@lists.win-builds.org?subject:subscribe[security-requests@lists.win-builds.org].
 
 Similarly, updates are notified through the `announce@` mailing-list.
@@ -53,7 +53,7 @@ To subscribe, send an empty mail titled 'subscribe' to
 mailto:users-requests@lists.win-builds.org?subject:subscribe[users-requests@lists.win-builds.org].
 
 It is also possible to get support through the
-links:https://lists.sourceforge.net/lists/listinfo/mingw-w64-public[Mingw-w64
+link:https://lists.sourceforge.net/lists/listinfo/mingw-w64-public[Mingw-w64
 mailing-list].
 
 Bug reports are handled through the link:http://win-builds.org/bugs[Bug
@@ -75,10 +75,14 @@ like %PATH% yourself.
 ==== Automated install ====
 As a stop-gap measure for the lack of an up-to-date installer, a .bat file has
 been written.
-Simply download the link:win-builds-bundle-@@VERSION@@.zip[the win-builds
+Simply download link:win-builds-bundle-@@VERSION@@.zip[the win-builds
 binaries], extract them and run `win-install.bat'. It will install files in
 `C:\win-builds-32' and `C:\win-builds-64'; if you want to change the path,
 simply edit the .bat file in any text editor.
+
+[NOTE]
+That if you want to update packages later on, you will need the content of the
+archive.
 
 The toolchain will then be setup and can be used standalone or from an IDE.
 The only settings needed is to set the PATH and PKG_CONFIG_LIBDIR environment
@@ -100,7 +104,9 @@ The code below is a summary of what is done at installation on Windows. If you
 want all the details, you should look at the source of
 link:http://cgit.notk.org/adrien/yypkg/win-builds.git/tree/win-install.bat[win-install.bat].
 
-Download and extract link:win-builds-bundle-@@VERSION@@.zip[the yypkg binaries].
+Download and extract link:win-builds-bundle-@@VERSION@@.zip[the yypkg
+binaries]. Note that if you want to update packages later on, you will need
+the content of the archive.
 Then, start a command prompt (cmd.exe), enter the directory where you've
 extracted the files and run:
 
@@ -115,6 +121,8 @@ sherpa -install all
 
 === From Windows for MSYS or Cygwin ===
 The how-to for use with MSYS or Cygwin is available on a link:msys-cygwin.html[dedicated page].
+
+There are a couple known issues associated with Cygwin. Be sure to check <<Known_Issues>>.
 
 === From Linux 64b ===
 
@@ -160,7 +168,7 @@ inside the chroot.
 // documentation] for a more complete documentation
 
 ==== Demo ====
-In order to build the GTK+ Hello world, cd in the mingw-build directory
+In order to build the GTK+ Hello world, cd in the win-builds directory
 and run (copy-paste) the following:
 
 ------------------------------------------------------------------------
@@ -183,6 +191,24 @@ EOF
 
 i686-w64-mingw32-gcc -o gtk_hello_world.exe gtk_hello_world.c $(pkg-config --cflags --libs gtk+-2.0)
 ------------------------------------------------------------------------
+
+=== Update packages ===
+Updating packages requires a few but simple steps. You need
+
+* If you haven't kept the content of the .zip installation archive, download
+  the archive again and extract it where you wish.
+* Open a cmd.exe shell.
+* Run `sherpa.exe -prefix C:/installation/path -update package_to_update`. An
+  example is:
++
+------------------------------------------------------------------------
+C:/win-builds-installer/sherpa.exe -prefix C:/win-builds-32 -update openssl
+------------------------------------------------------------------------
+
+If you are using Cygwin or MSYS, first change directory to the one which
+contains sherpa.exe. In the case of Cygwin, you will have to provide a
+Windows-style path which you can get with a command similar to `$(cygpath -m
+/opt/windows_32)`.
 
 === Advanced usage: Build it yourself ===
 Building everything yourself is not difficult nor time-consuming: a full

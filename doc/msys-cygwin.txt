@@ -59,6 +59,10 @@ extract them into the home directory of MSYS/Cygwin:
 * for MSYS: 'C:/win_builds/msys/1.0/home/[your_account_name]'
 * for Cygwin: 'C:/Cygwin/home/[your_account_name]'
 
+[NOTE]
+If you want to update packages later on, you will need the content of the
+archive.
+
 3. In the MSYS/Cygwin prompt, enter the directory where you've extracted the
 yypkg binaries (typically 'win-builds-bundle') and run one of:
 +
