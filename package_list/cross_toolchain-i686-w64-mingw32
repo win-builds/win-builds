@@ -1,8 +1,8 @@
-slackware/d binutils
+slackware64-current/d binutils
 mingw mingw-w64:headers
-slackware/d gcc:core
+slackware64-current/d gcc:core
 mingw mingw-w64:full
-slackware/d gcc:full
+slackware64-current/d gcc:full
 mingw widl
 mingw flexdll
 slackbuilds.org ocaml
