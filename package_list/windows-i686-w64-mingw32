@@ -43,13 +43,6 @@ slackware64-current/l libmpc
 slackware64-current/l libogg
 slackware64-current/l libvorbis
 slackware64-current/l libtheora
-# slackbuilds.org evil
-# slackbuilds.org eina
-# slackbuilds.org eet
-# slackbuilds.org evas
-# slackbuilds.org ecore
-# slackbuilds.org embryo
-# slackbuilds.org edje
 slackbuilds.org elementary
 slackbuilds.org efl
 slackware64-current/d pkg-config
