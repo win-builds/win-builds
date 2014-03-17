@@ -192,26 +192,27 @@ let build ~work_dir ~kind ?env packages =
 let parse_package_list file =
   let ic = open_in_bin (filename_concat [source_path; "package_list"; file]) in
   let rec aux accu =
-    match (try Some (input_line ic) with End_of_file -> None) with
-    | None -> List.rev accu
-    | Some s ->
-        let open Scanf in
-        if String.length s < 1 || s.[0] = '#' then
-          aux accu
+    try
+      let s = input_line ic in
+      if String.length s < 1 || s.[0] = '#' then
+        aux accu
+      else
+        let open Str in
+        let re = regexp "^\\([^ ]+\\) \\([^ ]+\\)$" in
+        if string_match re s 0 then
+          let dir = matched_group 1 s in
+          let s2 = matched_group 2 s in
+          let re = regexp "^\\([^ ]+\\):\\([^ ]+\\)$" in
+          if string_match re s2 0 then
+            let p = matched_group 1 s2 in
+            let v = matched_group 2 s2 in
+            let name = String.concat "-" [ p; v ] in
+            aux ({ dir; package = p; variant = Some v; name } :: accu)
+          else
+            aux ({ dir; package = s2; variant = None; name = s2 } :: accu)
         else
-          try
-            let package = sscanf s "%s %s" (fun dir s2 ->
-              let package, variant, name =
-                try sscanf s2 "%s:%s" (fun p v -> p, Some v, p ^ "-" ^ v) with
-                Scan_failure _ | End_of_file -> s2, None, s2
-              in
-              { dir; package; variant; name }
-            )
-            in
-            aux (package :: accu)
-          with Scanf.Scan_failure s as e ->
-            Printf.eprintf "Cannot parse %S.\n" s;
-            raise e
+          assert false
+    with End_of_file -> List.rev accu
   in
   let l = aux [] in
   close_in ic;
