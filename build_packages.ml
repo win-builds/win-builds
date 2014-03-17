@@ -81,6 +81,16 @@ module Lib = struct
     | None -> ()
 
   let filename_concat l = List.fold_left Filename.concat "" l
+
+  let rev_uniq l =
+    let rec rev_uniq_rc accu cur = function
+      | t :: q when t = cur -> rev_uniq_rc accu cur q
+      | t :: q -> rev_uniq_rc (t :: accu) t q
+      | [] -> accu
+    in
+    match l with
+    | t :: q -> rev_uniq_rc [ t ] t q
+    | [] -> []
 end
 
 module Options = struct
@@ -226,7 +236,7 @@ let () =
     )
     in
     let l = List.fold_left (fun l c -> List.rev_append (snd c) l) [] packages in
-    prepare (List.sort_uniq compare l);
+    prepare (rev_uniq (List.sort compare l));
     let pids = ListLabels.map packages ~f:(fun (triplet, packages) ->
       let env = [| sp "TMP=/tmp/win-builds-%s" triplet |] in
       let kind = kind ^ "-" ^ triplet in
