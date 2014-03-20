@@ -43,8 +43,8 @@ slackware64-current/l libmpc
 slackware64-current/l libogg
 slackware64-current/l libvorbis
 slackware64-current/l libtheora
-slackbuilds.org elementary
 slackbuilds.org efl
+slackbuilds.org elementary
 slackware64-current/d pkg-config
 slackware64-current/l libarchive:full
 slackware64-current/n wget:full
