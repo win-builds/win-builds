@@ -41,6 +41,9 @@ slackware64-current/l libmpc
 slackware64-current/l libogg
 slackware64-current/l libvorbis
 slackware64-current/l libtheora
+slackware64-current/l libsndfile
+slackware64-current/l fribidi
+slackware64-current/a dbus
 slackbuilds.org efl
 slackbuilds.org elementary
 slackware64-current/d pkg-config
@@ -54,13 +57,11 @@ slackware64-current/l pcre
 slackware64-current/ap flac
 slackware64-current/ap cdparanoia
 slackware64-current/d gdb
-slackware64-current/l fribidi
 slackware64-current/l libao
 # slackware64-current/l "libcdio" (* requires ddk *)
 slackware64-current/l libdvdread
 slackware64-current/l libidn
 slackware64-current/l libmad
-slackware64-current/l libsndfile
 slackware64-current/l libtasn1
 slackware64-current/l harfbuzz
 slackware64-current/l libcddb
@@ -72,7 +73,6 @@ slackware64-current/l qt
 # slackware64-current/l "sdl" "mixer"
 # slackware64-current/l "sdl" "net"
 # slackware64-current/l "sdl" "ttf"
-slackware64-current/a dbus
 # slackware64-current/l "dbus-glib"
 # slackbuilds.org/webkit-gtk
 # slack/xap/gucharmap (* requires GTK+-3 *)
