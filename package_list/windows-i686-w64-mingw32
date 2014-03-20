@@ -1,7 +1,7 @@
 slackware64-current/l libarchive:yypkg
 slackware64-current/n wget:yypkg
 mingw winpthreads
-mingw widl
+# mingw widl
 mingw win-iconv
 slackware64-current/a gettext
 slackware64-current/a xz
