@@ -36,10 +36,10 @@ module Lib = struct
   let waitpid command =
     let f = log err in
     match snd (Unix.waitpid [] command.pid) with
-    | Unix.WEXITED i when i <> 0 ->
-        f "Command `%s' returned %d.\n%!" command.cmd i
     | Unix.WEXITED i ->
-        ()
+        f "Command `%s' returned %d.\n%!" command.cmd i;
+        (* TODO: cancel other processes at once *)
+        if i <> 0 then failwith (sp "Failed process [%d]: `%s'\n'" i command.cmd)
     | Unix.WSIGNALED i ->
         f "Command `%s' has been signaled with signal %d.\n%!" command.cmd i
     | Unix.WSTOPPED i ->
