@@ -133,8 +133,8 @@ module Args = struct
   let wishes =
     if Array.length args < 4 then (
       if List.length kinds = List.length Options.all_kinds then (
-        Lib.log Lib.wrn "Warning. Going to build everything. This will take a while.\n";
-        Lib.log Lib.wrn "You have 10 seconds to cancel.\n%!";
+        Printf.printf "Warning. Going to build everything. This will take a while.\n";
+        Printf.printf "You have 10 seconds to cancel.\n%!";
         Unix.sleep 10
       );
       []
