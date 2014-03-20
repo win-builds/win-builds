@@ -10,7 +10,8 @@ slackware64-current/l libjpeg
 slackware64-current/l expat
 slackware64-current/l libpng
 slackware64-current/l freetype
-slackware64-current/x fontconfig (* depends on expat, freetype *)
+# depends on expat, freetype
+slackware64-current/x fontconfig
 slackware64-current/l giflib
 slackware64-current/l libtiff
 slackbuilds.org lua
