@@ -210,8 +210,9 @@ let parse_package_list file =
             aux ({ dir; package = p; variant = Some v; name } :: accu)
           else
             aux ({ dir; package = s2; variant = None; name = s2 } :: accu)
-        else
-          assert false
+        else (
+          failwith (sp "Couldn't parse package list entry %S.\n" s);
+        )
     with End_of_file -> List.rev accu
   in
   let l = aux [] in
