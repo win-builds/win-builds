@@ -24,6 +24,8 @@ module Lib = struct
     in
     (if threshold >= level then Printf.fprintf else Printf.ifprintf) stderr
 
+  let progress = Printf.eprintf
+
   let sp = Printf.sprintf
 
   type command = {
@@ -49,15 +51,15 @@ module Lib = struct
 
   let create_process_sync ?(stdout=Unix.stdout) ?(stderr=Unix.stderr) ?env a =
     let cmd = String.concat " " (Array.to_list a) in
-    log dbg "Going to run and wait for `%s'.\n%!" cmd;
+    progress "Running and waiting for `%s'.\n%!" cmd;
     let env = add_to_current_environment env in
     let pid = Unix.create_process_env a.(0) a env Unix.stdin stdout stderr in
-    log dbg "Created process; pid: %d.\n%!" pid;
+    progress "Created process; pid: %d.\n\n%!" pid;
     waitpid { pid = pid; cmd = cmd }
 
   let create_process_async ?(stdout=Unix.stdout) ?(stderr=Unix.stderr) ?env a =
     let cmd = String.concat " " (Array.to_list a) in
-    log dbg "Going to run `%s'.\n%!" cmd;
+    progress "Running `%s'.\n%!" cmd;
     let env = add_to_current_environment env in
     let pid = Unix.create_process_env a.(0) a env Unix.stdin stdout stderr in
     { pid = pid; cmd = cmd }
@@ -157,7 +159,7 @@ let filter ~kind ~available ~wishes =
 
 let prepare ~packages =
   if packages <> [] then (
-    log dbg "Preparing: %s.\n%!"
+    progress "Preparing: %s.\n%!"
       (String.concat ", " (List.map (fun p -> p.name) packages));
     create_process_sync [| "mkdir"; "-p"; work_dir |];
     let bd_files = [| "build_daemon"; "build_daemon_config" |] in
@@ -175,7 +177,7 @@ let prepare ~packages =
 
 let build ~work_dir ~kind ?env packages =
   if packages <> [] then (
-    log dbg "Building: %s.\n%!"
+    progress "Building: %s.\n%!"
       (String.concat ", " (List.map (fun p -> p.name) packages));
     if Options.chroot then
       assert false
