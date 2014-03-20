@@ -74,4 +74,4 @@ for FILE in ${*}; do
 done
 
 echo "Setting up ${YYOUTPUT}."
-sherpa_gen "${YYOUTPUT}"
+yypkg --repository --generate "${YYOUTPUT}"
