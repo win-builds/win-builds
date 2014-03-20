@@ -50,7 +50,7 @@ slackware64-current/l libarchive:full
 slackware64-current/n wget:full
 mingw mingw-w64:full
 slackware64-current/d binutils
-slackware64-current/d gcc-full
+slackware64-current/d gcc:full
 slackbuilds.org x264
 slackware64-current/l pcre
 slackware64-current/ap flac
