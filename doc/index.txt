@@ -40,17 +40,17 @@ link:logs/native_toolchain/[Build logs]
 === Security advisories and updates ===
 Security advisories are sent through the corresponding mailing-list:
 `security@`. To subscribe, send an empty mail titled 'subscribe' to
-mailto:security-requests@lists.win-builds.org?subject:subscribe[security-requests@lists.win-builds.org].
+mailto:security-request@lists.win-builds.org?subject:subscribe[security-request@lists.win-builds.org].
 
 Similarly, updates are notified through the `announce@` mailing-list.
 To subscribe, send an empty mail titled 'subscribe' to
-mailto:announce-requests@lists.win-builds.org?subject:subscribe[announce-requests@lists.win-builds.org].
+mailto:announce-request@lists.win-builds.org?subject:subscribe[announce-request@lists.win-builds.org].
 
 === Bug tracker and user@ mailing-list ===
 
 The `users@` mailing-list is available for questions and help requests.
 To subscribe, send an empty mail titled 'subscribe' to
-mailto:users-requests@lists.win-builds.org?subject:subscribe[users-requests@lists.win-builds.org].
+mailto:users-request@lists.win-builds.org?subject:subscribe[users-request@lists.win-builds.org].
 
 It is also possible to get support through the
 link:https://lists.sourceforge.net/lists/listinfo/mingw-w64-public[Mingw-w64
