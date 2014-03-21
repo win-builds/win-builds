@@ -192,9 +192,7 @@ the only requirement is that binaries go into a directory which is in '$PATH',
 '/usr/local/bin' for instance:
 
 ------------------------------------------------------------------------
-for f in yypkg makeypkg sherpa sherpa_gen; do
-  cp -L src/${f}.native /usr/local/bin/${f}
-done
+cp -L src/yypkg.native /usr/local/bin/yypkg
 ------------------------------------------------------------------------
 
 == Download source tarballs ==
@@ -202,6 +200,7 @@ In order to retrieve the tarballs, you need to use the following git
 command in the 'mingw', 'slackware64-current' and 'slackbuilds' directories:
 
 ------------------------------------------------------------------------
+git branch tarballs origin/tarballs
 git merge origin/tarballs
 ------------------------------------------------------------------------
 
