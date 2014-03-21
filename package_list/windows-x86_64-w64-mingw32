@@ -44,6 +44,7 @@ slackware64-current/l libtheora
 slackware64-current/l libsndfile
 slackware64-current/l fribidi
 slackware64-current/a dbus
+slackware64-current/l harfbuzz
 slackbuilds.org efl
 slackbuilds.org elementary
 slackware64-current/d pkg-config
@@ -63,7 +64,6 @@ slackware64-current/l libdvdread
 slackware64-current/l libidn
 slackware64-current/l libmad
 slackware64-current/l libtasn1
-slackware64-current/l harfbuzz
 slackware64-current/l libcddb
 slackware64-current/l qt
 # slackware64-current/a "file"
