@@ -50,37 +50,128 @@ apt-get install ocaml ocaml-findlib
 cave resolve -x dev-ocaml/findlib dev-lang/ocaml
 ------------------------------------------------------------------------
 
-=== Patch, build and install (locally) ocaml-fileutils ===
+=== Patch, build and install (locally) ocaml-fileutils, ocaml-archive, libocaml_http ===
 
-Next, download ocaml-fileutils 0.4.5:
+Yypkg requires patches to some libraries which have not yet been fully
+upstreamed. Hopefully, ocamlfind/findlib handles very well local library
+installation, i.e. it is possible and easy to install everything in a path
+like `win-builds/yypkg/deps/...`.
+
+==== Common approach ====
+
+Everything will be installed in `/path/to/yypkg/deps`.
+This can be changed to anything.
+
+It is then usually sufficient to run something similar to:
+
+------------------------------------------------------------------------
+./configure --prefix /path/to/yypkg/deps
+make
+mkdir -p /path/to/yypkg/deps/stublibs
+OCAMLFIND_DESTDIR=/path/to/yypkg/deps make install
+------------------------------------------------------------------------
+
+==== cryptokit ====
+
+NOTE: if you can install cryptokit 1.9 or above from your package manager, do
+it instead of following the instructions below.
+
+First, download and extract cryptokit 1.9.
+
+------------------------------------------------------------------------
+wget https://forge.ocamlcore.org/frs/download.php/1229/cryptokit-1.9.tar.gz
+tar xf cryptokit-1.9.tar.gz
+cd cryptokit-1.9
+------------------------------------------------------------------------
+
+Then configure, build and install (this is exactly like the "Common steps"
+mentionned given above):
+
+------------------------------------------------------------------------
+./configure --prefix /path/to/yypkg/deps
+make
+mkdir -p /path/to/yypkg/deps/stublibs
+OCAMLFIND_DESTDIR=/path/to/yypkg/deps make install
+------------------------------------------------------------------------
+
+==== ocaml-fileutils 0.4.5 with symlink patches ====
+
+Download ocaml-fileutils 0.4.5, extract it and enter the
+'ocaml-fileutils-0.4.5' directory:
 
 ------------------------------------------------------------------------
 wget https://forge.ocamlcore.org/frs/download.php/1194/ocaml-fileutils-0.4.5.tar.gz
-------------------------------------------------------------------------
-
-Extract it and enter the 'ocaml-fileutils-0.4.5' directory:
-
-------------------------------------------------------------------------
 tar xf ocaml-fileutils-0.4.5.tar.gz
 cd ocaml-fileutils-0.4.5
 ------------------------------------------------------------------------
 
-Patch ocaml-fileutils (this patch mostly fixes symlink handling in the
-library):
+Patch ocaml-fileutils (this patch fixes symlink handling in the library):
 
 ------------------------------------------------------------------------
-patch -p1 < /path/to/yypkg.git/fileutils-symlink-patches/0001-FileUtil-replace-stat.is_link-boolean-with-a-Link-va.patch
-patch -p1 < /path/to/yypkg.git/fileutils-symlink-patches/0002-FileUtil-symlinks-patch-2.patch
+patch -p1 < /path/to/yypkg/fileutils-symlink-patches/0001-FileUtil-replace-stat.is_link-boolean-with-a-Link-va.patch
+patch -p1 < /path/to/yypkg/fileutils-symlink-patches/0002-FileUtil-symlinks-patch-2.patch
 ------------------------------------------------------------------------
 
-Chose a directory where this local version ocaml-fileutils will be installed;
-it can be anything. Then configure, build and install ocaml-fileutils:
-
+Build and install:
 ------------------------------------------------------------------------
-./configure --prefix /tmp/ocaml-fileutils-install
+./configure --prefix /path/to/yypkg/deps
 make
-mkdir -p /tmp/ocaml-fileutils-install
-OCAMLFIND_DESTDIR=/tmp/ocaml-fileutils-install make install
+mkdir -p /path/to/yypkg/deps/stublibs
+OCAMLFIND_DESTDIR=/path/to/yypkg/deps make install
+------------------------------------------------------------------------
+
+==== ocaml-archive 2.8.4+2 with API additions ====
+
+First install "oasis" from your distribution package manager.
+
+Download ocaml-archive 2.8.4+2, extract it and enter the
+'ocaml-frchive-2.8.4+2' directory:
+
+------------------------------------------------------------------------
+wget https://forge.ocamlcore.org/frs/download.php/1129/ocaml-archive-2.8.4+2.tar.gz
+tar xf ocaml-archive-2.8.4+2.tar.gz
+cd ocaml-archive-2.8.4+2
+------------------------------------------------------------------------
+
+Patch ocaml-archive to disable the tests (which require more dependencies) and
+to add more APIs in the bindings. You will also have to generate the build
+system files again through the `oasis` command.
+
+------------------------------------------------------------------------
+patch -p1 <
+/path/to/yypkg/archive-patches/0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch
+/path/to/yypkg/archive-patches/0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch
+patch -p1 < /path/to/yypkg/fileutils-symlink-patches/0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch
+patch -p1 < /path/to/yypkg/fileutils-symlink-patches/0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch
+
+oasis setup
+------------------------------------------------------------------------
+
+Build and install:
+------------------------------------------------------------------------
+./configure --prefix /path/to/yypkg/deps --disable-archivelwt --disable-tests --disable-docs
+make
+mkdir -p /path/to/yypkg/deps/stublibs
+OCAMLFIND_DESTDIR=/path/to/yypkg/deps make install
+------------------------------------------------------------------------
+
+==== Build libocaml_http ====
+
+First, clone the git repository and init its submodules:
+
+------------------------------------------------------------------------
+git clone 'git://git.autogeree.net/~julm/libocaml.git'
+cd libocaml
+git submodule update --init
+------------------------------------------------------------------------
+
+You can now build and install the library:
+
+------------------------------------------------------------------------
+OP=/path/to/yypkg/deps 
+for i in exception option lexing ipv4_address ipv6_address plus uri http; do
+  (cd libocaml_$i && OCAMLPATH=$OP make && OCAMLFIND_DESTDIR=$OP make install)
+done
 ------------------------------------------------------------------------
 
 === Build yypkg itself ===
@@ -88,7 +179,7 @@ OCAMLFIND_DESTDIR=/tmp/ocaml-fileutils-install make install
 Finally, 'cd' into the 'yypkg' source repository and simply run:
 
 ------------------------------------------------------------------------
-OCAMLPATH=/tmp/ocaml-fileutils-install make
+OCAMLPATH=/path/to/yypkg/deps make
 ------------------------------------------------------------------------
 
 If you have another installation of ocaml-fileutils (through our usual package
