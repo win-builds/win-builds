@@ -143,11 +143,10 @@ to add more APIs in the bindings. You will also have to generate the build
 system files again through the `oasis` command.
 
 ------------------------------------------------------------------------
-patch -p1 <
-/path/to/yypkg/archive-patches/0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch
-/path/to/yypkg/archive-patches/0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch
-patch -p1 < /path/to/yypkg/fileutils-symlink-patches/0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch
-patch -p1 < /path/to/yypkg/fileutils-symlink-patches/0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch
+patch -p1 < /path/to/yypkg/archive-patches/0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch
+patch -p1 < /path/to/yypkg/archive-patches/0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch
+patch -p1 < /path/to/yypkg/archive-patches/0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch
+patch -p1 < /path/to/yypkg/archive-patches/0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch
 
 oasis setup
 ------------------------------------------------------------------------
