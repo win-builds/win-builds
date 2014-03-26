@@ -231,7 +231,8 @@ let () =
   let available = parse_package_list kind in
   let packages = filter ~kind ~available ~wishes in
   prepare ~packages;
-  may waitpid (build ~work_dir ~kind packages);
+  let env = [| sp "TMP=/tmp/win-builds/%s" kind |] in
+  may waitpid (build ~env ~work_dir ~kind packages);
   ListLabels.iter [ "cross_toolchain"; "windows" ] ~f:(fun kind ->
     let packages = ListLabels.map Options.triplets ~f:(fun triplet ->
       let kind = kind ^ "-" ^ triplet in
@@ -242,7 +243,7 @@ let () =
     let l = List.fold_left (fun l c -> List.rev_append (snd c) l) [] packages in
     prepare (rev_uniq (List.sort compare l));
     let pids = ListLabels.map packages ~f:(fun (triplet, packages) ->
-      let env = [| sp "TMP=/tmp/win-builds-%s" triplet |] in
+      let env = [| sp "TMP=/tmp/win-builds-%s/%s" triplet kind |] in
       let kind = kind ^ "-" ^ triplet in
       build ~env ~work_dir ~kind packages
     )
