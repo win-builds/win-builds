@@ -223,7 +223,8 @@ well.
 As root, run:
 
 ------------------------------------------------------------------------
-./win-builds/build-packages.sh @@VERSION@@
+make -C win-builds build_packages
+./win-builds/build_packages @@VERSION@@
 ------------------------------------------------------------------------
 
 === Build only a series ===
