@@ -200,7 +200,8 @@ cp -L src/yypkg.native /usr/local/bin/yypkg
 
 == Download source tarballs ==
 In order to retrieve the tarballs, you need to use the following git
-command in the 'mingw', 'slackware64-current' and 'slackbuilds' directories:
+command in the 'mingw', 'slackware64-current' and 'slackbuilds.org'
+directories:
 
 ------------------------------------------------------------------------
 git branch tarballs origin/tarballs
