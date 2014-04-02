@@ -47,7 +47,8 @@ release-upload:
 	  --exclude='/$(VERSION)/*' \
 	  1.3.0 $(WEB)/
 
-build_packages: build_packages.ml
-	ocamlopt -g str.cmxa unix.cmxa build_packages.ml -o build_packages
+build:
+	@ cd build_packages && ocamlbuild -classic-display build_packages.native
+	@ ln -sf build_packages/build_packages.native build
 
-.PHONY: doc
+.PHONY: doc build

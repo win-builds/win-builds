@@ -13,4 +13,8 @@ doc/version.config
 win-builds-bundle
 win-builds-bundle-*.zip
 
-build_packages
+build
+build_packages/_build/
+
+*.native
+*.byte
