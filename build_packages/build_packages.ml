@@ -32,7 +32,7 @@ module B = struct
     run [| "mkdir"; "-p"; builder.Builder.yyoutput; builder.Builder.logs |];
     let env = Builder.env builder in
     (if not (Sys.file_exists builder.Builder.prefix.Prefix.yyprefix) then
-      run [| "yypkg"; "--init" |]);
+      run [| "yypkg"; "--init"; "--prefix"; builder.Builder.prefix.Prefix.yyprefix |]);
     fun p ->
       progress "[%s] Building %s.\n%!" builder.Builder.prefix.Prefix.nickname p.name;
       let dir = Filename.concat p.dir p.package in
