@@ -105,7 +105,8 @@ let build builder =
       progress "Nothing to build\n%!");
     (* TODO: propagate failures *)
     List.iter (B.build_one builder) packages;
-    progress "[%s] Setting up repository.\n%!" builder.Builder.prefix.Prefix.nickname
+    progress "[%s] Setting up repository.\n%!" builder.Builder.prefix.Prefix.nickname;
+    run [| "yypkg"; "--repository"; "--generate"; builder.Builder.yyoutput |];
   )
   else
     ()
