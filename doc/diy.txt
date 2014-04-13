@@ -8,7 +8,6 @@ NOTK="http://git.notk.org/adrien/yypkg"
 
 git clone "http://git.ocamlcore.org/yypkg/yypkg.git"
 git clone "${NOTK}/win-builds.git"
-git clone "${NOTK}/yy_of_slack.git"
 git clone "${NOTK}/slackware64-current.git"
 git clone "${NOTK}/mingw.git"
 git clone "${NOTK}/slackbuilds.org.git"
