@@ -147,7 +147,6 @@ make install
 
 ==== ocaml-archive 2.8.4+2 with API additions ====
 
-First install "oasis" from your distribution package manager.
 
 Download ocaml-archive 2.8.4+2, extract it and enter the
 'ocaml-frchive-2.8.4+2' directory:
@@ -159,16 +158,13 @@ cd ocaml-archive-2.8.4+2
 ------------------------------------------------------------------------
 
 Patch ocaml-archive to disable the tests (which require more dependencies) and
-to add more APIs in the bindings. You will also have to generate the build
-system files again through the `oasis` command.
+to add more APIs in the bindings.
 
 ------------------------------------------------------------------------
 patch -p1 < /path/to/yypkg/archive-patches/0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch
 patch -p1 < /path/to/yypkg/archive-patches/0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch
 patch -p1 < /path/to/yypkg/archive-patches/0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch
 patch -p1 < /path/to/yypkg/archive-patches/0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch
-
-oasis setup
 ------------------------------------------------------------------------
 
 Build and install:
