@@ -1,6 +1,6 @@
 = Build yourself =
 
-== Scripts ==
+== Retrieve sources ==
 Run the following to get all the source files:
 
 ------------------------------------------------------------------------
