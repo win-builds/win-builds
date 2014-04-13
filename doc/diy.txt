@@ -228,22 +228,29 @@ into a directory which is in '$PATH', '/usr/local/bin' for instance:
 cp -L src/yypkg.native /usr/local/bin/yypkg
 ------------------------------------------------------------------------
 
-
-------------------------------------------------------------------------
-------------------------------------------------------------------------
-
-
-------------------------------------------------------------------------
-------------------------------------------------------------------------
-
 == Start the build ==
 
 === Build everything ===
-As root, run:
+
+Go back to the parent directory and build the build infrastructure:
+------------------------------------------------------------------------
+make -C win-builds build
+------------------------------------------------------------------------
+
+Then, as root, run:
 
 ------------------------------------------------------------------------
-make -C win-builds build_packages
-./win-builds/build_packages @@VERSION@@
+./win-builds/build @@VERSION@@
+------------------------------------------------------------------------
+
+Alternatively, you can run the build under fakeroot but this requires you to
+first create and chown the installation directories:
+
+------------------------------------------------------------------------
+for d in native_toolchain cross_toolchain_{32,64} windows_{32,64}; do
+  mkdir /opt/${d}
+  chown --reference=${HOME} /opt/${d}
+done
 ------------------------------------------------------------------------
 
 === Build only a series ===
