@@ -221,9 +221,8 @@ package manager for instance), you will get a number of warnings about having
 duplicate packages. This is expected and ocamlfind will pick the first one,
 which is in '$OCAMLPATH'.
 
-Since there is no single use of yypkg, installation has to be done by hand;
-the only requirement is that binaries go into a directory which is in '$PATH',
-'/usr/local/bin' for instance:
+Installation has to be done by hand; the only requirement is that binaries go
+into a directory which is in '$PATH', '/usr/local/bin' for instance:
 
 ------------------------------------------------------------------------
 cp -L src/yypkg.native /usr/local/bin/yypkg
