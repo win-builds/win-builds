@@ -4,6 +4,6 @@ slackware64-current/d gcc:core
 mingw mingw-w64:full
 slackware64-current/d gcc:full
 # mingw widl
-mingw flexdll
-slackbuilds.org ocaml
-slackbuilds.org ocaml-findlib
+# mingw flexdll
+# slackbuilds.org ocaml
+# slackbuilds.org ocaml-findlib
