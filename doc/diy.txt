@@ -297,6 +297,29 @@ For multiple packages, the invocation becomes:
 ./win-builds/build-packages.sh @@VERSION@@ windows libjpeg libpng lua
 ------------------------------------------------------------------------
 
+=== Modify the package lists ===
+
+The list of packages to build is stored inside 'win-builds/package_list'
+in a simple text format.
+
+There is one package per line, comments are whole lines which start with
+a '#'. Empty lines are allowed.
+
+Each package line is made of a path, a space, a package name and,
+optionally, a column and a "variant". For instance, the GCC package has
+two possible variants: "core" and "full".
+
+The contents of the 'cross_toolchain_32' file is shown below as an
+example:
 
 ------------------------------------------------------------------------
+slackware64-current/d binutils
+mingw mingw-w64:headers
+slackware64-current/d gcc:core
+mingw mingw-w64:full
+slackware64-current/d gcc:full
+# mingw widl
+# mingw flexdll
+# slackbuilds.org ocaml
+# slackbuilds.org ocaml-findlib
 ------------------------------------------------------------------------
