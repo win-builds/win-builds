@@ -65,17 +65,18 @@ apt-get install ocaml ocaml-findlib
 cave resolve -x dev-ocaml/findlib dev-lang/ocaml
 ------------------------------------------------------------------------
 
-=== Patch, build and install (locally) ocaml-fileutils, ocaml-archive, libocaml_http ===
+=== Patch, build and install (locally) cryptokit, ocaml-fileutils, ocaml-archive, libocaml_http ===
 
 Yypkg requires patches to some libraries which have not yet been fully
-upstreamed. Hopefully, ocamlfind/findlib handles very well local library
-installation, i.e. it is possible and easy to install everything in a path
-like `win-builds/yypkg/deps/...`.
+upstreamed or versions more recent than the ones usually available through
+distribution packages. Hopefully, ocamlfind/findlib handles very well local
+library installation, i.e. it is possible and easy to install everything in a
+path like `win-builds/yypkg/deps`.
 
 ==== Common approach ====
 
-Everything will be installed in `/path/to/yypkg/deps`.
-This can be changed to anything.
+Everything will be installed in `/path/to/yypkg/deps`. This can be changed to
+anything.
 
 It is then usually sufficient to run something similar to:
 
@@ -158,7 +159,7 @@ cd ..
 ==== ocaml-archive 2.8.4+2 with API additions ====
 
 Download ocaml-archive 2.8.4+2, extract it and enter the
-'ocaml-frchive-2.8.4+2' directory:
+'ocaml-archive-2.8.4+2' directory:
 
 ------------------------------------------------------------------------
 wget https://forge.ocamlcore.org/frs/download.php/1129/ocaml-archive-2.8.4+2.tar.gz
@@ -220,8 +221,8 @@ Finally, 'cd' into the 'yypkg' source repository and simply run:
 make
 ------------------------------------------------------------------------
 
-If you have another installation of ocaml-fileutils (through our usual package
-manager for instance), you will get a number of warnings about having
+If you have another installation of ocaml-fileutils (through your usual
+package manager for instance), you will get a number of warnings about having
 duplicate packages. This is expected and ocamlfind will pick the first one,
 which is in '$OCAMLPATH'.
 
@@ -257,13 +258,14 @@ native, cross_toolchain, windows.
 
 * native adds new native tools on the build system that slackware doesn't
   have; for instance, it installs ocaml because building the ocaml
-  cross-compiler requires an ocaml native compiler
+  cross-compiler requires an ocaml native compiler of the exact same
+  version
 * cross_toolchain builds the cross-toolchain
 * windows cross-compiles the binaries that will run on windows (this
   include the GCC native compiler)
 
-The series are given in the second argument to the `build-packages.sh` script
-as a dash-separated list.
+The series are given in the second argument to the `build-packages.sh`
+script as a dash-separated list.
 
 An example invocation which goes over `cross_tooolchain` and `windows` is:
 
