@@ -290,11 +290,6 @@ For multiple packages, the invocation becomes:
 ./win-builds/build-packages.sh @@VERSION@@ windows libjpeg libpng lua
 ------------------------------------------------------------------------
 
-== Build the host system (only if you really want to redo everything) ==
-This requires running a slackware64 14.1 system currently. You also need a
-mirror of the sources:.
 
 ------------------------------------------------------------------------
-MIRROR="${PWD}/mirror/slackware64-current" \
-  ./yy_of_slack/yy_of_slack.sh
 ------------------------------------------------------------------------
