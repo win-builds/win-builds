@@ -42,7 +42,7 @@ git merge origin/tarballs
 === Install OCaml and findlib/ocamlfind ===
 Yypkg is written in OCaml and you will need the OCaml compiler. Most Linux
 distributions have packaged it which makes the installation simple. You need
-at least version 4.0 of OCaml.
+at least version 3.12.1 of OCaml.
 
 Findlib (a.k.a. ocamlfind) is also needed; it is a tool like pkg-config but
 for OCaml libraries. It is also packaged by most Linux distributions.
