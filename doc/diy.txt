@@ -119,6 +119,11 @@ mkdir -p /path/to/yypkg/deps/stublibs
 make install
 ------------------------------------------------------------------------
 
+Go back to the parent directory:
+------------------------------------------------------------------------
+cd ..
+------------------------------------------------------------------------
+
 ==== ocaml-fileutils 0.4.5 with symlink patches ====
 
 Download ocaml-fileutils 0.4.5, extract it and enter the
@@ -145,8 +150,12 @@ mkdir -p /path/to/yypkg/deps/stublibs
 make install
 ------------------------------------------------------------------------
 
-==== ocaml-archive 2.8.4+2 with API additions ====
+Go back to the parent directory:
+------------------------------------------------------------------------
+cd ..
+------------------------------------------------------------------------
 
+==== ocaml-archive 2.8.4+2 with API additions ====
 
 Download ocaml-archive 2.8.4+2, extract it and enter the
 'ocaml-frchive-2.8.4+2' directory:
@@ -175,6 +184,11 @@ mkdir -p /path/to/yypkg/deps/stublibs
 make install
 ------------------------------------------------------------------------
 
+Go back to the parent directory:
+------------------------------------------------------------------------
+cd ..
+------------------------------------------------------------------------
+
 ==== Build libocaml_http ====
 
 First, clone the git repository and init its submodules:
@@ -191,6 +205,11 @@ You can now build and install the library:
 for i in exception option lexing ipv4_address ipv6_address plus uri http; do
   (cd libocaml_$i && make && make install)
 done
+------------------------------------------------------------------------
+
+Go back to the parent directory:
+------------------------------------------------------------------------
+cd ..
 ------------------------------------------------------------------------
 
 === Build yypkg itself ===
