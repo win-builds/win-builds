@@ -17,6 +17,27 @@ Note that this will fail with git 1.7.2 because of a bug that has been
 fixed in git 1.8.0 (commit "http: fix segfault in handle_curl_result",
 188923f0d1c8148415b3173986cd1e21871c947e).
 
+The initial clone takes noticeably longer because it also downloads the
+source tarballs for the softwares that will packaged.
+
+This is done as a convenience to avoid downloading each and every
+tarball but they are not exposed in the source directories
+automatically. To do so, you need to run the following git command in
+the 'mingw', 'slackware64-current' and 'slackbuilds.org' directories:
+
+------------------------------------------------------------------------
+git branch tarballs origin/tarballs
+git merge origin/tarballs
+------------------------------------------------------------------------
+
+In the future, in order to update your git repository, you will then have to
+run:
+
+------------------------------------------------------------------------
+git pull --rebase
+git merge origin/tarballs
+------------------------------------------------------------------------
+
 == Build yypkg ==
 === Install OCaml and findlib/ocamlfind ===
 Yypkg is written in OCaml and you will need the OCaml compiler. Most Linux
@@ -197,25 +218,13 @@ the only requirement is that binaries go into a directory which is in '$PATH',
 cp -L src/yypkg.native /usr/local/bin/yypkg
 ------------------------------------------------------------------------
 
-== Download source tarballs ==
-In order to retrieve the tarballs, you need to use the following git
-command in the 'mingw', 'slackware64-current' and 'slackbuilds.org'
-directories:
 
 ------------------------------------------------------------------------
-git branch tarballs origin/tarballs
-git merge origin/tarballs
 ------------------------------------------------------------------------
 
-In order to update your git repository, you will then have to run:
 
 ------------------------------------------------------------------------
-git pull --rebase
-git merge origin/tarballs
 ------------------------------------------------------------------------
-
-If you've started doing changes, you should first learn how to use git
-well.
 
 == Start the build ==
 
