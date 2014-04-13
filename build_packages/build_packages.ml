@@ -31,7 +31,8 @@ module B = struct
     in
     run [| "mkdir"; "-p"; builder.Builder.yyoutput; builder.Builder.logs |];
     let env = Builder.env builder in
-    (if not (Sys.file_exists builder.Builder.prefix.Prefix.yyprefix) then
+    (if not (Sys.file_exists builder.Builder.prefix.Prefix.yyprefix)
+      || Sys.readdir builder.Builder.prefix.Prefix.yyprefix = [| |] then
       run [| "yypkg"; "--init"; "--prefix"; builder.Builder.prefix.Prefix.yyprefix |]);
     fun p ->
       progress "[%s] Building %s.\n%!" builder.Builder.prefix.Prefix.nickname p.name;
