@@ -124,6 +124,15 @@ let () =
   let cross_64 = Builder.cross Arch.windows_64 in
   let windows_32 = Builder.windows ~cross:cross_32 Arch.windows_32 in
   let windows_64 = Builder.windows ~cross:cross_64 Arch.windows_64 in
+  let check triplet builder =
+    if List.mem triplet Options.triplets then [ builder ] else []
+  in
   build Builder.native;
-  build_parallel [ cross_32; cross_64 ];
-  build_parallel [ windows_32; windows_64 ]
+  build_parallel (List.concat [
+    check "i686-w64-mingw32"  cross_32;
+    check "x86_64-w64-mingw32"  cross_64;
+  ]);
+  build_parallel (List.concat [
+    check "i686-w64-mingw32"  windows_32;
+    check "x86_64-w64-mingw32"  windows_64;
+  ])
