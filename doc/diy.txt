@@ -73,7 +73,7 @@ distribution packages. Hopefully, ocamlfind/findlib handles very well local
 library installation, i.e. it is possible and easy to install everything in a
 path like `win-builds/yypkg/deps`.
 
-==== Common approach ====
+==== First steps ====
 
 Everything will be installed in `/path/to/yypkg/deps`. This can be changed to
 anything.
@@ -83,11 +83,6 @@ It is then usually sufficient to run something similar to:
 ------------------------------------------------------------------------
 export OCAMLFIND_DESTDIR=/path/to/yypkg/deps
 export OCAMLPATH=${OCAMLFIND_DESTDIR}
-
-./configure --prefix /path/to/yypkg/deps
-make
-mkdir -p /path/to/yypkg/deps/stublibs
-make install
 ------------------------------------------------------------------------
 
 ==== Set environment variables ====
