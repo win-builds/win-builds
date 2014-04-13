@@ -159,7 +159,7 @@ module Builder = struct
       path = Env.Prepend [ bindir prefix ];
       pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
       pkg_config_libdir = Env.Keep;
-      tmp = Env.Set [ Filename.concat "/tmp/win-builds" prefix.nickname ];
+      tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
       target_prefix = None; native_prefix = None;
     }
 
@@ -177,7 +177,7 @@ module Builder = struct
       path = Env.Prepend [ bindir prefix; bindir native.prefix ];
       pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
       pkg_config_libdir = Env.Keep;
-      tmp = Env.Set [ Filename.concat "/tmp/win-builds" prefix.nickname ];
+      tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
       target_prefix = None; native_prefix = None;
     }
 
@@ -199,7 +199,7 @@ module Builder = struct
       path = Env.Prepend [ bindir prefix; bindir cross.prefix; bindir native.prefix ];
       pkg_config_path = Env.Clear;
       pkg_config_libdir = Env.Set [ Filename.concat prefix.libdir "pkgconfig" ] ;
-      tmp = Env.Set [ Filename.concat "/tmp/win-builds" prefix.nickname ];
+      tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
       target_prefix = None; native_prefix = Some native.prefix.Prefix.yyprefix;
     }
 end
