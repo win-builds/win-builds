@@ -19,6 +19,7 @@ slackware64-current/n ca-certificates
 slackware64-current/n openssl
 slackware64-current/l gmp
 slackware64-current/n nettle
+slackware64-current/l libtasn1
 slackware64-current/n gnutls
 slackware64-current/n curl
 slackbuilds.org c-ares
@@ -65,7 +66,6 @@ slackware64-current/l libao
 slackware64-current/l libdvdread
 slackware64-current/l libidn
 slackware64-current/l libmad
-slackware64-current/l libtasn1
 slackware64-current/l libcddb
 slackware64-current/l qt
 # slackware64-current/a "file"
