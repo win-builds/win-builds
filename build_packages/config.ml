@@ -193,10 +193,7 @@ module Builder = struct
     let open Prefix in
     {
       prefix; logs; yyoutput;
-      (* /opt/windows_{32,64}/bin has to be in $PATH so that libtool finds
-       * libraries without being given an additional -L switch. Adding all the
-       * -L would require too many changes in too many locations. *)
-      path = Env.Prepend [ bindir prefix; bindir cross.prefix; bindir native.prefix ];
+      path = Env.Prepend [ bindir cross.prefix; bindir native.prefix ];
       pkg_config_path = Env.Clear;
       pkg_config_libdir = Env.Set [ Filename.concat prefix.libdir "pkgconfig" ] ;
       tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
