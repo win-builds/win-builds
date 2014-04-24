@@ -67,20 +67,14 @@ path like `win-builds/yypkg/deps`.
 ==== First steps ====
 
 Everything will be installed in `/path/to/yypkg/deps`. This can be changed to
-anything.
-
-It is then usually sufficient to run something similar to:
-
-------------------------------------------------------------------------
-export OCAMLFIND_DESTDIR=/path/to/yypkg/deps
-export OCAMLPATH=${OCAMLFIND_DESTDIR}
-------------------------------------------------------------------------
+any directory.
 
 ==== Set environment variables ====
 
 ------------------------------------------------------------------------
-export OCAMLFIND_DESTDIR=/path/to/yypkg/deps
-export OCAMLPATH=${OCAMLFIND_DESTDIR}
+YYPKG_SOURCE="/path/to/yypkg"
+export OCAMLFIND_DESTDIR=/path/to/yypkg/deps"
+export OCAMLPATH="${OCAMLFIND_DESTDIR}"
 ------------------------------------------------------------------------
 
 ==== cryptokit ====
