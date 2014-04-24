@@ -94,9 +94,9 @@ Then configure, build and install (this is exactly like the "Common steps"
 mentionned given above):
 
 ------------------------------------------------------------------------
-./configure --prefix /path/to/yypkg/deps
+./configure --prefix "${OCAMLFIND_DESTDIR}"
 make
-mkdir -p /path/to/yypkg/deps/stublibs
+mkdir -p "${OCAMLFIND_DESTDIR}/stublibs"
 make install
 ------------------------------------------------------------------------
 
@@ -119,15 +119,15 @@ cd ocaml-fileutils-0.4.5
 Patch ocaml-fileutils (this patch fixes symlink handling in the library):
 
 ------------------------------------------------------------------------
-patch -p1 < /path/to/yypkg/fileutils-symlink-patches/0001-FileUtil-replace-stat.is_link-boolean-with-a-Link-va.patch
-patch -p1 < /path/to/yypkg/fileutils-symlink-patches/0002-FileUtil-symlinks-patch-2.patch
+patch -p1 < ${YYPKG_SOURCE}/fileutils-symlink-patches/0001-FileUtil-replace-stat.is_link-boolean-with-a-Link-va.patch
+patch -p1 < ${YYPKG_SOURCE}/fileutils-symlink-patches/0002-FileUtil-symlinks-patch-2.patch
 ------------------------------------------------------------------------
 
 Build and install:
 ------------------------------------------------------------------------
-./configure --prefix /path/to/yypkg/deps
+./configure --prefix ${OCAMLFIND_DESTDIR}
 make
-mkdir -p /path/to/yypkg/deps/stublibs
+mkdir -p ${OCAMLFIND_DESTDIR}/stublibs
 make install
 ------------------------------------------------------------------------
 
@@ -151,17 +151,17 @@ Patch ocaml-archive to disable the tests (which require more dependencies) and
 to add more APIs in the bindings.
 
 ------------------------------------------------------------------------
-patch -p1 < /path/to/yypkg/archive-patches/0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch
-patch -p1 < /path/to/yypkg/archive-patches/0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch
-patch -p1 < /path/to/yypkg/archive-patches/0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch
-patch -p1 < /path/to/yypkg/archive-patches/0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch
+patch -p1 < ${YYPKG_SOURCE}/archive-patches/0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch
+patch -p1 < ${YYPKG_SOURCE}/archive-patches/0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch
+patch -p1 < ${YYPKG_SOURCE}/archive-patches/0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch
+patch -p1 < ${YYPKG_SOURCE}/archive-patches/0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch
 ------------------------------------------------------------------------
 
 Build and install:
 ------------------------------------------------------------------------
-./configure --prefix /path/to/yypkg/deps --disable-archivelwt --disable-tests --disable-docs
+./configure --prefix ${OCAMLFIND_DESTDIR} --disable-archivelwt --disable-tests --disable-docs
 make
-mkdir -p /path/to/yypkg/deps/stublibs
+mkdir -p ${OCAMLFIND_DESTDIR}/stublibs
 make install
 ------------------------------------------------------------------------
 
@@ -184,7 +184,7 @@ You can now build and install the library:
 
 ------------------------------------------------------------------------
 for i in exception option lexing ipv4_address ipv6_address plus uri http; do
-  (cd libocaml_$i && make && make install)
+  (cd libocaml_$i && make && make install) || break
 done
 ------------------------------------------------------------------------
 
