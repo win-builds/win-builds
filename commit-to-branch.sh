@@ -18,7 +18,7 @@ for file in ${FILES}; do
     printf "data <<EOC\n"
     printf "${COMMIT_MESSAGE_PREFIX} $(basename ${file}).\n"
     printf "EOC\n"
-    if git branch 2>/dev/null | grep -q "${BRANCH}"; then
+    if git branch 2>/dev/null | grep -q "\<${BRANCH}\>$"; then
       printf "from refs/heads/${BRANCH}^0\n"
     fi
     case "${OPERATION}" in
