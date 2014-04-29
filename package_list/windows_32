@@ -1,3 +1,4 @@
+slackware64-current/a xz:yypkg
 slackware64-current/l libarchive:yypkg
 mingw winpthreads
 # mingw widl
