@@ -2,7 +2,7 @@ mingw winpthreads
 # mingw widl
 mingw win-iconv
 slackware64-current/a gettext
-slackware64-current/a xz
+slackware64-current/a xz:regular
 slackware64-current/l zlib
 slackware64-current/l libjpeg
 slackware64-current/l expat
@@ -47,7 +47,7 @@ slackware64-current/l harfbuzz
 slackbuilds.org efl
 slackbuilds.org elementary
 slackware64-current/d pkg-config
-slackware64-current/l libarchive:full
+slackware64-current/l libarchive:regular
 slackware64-current/n wget
 mingw mingw-w64:full
 slackware64-current/d binutils
