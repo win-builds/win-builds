@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php include 'head.html'; ?>
+<?php include 'head.php'; ?>
 <script>
   var data = [
     { start: 0,   id: 'caption-0'   },
