@@ -13,6 +13,9 @@ YYPKG_TGT_BINARIES="${YYPKG_SRC}/src"
 BSDTAR_TGT="$(which bsdtar)"
 ROOT_FS="/"
 
+INITDIR="/tmp/yypkg_init" # temp directory
+INITDIR_FULL="${SYSTEM}/${INITDIR}" # absolute path; outside the chroot
+
 umounts() {
   if [ -n "${BIND_MOUNTED_DIRS}" ]; then
     umount ${BIND_MOUNTED_DIRS}
@@ -67,8 +70,6 @@ chroot_run() {
   chroot "${DIR}" $*
 }
 
-INITDIR="/tmp/yypkg_init" # temp directory
-INITDIR_FULL="${SYSTEM}/${INITDIR}" # absolute path; outside the chroot
 
 mkdir -p "${INITDIR_FULL}/pkgs"
 
