@@ -8,7 +8,7 @@ slackware64-current/l libjpeg
 slackware64-current/l expat
 slackware64-current/l libpng
 slackware64-current/l freetype
-# depends on expat, freetype
+# fontconfig depends on expat, freetype
 slackware64-current/x fontconfig
 slackware64-current/l giflib
 slackware64-current/l libtiff
@@ -76,3 +76,4 @@ slackware64-current/l qt
 # slack/xap/gucharmap (* requires GTK+-3 *)
 # slack/xap/geeqie (* includes <pwd.h> *)
 # slackbuilds.org/luajit
+mingw zz_config
