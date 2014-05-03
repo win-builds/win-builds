@@ -1,11 +1,7 @@
 include Makefile.data
 
 BUNDLE_FILES= \
-  ./bsdtar.exe \
-  ./wget.exe \
-  ./liblzma-5.dll \
   ./yypkg.exe \
-  ./sherpa.exe \
   ./win-install.bat \
   ./msys-cygwin-install.sh \
   ./win-builds-switch.sh
