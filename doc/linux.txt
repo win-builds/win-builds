@@ -1,35 +1,35 @@
-= Build yourself =
+= Linux installation =
 
-== Retrieve sources ==
-Run the following to get all the source files:
+No Linux binaries are provided because of the differences between
+distributions. The usual approach is to build the cross-compiler on the
+host system and then re-use the prebuild windows packages (since they
+are neutral to Linux systems anyway).
+
+There are roughly three steps:
+
+* build yypkg
+* build the cross-compiler
+* acquire or build the windows binaries
+
+The packages are split into three series: native, cross_toolchain,
+windows:
+
+* native adds new native tools on the build system that slackware doesn't
+  have; for instance, it installs ocaml because building the ocaml
+  cross-compiler requires an ocaml native compiler of the exact same
+  version
+* cross_toolchain builds the cross-toolchain
+* windows cross-compiles the binaries that will run on windows (this
+  include the GCC native compiler)
+
+== Yypkg ==
+
+=== Retrieve sources ===
 
 ------------------------------------------------------------------------
-NOTK="http://git.notk.org/adrien/yypkg"
-
 git clone "http://git.ocamlcore.org/yypkg/yypkg.git"
-git clone "${NOTK}/win-builds.git"
-git clone "${NOTK}/slackware64-current.git"
-git clone "${NOTK}/mingw.git"
-git clone "${NOTK}/slackbuilds.org.git"
 ------------------------------------------------------------------------
 
-Note that this will fail with git 1.7.2 because of a bug that has been
-fixed in git 1.8.0 (commit "http: fix segfault in handle_curl_result",
-188923f0d1c8148415b3173986cd1e21871c947e).
-
-The initial clone takes noticeably longer because it also downloads the
-source tarballs for the softwares that will packaged.
-
-This is done as a convenience to avoid downloading each and every
-tarball but they are not exposed in the source directories
-automatically. To do so, you need to run the following git command in
-the 'mingw', 'slackware64-current' and 'slackbuilds.org' directories:
-
-------------------------------------------------------------------------
-git ls-tree -r --name-only origin/tarballs | xargs git checkout origin/tarballs --
-------------------------------------------------------------------------
-
-== Build yypkg ==
 === Install OCaml and findlib/ocamlfind ===
 Yypkg is written in OCaml and you will need the OCaml compiler. Most Linux
 distributions have packaged it which makes the installation simple. You need
@@ -213,19 +213,67 @@ into a directory which is in '$PATH', '/usr/local/bin' for instance:
 cp -L src/yypkg.native /usr/local/bin/yypkg
 ------------------------------------------------------------------------
 
-== Start the build ==
+== Build the cross-compiler ==
 
-=== Build everything ===
+=== Retrieve sources ===
+Run the following to get all the source files:
 
-Go back to the parent directory and build the build infrastructure:
+------------------------------------------------------------------------
+NOTK="http://git.notk.org/adrien/yypkg"
+
+git clone "${NOTK}/win-builds.git"
+git clone "${NOTK}/slackware64-current.git"
+git clone "${NOTK}/mingw.git"
+git clone "${NOTK}/slackbuilds.org.git"
+------------------------------------------------------------------------
+
+NOTE: this will fail with git 1.7.2 because of a bug that has been fixed
+in git 1.8.0 (commit "http: fix segfault in handle_curl_result",
+188923f0d1c8148415b3173986cd1e21871c947e).
+
+The initial clone takes noticeably longer because it also downloads the
+source tarballs for the softwares that will packaged.
+
+This is done as a convenience to avoid downloading each and every
+tarball but they are not exposed in the source directories
+automatically. To do so, you need to run the following:
+
+------------------------------------------------------------------------
+for d mingw slackware64-current slackbuilds.org; do
+  (cd $d && git ls-tree -r --name-only origin/tarballs | xargs git checkout origin/tarballs -- )
+done
+------------------------------------------------------------------------
+
+=== Build the build driver ===
+
+Go back to the parent directory and build the infrastructure:
 ------------------------------------------------------------------------
 make -C win-builds build
 ------------------------------------------------------------------------
 
-Then, as root, run:
+It is possible to build only one or more series by passing their name as
+argument to the "build" tool (separated by dashes if there are several.
+As an example, to build only the cross_toolchain and windows series,
+one would run:
+
+-------------------------------------------------------------------------
+./win-builds/build-packages.sh @@VERSION@@ native_toolchain-cross_toolchain
+------------------------------------------------------------------------
+
+It is also possible to build only one or more packages by passing their
+name as argument to the "build" tool, after at least one series name.
+The names are space-separated. An example would be:
 
 ------------------------------------------------------------------------
-./win-builds/build @@VERSION@@
+./win-builds/build-packages.sh @@VERSION@@ windows libjpeg libpng lua
+------------------------------------------------------------------------
+
+=== Build the cross-compiler ===
+
+As root, run:
+
+------------------------------------------------------------------------
+./win-builds/build @@VERSION@@ native_toolchain-cross_toolchain
 ------------------------------------------------------------------------
 
 Alternatively, you can run the build under fakeroot but this requires you to
@@ -238,49 +286,43 @@ for d in native_toolchain cross_toolchain_{32,64} windows_{32,64}; do
 done
 ------------------------------------------------------------------------
 
-=== Build only a series ===
-It is possible to only build a subset of the available series:
-native, cross_toolchain, windows.
+== Get the Windows binaries ==
 
-* native adds new native tools on the build system that slackware doesn't
-  have; for instance, it installs ocaml because building the ocaml
-  cross-compiler requires an ocaml native compiler of the exact same
-  version
-* cross_toolchain builds the cross-toolchain
-* windows cross-compiles the binaries that will run on windows (this
-  include the GCC native compiler)
+There are two approaches possible:
+* download packages from http://win-builds.org
+* build packages yourself
 
-The series are given in the second argument to the `build-packages.sh`
-script as a dash-separated list.
+=== Download packages ===
 
-An example invocation which goes over `cross_tooolchain` and `windows` is:
+The following will install for both i686 and x86_64 in /opt/windows_*:
 
 ------------------------------------------------------------------------
-./win-builds/build-packages.sh @@VERSION@@ cross_toolchain-windows
+deploy() {
+  ARCH="${1}"
+  BITS="${2}"
+
+  export YYPREFIX=/opt/windows_${BITS}
+
+  yypkg --init
+  yypkg --config --predicates host=""
+  yypkg --config --predicates target="i686-w64-mingw32"
+  yypkg --config --set-mirror "http://win-builds.org/@@VERSION@@/packages/windows_${BITS}"
+  yypkg --web-install --packages all
+}
+
+(deploy 32 i686)
+(deploy 64 x86_64)
 ------------------------------------------------------------------------
 
-Another one which only goes over the packages in `windows` is:
+=== Build packages yourself ===
+
+Like for the cross-compiler, run:
 
 ------------------------------------------------------------------------
-./win-builds/build-packages.sh @@VERSION@@ windows
+./win-builds/build @@VERSION@@ windows
 ------------------------------------------------------------------------
 
-=== Build only one package ===
-You can further refine what will be built by appending the package names
-after the series. Each package name is given as a separate argument to the
-script.
-
-An example invocation is:
-
-------------------------------------------------------------------------
-./win-builds/build-packages.sh @@VERSION@@ windows libjpeg
-------------------------------------------------------------------------
-
-For multiple packages, the invocation becomes:
-
-------------------------------------------------------------------------
-./win-builds/build-packages.sh @@VERSION@@ windows libjpeg libpng lua
-------------------------------------------------------------------------
+== Extras ==
 
 === Modify the package lists ===
 

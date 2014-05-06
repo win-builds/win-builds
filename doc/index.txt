@@ -66,24 +66,16 @@ win-builds-related discussions.
 
 == Getting and running the system ==
 
-=== From Windows ===
+=== From Windows (outside of MSYS or Cygwin) ===
 Note that these don't change system settings nor setup shell tools (for now).
 This means you need to install msys, msys2, cygwin or nothing if your IDE
 doesn't need anything besides the toolchain. You also need to set variables
 like %PATH% yourself.
 
-==== Automated install ====
-As a stop-gap measure for the lack of an up-to-date installer, a .bat file has
-been written.
-Simply download link:win-builds-bundle-@@VERSION@@.zip[the win-builds
-binaries], extract them and run `win-install.bat'. It will install files in
-`C:\win-builds-32' and `C:\win-builds-64'; if you want to change the path,
-simply edit the .bat file in any text editor.
+Download and run
+link:http://win-builds.org/@@VERSION@@/yypkg-@@VERSION@@.exe[yypkg-@@VERSION@@.exe].
 
 [NOTE]
-That if you want to update packages later on, you will need the content of the
-archive.
-
 The toolchain will then be setup and can be used standalone or from an IDE.
 The only settings needed is to set the PATH and PKG_CONFIG_LIBDIR environment
 variable to chose between the 32 bits and 64 bits toolchain:
@@ -99,68 +91,13 @@ variable to chose between the 32 bits and 64 bits toolchain:
 [NOTE]
 The 64 bits toolchain requires a 64 bits host to run.
 
-==== Manual steps ====
-The code below is a summary of what is done at installation on Windows. If you
-want all the details, you should look at the source of
-link:http://cgit.notk.org/adrien/yypkg/win-builds.git/tree/win-install.bat[win-install.bat].
-
-Download and extract link:win-builds-bundle-@@VERSION@@.zip[the yypkg
-binaries]. Note that if you want to update packages later on, you will need
-the content of the archive.
-Then, start a command prompt (cmd.exe), enter the directory where you've
-extracted the files and run:
-
-------------------------------------------------------------------------
-set YYPREFIX=C:/win-builds-32
-yypkg -init
-yypkg -config -setpreds host="i686-w64-mingw32"
-yypkg -config -setpreds target="i686-w64-mingw32"
-sherpa -set-mirror http://win-builds.org/@@VERSION@@/packages/windows_32
-sherpa -install all
-------------------------------------------------------------------------
-
 === From Windows for MSYS or Cygwin ===
 The how-to for use with MSYS or Cygwin is available on a link:msys-cygwin.html[dedicated page].
 
 There are a couple known issues associated with Cygwin. Be sure to check <<Known_Issues>>.
 
 === From Linux 64b ===
-
-The following commands will download and setup a system ready for
-cross-compilation to i686-w64-mingw32. It goes through a chroot in order
-to provide the matching versions of not only glibc but also GTK+, pango,
-edje, Ocaml, ...
-
-Get the project main scripts:
-
-------------------------------------------------------------------------
-git clone http://git.notk.org/adrien/yypkg/win-builds.git
-------------------------------------------------------------------------
-
-Download the base system and extract it somewhere:
-
-------------------------------------------------------------------------
-mkdir @@VERSION@@
-wget -P @@VERSION@@ http://win-builds.org/@@VERSION@@/system.tar.xz
-------------------------------------------------------------------------
-
-Chroot into the base environment with several environment variables set
-automatically:
-
-------------------------------------------------------------------------
-sudo ./win-builds/main.sh @@VERSION@@
-------------------------------------------------------------------------
-
-The first time you get into the sytem, download and setup the
-cross-toolchain and all the cross-compiled tools and libraries:
-
-------------------------------------------------------------------------
-/root/get-all-prebuilt-binaries.sh
-------------------------------------------------------------------------
-
-My typical workflow is to work outside of the chroot and only use it to
-build; I use "mount bind" to make the build directory available
-inside the chroot.
+The how-to for use with Linux is available on a link:linux.html[dedicated page].
 
 // === Yypkg cheatsheet ===
 // See "yypkg -help" for a quick reference and
