@@ -149,23 +149,7 @@ Windows-style path which you can get with a command similar to `$(cygpath -m
 
 [[Known_Issues]]
 === Known issues and work-arounds ===
-* The installer for msys and cygwin doesn't keep bsdtar.exe and wget.exe
-  around. Issue opened as
-  link:http://win-builds.org/bugs/index.php?do=details&task_id=46[bug 46].
-  A possible solution is to merge everything into a single executable and
-  statically link binaries. This issue is opened as
-  link:http://win-builds.org/bugs/index.php?do=details&task_id=47[bug 47].
-  * win-builds-switch.sh exports a POSIX-style path in YYPREFIX on Cygwin. See
-  link:http://win-builds.org/bugs/index.php?do=details&task_id=48#comment25[bottom of bug 48] for details and how to fix it after installation.
-* Order of link paths is wrong and prefers default system directories to the
-  ones provided on the command-line through -L.
-  See link:http://win-builds.org/bugs/index.php?do=details&task_id=53#comment24[bottom of bug 53] for details and how to fix it after installation.
-* win-builds-switch.sh exports a Windows-style path in PKG_CONFIG_LIBDIR on
-  Cygwin. See
-  link http://win-builds.org/bugs/index.php?do=details&task_id=54#comment23[bottom of bug 54] for details and how to fix it after installation.
 * Graphical installer is being reworked and is not available yet.
-* fc-cache can use up to 1GB of memory, possibly making installation fail on
-  some systems.
 * Windows XP/2k3 don't handle junctions and even hardlinks very well, making
   their removal by hand difficult.
 
