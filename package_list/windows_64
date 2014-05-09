@@ -55,14 +55,14 @@ slackware64-current/d gcc:full
 slackbuilds.org x264
 slackware64-current/l pcre
 slackware64-current/ap flac
-slackware64-current/ap cdparanoia
+# slackware64-current/ap cdparanoia
 slackware64-current/d gdb
 slackware64-current/l libao
 # slackware64-current/l "libcdio" (* requires ddk *)
-slackware64-current/l libdvdread
-slackware64-current/l libidn
+# slackware64-current/l libdvdread
+# slackware64-current/l libidn
 slackware64-current/l libmad
-slackware64-current/l libcddb
+# slackware64-current/l libcddb
 slackware64-current/l qt
 # slackware64-current/a "file"
 # slackbuilds.org/ffmpeg
