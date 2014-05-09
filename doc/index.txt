@@ -96,7 +96,7 @@ The how-to for use with MSYS or Cygwin is available on a link:msys-cygwin.html[d
 
 There are a couple known issues associated with Cygwin. Be sure to check <<Known_Issues>>.
 
-=== From Linux 64b ===
+=== From Linux ===
 The how-to for use with Linux is available on a link:linux.html[dedicated page].
 
 // === Yypkg cheatsheet ===

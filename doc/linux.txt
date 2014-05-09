@@ -20,7 +20,31 @@ windows:
   version
 * cross_toolchain builds the cross-toolchain
 * windows cross-compiles the binaries that will run on windows (this
-  include the GCC native compiler)
+  includes the GCC native compiler)
+
+== Dependencies ==
+
+=== Arch Linux ===
+
+------------------------------------------------------------------------
+pacman -S ocaml ocaml-findlib
+------------------------------------------------------------------------
+
+=== Debian ===
+
+------------------------------------------------------------------------
+apt-get install ocaml-base-nox ocaml-findlib libarchive-dev bsdtar libssl-dev
+libjpeg-dev libpng-dev libfreetype6-dev libgif-dev libgl1-mesa-dev libtiff-dev
+libsndfil-dev libudev-dev libmount-dev libblkid-dev xutils-dev intltool
+gtk-doc-tools tclsh libgdk-pixbuf2.0-dev yasm
+apt-get install build-dep libelementary-dev
+------------------------------------------------------------------------
+
+=== Exherbo ===
+
+------------------------------------------------------------------------
+cave resolve -x dev-ocaml/findlib dev-lang/ocaml
+------------------------------------------------------------------------
 
 == Yypkg ==
 
@@ -28,32 +52,6 @@ windows:
 
 ------------------------------------------------------------------------
 git clone "http://git.ocamlcore.org/yypkg/yypkg.git"
-------------------------------------------------------------------------
-
-=== Install OCaml and findlib/ocamlfind ===
-Yypkg is written in OCaml and you will need the OCaml compiler. Most Linux
-distributions have packaged it which makes the installation simple. You need
-at least version 3.12.1 of OCaml.
-
-Findlib (a.k.a. ocamlfind) is also needed; it is a tool like pkg-config but
-for OCaml libraries. It is also packaged by most Linux distributions.
-
-==== Arch Linux ====
-
-------------------------------------------------------------------------
-pacman -S ocaml ocaml-findlib
-------------------------------------------------------------------------
-
-==== Debian ====
-
-------------------------------------------------------------------------
-apt-get install ocaml ocaml-findlib
-------------------------------------------------------------------------
-
-==== Exherbo ====
-
-------------------------------------------------------------------------
-cave resolve -x dev-ocaml/findlib dev-lang/ocaml
 ------------------------------------------------------------------------
 
 === Patch, build and install (locally) cryptokit, ocaml-fileutils, ocaml-archive, libocaml_http ===
@@ -72,15 +70,17 @@ any directory.
 ==== Set environment variables ====
 
 ------------------------------------------------------------------------
-YYPKG_SOURCE="/path/to/yypkg"
-export OCAMLFIND_DESTDIR=/path/to/yypkg/deps"
+YYPKG_SOURCE="$(pwd)/yypkg)"
+export OCAMLFIND_DESTDIR=${YYPKG_SOURCE}/deps"
 export OCAMLPATH="${OCAMLFIND_DESTDIR}"
+mkdir -p "${OCAMLFIND_DESTDIR}/stublibs"
 ------------------------------------------------------------------------
 
 ==== cryptokit ====
 
 NOTE: if you can install cryptokit 1.9 or above from your package manager, do
-it instead of following the instructions below.
+it instead of following the instructions below. This is the case for at least
+Debian Jessie.
 
 First, download and extract cryptokit 1.9.
 
@@ -88,16 +88,16 @@ First, download and extract cryptokit 1.9.
 wget https://forge.ocamlcore.org/frs/download.php/1229/cryptokit-1.9.tar.gz
 tar xf cryptokit-1.9.tar.gz
 cd cryptokit-1.9
+
 ------------------------------------------------------------------------
 
-Then configure, build and install (this is exactly like the "Common steps"
-mentionned given above):
+Then configure, build and install:
 
 ------------------------------------------------------------------------
 ./configure --prefix "${OCAMLFIND_DESTDIR}"
 make
-mkdir -p "${OCAMLFIND_DESTDIR}/stublibs"
 make install
+
 ------------------------------------------------------------------------
 
 Go back to the parent directory:
@@ -114,6 +114,7 @@ Download ocaml-fileutils 0.4.5, extract it and enter the
 wget https://forge.ocamlcore.org/frs/download.php/1194/ocaml-fileutils-0.4.5.tar.gz
 tar xf ocaml-fileutils-0.4.5.tar.gz
 cd ocaml-fileutils-0.4.5
+
 ------------------------------------------------------------------------
 
 Patch ocaml-fileutils (this patch fixes symlink handling in the library):
@@ -121,14 +122,15 @@ Patch ocaml-fileutils (this patch fixes symlink handling in the library):
 ------------------------------------------------------------------------
 patch -p1 < ${YYPKG_SOURCE}/fileutils-symlink-patches/0001-FileUtil-replace-stat.is_link-boolean-with-a-Link-va.patch
 patch -p1 < ${YYPKG_SOURCE}/fileutils-symlink-patches/0002-FileUtil-symlinks-patch-2.patch
+
 ------------------------------------------------------------------------
 
 Build and install:
 ------------------------------------------------------------------------
 ./configure --prefix ${OCAMLFIND_DESTDIR}
 make
-mkdir -p ${OCAMLFIND_DESTDIR}/stublibs
 make install
+
 ------------------------------------------------------------------------
 
 Go back to the parent directory:
@@ -145,6 +147,7 @@ Download ocaml-archive 2.8.4+2, extract it and enter the
 wget https://forge.ocamlcore.org/frs/download.php/1129/ocaml-archive-2.8.4+2.tar.gz
 tar xf ocaml-archive-2.8.4+2.tar.gz
 cd ocaml-archive-2.8.4+2
+
 ------------------------------------------------------------------------
 
 Patch ocaml-archive to disable the tests (which require more dependencies) and
@@ -155,14 +158,15 @@ patch -p1 < ${YYPKG_SOURCE}/archive-patches/0001-_oasis-make-it-possible-to-not-
 patch -p1 < ${YYPKG_SOURCE}/archive-patches/0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch
 patch -p1 < ${YYPKG_SOURCE}/archive-patches/0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch
 patch -p1 < ${YYPKG_SOURCE}/archive-patches/0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch
+
 ------------------------------------------------------------------------
 
 Build and install:
 ------------------------------------------------------------------------
 ./configure --prefix ${OCAMLFIND_DESTDIR} --disable-archivelwt --disable-tests --disable-docs
 make
-mkdir -p ${OCAMLFIND_DESTDIR}/stublibs
 make install
+
 ------------------------------------------------------------------------
 
 Go back to the parent directory:
@@ -178,6 +182,7 @@ First, clone the git repository and init its submodules:
 git clone 'git://git.autogeree.net/~julm/libocaml.git'
 cd libocaml
 git submodule update --init
+
 ------------------------------------------------------------------------
 
 You can now build and install the library:
@@ -186,6 +191,7 @@ You can now build and install the library:
 for i in exception option lexing ipv4_address ipv6_address plus uri http; do
   (cd libocaml_$i && make && make install) || break
 done
+
 ------------------------------------------------------------------------
 
 Go back to the parent directory:
@@ -195,9 +201,10 @@ cd ..
 
 === Build yypkg itself ===
 
-Finally, 'cd' into the 'yypkg' source repository and simply run:
+Finally, 'cd' into the 'yypkg' source repository and simply run make:
 
 ------------------------------------------------------------------------
+cd yypkg
 make
 ------------------------------------------------------------------------
 
@@ -213,6 +220,12 @@ into a directory which is in '$PATH', '/usr/local/bin' for instance:
 cp -L src/yypkg.native /usr/local/bin/yypkg
 ------------------------------------------------------------------------
 
+Go back to parent directory:
+
+------------------------------------------------------------------------
+cd ..
+------------------------------------------------------------------------
+
 == Build the cross-compiler ==
 
 === Retrieve sources ===
@@ -225,11 +238,11 @@ git clone "${NOTK}/win-builds.git"
 git clone "${NOTK}/slackware64-current.git"
 git clone "${NOTK}/mingw.git"
 git clone "${NOTK}/slackbuilds.org.git"
+
 ------------------------------------------------------------------------
 
-NOTE: this will fail with git 1.7.2 because of a bug that has been fixed
-in git 1.8.0 (commit "http: fix segfault in handle_curl_result",
-188923f0d1c8148415b3173986cd1e21871c947e).
+NOTE: this fails with git 1.7.2 and is fixed in git 1.8.0 (commit "http: fix
+segfault in handle_curl_result").
 
 The initial clone takes noticeably longer because it also downloads the
 source tarballs for the softwares that will packaged.
@@ -239,9 +252,10 @@ tarball but they are not exposed in the source directories
 automatically. To do so, you need to run the following:
 
 ------------------------------------------------------------------------
-for d mingw slackware64-current slackbuilds.org; do
-  (cd $d && git ls-tree -r --name-only origin/tarballs | xargs git checkout origin/tarballs -- )
+for d in mingw slackware64-current slackbuilds.org; do
+  (cd $d && git checkout origin/tarballs .)
 done
+
 ------------------------------------------------------------------------
 
 === Build the build driver ===
@@ -257,7 +271,7 @@ As an example, to build only the cross_toolchain and windows series,
 one would run:
 
 -------------------------------------------------------------------------
-./win-builds/build-packages.sh @@VERSION@@ native_toolchain-cross_toolchain
+./win-builds/build @@VERSION@@ native_toolchain-cross_toolchain
 ------------------------------------------------------------------------
 
 It is also possible to build only one or more packages by passing their
@@ -265,7 +279,7 @@ name as argument to the "build" tool, after at least one series name.
 The names are space-separated. An example would be:
 
 ------------------------------------------------------------------------
-./win-builds/build-packages.sh @@VERSION@@ windows libjpeg libpng lua
+./win-builds/build @@VERSION@@ windows libjpeg libpng lua
 ------------------------------------------------------------------------
 
 === Build the cross-compiler ===
