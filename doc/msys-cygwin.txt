@@ -58,19 +58,7 @@ then "Apply Changes".
 * for MSYS: 'yypkg-@@VERSION@@.exe --deploy --host msys'
 * for Cygwin: 'yypkg-@@VERSION@@.exe --deploy --host cygwin'
 
-3. In the MSYS/Cygwin prompt, enter the directory where you've extracted the
-yypkg binaries (typically 'win-builds-bundle') and run one of:
-+
-------------------------------------------------------------------------
-# To install for both i686 and x86_64:
-./msys-cygwin-install.sh
-# To install for only i686:
-./msys-cygwin-install.sh i686
-# To install for only x86_64:
-./msys-cygwin-install.sh x86_64
-------------------------------------------------------------------------
-
-4. Check gcc is running well:
+3. Check gcc is running well:
 +
 ------------------------------------------------------------------------
 # First, switch to the 32-bit toolchain (see next section for details):
@@ -81,7 +69,7 @@ gcc --version
 gcc --version
 ------------------------------------------------------------------------
 
-5. Set a default toolchain (optional):
+4. Set a default toolchain (optional):
 +
 ------------------------------------------------------------------------
 echo '. /opt/windows_32/bin/win-builds-switch 32' >> ~/.profile
