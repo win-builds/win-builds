@@ -43,7 +43,7 @@ apt-get install build-dep libelementary-dev
 === Exherbo ===
 
 ------------------------------------------------------------------------
-cave resolve -x dev-ocaml/findlib dev-lang/ocaml
+cave resolve -x dev-ocaml/findlib dev-lang/ocaml '>=app-arch/libarchive-3.1.2-r2'
 ------------------------------------------------------------------------
 
 == Yypkg ==
