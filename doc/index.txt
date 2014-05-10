@@ -32,8 +32,7 @@ It is also possible to get support through the
 link:https://lists.sourceforge.net/lists/listinfo/mingw-w64-public[Mingw-w64
 mailing-list].
 
-Bug reports are handled through the link:http://win-builds.org/bugs[Bug
-tracker].
+Bug reports are handled through the link:/bugs[Bug tracker].
 
 === IRC channels ===
 

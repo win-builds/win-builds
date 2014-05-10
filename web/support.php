@@ -8,8 +8,7 @@
 <?php include 'header.html'; ?>
 
 <h1>Bug Tracker</h1>
-
-For most issues and feature wishes, you can use the <a href="bugs">bug tracker</a>.
+For most issues and feature wishes, you can use the <a href="/bugs">bug tracker</a>.
 
 <h1>IRC</h1>
 You can also join the #mingw-w64 channel on OFTC (or on freenode where messages 
