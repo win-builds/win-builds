@@ -108,12 +108,6 @@ i686-w64-mingw32-gcc -o gtk_hello_world.exe gtk_hello_world.c $(pkg-config --cfl
 Simply browse to the installation directory you wish to update, enter the
 'bin' directory and run 'yypkg.exe'; it will automatically check for updates.
 
-[[Known_Issues]]
-=== Known issues and work-arounds ===
-* Graphical installer is being reworked and is not available yet.
-* Windows XP/2k3 don't handle junctions and even hardlinks very well, making
-  their removal by hand difficult.
-
 === Advanced usage: Build it yourself ===
 Building everything yourself is not difficult nor time-consuming: a full
 build is very easy to setup and takes a couple hours on an old machine
@@ -129,16 +123,20 @@ You first need to have an environment setup for building packages; this step
 is described on the link:diy.html[doc-diy] page. Once you have it, have a look
 at the link:packaging.html[packager documentation] page.
 
-== Current status (1.3.0) ==
+== Current status (1.4 beta1) ==
 === Main changes ===
-* stable x86_64-w64-mingw32 native and cross compiler
-* GCC 4.8.2
-* mingw-w64 3.1.0
+* merged all executables together
+* easier installation Windows
+* no more chroot usage on Linux
 * updated packages
 * documentation improvements
-* emulation of symlinks on Windows
-* installer scripts for MSYS/Cygwin and native Windows.
-* faster build infrastructure
+* even faster and simpler build infrastructure
+
+[[Known_Issues]]
+=== Known issues and work-arounds ===
+* Graphical installer is being reworked and is not available yet.
+* Windows XP/2k3 don't handle junctions and even hardlinks very well, making
+  their removal by hand difficult.
 
 == History ==
 * 1.3, January 2014: stable x86_64-w64-mingw32 native and cross compilers (GCC
