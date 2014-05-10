@@ -10,24 +10,24 @@
 <h1>Win-builds - (Free) Software Packaging and Building For Windows</h1>
 
 <p>
-  Win-builds creates binary packages of libraries and tools for native
-  Windows from source. It is supported by the yypkg package manager and
-  runs on Windows, MSYS, MSYS2, Cygwin and Linux.
+  Win-builds creates binary packages of libraries and tools for Windows from
+  source. It provides a package manager and runs on Windows, MSYS, Cygwin and
+  Linux.
 </p>
 
 <div class="highlights">
   <div class="hl">
-    <h2 class="hl-title">For 32bits and 64bits</h2>
+    <h2 class="hl-title">32/64bits</h2>
     <ul class="hl-list">
       <li>GCC 4.8.2 - C, C++</li>
       <li>Mingw-w64 3.1.0</li>
     </ul>
   </div>
   <div class="hl">
-    <h2 class="hl-title">From Windows or Linux</h2>
+    <h2 class="hl-title">Windows, Linux</h2>
     <ul class="hl-list">
-      <li>Integrate with MSYS, MSYS2, Cygwin or use in native Windows</li>
-      <li>Same packages run in a chroot on any Linux distribution</li>
+      <li>Use in MSYS, Cygwin, bare Windows</li>
+      <li>On Linux, build only the cross-compiler, reuse all other packages</li>
     </ul>
   </div>
   <div class="hl">
@@ -44,7 +44,7 @@
     </ul>
   </div>
   <div class="hl">
-    <h2 class="hl-title">Fully-scripted, clean, reproducible builds</h2>
+    <h2 class="hl-title">Scripted, clean, reproducible</h2>
     <ul class="hl-list">
       <li>Be in control of your infrastructure</li>
       <li>Customize as you wish</li>
