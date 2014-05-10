@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php include 'head.php'; ?>
+<?php $page = 'support'; include 'head.php'; ?>
 </head>
 
 <body>
 <?php include 'header.html'; ?>
 
-<h1>Support</h1>
+<h1>Bug Tracker</h1>
 
-<h2>Bug Tracker</h2>
 For most issues and feature wishes, you can use the <a href="bugs">bug tracker</a>.
 
-<h2>IRC</h2>
+<h1>IRC</h1>
 You can also join the #mingw-w64 channel on OFTC (or on freenode where messages 
 will be relayed to OFTC).
 
-<h2>Mailing-lists</h2>
+<h1>Mailing-lists</h1>
 <ul>
 <?php
 function print_list($name, $description) {
@@ -36,7 +35,7 @@ print_list('announce', 'Announces for updates');
   <li>The <a href="https://lists.sourceforge.net/lists/listinfo/mingw-w64-public">mingw-w64 mailing-list</a> can also be appropriate.
 </ul>
 
-<h2>Mail</h2>
+<h1>Mail</h1>
 If really none of the above fits your situation, you can send an e-mail to adrien AT notk.org.
 
 <?php include 'footer.html'; ?>

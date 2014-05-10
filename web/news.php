@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php include 'head.php'; ?>
+<?php $page = 'news'; include 'head.php'; ?>
 </head>
 
 <body>
 <?php include 'header.html'; ?>
 
-<h1>News</h1>
 <h3><a href="1.3.0">1.3.0 - 11/01/2014</a></h3>
   All executables in bin/ have the .exe extension now (applies to gcc.exe, openssl.exe, xmlwf.exe from expat).<br>
   Many small fixes to the installer scripts for windows platforms.<br>

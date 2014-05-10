@@ -5,4 +5,8 @@
 <title>Win-builds.org - (Free) Software Packaging and Building For Windows</title>
 <style>
 <?php include 'style.css'; ?>
+<?php
+global $page;
+printf('.navlist span #%s { background-color: rgba(0, 0, 0, 0.2); }', $page);
+?>
 </style>
