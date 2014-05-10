@@ -17,7 +17,7 @@ release-upload:
 	  --include='/$(VERSION)/logs' \
 	  --include='/$(VERSION)/packages' \
 	  --exclude='/$(VERSION)/*' \
-	  1.3.0 $(WEB)/
+	  $(VERSION) $(WEB)/
 
 build:
 	@ cd build_packages && ocamlbuild -classic-display build_packages.native
