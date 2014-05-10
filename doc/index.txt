@@ -41,16 +41,15 @@ The `#mingw-w64` IRC channels on Freenode and OFTC are appropriate places for
 win-builds-related discussions.
 
 == Getting and running the system ==
+Note that these don't change system settings nor setup shell tools (for now).
+This is a bare toolchain to use with other tools like MSYS, MSYS2, Cygwin or
+an IDE.
+
+Also make sure you read the <<Known_Issues>> section.
 
 === From Windows (outside of MSYS or Cygwin) ===
-Note that these don't change system settings nor setup shell tools (for now).
-This means you need to install msys, msys2, cygwin or nothing if your IDE
-doesn't need anything besides the toolchain. You also need to set variables
-like %PATH% yourself.
+Simply download and run link:yypkg-@@VERSION@@.exe[].
 
-Download and run link:yypkg-@@VERSION@@.exe[].
-
-[NOTE]
 The toolchain will then be setup and can be used standalone or from an IDE.
 The only settings needed is to set the PATH and PKG_CONFIG_LIBDIR environment
 variable to chose between the 32 bits and 64 bits toolchain:
@@ -68,8 +67,6 @@ The 64 bits toolchain requires a 64 bits host to run.
 
 === From Windows for MSYS or Cygwin ===
 The how-to for use with MSYS or Cygwin is available on a link:msys-cygwin.html[dedicated page].
-
-There are a couple known issues associated with Cygwin. Be sure to check <<Known_Issues>>.
 
 === From Linux ===
 The how-to for use with Linux is available on a link:linux.html[dedicated page].
