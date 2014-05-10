@@ -1,13 +1,8 @@
 = Win-builds =
 
 == Support and coverage ==
-There are currently around 70 packages. There are both cross and native
-toolchains. The cross toolchain requires a Linux system with a 64bit kernel
-(not userspace).
-
-.1 Windows files
-This section provides 54 non-toolchain packages; they are sufficient to build
-GTK+ and EFL applications, several network components and GCC itself.
+There are currently around 65 packages. They are sufficient to build GTK+ and
+EFL applications, several network components and GCC itself.
 
 * i686:
 link:packages/windows_32/package_list.html[Detailed list]
@@ -15,25 +10,6 @@ link:logs/windows_32/[Build logs]
 * x86_64:
 link:packages/windows_64/package_list.html[Detailed list]
 link:logs/windows_64/[Build logs]
-
-.2 Cross-toolchain
-
-GCC 4.8.2 (C, C++, ObjC), Mingw-w64 3.1.0
-
-* i686:
-link:packages/cross_toolchain_32/package_list.html[Package list]
-link:logs/cross_toolchain_32/[Build logs]
-* x86_64:
-link:packages/cross_toolchain_64/package_list.html[Package list]
-link:logs/cross_toolchain_64/[Build logs]
-
-.3 Linux supplements
-
-Additional tools for builds which cannot bootstrap themselves.
-
-* x86_64:
-link:packages/native_toolchain/package_list.html[Package list]
-link:logs/native_toolchain/[Build logs]
 
 == Support ==
 
