@@ -74,27 +74,27 @@ yypkg binaries (typically 'win-builds-bundle') and run one of:
 +
 ------------------------------------------------------------------------
 # First, switch to the 32-bit toolchain (see next section for details):
-. win-builds-switch.sh 32
+. /opt/windows_32/bin/win-builds-switch 32
 gcc --version
 # Then, switch to the 64-bit toolchain: (see next section for details)
-. win-builds-switch.sh 64
+. /opt/windows_64/bin/win-builds-switch 64
 gcc --version
 ------------------------------------------------------------------------
 
 5. Set a default toolchain (optional):
 +
 ------------------------------------------------------------------------
-echo '. win-builds-switch.sh 32' >> ~/.profile
+echo '. /opt/windows_32/bin/win-builds-switch 32' >> ~/.profile
 ------------------------------------------------------------------------
 
 == Change toolchain on-the-fly ==
 
-The 'win-builds-switch.sh' script takes care of everything; run it in your
+The 'win-builds-switch' script takes care of everything; run it in your
 shell like:
 
 ------------------------------------------------------------------------
 # To switch to the i686 toolchain
-. win-builds-switch.sh 32
+. /opt/windows_32/bin/win-builds-switch 32
 # To switch to the x86_64 toolchain
-. win-builds-switch.sh 64
+. /opt/windows_64/bin/win-builds-switch 64
 ------------------------------------------------------------------------
