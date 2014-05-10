@@ -72,8 +72,7 @@ This means you need to install msys, msys2, cygwin or nothing if your IDE
 doesn't need anything besides the toolchain. You also need to set variables
 like %PATH% yourself.
 
-Download and run
-link:http://win-builds.org/@@VERSION@@/yypkg-@@VERSION@@.exe[yypkg-@@VERSION@@.exe].
+Download and run link:yypkg-@@VERSION@@.exe[].
 
 [NOTE]
 The toolchain will then be setup and can be used standalone or from an IDE.
