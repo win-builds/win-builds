@@ -160,7 +160,7 @@ available on a separate page link:diy.html[doc-diy].
 
 === Advanced usage: Package yourself ===
 It is fairly easy to create new packages: the usual way is to port existing
-Slackware build scripts to yypkg and mingw with a few simple serch-and-replace
+Slackware build scripts to yypkg and mingw with a few simple search-and-replace
 operations.
 
 You first need to have an environment setup for building packages; this step

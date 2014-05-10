@@ -14,10 +14,10 @@ There are roughly three steps:
 The packages are split into three series: native, cross_toolchain,
 windows:
 
-* native adds new native tools on the build system that slackware doesn't
-  have; for instance, it installs ocaml because building the ocaml
-  cross-compiler requires an ocaml native compiler of the exact same
-  version
+* native adds new native tools on the build system that Slackware doesn't
+  have or has at a version that doesn't match; for instance, it installs OCaml
+  because building the Ocaml cross-compiler requires an Ocaml native compiler of
+  the exact same version
 * cross_toolchain builds the cross-toolchain
 * windows cross-compiles the binaries that will run on windows (this
   includes the GCC native compiler)
@@ -253,7 +253,7 @@ automatically. To do so, you need to run the following:
 
 ------------------------------------------------------------------------
 for d in mingw slackware64-current slackbuilds.org; do
-  (cd $d && git checkout origin/tarballs .)
+  (cd $d && git checkout origin/tarballs . ) # The dot is significant.
 done
 
 ------------------------------------------------------------------------
@@ -284,14 +284,15 @@ The names are space-separated. An example would be:
 
 === Build the cross-compiler ===
 
-As root, run:
+The packages must be built as root (or at least under the 'fakeroot' tool). To
+build the cross-compiler, as root, run:
 
 ------------------------------------------------------------------------
 ./win-builds/build @@VERSION@@ native_toolchain-cross_toolchain
 ------------------------------------------------------------------------
 
-Alternatively, you can run the build under fakeroot but this requires you to
-first create and chown the installation directories:
+To run the build under fakeroot first create and chown the installation
+directories:
 
 ------------------------------------------------------------------------
 for d in native_toolchain cross_toolchain_{32,64} windows_{32,64}; do
