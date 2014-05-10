@@ -22,6 +22,10 @@ windows:
 * windows cross-compiles the binaries that will run on windows (this
   includes the GCC native compiler)
 
+Building takes a fairly large amount of space, roughly 500MB for
+'native_toolchain', 2GB for 'cross_toolchain_*' and 4.5GB for 'windows_*'.
+Around 90% of this space is made up of temporary files in 'tmp' directories.
+
 == Dependencies ==
 
 === Arch Linux ===
