@@ -1,8 +1,10 @@
 include Makefile.data
 
+all: build
 
-all:
-	@echo "Explicitely state what you want to build: bundle or doc."
+build:
+	@ cd build_packages && ocamlbuild -classic-display build_packages.native
+	@ ln -sf build_packages/build_packages.native build
 
 doc doc-upload:
 	$(MAKE) -C doc $@
@@ -18,9 +20,5 @@ release-upload:
 	  --include='/$(VERSION)/packages' \
 	  --exclude='/$(VERSION)/*' \
 	  $(VERSION) $(WEB)/
-
-build:
-	@ cd build_packages && ocamlbuild -classic-display build_packages.native
-	@ ln -sf build_packages/build_packages.native build
 
 .PHONY: doc web build
