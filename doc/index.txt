@@ -105,22 +105,8 @@ i686-w64-mingw32-gcc -o gtk_hello_world.exe gtk_hello_world.c $(pkg-config --cfl
 ------------------------------------------------------------------------
 
 === Update packages ===
-Updating packages requires a few but simple steps. You need
-
-* If you haven't kept the content of the .zip installation archive, download
-  the archive again and extract it where you wish.
-* Open a cmd.exe shell.
-* Run `sherpa.exe -prefix C:/installation/path -update package_to_update`. An
-  example is:
-+
-------------------------------------------------------------------------
-C:/win-builds-installer/sherpa.exe -prefix C:/win-builds-32 -update openssl
-------------------------------------------------------------------------
-
-If you are using Cygwin or MSYS, first change directory to the one which
-contains sherpa.exe. In the case of Cygwin, you will have to provide a
-Windows-style path which you can get with a command similar to `$(cygpath -m
-/opt/windows_32)`.
+Simply browse to the installation directory you wish to update, enter the
+'bin' directory and run 'yypkg.exe'; it will automatically check for updates.
 
 [[Known_Issues]]
 === Known issues and work-arounds ===
