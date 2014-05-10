@@ -14,7 +14,6 @@ release-upload:
 	cd .. && \
 	  rsync -avzP \
 	  --include='/$(VERSION)' \
-	  --include='/$(VERSION)/system.tar.xz' \
 	  --include='/$(VERSION)/logs' \
 	  --include='/$(VERSION)/packages' \
 	  --exclude='/$(VERSION)/*' \
