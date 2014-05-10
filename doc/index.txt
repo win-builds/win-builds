@@ -79,15 +79,13 @@ The how-to for use with Linux is available on a link:linux.html[dedicated page].
 // link:http://git.ocamlcore.org/cgi-bin/gitweb.cgi?p=yypkg/yypkg.git;a=blob;f=USAGE[yypkg's
 // documentation] for a more complete documentation
 
-==== Demo ====
-In order to build the GTK+ Hello world, cd in the win-builds directory
-and run (copy-paste) the following:
+==== Test ====
+Build the GTK+ Hello world as a quick test. If you're using a posix shell, you
+can run the following in a shell after having set the PATH and
+PKG_CONFIG_LIBDIR environment variables (which 'win-builds-switch' does). For
+other installation types you will need to do slight adaptations.
 
 ------------------------------------------------------------------------
-sudo ./main.sh @@VERSION@@
-
-cd root
-
 cat << EOF > gtk_hello_world.c
 #include <gtk/gtk.h>
 
