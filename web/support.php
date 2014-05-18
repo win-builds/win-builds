@@ -34,9 +34,6 @@ print_list('announce', 'Announces for updates');
   <li>The <a href="https://lists.sourceforge.net/lists/listinfo/mingw-w64-public">mingw-w64 mailing-list</a> can also be appropriate.
 </ul>
 
-<h1>Mail</h1>
-If really none of the above fits your situation, you can send an e-mail to adrien AT notk.org.
-
 <?php include 'footer.html'; ?>
 </body>
 </html>
