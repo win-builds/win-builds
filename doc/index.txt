@@ -129,7 +129,7 @@ You first need to have an environment setup for building packages; this step
 is described on the link:diy.html[doc-diy] page. Once you have it, have a look
 at the link:packaging.html[packager documentation] page.
 
-== Current status (1.4 beta1) ==
+== Current status (1.4 beta3) ==
 === Main changes ===
 * merged all executables together
 * much easier installation on Windows
