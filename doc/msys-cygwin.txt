@@ -77,6 +77,16 @@ shell like:
 . /opt/windows_64/bin/win-builds-switch 64
 ------------------------------------------------------------------------
 
+== Set a default toolchain (optional) ==
+
+The easiest way to set a toolchain by default is to add its selection to the
+user's profile. The command will be executed each time an interactive shell is
+started and will be valid for everything started from them.
+
+------------------------------------------------------------------------
+echo '. /opt/windows_32/bin/win-builds-switch 32' >> ~/.profile
+------------------------------------------------------------------------
+
 == Check gcc works ==
 
 First, copy and paste the following to a file name 'gtk_hello_world.c':
@@ -104,14 +114,4 @@ i686-w64-mingw32-gcc -o gtk_hello_world.exe gtk_hello_world.c $(pkg-config --cfl
 # Then, the 64 bits toolchain
 . /opt/windows_64/bin/win-builds-switch 64
 x86_64-w64-mingw32-gcc -o gtk_hello_world.exe gtk_hello_world.c $(pkg-config --cflags --libs gtk+-2.0)
-------------------------------------------------------------------------
-
-== Set a default toolchain (optional) ==
-
-The easiest way to set a toolchain by default is to add its selection to the
-user's profile. The command will be executed each time an interactive shell is
-started and will be valid for everything started from them.
-
-------------------------------------------------------------------------
-echo '. /opt/windows_32/bin/win-builds-switch 32' >> ~/.profile
 ------------------------------------------------------------------------

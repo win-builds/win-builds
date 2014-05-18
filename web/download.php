@@ -24,8 +24,7 @@ like PATH or PKG_CONFIG_PATH/LIBDIR.
 </p>
 
 <p>
-More information can be found in the <a href="@@VERSION@@">documentation</a>;
-make sure to subscribe at least to the <a href="support.html">(security)
+More information can be found in the <a href="documentation.html">documentation</a>; make sure to subscribe at least to the <a href="support.html">(security)
 announces mailing-list</a>.
 </p>
 
