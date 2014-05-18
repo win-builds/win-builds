@@ -100,7 +100,19 @@ i686-w64-mingw32-gcc -o gtk_hello_world.exe gtk_hello_world.c $(pkg-config --cfl
 
 === Update packages ===
 Simply browse to the installation directory you wish to update, enter the
-'bin' directory and run 'yypkg.exe'; it will automatically check for updates.
+'bin' directory and double-click on 'yypkg.exe'; it will automatically check
+for updates.
+
+If you want to update packages through command-line, run:
+------------------------------------------------------------------------
+yypkg --web
+------------------------------------------------------------------------
+
+To restrict the update to a specific list of packages, use the --packages
+option:
+------------------------------------------------------------------------
+yypkg --web --packages <package1> <package2>
+------------------------------------------------------------------------
 
 === Advanced usage: Build it yourself ===
 Building everything yourself is not difficult nor time-consuming: a full
