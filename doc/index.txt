@@ -120,7 +120,7 @@ at the link:packaging.html[packager documentation] page.
 == Current status (1.4 beta1) ==
 === Main changes ===
 * merged all executables together
-* easier installation Windows
+* much easier installation on Windows
 * no more chroot usage on Linux
 * updated packages
 * documentation improvements
