@@ -1,7 +1,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="description" content="Up-to-date, comprehensive and easy-to-use packaging system for Windows."/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<link rel="shortcut icon" href=""/>
+<link rel="shortcut icon" href="#"/>
 <title>Win-builds.org - (Free) Software Packaging and Building For Windows</title>
 <style>
 <?php include 'style.css'; ?>
