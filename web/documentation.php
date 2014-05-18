@@ -16,10 +16,10 @@
   <li><a href="#known_issues">Known issues</a></li>
   <li>On dedicated pages:
     <ul>
-      <li><a href="msys-cygwin.html">MSYS and Cygwin</a></li>
-      <li><a href="linux.html">Linux</a></li>
-      <li><a href="diy.html">Build yourself</a></li>
-      <li><a href="packaging.html">Packaging</a></li>
+      <li><a href="@@VERSION@@/msys-cygwin.html">MSYS and Cygwin</a></li>
+      <li><a href="@@VERSION@@/linux.html">Linux</a></li>
+      <li><a href="@@VERSION@@/diy.html">Build yourself</a></li>
+      <li><a href="@@VERSION@@/packaging.html">Packaging</a></li>
     </ul>
   </li>
 </ul>
@@ -30,12 +30,12 @@ GTK+ and EFL applications and also provide several networking components plus
 the toolchain itself.
 <ul>
   <li>i686:
-    <a href="packages/windows_32/package_list.html">Package list</a>
-    <a href="logs/windows_32/">Build logs</a>
+    <a href="@@VERSION@@/packages/windows_32/package_list.html">Package list</a>
+    <a href="@@VERSION@@/logs/windows_32/">Build logs</a>
   </li>
   <li>x86_64:
-    <a href="packages/windows_64/package_list.html">Package list</a>
-    <a href="logs/windows_64/">Build logs</a>
+    <a href="@@VERSION@@/packages/windows_64/package_list.html">Package list</a>
+    <a href="@@VERSION@@/logs/windows_64/">Build logs</a>
   </li>
 </ul>
 
@@ -60,7 +60,7 @@ the toolchain itself.
   </ul>
 
 <p>
-  For Cygwin and MSYS, the preferred way to set these is through the win-builds-switch script as described in the <a href="msys-cygwin.html#_change_toolchain_on_the_fly">documentation for these</a>.
+  For Cygwin and MSYS, the preferred way to set these is through the win-builds-switch script as described in the <a href="@@VERSION@@/msys-cygwin.html#_change_toolchain_on_the_fly">documentation for these</a>.
 </p>
 
 <p>
