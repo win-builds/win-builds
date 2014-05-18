@@ -5,9 +5,20 @@ body {
   font-family: DejaVu Sans, Helvetica, Arial;
 }
 
+.content {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 1em;
+}
+
 @media screen and (max-width: 70em), screen and (orientation: portrait) {
   body {
     width: 98%;
+  }
+  .content {
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+    padding-bottom: 0.2em;
   }
 }
 
@@ -15,16 +26,15 @@ body {
   body {
     width: 70em;
   }
+  .content {
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 1em;
+  }
 }
 
 h1, h2, h3 {
   font-weight: normal;
-}
-
-.content {
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-bottom: 1em;
 }
 
 .navbar {
@@ -35,34 +45,47 @@ h1, h2, h3 {
 
 .navlist {
   display: table;
+  text-align: center;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 0em;
   margin-bottom: 0em;
-}
-
-.navlist {
-  margin-bottom: 0.4em;
-  margin-top: 0.4em;
+  margin-top: 0em;
   font-size: x-large;
 }
 
-.navlist span {
-  word-spacing: 1em;
+.navlist div div {
+  padding-bottom: 0.4em;
+  padding-top: 0.4em;
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+  display: inline-block;
 }
 
-.navlist span a {
-  word-spacing: normal;
+.navlist div div a {
+  margin-bottom: 0.4em;
+  margin-top: 0.4em;
 }
 
 .hl {
-  margin-top: 1.5em;
+  margin-top: 0.75em;
   margin-left: 1%;
   margin-right: 0em;
   width: 31%;
   display: inline-table;
   vertical-align: top; /* required for Chrome <= 22 (and matching WebKits) */
   border-top: 1px black solid;
+}
+
+@media screen and (max-width: 50em), screen and (orientation: portrait) {
+  .hl {
+    width: 48%;
+  }
+}
+
+@media screen and (min-width: 50em) {
+  .hl {
+    width: 31%;
+  }
 }
 
 .hl-title {
@@ -87,4 +110,8 @@ h1, h2, h3 {
 
 video {
   margin-bottom: 1em;
+}
+
+ul {
+  margin-top: 0em;
 }
