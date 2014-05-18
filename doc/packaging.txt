@@ -147,4 +147,14 @@ include::../commit-to-branch.sh[]
 
 [[New]]
 == Create A New Package ==
+If it does not, `cd` in the
+link:http://cgit.notk.org/adrien/yypkg/mingw.git/[mingw] git repository and
+copy the `pixman` directory.
+
+You then need to adjust the names in the files you've copied:
+
+------------------------------------------------------------------------
+sed -i 's/pixman/ABCD/g' ABCD/ABCD.SlackBuild
+------------------------------------------------------------------------
+
 TBD
