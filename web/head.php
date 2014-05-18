@@ -7,6 +7,6 @@
 <?php include 'style.css'; ?>
 <?php
 global $page;
-printf('.navlist span #%s { background-color: rgba(0, 0, 0, 0.2); }', $page);
+printf('.navlist div #%s { background-color: rgba(0, 0, 0, 0.2); }', $page);
 ?>
 </style>
