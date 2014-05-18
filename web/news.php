@@ -7,6 +7,16 @@
 <body>
 <?php include 'header.html'; ?>
 
+<h3><a href="1.4-beta1">1.4-beta1 - 10/05/2014</a></h3>
+  Merged all the package manager executables together.<br>
+  The package manager is now its own installer.<br>
+  Much simpler install process on Windows.<br>
+  Updated packages, numerous small fixes.<br>
+  Easier package updates.<br>
+  Removal of the chroot for Linux usage.<br>
+  Cleaner and faster build process on Linux.<br>
+  Updated documentation.<br>
+
 <h3><a href="1.3.0">1.3.0 - 11/01/2014</a></h3>
   All executables in bin/ have the .exe extension now (applies to gcc.exe, openssl.exe, xmlwf.exe from expat).<br>
   Many small fixes to the installer scripts for windows platforms.<br>
