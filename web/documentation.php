@@ -17,8 +17,7 @@
   <li>On dedicated pages:
     <ul>
       <li><a href="@@VERSION@@/msys-cygwin.html">MSYS and Cygwin</a></li>
-      <li><a href="@@VERSION@@/linux.html">Linux</a></li>
-      <li><a href="@@VERSION@@/diy.html">Build yourself</a></li>
+      <li><a href="@@VERSION@@/linux.html">Linux and Build yourself</a></li>
       <li><a href="@@VERSION@@/packaging.html">Packaging</a></li>
     </ul>
   </li>
@@ -88,7 +87,7 @@ the toolchain itself.
 
   In order to restrict the packages to consider for update, use the --packages argument: <pre>yypkg --web --packages &lt;package1&gt; &lt;package2&gt;</pre>
 
-<h1 id="package_lists">Package lists</h1>
+<h1 id="known_issues">Known issues</h1>
 <p>
   <ul>
     <li>Graphical installer is being reworked and is not available yet.</li>
