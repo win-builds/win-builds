@@ -9,4 +9,3 @@ web-upload:
 	done
 	cp *.css temp
 	rsync -avzLP 'temp/' "$(WEB)/"
-	rm -r 'temp'

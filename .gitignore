@@ -10,6 +10,8 @@ doc/*.html
 doc/style.css
 doc/version.config
 
+web/temp
+
 win-builds-bundle
 win-builds-bundle-*.zip
 
