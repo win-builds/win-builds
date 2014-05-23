@@ -49,7 +49,7 @@ the toolchain itself.
 
   <ul>
     <li>
-      <pre style="display: inline">PATH</pre>:
+      <pre style="display: inline">PATH</pre> (not on Cygwin):
       prepend <pre style="display: inline">&lt;install-dir&gt;\bin</pre>.
     </li>
     <li>
