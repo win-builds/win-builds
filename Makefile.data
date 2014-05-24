@@ -1,2 +1,2 @@
-VERSION:=1.4-beta3
+VERSION:=1.4.0
 WEB:=notk.org:/var/www/win-builds.org
