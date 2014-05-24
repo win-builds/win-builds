@@ -63,7 +63,7 @@ slackware64-current/l libao
 # slackware64-current/l libidn
 slackware64-current/l libmad
 # slackware64-current/l libcddb
-slackware64-current/l qt
+# slackware64-current/l qt
 # slackware64-current/a "file"
 # slackbuilds.org/ffmpeg
 # slackware64-current/l "sdl" "base"
