@@ -36,7 +36,7 @@ lftp -c 'connect http://slackbuilds.org/slackbuilds/14.1/audio; mirror speex'
 * Replace all occurrences of 'usr' with '$\{PREFIX\}' (verbatim, don't
   expand the variable)
 
-* Locate the block of code that sets SLKCFLAGS and LIBDIRSUFFIX; it starts
+* Delete the block of code that sets SLKCFLAGS and LIBDIRSUFFIX; it starts
 like:
 +
 ------------------------------------------------------------------------
@@ -44,15 +44,6 @@ if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "i686" ]; then
-------------------------------------------------------------------------
-+
-Replace it with:
-+
-------------------------------------------------------------------------
-case "${HOST_TRIPLET}" in
-  i686-w64-mingw32) LIBDIRSUFFIX="" ;;
-  x86_64-w64-mingw32) LIBDIRSUFFIX="64" ;;
-esac
 ------------------------------------------------------------------------
 
 * Replace occurrences of '$SLKCFLAGS' with '-O2'
