@@ -10,7 +10,7 @@
 <h1>Windows</h1>
 
 Installation on Windows can be done for MSYS, Cygwin or without them.
-Download the <a href="@@VERSION@@/yypkg-@@VERSION@@.exe">package manager</a> (570KB) and:
+Download the <a href="@@VERSION@@/yypkg-@@VERSION@@.exe">package manager</a> (2.3MB) and:
 <ul>
   <li>for use without MSYS or Cygwin: double-click on it</li>
   <li>for MSYS: run it from the command-line as: <pre style="display: inline">yypkg-@@VERSION@@.exe --deploy --host msys</pre> and read <a href="@@VERSION@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>.</li>
