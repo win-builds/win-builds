@@ -324,10 +324,9 @@ deploy() {
   export YYPREFIX=/opt/windows_${BITS}
 
   yypkg --init
-  yypkg --config --predicates host=""
-  yypkg --config --predicates target="i686-w64-mingw32"
+  yypkg --config --predicates --set host="${ARCH}"
   yypkg --config --set-mirror "http://win-builds.org/@@VERSION@@/packages/windows_${BITS}"
-  yypkg --web-install --packages all
+  yypkg --web
 }
 
 (deploy 32 i686)
