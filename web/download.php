@@ -28,6 +28,10 @@ More information can be found in the <a href="documentation.html">documentation<
 announces mailing-list</a>.
 </p>
 
+<p>
+NOTE: the 64 bits toolchain requires a 64 bits host.
+</p>
+
 <h1>Linux</h1>
 <p>
 Installation on Linux builds GCC locally in order to have binaries which match the current Linux distribution. The whole process is automated.
