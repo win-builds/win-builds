@@ -34,7 +34,7 @@ Around 90% of this space is made up of temporary files in 'tmp' directories.
 pacman -S ocaml ocaml-findlib
 ------------------------------------------------------------------------
 
-=== Debian ===
+=== Debian, Ubuntu and derivatives ===
 
 ------------------------------------------------------------------------
 apt-get install ocaml-base-nox ocaml-findlib libarchive-dev bsdtar
