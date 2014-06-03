@@ -14,7 +14,7 @@ Download the <a href="@@VERSION@@/yypkg-@@VERSION@@.exe">package manager</a> (2.
 <ul>
   <li>for use without MSYS or Cygwin: double-click on it</li>
   <li>for MSYS: run it from the command-line as: <pre style="display: inline">yypkg-@@VERSION@@.exe --deploy --host msys</pre> and read <a href="@@VERSION@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>.</li>
-  <li>for Cygwin: run it from the command-line as: <pre style="display: inline">yypkg-@@VERSION@@.exe --deploy --host cygwin</pre> and read <a href="@@VERSION@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>.</li>
+  <li>for Cygwin: run it from the command-line as: <pre style="display: inline">yypkg-@@VERSION@@.exe --deploy --host cygwin</pre> and read <a href="@@VERSION@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>. It will use the toolchain provided through Cygwin.</li>
 </ul>
 
 <p>
