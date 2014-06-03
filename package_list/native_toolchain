@@ -1,4 +1,4 @@
 # slackbuilds.org ocaml
-slackbuilds.org lua
-slackbuilds.org efl
-slackbuilds.org elementary
+slackbuilds.org/development lua
+slackbuilds.org/libraries efl
+slackbuilds.org/libraries elementary

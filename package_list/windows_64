@@ -12,7 +12,7 @@ slackware64-current/l freetype
 slackware64-current/x fontconfig
 slackware64-current/l giflib
 slackware64-current/l libtiff
-slackbuilds.org lua
+slackbuilds.org/development lua
 slackware64-current/n ca-certificates
 slackware64-current/n openssl
 slackware64-current/l gmp
@@ -20,7 +20,7 @@ slackware64-current/n nettle
 slackware64-current/l libtasn1
 slackware64-current/n gnutls
 slackware64-current/n curl
-slackbuilds.org c-ares
+slackbuilds.org/libraries c-ares
 mingw pixman
 slackware64-current/l libffi
 slackware64-current/l glib2
@@ -44,15 +44,15 @@ slackware64-current/l fribidi
 slackware64-current/l libsndfile
 slackware64-current/a dbus
 slackware64-current/l harfbuzz
-slackbuilds.org efl
-slackbuilds.org elementary
+slackbuilds.org/libraries efl
+slackbuilds.org/libraries elementary
 slackware64-current/d pkg-config
 slackware64-current/l libarchive:regular
 slackware64-current/n wget
 mingw mingw-w64:full
 slackware64-current/d binutils
 slackware64-current/d gcc:full
-slackbuilds.org x264
+slackbuilds.org/multimedia x264
 slackware64-current/l pcre
 slackware64-current/ap flac
 # slackware64-current/ap cdparanoia
@@ -67,15 +67,15 @@ slackware64-current/ap madplay
 # slackware64-current/l libcddb
 # slackware64-current/l qt
 # slackware64-current/a "file"
-# slackbuilds.org/ffmpeg
+# slackbuilds.org/multimedia ffmpeg
 # slackware64-current/l "sdl" "base"
 # slackware64-current/l "sdl" "image"
 # slackware64-current/l "sdl" "mixer"
 # slackware64-current/l "sdl" "net"
 # slackware64-current/l "sdl" "ttf"
 # slackware64-current/l "dbus-glib"
-# slackbuilds.org/webkit-gtk
+# slackbuilds.org/libraries webkitgtk
 # slack/xap/gucharmap (* requires GTK+-3 *)
 # slack/xap/geeqie (* includes <pwd.h> *)
-# slackbuilds.org/luajit
+# slackbuilds.org/development luajit
 mingw zz_config
