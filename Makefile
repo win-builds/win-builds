@@ -18,6 +18,7 @@ release-upload:
 	  --include='/$(VERSION)' \
 	  --include='/$(VERSION)/logs' \
 	  --include='/$(VERSION)/packages' \
+	  --exclude='memo_pkg' \
 	  --exclude='/$(VERSION)/*' \
 	  $(VERSION) $(WEB)/
 
