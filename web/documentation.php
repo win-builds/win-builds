@@ -24,7 +24,7 @@
 </ul>
 
 <h1 id="package_lists">Package lists</h1>
-All series combined, there are around 65 packages. They are enough to buld 
+All series combined, there are around 65 packages. They are enough to build 
 GTK+ and EFL applications and also provide several networking components plus 
 the toolchain itself.
 <ul>
