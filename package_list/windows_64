@@ -64,6 +64,16 @@ slackware64-current/l libao
 slackware64-current/l libmad
 slackware64-current/l libid3tag
 slackware64-current/ap madplay
+slackware64-current/l lcms
+slackware64-current/l lcms2
+slackware64-current/l djvulibre
+slackware64-current/x dejavu-fonts-ttf
+slackbuilds.org/audio speex
+slackbuilds.org/audio opus
+slackbuilds.org/audio a52dec
+slackbuilds.org/libraries libmpeg2
+slackbuilds.org/libraries libsigc++
+slackbuilds.org/libraries jansson
 # slackware64-current/l libcddb
 # slackware64-current/l qt
 # slackware64-current/a "file"
