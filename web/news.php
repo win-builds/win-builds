@@ -7,6 +7,19 @@
 <body>
 <?php include 'header.html'; ?>
 
+<h3><a href="1.4.0">1.4.0 - 25/05/2014</a></h3>
+  Documentation updates.<br>
+  Pango's cache is properly created at install.<br>
+  Post-inst actions failed if installation was not started from command-line.<br>
+  Fontconfig's font.conf had a hardcoded path.<br>
+  Yypkg retries downloads which have failed.<br>
+  Yypkg is fully compatible with OCaml 3.12.1.<br>
+  Checked build with Ubuntu 12.04.<br>
+  Yypkg always tries to guess its installation prefix now.<br>
+  Much improved download progress information.<br>
+  Add madplay and libid3tag (mostly to test libmad).<br>
+  Improved website.<br>
+
 <h3><a href="1.4-beta1">1.4-beta1 - 10/05/2014</a></h3>
   Merged all the package manager executables together.<br>
   The package manager is now its own installer.<br>
