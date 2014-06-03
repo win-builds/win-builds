@@ -32,6 +32,13 @@ announces mailing-list</a>.
 NOTE: the 64 bits toolchain requires a 64 bits host.
 </p>
 
+<p>
+NOTE: installing on Windows XP works but you should really considering
+switching to something more up-to-date and still supported; some gtk-related
+programs that run at the end of the installation might fail but this will not
+make installation fail.
+</p>
+
 <h1>Linux</h1>
 <p>
 Installation on Linux builds GCC locally in order to have binaries which match the current Linux distribution. The whole process is automated.
