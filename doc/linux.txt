@@ -75,8 +75,8 @@ any directory.
 ==== Set environment variables ====
 
 ------------------------------------------------------------------------
-YYPKG_SOURCE="$(pwd)/yypkg)"
-export OCAMLFIND_DESTDIR=${YYPKG_SOURCE}/deps"
+YYPKG_SOURCE="$(pwd)/yypkg"
+export OCAMLFIND_DESTDIR="${YYPKG_SOURCE}/deps"
 export OCAMLPATH="${OCAMLFIND_DESTDIR}"
 mkdir -p "${OCAMLFIND_DESTDIR}/stublibs"
 ------------------------------------------------------------------------
