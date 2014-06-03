@@ -28,6 +28,12 @@ Around 90% of this space is made up of temporary files in 'tmp' directories.
 
 == Dependencies ==
 
+The per-distributions package lists below are here to help you get all the
+dependencies easily. The Debian/Ubuntu list is exhaustive and is the
+reference. For other distributions, if you are able to complete the lists with
+the right package name, please send it either on the
+link:/support.html[users mailing list] or on the link:/bugs[bug tracker].
+
 === Arch Linux ===
 
 ------------------------------------------------------------------------
