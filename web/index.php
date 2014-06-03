@@ -33,7 +33,7 @@
   <div class="hl">
     <h2 class="hl-title">Large, coherent set of packages</h2>
     <ul class="hl-list">
-      <li>Curl, EFL, freetype, GTK+, lua, openssl, sqlite, wget, zlib</li>
+      <li>Curl, EFL, freetype, GTK+, lua, openssl, sqlite, wget, zlib, ...</li>
       <li><a href="@@VERSION@@/packages/windows_32/package_list.html">More than 60 libraries and tools on Windows</a></li>
     </ul>
   </div>
