@@ -45,7 +45,7 @@ module B = struct
         "sh"; "-cex";
         String.concat "; " [
           sp "cd %S" dir;
-          sp "export DESCR=\"$(sed -n 's;^[-[:alnum:]]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
+          sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
           sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
           sp "if [ -e config%s ]; then . ./config%s; fi" variant_suffix variant_suffix;
           sp "exec bash -x %s.SlackBuild" p.package
