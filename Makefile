@@ -9,8 +9,8 @@ build:
 doc doc-upload:
 	$(MAKE) -C doc $@
 
-web-upload:
-	$(MAKE) -C web $@
+web-version-agnostic-upload web-version-specific-upload:
+	$(MAKE) -C web $(patsubst web-%,%,$@)
 
 release-upload:
 	cd .. && \

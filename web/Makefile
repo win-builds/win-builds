@@ -1,11 +1,19 @@
 include ../Makefile.data
 
-web-upload:
-	mkdir -p 'temp'
-	for f in $$(git ls-files '*.php'); do \
-	  php "$${f}" \
-	  | sed 's/@@VERSION@@/$(VERSION)/g' \
-	  > "temp/$${f%%.php}.html"; \
-	done
-	cp *.css temp
-	rsync -avzLP 'temp/' "$(WEB)/"
+version-agnostic-upload-files = index support
+version-specific-upload-files = documentation download news
+
+temp:
+	rm -r temp
+	mkdir -p temp
+
+temp/%.html: temp footer.html header.html head.php %.php
+	php "$*.php" | sed 's/@@VERSION@@/$(VERSION)/g' > "$@"
+
+.SECONDEXPANSION:
+
+version-agnostic-upload version-specific-upload: $$(patsubst %,temp/%.html,$$($$(@)-files))
+	cp *.css "temp"
+	rsync -avzLP "temp/" "$(WEB)/"
+
+.PHONY: version-agnostic-upload version-specific-upload temp
