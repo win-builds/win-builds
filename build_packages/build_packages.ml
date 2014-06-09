@@ -2,6 +2,12 @@ open Types
 open Config
 open Lib
 
+module Windows_32 = Windows_32
+module Windows_64 = Windows_64
+module Cross_toolchain_32 = Cross_toolchain_32
+module Cross_toolchain_64 = Cross_toolchain_64
+module Native_toolchain = Native_toolchain
+
 module B = struct
   module S = Set.Make (struct
     type t = string * int
@@ -35,10 +41,10 @@ module B = struct
       || Sys.readdir builder.Builder.prefix.Prefix.yyprefix = [| |] then
       run [| "yypkg"; "--init"; "--prefix"; builder.Builder.prefix.Prefix.yyprefix |]);
     fun p ->
-      progress "[%s] Building %s.\n%!" builder.Builder.prefix.Prefix.nickname p.name;
+      progress "[%s] Building %s.\n%!" builder.Builder.prefix.Prefix.nickname (name p);
       let dir = Filename.concat p.dir p.package in
       let variant_suffix = match p.variant with None -> "" | Some s -> "-" ^ s in
-      let log = Unix.openfile (Filename.concat builder.Builder.logs p.name) [ Unix.O_RDWR; Unix.O_CREAT; Unix.O_TRUNC ] 0o644 in
+      let log = Unix.openfile (Filename.concat builder.Builder.logs (name p)) [ Unix.O_RDWR; Unix.O_CREAT; Unix.O_TRUNC ] 0o644 in
       let run a = run ~stdout:log ~stderr:log ~env a in
       let pre = list_yyoutput () in
       run [|
@@ -57,51 +63,15 @@ module B = struct
       Unix.close log
 end
 
-let parse_package_list builder =
-  let name = builder.Builder.prefix.Prefix.nickname in
-  let package_list = filename_concat [Args.source_path; "package_list"; name] in
-  let ic = open_in_bin package_list in
-  let rec aux accu =
-    try
-      let s = input_line ic in
-      if String.length s < 1 || s.[0] = '#' then
-        aux accu
-      else
-        let open Str in
-        let re = regexp "^\\([^ ]+\\) \\([^ ]+\\)$" in
-        if string_match re s 0 then
-          let dir = matched_group 1 s in
-          let s2 = matched_group 2 s in
-          let re = regexp "^\\([^ ]+\\):\\([^ ]+\\)$" in
-          if string_match re s2 0 then
-            let p = matched_group 1 s2 in
-            let v = matched_group 2 s2 in
-            let name = String.concat "-" [ p; v ] in
-            aux ({ dir; package = p; variant = Some v; name } :: accu)
-          else
-            aux ({ dir; package = s2; variant = None; name = s2 } :: accu)
-        else (
-          failwith (sp "Couldn't parse package list entry %S.\n" s);
-        )
-    with End_of_file -> List.rev accu
-  in
-  let l = aux [] in
-  close_in ic;
-  l
-
 let build builder =
-  if List.mem builder.Builder.prefix.Prefix.kind Args.kinds then (
-    let packages =
-      let available = parse_package_list builder in
-      if Args.wishes = [] then
-        available
-      else
-        List.filter (fun p -> List.mem p.name Args.wishes) available
-    in
+  let list_name = builder.Builder.prefix.Prefix.nickname in
+  let packages = list_of_queue (List.assoc list_name !Package_list.lists) in
+  let packages = List.filter (fun p -> p.build) packages in
+  if packages <> [] then (
     progress "[%s] " builder.Builder.prefix.Prefix.nickname;
     (if packages <> [] then
       progress "Building: %s.\n%!"
-        (String.concat ", " (List.map (fun p -> p.name) packages))
+        (String.concat ", " (List.map name packages))
     else
       progress "Nothing to build\n%!");
     (* TODO: propagate failures *)
@@ -125,15 +95,6 @@ let () =
   let cross_64 = Builder.cross Arch.windows_64 in
   let windows_32 = Builder.windows ~cross:cross_32 Arch.windows_32 in
   let windows_64 = Builder.windows ~cross:cross_64 Arch.windows_64 in
-  let check triplet builder =
-    if List.mem triplet Options.triplets then [ builder ] else []
-  in
   build Builder.native;
-  build_parallel (List.concat [
-    check "i686-w64-mingw32"  cross_32;
-    check "x86_64-w64-mingw32"  cross_64;
-  ]);
-  build_parallel (List.concat [
-    check "i686-w64-mingw32"  windows_32;
-    check "x86_64-w64-mingw32"  windows_64;
-  ])
+  build_parallel [ cross_32; cross_64 ];
+  build_parallel [ windows_32; windows_64 ]

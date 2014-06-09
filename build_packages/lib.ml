@@ -1,3 +1,5 @@
+open Types
+
 let cri = 0
 let err = 1
 let wrn = 2
@@ -16,7 +18,7 @@ let log_threshold =
 let log level =
   (if log_threshold >= level then Printf.fprintf else Printf.ifprintf) stderr
 
-let progress = Printf.eprintf
+let progress = Printf.printf
 
 let sp = Printf.sprintf
 
@@ -71,3 +73,11 @@ let rev_uniq l =
   match l with
   | t :: q -> rev_uniq_rc [ t ] t q
   | [] -> []
+
+let list_of_queue q =
+  List.rev (Queue.fold (fun l e -> e :: l) [] q)
+
+let name p =
+  match p.variant with
+  | Some variant -> String.concat ":" [ p.package; variant ]
+  | None -> p.package

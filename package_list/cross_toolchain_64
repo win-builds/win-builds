@@ -1,8 +1,0 @@
-slackware64-current/d binutils
-mingw mingw-w64:headers
-slackware64-current/d gcc:core
-mingw mingw-w64:full
-mingw winpthreads
-slackware64-current/d gcc:full
-# mingw widl
-# mingw flexdll

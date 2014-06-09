@@ -1,10 +1,13 @@
 include Makefile.data
 
-all: build
-
 build:
-	@ cd build_packages && ocamlbuild -classic-display build_packages.native
-	@ ln -sf build_packages/build_packages.native build
+	@ cd build_packages && ocamlbuild -classic-display build_packages.byte
+	@ (cd .. && \
+		NATIVE_TOOLCHAIN=$(NATIVE_TOOLCHAIN) \
+		CROSS_TOOLCHAIN=$(CROSS_TOOLCHAIN) \
+		WINDOWS_32=$(WINDOWS),$(WINDOWS_32) \
+		WINDOWS_64=$(WINDOWS),$(WINDOWS_64) \
+			./win-builds/build_packages/build_packages.byte $(VERSION) )
 
 doc doc-upload:
 	$(MAKE) -C doc $@
