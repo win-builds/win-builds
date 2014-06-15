@@ -69,11 +69,7 @@ let build builder =
   let packages = List.filter (fun p -> p.build) packages in
   if packages <> [] then (
     progress "[%s] " builder.Builder.prefix.Prefix.nickname;
-    (if packages <> [] then
-      progress "Building: %s.\n%!"
-        (String.concat ", " (List.map name packages))
-    else
-      progress "Nothing to build\n%!");
+    progress "Building: %s.\n%!" (String.concat ", " (List.map name packages));
     (* TODO: propagate failures *)
     List.iter (B.build_one builder) packages;
     progress "[%s] Setting up repository.\n%!" builder.Builder.prefix.Prefix.nickname;
