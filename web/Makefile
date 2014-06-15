@@ -1,19 +1,19 @@
 include ../Makefile.data
 
-version-agnostic-upload-files = index support
-version-specific-upload-files = documentation download news
+FILES = index support documentation download news
 
 temp:
-	rm -r temp
 	mkdir -p temp
 
-temp/%.html: temp footer.html header.html head.php %.php
-	php "$*.php" | sed 's/@@VERSION@@/$(VERSION)/g' > "$@"
+temp/index.html: package-list.js
+temp/%.html: temp footer.html header.html head.php %.php style.css ../Makefile.data
+	php "$*.php" \
+	  | sed \
+	      -e 's/@@VERSION_STABLE@@/$(VERSION_STABLE)/g' \
+	      -e 's/@@VERSION_DEV@@/$(VERSION_DEV)/g' \
+	  > "$@"
 
-.SECONDEXPANSION:
-
-version-agnostic-upload version-specific-upload: $$(patsubst %,temp/%.html,$$($$(@)-files))
-	cp *.css "temp"
+upload: $(patsubst %,temp/%.html,$(FILES))
 	rsync -avzLP "temp/" "$(WEB)/"
 
-.PHONY: version-agnostic-upload version-specific-upload temp
+.PHONY: upload

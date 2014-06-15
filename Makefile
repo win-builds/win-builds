@@ -7,7 +7,7 @@ build:
 		CROSS_TOOLCHAIN=$(CROSS_TOOLCHAIN) \
 		WINDOWS_32=$(WINDOWS),$(WINDOWS_32) \
 		WINDOWS_64=$(WINDOWS),$(WINDOWS_64) \
-			./win-builds/build/build.byte $(VERSION) )
+			./win-builds/build/build.byte $(VERSION_DEV) )
 
 doc doc-upload:
 	$(MAKE) -C doc $@
@@ -18,11 +18,11 @@ web-version-agnostic-upload web-version-specific-upload:
 release-upload:
 	cd .. && \
 	  rsync -avzP \
-	  --include='/$(VERSION)' \
-	  --include='/$(VERSION)/logs' \
-	  --include='/$(VERSION)/packages' \
+	  --include='/$(VERSION_STABLE)' \
+	  --include='/$(VERSION_STABLE)/logs' \
+	  --include='/$(VERSION_STABLE)/packages' \
 	  --exclude='memo_pkg' \
-	  --exclude='/$(VERSION)/*' \
-	  $(VERSION) $(WEB)/
+	  --exclude='/$(VERSION_STABLE)/*' \
+	  $(VERSION_STABLE) $(WEB)/
 
 .PHONY: doc web build
