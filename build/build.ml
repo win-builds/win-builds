@@ -86,7 +86,6 @@ let build_parallel builders =
   List.iter Thread.join (List.map (Thread.create build) builders)
 
 let () =
-  Printexc.record_backtrace true;
   (* This is the only acceptable umask when building packets. Any other gives
    * wrong permissions in the packages, like 711 for /usr, and will break
    * systems. *)
