@@ -2,7 +2,7 @@ body {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
-  font-family: DejaVu Sans, Helvetica, Arial;
+  font-family: sans-serif;
 }
 
 .content {
@@ -37,6 +37,11 @@ h1, h2, h3 {
   font-weight: normal;
 }
 
+h1 {
+  font-size: x-large;
+  text-align: center;
+}
+
 .navbar {
   border-color: black;
   border: 1px solid;
@@ -50,7 +55,7 @@ h1, h2, h3 {
   margin-right: auto;
   margin-bottom: 0em;
   margin-top: 0em;
-  font-size: x-large;
+  font-weight: bold;
 }
 
 .navlist div div {
@@ -66,31 +71,69 @@ h1, h2, h3 {
   margin-top: 0.4em;
 }
 
-.hl {
+.flexbox {
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.hl, .package-example {
+  flex: 0 1 32%;
+  -ms-flex: 0 1 32%;
+  -moz-flex: 0 1 32%;
+  -webkit-flex: 0 1 32%;
   margin-top: 0.75em;
   margin-left: 1%;
   margin-right: 0em;
-  width: 31%;
-  display: inline-table;
-  vertical-align: top; /* required for Chrome <= 22 (and matching WebKits) */
+  vertical-align: top; /* required for Chrome <= 22 (and matching WebKits) >*/
   border-top: 1px black solid;
+}
+
+#package-list {
+  padding-top: 2em;
+}
+
+#package-list-header {
+  text-align: center;
+}
+
+#package-list-prev {
+  float: left;
+}
+
+#package-list-next {
+  float: right;
 }
 
 @media screen and (max-width: 50em), screen and (orientation: portrait) {
   .hl {
-    width: 48%;
+    flex: 0 1 49%;
+    -ms-flex: 0 1 49%;
+    -moz-flex: 0 1 49%;
+    -webkit-flex: 0 1 49%;
   }
 }
 
 @media screen and (min-width: 50em) {
   .hl {
-    width: 31%;
+    flex: 0 1 32%;
+    -ms-flex: 0 1 32%;
+    -moz-flex: 0 1 32%;
+    -webkit-flex: 0 1 32%;
   }
 }
 
 .hl-title {
   margin-bottom: 0em;
   margin-top: 0.2em;
+  font-size: large;
 }
 
 .hl-list {
@@ -114,4 +157,24 @@ video {
 
 ul {
   margin-top: 0em;
+}
+
+.arrow {
+  cursor: pointer;
+}
+
+.arrow-left {
+  width: 0;
+  height: 0;
+  border-top: 1em solid transparent;
+  border-bottom: 1em solid transparent;
+  border-right: 1em solid black;
+}
+
+.arrow-right {
+  width: 0;
+  height: 0;
+  border-top: 1em solid transparent;
+  border-bottom: 1em solid transparent;
+  border-left: 1em solid black;
 }

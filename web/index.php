@@ -2,12 +2,15 @@
 <html>
 <head>
 <?php $page = 'index'; include 'head.php'; ?>
+<script>
+<?php include 'package-list.js'; ?>
+</script>
 </head>
 
 <body>
 <?php include 'header.html'; ?>
 
-<h1>Win-builds - (Free) Software Packaging and Building For Windows</h1>
+<h1>Win-builds - (Free) Software Building and Packaging For Windows</h1>
 
 <p>
   Win-builds creates binary packages of libraries and tools for Windows from
@@ -15,7 +18,7 @@
   Linux.
 </p>
 
-<div class="highlights">
+<div class="flexbox">
   <div class="hl">
     <h2 class="hl-title">32/64bits</h2>
     <ul class="hl-list">
@@ -57,6 +60,15 @@
       <li><a href="support.html">Announces and security advisories through mailing-lists</a></li>
     </ul>
   </div>
+</div>
+
+<div id="package-list">
+  <div id="package-list-header">
+    <div class="arrow arrow-left" id="package-list-prev" onclick="set_packages(-3)"></div>
+    <a id="package-list-all" href="@@VERSION_STABLE@@/packages/windows_32/package_list.html"></a>
+    <div class="arrow arrow-right" id="package-list-next" onclick="set_packages(3)"></div>
+  </div>
+  <div id="package-list-list" class="flexbox"></div>
 </div>
 
 <?php include 'footer.html'; ?>
