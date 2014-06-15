@@ -67,16 +67,16 @@ let build builder =
   let list_name = builder.Builder.prefix.Prefix.nickname in
   let packages = list_of_queue (List.assoc list_name !Package_list.lists) in
   let packages = List.filter (fun p -> p.build) packages in
-  if packages <> [] then (
+  (if packages <> [] then (
     progress "[%s] " builder.Builder.prefix.Prefix.nickname;
     progress "Building: %s.\n%!" (String.concat ", " (List.map name packages));
     (* TODO: propagate failures *)
     List.iter (B.build_one builder) packages;
-    progress "[%s] Setting up repository.\n%!" builder.Builder.prefix.Prefix.nickname;
-    run [| "yypkg"; "--repository"; "--generate"; builder.Builder.yyoutput |];
-  )
-  else
-    ()
+  ));
+  progress "[%s] Setting up repository.\n%!" builder.Builder.prefix.Prefix.nickname;
+  try
+    run [| "yypkg"; "--repository"; "--generate"; builder.Builder.yyoutput |]
+  with _ -> Printf.eprintf "ERROR: Couldn't create repository!\n%!"
 
 let build_parallel builders =
   List.iter Thread.join (List.map (Thread.create build) builders)
