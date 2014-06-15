@@ -2,7 +2,7 @@ include Makefile.data
 
 build:
 	@ cd build && ocamlbuild -quiet build.byte
-	@ (cd .. && \
+	(cd .. && \
 		NATIVE_TOOLCHAIN=$(NATIVE_TOOLCHAIN) \
 		CROSS_TOOLCHAIN=$(CROSS_TOOLCHAIN) \
 		WINDOWS_32=$(WINDOWS),$(WINDOWS_32) \
