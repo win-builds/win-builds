@@ -2,17 +2,24 @@ open Types
 
 let lists = ref []
 
-let add ~push ~shall_build (package, variant) ~dir ~dependencies =
+let add
+    ~push ~shall_build
+    (package, variant)
+    ~dir ~dependencies ~version ~build ~sources ~outputs
+  =
   let rec colorize p =
-    if not p.build && shall_build p then (
-      p.build <- true;
+    if not p.to_build && shall_build p then (
+      p.to_build <- true;
       List.iter colorize p.dependencies
     )
   in
-  let p = { package; variant; dir; dependencies; build = false } in
-  colorize p;
-  push p;
-  p
+  let add_aux p = colorize p; push p; p in
+  add_aux {
+    package; variant; dir; dependencies;
+    version; build;
+    sources; outputs;
+    to_build = false;
+  }
 
 let register ~name =
   let shall_build =

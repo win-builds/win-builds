@@ -2,21 +2,18 @@ open Types
 open Config
 open Lib
 
-module Windows_32 = Windows_32
-module Windows_64 = Windows_64
+(* module Windows_32 = Windows_32
+module Windows_64 = Windows_64 *)
 module Cross_toolchain_32 = Cross_toolchain_32
-module Cross_toolchain_64 = Cross_toolchain_64
-module Native_toolchain = Native_toolchain
+(* module Cross_toolchain_64 = Cross_toolchain_64
+module Native_toolchain = Native_toolchain *)
 
 module B = struct
-  module S = Set.Make (struct
-    type t = string * int
-    let compare = compare
-  end)
-
-  let diff ~pre ~post =
-    let a_to_s a = Array.fold_left (fun s e -> S.add e s) S.empty a in
-    List.map fst (S.elements (S.diff (a_to_s post) (a_to_s pre)))
+  let needs_rebuild ~sources ~outputs =
+    let mod_time prev file =
+      max prev (Unix.lstat file).Unix.st_mtime
+    in
+    (List.fold_left mod_time 0. sources) > (List.fold_left mod_time 0. outputs)
 
   let hash_file file =
     let fd = Unix.openfile file [ Unix.O_RDWR ] 0o644 in
@@ -26,47 +23,48 @@ module B = struct
     h
 
   let build_one builder =
-    let list_yyoutput () =
-      let d = builder.Builder.yyoutput in
-      let a = Sys.readdir d in
-      let lapin f =
-        let f = Filename.concat d f in
-        f, hash_file f
-      in
-      Array.map lapin a
-    in
     run [| "mkdir"; "-p"; builder.Builder.yyoutput; builder.Builder.logs |];
     let env = Builder.env builder in
     (if not (Sys.file_exists builder.Builder.prefix.Prefix.yyprefix)
       || Sys.readdir builder.Builder.prefix.Prefix.yyprefix = [| |] then
       run [| "yypkg"; "--init"; "--prefix"; builder.Builder.prefix.Prefix.yyprefix |]);
     fun p ->
-      progress "[%s] Building %s.\n%!" builder.Builder.prefix.Prefix.nickname (name p);
-      let dir = Filename.concat p.dir p.package in
-      let variant_suffix = match p.variant with None -> "" | Some s -> "-" ^ s in
-      let log = Unix.openfile (Filename.concat builder.Builder.logs (name p)) [ Unix.O_RDWR; Unix.O_CREAT; Unix.O_TRUNC ] 0o644 in
-      let run a = run ~stdout:log ~stderr:log ~env a in
-      let pre = list_yyoutput () in
-      run [|
-        "sh"; "-cex";
-        String.concat "; " [
-          sp "cd %S" dir;
-          sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
-          sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
-          sp "if [ -e config%s ]; then . ./config%s; fi" variant_suffix variant_suffix;
-          sp "exec bash -x %s.SlackBuild" p.package
-        ]
-      |];
-      let post = list_yyoutput () in
-      let to_install = diff ~pre ~post in
-      run (Array.of_list ("yypkg" :: "--upgrade" :: "--install-new" :: to_install));
-      Unix.close log
+      let yyoutputize = Filename.concat builder.Builder.yyoutput in
+      let outputs = (List.map yyoutputize p.outputs) in
+      let sources = (List.map yyoutputize p.sources) in
+      if not (needs_rebuild ~sources ~outputs) then
+        ()
+      else
+        progress "[%s] Building %s.\n%!" builder.Builder.prefix.Prefix.nickname (name p);
+        let dir = Filename.concat p.dir p.package in
+        let variant_suffix = match p.variant with None -> "" | Some s -> "-" ^ s in
+        let log =
+          let filename = Filename.concat builder.Builder.logs (name p) in
+          let flags = [ Unix.O_RDWR; Unix.O_CREAT; Unix.O_TRUNC ] in
+          Unix.openfile filename flags 0o644
+        in
+        let run command = run ~stdout:log ~stderr:log ~env command in
+        run [|
+          "sh"; "-cex";
+          String.concat "; " [
+            sp "cd %S" dir;
+            sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
+            sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
+            sp "if [ -e config%s ]; then . ./config%s; fi" variant_suffix variant_suffix;
+            sp "exec bash -x %s.SlackBuild" p.package
+          ]
+        |];
+        run (Array.of_list ("yypkg" :: "--upgrade" :: "--install-new" :: outputs));
+        Unix.close log
 end
 
 let build builder =
-  let list_name = builder.Builder.prefix.Prefix.nickname in
-  let packages = list_of_queue (List.assoc list_name !Package_list.lists) in
-  let packages = List.filter (fun p -> p.build) packages in
+  let packages =
+    List.assoc builder.Builder.prefix.Prefix.nickname !Package_list.lists
+    |> list_of_queue
+    |> List.filter (fun p -> p.to_build)
+    (* |> sort_by_dependencies *)
+  in
   (if packages <> [] then (
     progress "[%s] " builder.Builder.prefix.Prefix.nickname;
     progress "Building: %s.\n%!" (String.concat ", " (List.map name packages));
@@ -74,7 +72,7 @@ let build builder =
     List.iter (B.build_one builder) packages;
   ));
   progress "[%s] Setting up repository.\n%!" builder.Builder.prefix.Prefix.nickname;
-  try
+  try (* XXX: this won't raise an exception I think *)
     run [| "yypkg"; "--repository"; "--generate"; builder.Builder.yyoutput |]
   with _ -> Printf.eprintf "ERROR: Couldn't create repository!\n%!"
 
