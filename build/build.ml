@@ -76,17 +76,17 @@ let build builder =
   in
   if something_to_do then (
     let packages = List.filter (fun p -> p.to_build) builder.packages in
-      (if packages <> [] then (
-        progress "[%s] Building %s\n%!"
-          builder.prefix.Prefix.nickname
-          (String.concat ", " (List.map name packages));
-        (* TODO: propagate failures *)
-        List.iter (B.build_one builder) packages;
-      ));
-      progress "[%s] Setting up repository.\n%!" builder.prefix.Prefix.nickname;
-      try
-        run [| "yypkg"; "--repository"; "--generate"; builder.yyoutput |]
-      with _ -> Printf.eprintf "ERROR: Couldn't create repository!\n%!"
+    (if packages <> [] then (
+      progress "[%s] Building %s\n%!"
+        builder.prefix.Prefix.nickname
+        (String.concat ", " (List.map name packages));
+      (* TODO: propagate failures *)
+      List.iter (B.build_one builder) packages;
+    ));
+    progress "[%s] Setting up repository.\n%!" builder.prefix.Prefix.nickname;
+    try
+      run [| "yypkg"; "--repository"; "--generate"; builder.yyoutput |]
+    with _ -> Printf.eprintf "ERROR: Couldn't create repository!\n%!"
   )
   else
     ()
