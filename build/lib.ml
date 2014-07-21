@@ -1,5 +1,3 @@
-open Types
-
 let cri = 0
 let err = 1
 let wrn = 2
@@ -73,11 +71,3 @@ let rev_uniq l =
   match l with
   | t :: q -> rev_uniq_rc [ t ] t q
   | [] -> []
-
-let list_of_queue q =
-  List.rev (Queue.fold (fun l e -> e :: l) [] q)
-
-let name p =
-  match p.variant with
-  | Some variant -> String.concat ":" [ p.package; variant ]
-  | None -> p.package

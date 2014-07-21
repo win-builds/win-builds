@@ -1,19 +1,23 @@
-open Types
 open Config
+open Config.Builder
 open Lib
 
-(* module Windows_32 = Windows_32
-module Windows_64 = Windows_64 *)
-module Cross_toolchain_32 = Cross_toolchain_32
-(* module Cross_toolchain_64 = Cross_toolchain_64
-module Native_toolchain = Native_toolchain *)
+let name p =
+  match p.variant with
+  | Some variant -> String.concat ":" [ p.package; variant ]
+  | None -> p.package
 
 module B = struct
-  let needs_rebuild ~sources ~outputs =
-    let mod_time prev file =
-      max prev (Unix.lstat file).Unix.st_mtime
+  let needs_rebuild ~sources ~output =
+    let mod_time_err prev file =
+      Unix.handle_unix_error (fun () ->
+        max prev (Unix.lstat file).Unix.st_mtime
+      ) ()
     in
-    (List.fold_left mod_time 0. sources) > (List.fold_left mod_time 0. outputs)
+    let mod_time_opt file =
+      try (Unix.lstat file).Unix.st_mtime with _ -> 0.
+    in
+    (List.fold_left mod_time_err 0. sources) > (mod_time_opt output)
 
   let hash_file file =
     let fd = Unix.openfile file [ Unix.O_RDWR ] 0o644 in
@@ -23,23 +27,23 @@ module B = struct
     h
 
   let build_one builder =
-    run [| "mkdir"; "-p"; builder.Builder.yyoutput; builder.Builder.logs |];
-    let env = Builder.env builder in
-    (if not (Sys.file_exists builder.Builder.prefix.Prefix.yyprefix)
-      || Sys.readdir builder.Builder.prefix.Prefix.yyprefix = [| |] then
-      run [| "yypkg"; "--init"; "--prefix"; builder.Builder.prefix.Prefix.yyprefix |]);
+    run [| "mkdir"; "-p"; builder.yyoutput; builder.logs |];
+    let env = env builder in
+    (if not (Sys.file_exists builder.prefix.Prefix.yyprefix)
+      || Sys.readdir builder.prefix.Prefix.yyprefix = [| |] then
+      run [| "yypkg"; "--init"; "--prefix"; builder.prefix.Prefix.yyprefix |]);
     fun p ->
-      let yyoutputize = Filename.concat builder.Builder.yyoutput in
-      let outputs = (List.map yyoutputize p.outputs) in
-      let sources = (List.map yyoutputize p.sources) in
-      if not (needs_rebuild ~sources ~outputs) then
+      let output = Filename.concat builder.yyoutput p.output in
+      let sources_dir_ize = Filename.concat (Filename.concat p.dir p.package) in
+      let sources = (List.map sources_dir_ize p.sources) in
+      if p.dir = "" || not (needs_rebuild ~sources ~output) then
         ()
-      else
-        progress "[%s] Building %s.\n%!" builder.Builder.prefix.Prefix.nickname (name p);
+      else (
+        progress "[%s] Building %s\n%!" builder.prefix.Prefix.nickname (name p);
         let dir = Filename.concat p.dir p.package in
-        let variant_suffix = match p.variant with None -> "" | Some s -> "-" ^ s in
+        let variant = match p.variant with None -> "" | Some s -> "-" ^ s in
         let log =
-          let filename = Filename.concat builder.Builder.logs (name p) in
+          let filename = Filename.concat builder.logs (name p) in
           let flags = [ Unix.O_RDWR; Unix.O_CREAT; Unix.O_TRUNC ] in
           Unix.openfile filename flags 0o644
         in
@@ -50,44 +54,50 @@ module B = struct
             sp "cd %S" dir;
             sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
             sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
-            sp "if [ -e config%s ]; then . ./config%s; fi" variant_suffix variant_suffix;
+            sp "if [ -e config%s ]; then . ./config%s; fi" variant variant;
             sp "exec bash -x %s.SlackBuild" p.package
           ]
         |];
-        run (Array.of_list ("yypkg" :: "--upgrade" :: "--install-new" :: outputs));
+        run [| "yypkg"; "--upgrade"; "--install-new"; output |];
         Unix.close log
+      )
 end
 
 let build builder =
-  let packages =
-    List.assoc builder.Builder.prefix.Prefix.nickname !Package_list.lists
-    |> list_of_queue
-    |> List.filter (fun p -> p.to_build)
-    (* |> sort_by_dependencies *)
+  let something_to_do =
+    try
+      let l = Sys.getenv (String.uppercase builder.name) in
+      ignore (Str.search_forward (Str.regexp "[^,]") l 0);
+      true
+    with _ ->
+      false
   in
-  (if packages <> [] then (
-    progress "[%s] " builder.Builder.prefix.Prefix.nickname;
-    progress "Building: %s.\n%!" (String.concat ", " (List.map name packages));
-    (* TODO: propagate failures *)
-    List.iter (B.build_one builder) packages;
-  ));
-  progress "[%s] Setting up repository.\n%!" builder.Builder.prefix.Prefix.nickname;
-  try (* XXX: this won't raise an exception I think *)
-    run [| "yypkg"; "--repository"; "--generate"; builder.Builder.yyoutput |]
-  with _ -> Printf.eprintf "ERROR: Couldn't create repository!\n%!"
+  if something_to_do then (
+    let packages = List.filter (fun p -> p.to_build) builder.packages in
+      (if packages <> [] then (
+        progress "[%s] Building %s\n%!"
+          builder.prefix.Prefix.nickname
+          (String.concat ", " (List.map name packages));
+        (* TODO: propagate failures *)
+        List.iter (B.build_one builder) packages;
+      ));
+      progress "[%s] Setting up repository.\n%!" builder.prefix.Prefix.nickname;
+      try
+        run [| "yypkg"; "--repository"; "--generate"; builder.yyoutput |]
+      with _ -> Printf.eprintf "ERROR: Couldn't create repository!\n%!"
+  )
+  else
+    ()
 
 let build_parallel builders =
   List.iter Thread.join (List.map (Thread.create build) builders)
 
+(* This is the only acceptable umask when building packets. Any other gives
+ * wrong permissions in the packages, like 711 for /usr, and will break
+ * systems. *)
+let () = ignore (Unix.umask 0o022)
+
 let () =
-  (* This is the only acceptable umask when building packets. Any other gives
-   * wrong permissions in the packages, like 711 for /usr, and will break
-   * systems. *)
-  ignore (Unix.umask 0o022);
-  let cross_32 = Builder.cross Arch.windows_32 in
-  let cross_64 = Builder.cross Arch.windows_64 in
-  let windows_32 = Builder.windows ~cross:cross_32 Arch.windows_32 in
-  let windows_64 = Builder.windows ~cross:cross_64 Arch.windows_64 in
-  build Builder.native;
-  build_parallel [ cross_32; cross_64 ];
-  build_parallel [ windows_32; windows_64 ]
+  build Native_toolchain.builder;
+  build_parallel [ Cross_toolchain.builder_32; Cross_toolchain.builder_64 ];
+  build_parallel [ Windows.builder_32; Windows.builder_64 ];

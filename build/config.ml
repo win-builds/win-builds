@@ -95,7 +95,20 @@ module Prefix = struct
 end
 
 module Builder = struct
+  type package = {
+    dir : string;
+    package : string;
+    variant : string option;
+    dependencies : package list;
+    version : string;
+    build : int;
+    sources : string list;
+    output : string;
+    mutable to_build : bool;
+  }
+
   type t = {
+    name : string;
     prefix : Prefix.t;
     path : Env.t;
     pkg_config_path : Env.t;
@@ -105,6 +118,7 @@ module Builder = struct
     tmp : Env.t;
     mutable native_prefix : string option;
     mutable target_prefix : string option;
+    mutable packages : package list;
   }
 
   let env t =
@@ -137,7 +151,7 @@ module Builder = struct
         (match t.target_prefix with Some p -> Env.Set [ p ] | None -> Env.Keep);
     ])
 
-  let logs_yyoutput ~nickname ~host ~target =
+  let logs_yyoutput ~nickname =
     let rel_path l = Lib.filename_concat (Args.work_dir :: l) in
     rel_path [ "logs"; nickname ],
     rel_path [ "packages"; nickname ]
@@ -145,58 +159,69 @@ module Builder = struct
   let bindir prefix =
     Filename.concat prefix.Prefix.yyprefix "bin"
 
-  let native =
-    let build = Arch.slackware in
-    let host = Arch.slackware in
-    let target = Arch.slackware in
-    let prefix = Prefix.t ~build ~host ~target in
-    let logs, yyoutput = logs_yyoutput
-      ~nickname:prefix.Prefix.nickname ~host ~target in
-    let open Arch in
-    let open Prefix in
-    {
-      prefix; logs; yyoutput;
-      path = Env.Prepend [ bindir prefix ];
-      pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
-      pkg_config_libdir = Env.Keep;
-      tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
-      target_prefix = None; native_prefix = None;
+  let substitute_variables ~dict s =
+    let b = Buffer.create (String.length s) in
+    Buffer.add_substitute b (fun k -> List.assoc k dict) s;
+    Buffer.contents b
+
+  let shall_build builder_name =
+    let l = try Sys.getenv (String.uppercase builder_name) with Not_found -> "all" in
+    let h = Hashtbl.create 200 in
+    ListLabels.iter (Str.split (Str.regexp ",") l) ~f:(fun e ->
+      match Str.split (Str.regexp ":") e with
+      | [ n; v ] -> Hashtbl.add h (n, Some v) true
+      | [ n ] -> Hashtbl.add h (n, None) true
+      | _ -> assert false
+    );
+    fun p -> Hashtbl.mem h (p.package, p.variant)
+
+  let add
+      ~push ~builder
+      (package, variant)
+      ~dir ~dependencies ~version ~build ~sources
+    =
+    let shall_build = shall_build builder.name in
+    let rec colorize p =
+      if not p.to_build && shall_build p then (
+        p.to_build <- true;
+        List.iter colorize p.dependencies
+      )
+    in
+    let dict = [
+      "PACKAGE", package;
+      "VARIANT", (match variant with Some v -> v | None -> "");
+      "VERSION", version;
+      "BUILD", string_of_int build;
+      "TARGET_TRIPLET", builder.prefix.Prefix.target.Arch.triplet;
+      "HOST_TRIPLET", builder.prefix.Prefix.host.Arch.triplet;
+      "BUILD_TRIPLET", builder.prefix.Prefix.build.Arch.triplet;
+    ] in
+    let add_aux p = colorize p; push p; p in
+    let output = 
+      if builder.prefix.Prefix.target <> builder.prefix.Prefix.host then
+        "${PACKAGE}-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz"
+      else
+        "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz"
+    in
+    let sources =
+      "${PACKAGE}.SlackBuild"
+      :: "${PACKAGE}.yypkg.script"
+      :: "slack-desc"
+      :: sources
+    in
+    let sources =
+      match variant with
+      | Some variant -> ("config-" ^ variant) :: sources
+      | None -> sources
+    in
+    add_aux {
+      package; variant; dir; dependencies;
+      version; build;
+      sources = List.map (substitute_variables ~dict) sources;
+      output = substitute_variables ~dict output;
+      to_build = false;
     }
 
-  let cross arch =
-    let build = Arch.slackware in
-    let host = Arch.slackware in
-    let target = arch in
-    let prefix = Prefix.t ~build ~host ~target in
-    let logs, yyoutput = logs_yyoutput
-      ~nickname:prefix.Prefix.nickname ~host ~target in
-    let open Arch in
-    let open Prefix in
-    {
-      prefix; logs; yyoutput;
-      path = Env.Prepend [ bindir prefix; bindir native.prefix ];
-      pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
-      pkg_config_libdir = Env.Keep;
-      tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
-      target_prefix = None; native_prefix = None;
-    }
-
-  let windows ~cross arch =
-    let build = Arch.slackware in
-    let host = arch in
-    let target = arch in
-    let prefix = Prefix.t ~build ~host ~target in
-    let logs, yyoutput = logs_yyoutput
-      ~nickname:prefix.Prefix.nickname ~host ~target in
-    cross.target_prefix <- Some prefix.Prefix.yyprefix;
-    let open Arch in
-    let open Prefix in
-    {
-      prefix; logs; yyoutput;
-      path = Env.Prepend [ bindir cross.prefix; bindir native.prefix ];
-      pkg_config_path = Env.Clear;
-      pkg_config_libdir = Env.Set [ Filename.concat prefix.libdir "pkgconfig" ] ;
-      tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
-      target_prefix = None; native_prefix = Some native.prefix.Prefix.yyprefix;
-    }
+  let register ~builder =
+    add ~builder ~push:(fun p -> builder.packages <- (builder.packages @ [p]))
 end

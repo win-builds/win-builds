@@ -15,8 +15,7 @@ web/temp
 win-builds-bundle
 win-builds-bundle-*.zip
 
-build
-build_packages/_build/
+build/_build/
 
 *.native
 *.byte
