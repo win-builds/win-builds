@@ -19,13 +19,6 @@ module B = struct
     in
     (List.fold_left mod_time_err 0. sources) > (mod_time_opt output)
 
-  let hash_file file =
-    let fd = Unix.openfile file [ Unix.O_RDWR ] 0o644 in
-    let ba = Bigarray.(Array1.map_file fd char c_layout false (-1)) in
-    let h = Hashtbl.hash ba in
-    Unix.close fd;
-    h
-
   let build_one builder =
     run [| "mkdir"; "-p"; builder.yyoutput; builder.logs |];
     let env = env builder in
