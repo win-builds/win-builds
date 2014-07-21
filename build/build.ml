@@ -54,6 +54,8 @@ module B = struct
             sp "cd %S" dir;
             sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
             sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
+            sp "export VERSION=%S" p.version;
+            sp "export BUILD=%d" p.build;
             sp "if [ -e config%s ]; then . ./config%s; fi" variant variant;
             sp "exec bash -x %s.SlackBuild" p.package
           ]
