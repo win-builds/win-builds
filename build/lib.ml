@@ -30,7 +30,6 @@ let waitpid log_level command =
   match snd (Unix.waitpid [] command.pid) with
   | Unix.WEXITED i ->
       f "Command `%s' returned %d.\n%!" command.cmd i;
-      (* TODO: cancel other processes at once *)
       if i <> 0 then failwith (sp "Failed process [%d]: `%s'\n'" i command.cmd)
   | Unix.WSIGNALED i ->
       f "Command `%s' has been signaled with signal %d.\n%!" command.cmd i

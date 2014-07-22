@@ -58,7 +58,7 @@ module B = struct
       )
 end
 
-let build builder =
+let build ~failer builder =
   let something_to_do =
     try
       let l = Sys.getenv (String.uppercase builder.name) in
@@ -73,8 +73,16 @@ let build builder =
       progress "[%s] Building %s\n%!"
         builder.prefix.Prefix.nickname
         (String.concat ", " (List.map name packages));
-      (* TODO: propagate failures *)
-      List.iter (B.build_one builder) packages;
+      ListLabels.iter packages ~f:(fun p ->
+        let res = (try B.build_one builder p; true with _ -> false) in
+        if !failer then
+          failwith "Aborting because another thread did so."
+        else (
+          if not res then
+            failer := true;
+            failwith "Aborting because build failed."
+          )
+      );
     ));
     progress "[%s] Setting up repository.\n%!" builder.prefix.Prefix.nickname;
     try
@@ -84,15 +92,19 @@ let build builder =
   else
     ()
 
-let build_parallel builders =
-  List.iter Thread.join (List.map (Thread.create build) builders)
-
 (* This is the only acceptable umask when building packets. Any other gives
  * wrong permissions in the packages, like 711 for /usr, and will break
  * systems. *)
 let () = ignore (Unix.umask 0o022)
 
 let () =
-  build Native_toolchain.builder;
-  build_parallel [ Cross_toolchain.builder_32; Cross_toolchain.builder_64 ];
-  build_parallel [ Windows.builder_32; Windows.builder_64 ];
+  let build builders =
+    let failer = ref false in
+    List.iter Thread.join (List.map (Thread.create (build ~failer)) builders);
+    (if !failer then failwith "Build failed.")
+  in
+  List.iter build [
+    [ Native_toolchain.builder ];
+    [ Cross_toolchain.builder_32; Cross_toolchain.builder_64 ];
+    [ Windows.builder_32; Windows.builder_64 ];
+  ]
