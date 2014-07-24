@@ -109,7 +109,7 @@ let do_adds
     ~dir:"slackware64-current/l"
     ~dependencies:[]
     ~version:"v9a"
-    ~build:1
+    ~build:2
     ~sources:[
       "jpegsrc.${VERSION}.tar.gz"
     ]
