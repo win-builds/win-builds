@@ -160,8 +160,15 @@ module Builder = struct
     Filename.concat prefix.Prefix.yyprefix "bin"
 
   let substitute_variables ~dict s =
+    let f k =
+      try
+        List.assoc k dict
+      with Not_found as exn ->
+        Lib.log Lib.cri "Couldn't resolve variable %S.\n%!" k;
+        raise exn
+    in
     let b = Buffer.create (String.length s) in
-    Buffer.add_substitute b (fun k -> List.assoc k dict) s;
+    Buffer.add_substitute b f s;
     Buffer.contents b
 
   let shall_build builder_name =
