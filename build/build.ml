@@ -96,10 +96,11 @@ let build ~failer builder =
         if !failer then
           failwith "Aborting because another thread did so."
         else (
-          if not res then
+          if not res then (
             failer := true;
             failwith "Aborting because build failed."
           )
+        )
       );
     ));
     progress "[%s] Setting up repository.\n%!" builder.prefix.Prefix.nickname;
