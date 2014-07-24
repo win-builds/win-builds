@@ -243,7 +243,7 @@ let do_adds
 
   let gnutls = add ("gnutls", None)
     ~dir:"slackware64-current/n"
-    ~dependencies:[ libtasn1; nettle; ca_certificates ]
+    ~dependencies:[ zlib; gmp; libtasn1; nettle; ca_certificates ]
     ~version:"3.1.25"
     ~build:1
     ~sources:[
