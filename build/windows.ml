@@ -41,7 +41,7 @@ let do_adds
     ~version:"3.1.2"
     ~build:1
     ~sources:[
-      "${PAKAGE}-${VERSION}.tar.gz"
+      "${PACKAGE}-${VERSION}.tar.gz"
     ]
   in
 
