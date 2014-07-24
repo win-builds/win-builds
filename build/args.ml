@@ -9,3 +9,11 @@ let work_dir =
   )
   else
     Lib.make_path_absolute_if_not args.(1)
+
+let version = Sys.getenv "VERSION_DEV"
+
+let version_short =
+  try
+    List.hd (Str.split (Str.regexp "-") version)
+  with
+  | Not_found -> version
