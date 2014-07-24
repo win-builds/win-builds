@@ -169,7 +169,7 @@ let do_adds
 
   let libtiff = add ("libtiff", None)
     ~dir:"slackware64-current/l"
-    ~dependencies:[]
+    ~dependencies:[ libjpeg ]
     ~version:"3.9.7"
     ~build:1
     ~sources:[
