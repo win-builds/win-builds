@@ -16,8 +16,7 @@ module B = struct
       if not (Sys.file_exists file) then
         try
           git_checkout ("origin/tarballs-" ^ Args.version_short) file
-        with
-        | _ -> (try git_checkout "origin/tarballs" file with _ -> ())
+        with _ -> ()
     in
     let mod_time_err prev file =
       Unix.handle_unix_error (fun () ->
