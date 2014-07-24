@@ -9,6 +9,16 @@ let name p =
 
 module B = struct
   let needs_rebuild ~sources ~output =
+    let get_file file =
+      let git_checkout branch file =
+        run [| "git"; "checkout"; branch; file |]
+      in
+      if not (Sys.file_exists file) then
+        try
+          git_checkout ("origin/tarballs-" ^ Args.version_short) file
+        with
+        | _ -> (try git_checkout "origin/tarballs" file with _ -> ())
+    in
     let mod_time_err prev file =
       Unix.handle_unix_error (fun () ->
         max prev (Unix.lstat file).Unix.st_mtime
