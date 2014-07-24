@@ -10,15 +10,24 @@ let name p =
 module B = struct
   let needs_rebuild ~sources ~output =
     let get_file file =
-      let git_checkout branch file =
-        run [| "git"; "checkout"; branch; file |]
-      in
       if not (Sys.file_exists file) then
         try
-          git_checkout ("origin/tarballs-" ^ Args.version_short) file
-        with _ -> ()
+          let i = String.index file '/' in
+          let dir = String.sub file 0 i in
+          let file = String.sub file (i+1) (String.length file - (i+1)) in
+          run [|
+            "git";
+            Lib.sp "--git-dir=%s/.git" dir;
+            Lib.sp "--work-tree=%s" dir;
+            "checkout";
+            Lib.sp "origin/tarballs-%s" Args.version_short;
+            file
+          |]
+        with _ ->
+          ()
     in
     let mod_time_err prev file =
+      get_file file;
       Unix.handle_unix_error (fun () ->
         max prev (Unix.lstat file).Unix.st_mtime
       ) ()
