@@ -173,7 +173,7 @@ let do_adds
     ~version:"3.9.7"
     ~build:1
     ~sources:[
-      "${PACKAGE}-${VERSION}.tar.xz";
+      "tiff-${VERSION}.tar.xz";
       "tiff-${VERSION}_CVE-2012-4447_CVE-2012-4564_CVE-2013-1960_CVE-2013-1961.diff.gz";
       "tiff-${VERSION}_CVE-2013-4231.diff.gz";
       "tiff-${VERSION}_CVE-2013-4232.diff.gz";
