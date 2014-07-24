@@ -137,7 +137,7 @@ let do_adds
 
   let freetype = add ("freetype", None)
     ~dir:"slackware64-current/l"
-    ~dependencies:[]
+    ~dependencies:[ zlib; libpng ]
     ~version:"2.5.0.1"
     ~build:1
     ~sources:[
