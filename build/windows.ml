@@ -88,6 +88,7 @@ let do_adds
   let xz = add ("xz", Some "regular")
     ~dir:"slackware64-current/a"
     ~dependencies:[ gettext ]
+    ~version:"5.0.5"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.gz"
