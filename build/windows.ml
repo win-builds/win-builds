@@ -108,10 +108,10 @@ let do_adds
   let libjpeg = add ("libjpeg", None)
     ~dir:"slackware64-current/l"
     ~dependencies:[]
-    ~version:"9a"
+    ~version:"v9a"
     ~build:1
     ~sources:[
-      "jpegsrc.v${VERSION}.tar.gz"
+      "jpegsrc.${VERSION}.tar.gz"
     ]
   in
 
