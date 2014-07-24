@@ -203,7 +203,7 @@ let do_adds
 
   let openssl = add ("openssl", None)
     ~dir:"slackware64-current/n"
-    ~dependencies:[]
+    ~dependencies:[ ca_certificates ]
     ~version:"1.0.1g"
     ~build:1
     ~sources:[
@@ -243,7 +243,7 @@ let do_adds
 
   let gnutls = add ("gnutls", None)
     ~dir:"slackware64-current/n"
-    ~dependencies:[ libtasn1; nettle ]
+    ~dependencies:[ libtasn1; nettle; ca_certificates ]
     ~version:"3.1.25"
     ~build:1
     ~sources:[
@@ -253,7 +253,7 @@ let do_adds
 
   let curl = add ("curl", None)
     ~dir:"slackware64-current/n"
-    ~dependencies:[]
+    ~dependencies:[ ca_certificates ]
     ~version:"5.1.3"
     ~build:1
     ~sources:[
@@ -303,7 +303,7 @@ let do_adds
 
   let cairo = add ("cairo", None)
     ~dir:"slackware64-current/l"
-    ~dependencies:[]
+    ~dependencies:[ pixman ]
     ~version:"1.12.14"
     ~build:1
     ~sources:[
@@ -388,7 +388,7 @@ let do_adds
 
   let libsoup = add ("libsoup", None)
     ~dir:"slackware64-current/l"
-    ~dependencies:[ glib2 ]
+    ~dependencies:[ glib2; sqlite ]
     ~version:"2.42.2"
     ~build:1
     ~sources:[
@@ -969,6 +969,18 @@ let do_adds
       elementary; gtk_2; ffmpeg;
       madplay; icu4c; make; gperf; zz_config;
       jansson; libsigc_plus_plus; widl;
+      zlib; xz; winpthreads; pkg_config; libarchive;
+      wget; dejavu_fonts_ttf;
+    ]
+    ~version:"0.0.0"
+    ~build:1
+    ~sources:[]
+  in
+
+  let _yypkg = add ("yypkg", None)
+    ~dir:""
+    ~dependencies:[
+      xz_yypkg; libarchive_yypkg;
     ]
     ~version:"0.0.0"
     ~build:1
