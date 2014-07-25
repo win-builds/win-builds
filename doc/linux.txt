@@ -249,37 +249,30 @@ cd ..
 Run the following to get all the source files:
 
 ------------------------------------------------------------------------
-NOTK="http://git.notk.org/adrien/yypkg"
-
-git clone "${NOTK}/win-builds.git"
-git clone "${NOTK}/slackware64-current.git"
-git clone "${NOTK}/mingw.git"
-git clone "${NOTK}/slackbuilds.org.git"
-
-------------------------------------------------------------------------
-
-NOTE: this fails with git 1.7.2 and is fixed in git 1.8.0 (commit "http: fix
-segfault in handle_curl_result").
-
-The initial clone takes noticeably longer because it also downloads the
-source tarballs for the softwares that will packaged.
-
-This is done as a convenience to avoid downloading each and every
-tarball but they are not exposed in the source directories
-automatically. To do so, you need to run the following:
-
-------------------------------------------------------------------------
-for d in mingw slackware64-current slackbuilds.org; do
-  (cd $d && git checkout origin/tarballs . ) # The dot is significant.
+for repo in win-builds slackware64-current mingw slackbuilds.org; do
+  git clone "http://git.notk.org/adrien/yypkg/$repo.git"
 done
 
 ------------------------------------------------------------------------
+
+NOTE: this can fail with git 1.7.2 and is fixed in git 1.8.0 (commit "http: fix
+segfault in handle_curl_result").
+
+The initial clone takes noticeably longer because it also downloads the
+source tarballs for the softwares that will be packaged.
+
+When the build runs, if some source files are not already available, they will
+be copied from the "origin/tarballs-@@VERSION@@" branch. If you wish to
+provide your own version of a specific file, simply overwrite the one in the
+source tree.
 
 === Build the build driver ===
 
 Go back to the parent directory and build the infrastructure:
 ------------------------------------------------------------------------
-make -C win-builds build
+make -C win-builds
+# or
+cd win-builds && make
 ------------------------------------------------------------------------
 
 It is possible to build only one or more series by passing their name as
@@ -288,7 +281,7 @@ As an example, to build only the cross_toolchain and windows series,
 one would run:
 
 -------------------------------------------------------------------------
-./win-builds/build @@VERSION@@ native_toolchain-cross_toolchain
+CROSS_TOOLCHAIN="all" WINDOWS="all" make
 ------------------------------------------------------------------------
 
 It is also possible to build only one or more packages by passing their
@@ -296,20 +289,25 @@ name as argument to the "build" tool, after at least one series name.
 The names are space-separated. An example would be:
 
 ------------------------------------------------------------------------
-./win-builds/build @@VERSION@@ windows libjpeg libpng lua
+WINDOWS="libjpeg,libpng,lua" make
 ------------------------------------------------------------------------
+
+Packages will only get rebuilt if at least one of their sources is more recent
+than the output package.
 
 === Build the cross-compiler ===
 
-The packages must be built as root (or at least under the 'fakeroot' tool). To
-build the cross-compiler, as root, run:
+Building the packages requires a root environment (privileges, umask, ...) or
+at least fakeroot plus a tweak.
+
+To build the cross-compiler as root, run:
 
 ------------------------------------------------------------------------
-./win-builds/build @@VERSION@@ native_toolchain-cross_toolchain
+NATIVE_TOOLCHAIN="all" CROSS_TOOLCHAIN="all" make
 ------------------------------------------------------------------------
 
-To run the build under fakeroot first create and chown the installation
-directories:
+If you prefer to use fakeroot instead of running it as root, you first have to
+create and chown the installation directories:
 
 ------------------------------------------------------------------------
 for d in native_toolchain cross_toolchain_{32,64} windows_{32,64}; do
@@ -350,34 +348,39 @@ deploy() {
 Like for the cross-compiler, run:
 
 ------------------------------------------------------------------------
-./win-builds/build @@VERSION@@ windows
+WINDOWS="all" make
 ------------------------------------------------------------------------
 
 == Extras ==
 
 === Modify the package lists ===
 
-The list of packages to build is stored inside 'win-builds/package_list'
-in a simple text format.
+The list of packages to build is stored inside three files:
+'win-builds/native_toolchain.ml', 'win-builds/cross_toolchain.ml',
+'win-builds/windows.ml' as straightforward OCaml code.
 
-There is one package per line, comments are whole lines which start with
-a '#'. Empty lines are allowed.
+A package description is made of a name, a variant (which is mostly useful for
+bootstrapping a minimal version of a package before being able to build the
+full one), a directory where its sources are stored, its dependencies,
+version, build number and sources.
 
-Each package line is made of a path, a space, a package name and,
-optionally, a column and a "variant". For instance, the GCC package has
-two possible variants: "core" and "full".
-
-The contents of the 'cross_toolchain_32' file is shown below as an
-example:
+Below is the description for the freetype package from the windows series:
 
 ------------------------------------------------------------------------
-slackware64-current/d binutils
-mingw mingw-w64:headers
-slackware64-current/d gcc:core
-mingw mingw-w64:full
-slackware64-current/d gcc:full
-# mingw widl
-# mingw flexdll
-# slackbuilds.org ocaml
-# slackbuilds.org ocaml-findlib
+  let freetype = add ("freetype", None)
+    ~dir:"slackware64-current/l"
+    ~dependencies:[ zlib; libpng ]
+    ~version:"2.5.0.1"
+    ~build:1
+    ~sources:[
+      "freetype-${VERSION}.tar.xz";
+      "freetype.illadvisederror.diff.gz";
+      "freetype.subpixel.rendering.diff.gz";
+    ]
+  in
 ------------------------------------------------------------------------
+
+The package is named "freetype", doesn't provide a variant ("None" in the
+code), is stored inside the "slackware64-current/l" directory, depends on zlib
+and libpng, is at version 2.5.0.1 and first build, and has three listed
+sources: its source tarball and two patches.
