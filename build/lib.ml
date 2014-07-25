@@ -16,7 +16,13 @@ let log_threshold =
 let log level =
   (if log_threshold >= level then Printf.fprintf else Printf.ifprintf) stderr
 
+let cond_log level b s =
+  (if not b then log level s); b
+
 let progress = Printf.printf
+
+let cond_progress b s =
+  (if not b then progress s); b
 
 let sp = Printf.sprintf
 

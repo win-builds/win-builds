@@ -47,7 +47,10 @@ module B = struct
       let output = Filename.concat builder.yyoutput p.output in
       let sources_dir_ize = Filename.concat (Filename.concat p.dir p.package) in
       let sources = (List.map sources_dir_ize p.sources) in
-      if p.dir = "" || not (needs_rebuild ~sources ~output) then
+      if
+        p.dir = ""
+        || (fun b -> (if b then progress "%s already up-to-date.\n%!" p.package); b) (not (needs_rebuild ~sources ~output))
+      then
         ()
       else (
         progress "[%s] Building %s\n%!" builder.prefix.Prefix.nickname (name p);
