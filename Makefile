@@ -26,4 +26,4 @@ release-upload:
 	  --exclude='/$(VERSION_STABLE)/*' \
 	  $(VERSION_STABLE) $(WEB)/
 
-.PHONY: doc web build
+.PHONY: doc web build yypkg
