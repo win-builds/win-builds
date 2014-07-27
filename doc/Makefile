@@ -1,8 +1,8 @@
 include ../Makefile.data
 
 DOCS:=packaging msys-cygwin linux
-DOCS_TXT:=$(DOCS:%=%.txt)
-DOCS_HTML:=$(DOCS:%=%.html)
+DOCS_TXT := $(DOCS:%=%.txt)
+DOCS_HTML := $(DOCS:%=%.html)
 
 version.config: ../Makefile.data Makefile
 	echo '[blockdef-listing]' > $@
