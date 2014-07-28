@@ -22,7 +22,7 @@ windows:
 * windows cross-compiles the binaries that will run on windows (this
   includes the GCC native compiler)
 
-Building takes a fairly large amount of space, roughly 500MB for
+Building takes a fairly large amount of space: roughly 500MB for
 'native_toolchain', 2GB for 'cross_toolchain_*' and 4.5GB for 'windows_*'
 (which can be retrieved instead of being built).
 Around 90% of this space is made up of temporary files in 'tmp' directories.
@@ -69,12 +69,12 @@ Build of yypkg and its dependencies is automated and straightforward; simply
 run:
 
 ------------------------------------------------------------------------
-make -C yypkg
+make -C win-builds/yypkg
 ------------------------------------------------------------------------
 
 Then, install as root (it copies a single executable to /usr/local/bin), run:
 ------------------------------------------------------------------------
-make -C yypkg install
+make -C win-builds/yypkg install
 ------------------------------------------------------------------------
 
 == Build the cross-compiler ==
@@ -95,50 +95,28 @@ segfault in handle_curl_result").
 The initial clone takes noticeably longer because it also downloads the
 source tarballs for the softwares that will be packaged.
 
-When the build runs, if some source files are not already available, they will
-be copied from the "origin/tarballs-@@VERSION@@" branch. If you wish to
-provide your own version of a specific file, simply overwrite the one in the
-source tree.
-
-=== Build the build driver ===
-
-Go back to the parent directory and build the infrastructure:
-------------------------------------------------------------------------
-make -C win-builds
-# or
-cd win-builds && make
-------------------------------------------------------------------------
-
-It is possible to build only one or more series by passing their name as
-argument to the "build" tool (separated by dashes if there are several.
-As an example, to build only the cross_toolchain and windows series,
-one would run:
-
--------------------------------------------------------------------------
-CROSS_TOOLCHAIN="all" WINDOWS="all" make
-------------------------------------------------------------------------
-
-It is also possible to build only one or more packages by passing their
-name as argument to the "build" tool, after at least one series name.
-The names are space-separated. An example would be:
-
-------------------------------------------------------------------------
-WINDOWS="libjpeg,libpng,lua" make
-------------------------------------------------------------------------
-
-Packages will only get rebuilt if at least one of their sources is more recent
-than the output package.
+When the build runs, if some source files are not already available in the
+directory of the sources, they will be copied from the
+"origin/tarballs-@@VERSION@@" branch. If you wish to provide your own version
+of a specific file, simply overwrite the one in the source tree.
 
 === Build the cross-compiler ===
 
 Building the packages requires a root environment (privileges, umask, ...) or
 at least fakeroot plus a tweak.
 
-To build the cross-compiler as root, run:
+To build the cross-compiler, first enter the 'win-builds' directory:
+------------------------------------------------------------------------
+cd win-builds
+------------------------------------------------------------------------
+
+Then, to build as root, run:
 
 ------------------------------------------------------------------------
 NATIVE_TOOLCHAIN="all" CROSS_TOOLCHAIN="all" make
 ------------------------------------------------------------------------
+
+==== Using fakeroot ====
 
 If you prefer to use fakeroot instead of running it as root, you first have to
 create and chown the installation directories:
@@ -148,6 +126,12 @@ for d in native_toolchain cross_toolchain_{32,64} windows_{32,64}; do
   mkdir /opt/${d}
   chown --reference=${HOME} /opt/${d}
 done
+------------------------------------------------------------------------
+
+And then:
+
+------------------------------------------------------------------------
+NATIVE_TOOLCHAIN="all" CROSS_TOOLCHAIN="all" fakeroot make
 ------------------------------------------------------------------------
 
 == Get the Windows binaries ==
@@ -162,19 +146,16 @@ The following will install for both i686 and x86_64 in /opt/windows_*:
 
 ------------------------------------------------------------------------
 deploy() {
-  ARCH="${1}"
-  BITS="${2}"
-
-  export YYPREFIX=/opt/windows_${BITS}
-
-  yypkg --init
-  yypkg --config --predicates --set host="${ARCH}"
-  yypkg --config --set-mirror "http://win-builds.org/@@VERSION@@/packages/windows_${BITS}"
-  yypkg --web
+  YYPREFIX=/opt/windows_${2} (
+    yypkg --init
+    yypkg --config --predicates --set host="${1}-w64-mingw32"
+    yypkg --config --set-mirror "http://win-builds.org/@@VERSION@@/packages/windows_${2}"
+    yypkg --web
+  )
 }
 
-(deploy 32 i686)
-(deploy 64 x86_64)
+deploy 32 i686
+deploy 64 x86_64
 ------------------------------------------------------------------------
 
 === Build packages yourself ===
@@ -185,7 +166,54 @@ Like for the cross-compiler, run:
 WINDOWS="all" make
 ------------------------------------------------------------------------
 
+This builds all the packages for Windows and a few packages which are needed
+for bootstrapping these.
+
 == Extras ==
+
+=== Selective rebuilds ===
+
+Chosing which packages are to be built is done through environment variables.
+There are 7 of them:
+
+* WINDOWS: packages which executables will run on Windows (builds both for 32
+    and 64 bits)
+* WINDOWS_32, WINDOWS_64: same as above but only for 32 or 64 bits
+* CROSS_TOOLCHAIN: the cross-compilation toolchain which runs on your current
+  system and targets Windows (builds both for 32 and 64 bits)
+* CROSS_TOOLCHAIN_32, CROSS_TOOLCHAIN_64: same as above but only for 32 or 64 bits
+* NATIVE_TOOLCHAIN: some build-time dependencies for packages above; they are
+  either common but required to be at a specific version or uncommon
+
+The value of these environment variables is the list of packages to build.
+As an example, to build only the cross_toolchain and windows series,
+one would run:
+
+-------------------------------------------------------------------------
+CROSS_TOOLCHAIN="all" WINDOWS="all" make
+------------------------------------------------------------------------
+
+The package "all" is virtual and selects every stable package from the series.
+
+Same as above but only for 64 bits:
+
+-------------------------------------------------------------------------
+CROSS_TOOLCHAIN_64="all" WINDOWS_64="all" make
+------------------------------------------------------------------------
+
+NOTE: this doesn't handle cross-series dependencies and, in this specific
+example, you need to have built the NATIVE_TOOLCHAIN series first.
+
+Last, if you want to build a specific set of packages, you simply need to call
+make as such:
+
+------------------------------------------------------------------------
+WINDOWS="libjpeg,libpng,lua" make
+------------------------------------------------------------------------
+
+Packages will only get rebuilt if at least one of their sources is more recent
+than the output package; this propagates to the dependencies of the packages
+that have been chosen.
 
 === Modify the package lists ===
 
