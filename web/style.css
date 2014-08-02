@@ -72,23 +72,25 @@ h1 {
 }
 
 .flexbox {
-  display: -moz-box;
-  display: -ms-flexbox;
+  display: -moz-flex;
+  display: -ms-flex;
   display: -webkit-flex;
   display: flex;
+  -moz-flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
+  -moz-flex-direction: row;
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
 }
 
 .hl, .package-example {
-  flex: 0 1 32%;
   -ms-flex: 0 1 32%;
   -moz-flex: 0 1 32%;
   -webkit-flex: 0 1 32%;
+  flex: 0 1 32%;
   margin-top: 0.75em;
   margin-left: 1%;
   margin-right: 0em;
