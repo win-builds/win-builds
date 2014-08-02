@@ -13,7 +13,7 @@ build:
 doc doc-upload:
 	$(MAKE) -C doc $@
 
-web-version-agnostic-upload web-version-specific-upload:
+web web-upload:
 	$(MAKE) -C web $(patsubst web-%,%,$@)
 
 release-upload:
