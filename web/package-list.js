@@ -29,6 +29,7 @@ http_request.onreadystatechange = function() {
     var l = JSON.parse(http_request.responseText);
 
     var a_all = document.getElementById("package-list-all");
+    a_all.removeChild(a_all.firstChild);
     a_all.appendChild(document.createTextNode(l.length + " packages"));
 
     package_list_div = document.getElementById("package-list-list");

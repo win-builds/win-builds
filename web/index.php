@@ -65,7 +65,7 @@
 <div id="package-list">
   <div id="package-list-header">
     <div class="arrow arrow-left" id="package-list-prev" onclick="set_packages(-3)"></div>
-    <a id="package-list-all" href="@@VERSION_STABLE@@/packages/windows_32/package_list.html"></a>
+    <a id="package-list-all" href="@@VERSION_STABLE@@/packages/windows_32/package_list.html">Full package list</a>
     <div class="arrow arrow-right" id="package-list-next" onclick="set_packages(3)"></div>
   </div>
   <div id="package-list-list" class="flexbox"></div>
