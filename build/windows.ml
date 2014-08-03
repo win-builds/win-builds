@@ -31,7 +31,7 @@ let do_adds
     ~version:"5.0.5"
     ~build:1
     ~sources:[
-      "xz-${VERSION}.tar.gz"
+      "xz-${VERSION}.tar.xz"
     ]
   in
 
@@ -91,7 +91,7 @@ let do_adds
     ~version:"5.0.5"
     ~build:1
     ~sources:[
-      "${PACKAGE}-${VERSION}.tar.gz"
+      "${PACKAGE}-${VERSION}.tar.xz"
     ]
   in
 
