@@ -101,7 +101,7 @@ let build ~failer builder =
         else (
           if not res then (
             failer := true;
-            failwith "Aborting because build failed."
+            failwith ("Build of " ^ p.package ^ " failed.")
           )
         )
       );
