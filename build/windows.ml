@@ -968,7 +968,7 @@ let do_adds
       gcc; binutils; mingw_w64; gdb;
       elementary; gtk_2; ffmpeg;
       madplay; icu4c; make; gperf; zz_config;
-      jansson; libsigc_plus_plus; widl;
+      jansson; libsigc_plus_plus;
       zlib; xz; winpthreads; pkg_config; libarchive;
       wget; dejavu_fonts_ttf;
     ]
