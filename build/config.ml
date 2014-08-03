@@ -189,7 +189,7 @@ module Builder = struct
     =
     let shall_build = shall_build builder.name in
     let rec colorize p =
-      if not p.to_build && shall_build p then (
+      if not p.to_build then (
         p.to_build <- true;
         List.iter colorize p.dependencies
       )
@@ -203,7 +203,7 @@ module Builder = struct
       "HOST_TRIPLET", builder.prefix.Prefix.host.Arch.triplet;
       "BUILD_TRIPLET", builder.prefix.Prefix.build.Arch.triplet;
     ] in
-    let add_aux p = colorize p; push p; p in
+    let add_aux p = (if shall_build p then colorize p); push p; p in
     let output = 
       if builder.prefix.Prefix.target <> builder.prefix.Prefix.host then
         "${PACKAGE}-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz"
