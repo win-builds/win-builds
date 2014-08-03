@@ -514,7 +514,7 @@ let do_adds
     ~dir:"slackbuilds.org/libraries"
     ~dependencies:[
       libpng; giflib; libjpeg; fontconfig; freetype; lua;
-      harfbuzz; libsndfile;
+      fribidi; harfbuzz; libsndfile;
       gnutls; curl; c_ares; dbus;
     ]
     ~version:"1.9.2"
