@@ -66,9 +66,9 @@ libocaml: $(DIRS)
 	  (cd libocaml_$$i && make && make install) || break; \
 	done
 
-yypkg: $(DIRS) cryptokit libocaml ocaml-archive ocaml-fileutils
+yypkg yypkg-no-gui: $(DIRS) cryptokit ocaml-archive ocaml-fileutils libocaml
 	$(call CD,yypkg) && \
-	make
+	make $@
 
 install: yypkg
 	$(call CD,yypkg) && \
