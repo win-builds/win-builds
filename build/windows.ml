@@ -681,7 +681,7 @@ let do_adds
   let libid3tag = add ("libid3tag", None)
     ~dir:"slackware64-current/l"
     ~dependencies:[]
-    ~version:"7.6.1"
+    ~version:"0.15.1b"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.gz";
