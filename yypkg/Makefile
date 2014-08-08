@@ -29,6 +29,7 @@ $(DIRS): $(TARBALLS)
 export YYPKG_SOURCE=$(abspath yypkg-$(YYPKG_VERSION))
 export OCAMLFIND_DESTDIR=$(abspath deps)
 export OCAMLPATH=$(abspath deps)
+export OCAMLFIND_IGNORE_DUPS_IN=$(shell ocamlfind -printconf path)
 
 CD = \
 	cd $(shell find -maxdepth 1 -type d -name '$(1)*')
