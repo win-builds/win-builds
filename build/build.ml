@@ -49,7 +49,7 @@ module B = struct
       let sources = (List.map sources_dir_ize p.sources) in
       if
         p.dir = ""
-        || (fun b -> (if b then progress "%s already up-to-date.\n%!" p.package); b) (not (needs_rebuild ~sources ~output))
+        || (fun b -> (if b then progress "[%s] %s already up-to-date.\n%!" builder.prefix.Prefix.nickname p.package); b) (not (needs_rebuild ~sources ~output))
       then
         ()
       else (
