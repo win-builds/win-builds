@@ -399,10 +399,10 @@ let do_adds
   let icu4c = add ("icu4c", None)
     ~dir:"slackware64-current/l"
     ~dependencies:[]
-    ~version:"51_2"
+    ~version:"51.2" (* NOTE: the version number in sources needs updating too *)
     ~build:1
     ~sources:[
-      "${PACKAGE}-${VERSION}-src.tar.xz";
+      "${PACKAGE}-51_2-src.tar.xz";
     ]
   in
 
