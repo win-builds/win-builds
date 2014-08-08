@@ -23,7 +23,7 @@ build/_build/
 yypkg/ocaml-archive-*
 yypkg/ocaml-fileutils-*
 yypkg/cryptokit-*
-yypkg/libocaml-*
+yypkg/libocaml_*
 yypkg/yypkg-*
 yypkg/*.tar.xz
 yypkg/deps

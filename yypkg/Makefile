@@ -4,9 +4,17 @@ YYPKG_TARBALL := yypkg-$(YYPKG_VERSION).tar.xz
 FILEUTILS_TARBALL := ocaml-fileutils-$(FILEUTILS_VERSION).tar.gz
 ARCHIVE_TARBALL := ocaml-archive-$(ARCHIVE_VERSION).tar.gz
 CRYPTOKIT_TARBALL := cryptokit-$(CRYPTOKIT_VERSION).tar.gz
-LIBOCAML_TARBALL := libocaml-$(LIBOCAML_VERSION).tar.xz
+LIBOCAML_TARBALLS := \
+	libocaml_exception.$(LIBOCAML_VERSION).tar.xz \
+	libocaml_option.$(LIBOCAML_VERSION).tar.xz \
+	libocaml_lexing.$(LIBOCAML_VERSION).tar.xz \
+	libocaml_ipv4_address.$(LIBOCAML_VERSION).tar.xz \
+	libocaml_ipv6_address.$(LIBOCAML_VERSION).tar.xz \
+	libocaml_plus.$(LIBOCAML_VERSION).tar.xz \
+	libocaml_uri.$(LIBOCAML_VERSION).tar.xz \
+	libocaml_http.$(LIBOCAML_VERSION).tar.xz
 
-TARBALLS := $(YYPKG_TARBALL) $(FILEUTILS_TARBALL) $(ARCHIVE_TARBALL) $(CRYPTOKIT_TARBALL) $(LIBOCAML_TARBALL)
+TARBALLS := $(YYPKG_TARBALL) $(FILEUTILS_TARBALL) $(ARCHIVE_TARBALL) $(CRYPTOKIT_TARBALL) $(LIBOCAML_TARBALLS)
 DIRS0 := $(TARBALLS:.tar.gz=)
 DIRS := $(DIRS0:.tar.xz=)
 
