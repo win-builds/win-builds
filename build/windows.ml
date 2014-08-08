@@ -671,7 +671,7 @@ let do_adds
     ~version:"0.15.1b"
     ~build:1
     ~sources:[
-      "${PACKAGE}-${VERSION}.tar.xz";
+      "${PACKAGE}-${VERSION}.tar.gz";
       "Makefile.am";
       "configure.ac";
       "mad.pc.in";
@@ -948,7 +948,7 @@ let do_adds
     ~version:"4.0"
     ~build:5
     ~sources:[
-      "${PACKAGE}-${VERSION}.tar.bz2";
+      "${PACKAGE}-${VERSION}.tar.gz";
     ]
   in
 
