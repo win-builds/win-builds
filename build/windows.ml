@@ -800,7 +800,7 @@ let do_adds
   let libsigc_plus_plus = add ("libsigc++", None)
     ~dir:"slackbuilds.org/libraries"
     ~dependencies:[]
-    ~version:"2.34"
+    ~version:"2.2.11"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz";
