@@ -91,7 +91,7 @@ let build ~failer builder =
   if something_to_do then (
     let packages = List.filter (fun p -> p.to_build) builder.packages in
     (if packages <> [] then (
-      progress "[%s] Building %s\n%!"
+      progress "[%s] Building: %s\n%!"
         builder.prefix.Prefix.nickname
         (String.concat ", " (List.map name packages));
       ListLabels.iter packages ~f:(fun p ->
