@@ -297,7 +297,7 @@ let do_adds
     ~version:"2.36.4"
     ~build:1
     ~sources:[
-      "${PACKAGE}-${VERSION}.tar.xz"
+      "glib-${VERSION}.tar.xz"
     ]
   in
 
