@@ -338,7 +338,7 @@ let do_adds
     ~build:1
     ~sources:[
       "gdk-pixbuf-${VERSION}.tar.xz";
-      "l/gdk-pixbuf2/gdk-pixbuf.pnglz.diff.gz";
+      "gdk-pixbuf.pnglz.diff.gz";
     ]
   in
 
