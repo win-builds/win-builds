@@ -63,7 +63,7 @@ cryptokit: $(DIRS)
 libocaml: $(DIRS)
 	$(call CD,libocaml) && \
 	for i in exception option lexing ipv4_address ipv6_address plus uri http; do \
-	  (cd libocaml_$i && make && make install) || break \
+	  (cd libocaml_$$i && make && make install) || break; \
 	done
 
 yypkg: $(DIRS) cryptokit libocaml ocaml-archive ocaml-fileutils
