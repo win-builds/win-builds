@@ -254,20 +254,20 @@ let do_adds
   let curl = add ("curl", None)
     ~dir:"slackware64-current/n"
     ~dependencies:[ ca_certificates ]
-    ~version:"5.1.3"
+    ~version:"7.36.0"
     ~build:1
     ~sources:[
-      "${PACKAGE}-${VERSION}.tar.xz"
+      "${PACKAGE}-${VERSION}.tar.bz2"
     ]
   in
 
   let c_ares = add ("c-ares", None)
     ~dir:"slackbuilds.org/libraries"
     ~dependencies:[]
-    ~version:"7.36.0"
+    ~version:"1.10.0"
     ~build:1
     ~sources:[
-      "${PACKAGE}-${VERSION}.tar.bz2"
+      "${PACKAGE}-${VERSION}.tar.gz"
     ]
   in
 
