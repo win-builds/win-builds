@@ -26,7 +26,7 @@ $(TARBALLS):
 $(DIRS): $(TARBALLS)
 	for file in $?; do tar xf $${file}; done
 
-export YYPKG_SOURCE=$(abspath yypkg-$(YYPKG_VERSION))
+YYPKG_SOURCE=$(abspath yypkg-$(YYPKG_VERSION))
 export OCAMLFIND_DESTDIR=$(abspath deps)
 export OCAMLPATH=$(abspath deps)
 export OCAMLFIND_IGNORE_DUPS_IN=$(shell ocamlfind -printconf path)
