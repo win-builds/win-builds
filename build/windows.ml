@@ -436,7 +436,7 @@ let do_adds
     ~version:"0.8.2"
     ~build:1
     ~sources:[
-      "${PACKAGE}-${VERSION}.tar.xz";
+      "mpc-${VERSION}.tar.xz";
     ]
   in
 
