@@ -48,20 +48,20 @@ let do_adds
   let winpthreads = add ("winpthreads", None)
     ~dir:"mingw"
     ~dependencies:[]
-    ~version:"3.1.0"
+    ~version:"v3.1.0"
     ~build:1
     ~sources:[
-      "mingw-w64-v${VERSION}.tar.bz2"
+      "mingw-w64-${VERSION}.tar.bz2"
     ]
   in
 
   let widl = add ("widl", None)
     ~dir:"mingw"
     ~dependencies:[]
-    ~version:"3.1.0"
+    ~version:"v3.1.0"
     ~build:1
     ~sources:[
-      "mingw-w64-v${VERSION}.tar.bz2"
+      "mingw-w64-${VERSION}.tar.bz2"
     ]
   in
 
@@ -567,10 +567,10 @@ let do_adds
   let mingw_w64 = add ("mingw-w64", Some "full")
     ~dir:"mingw"
     ~dependencies:[]
-    ~version:"3.1.0"
+    ~version:"v3.1.0"
     ~build:1
     ~sources:[
-      "${PACKAGE}-v${VERSION}.tar.bz2";
+      "${PACKAGE}-${VERSION}.tar.bz2";
     ]
   in
 
