@@ -893,7 +893,7 @@ let do_adds
   let ffmpeg = add ("ffmpeg", None)
     ~dir:"slackbuilds.org/multimedia"
     ~dependencies:[ lame; x264 ]
-    ~version:"2.1"
+    ~version:"2.2.3"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.bz2";
