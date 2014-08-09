@@ -270,7 +270,7 @@ let do_adds builder =
   let pixman = add ("pixman", None)
     ~dir:"mingw"
     ~dependencies:[]
-    ~version:"0.30.2"
+    ~version:"0.32.6"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz"
