@@ -640,7 +640,7 @@ let do_adds builder =
   let gdb = add ("gdb", None)
     ~dir:"slackware64-current/d"
     ~dependencies:[]
-    ~version:"7.6.1"
+    ~version:"7.8"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz";
