@@ -380,10 +380,10 @@ let do_adds builder =
   let sqlite = add ("sqlite", None)
     ~dir:"slackware64-current/ap"
     ~dependencies:[]
-    ~version:"3071700"
+    ~version:"3.7.17" (* NOTE: the version number in sources needs updating too *)
     ~build:1
     ~sources:[
-      "${PACKAGE}-src-${VERSION}.tar.xz";
+      "${PACKAGE}-src-3071700.tar.xz";
       "COPYRIGHT.gz";
       "configure.ac";
     ]
