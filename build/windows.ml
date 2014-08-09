@@ -582,7 +582,7 @@ let do_adds builder =
   let binutils = add ("binutils", None)
     ~dir:"slackware64-current/d"
     ~dependencies:[]
-    ~version:"2.23.2"
+    ~version:"2.24"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz";
@@ -594,7 +594,7 @@ let do_adds builder =
   let gcc = add ("gcc", Some "full")
     ~dir:"slackware64-current/d"
     ~dependencies:[ gmp; mpfr; libmpc ]
-    ~version:"4.8.2"
+    ~version:"4.8.3"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz";
