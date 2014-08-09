@@ -19,7 +19,7 @@ let builder ~name ~target =
   }
 
 let do_adds builder =
-  let add = Config.Builder.register builder in
+  let add = Config.Builder.register ~builder in
 
   let binutils = add ("binutils", None)
     ~dir:"slackware64-current/d"
