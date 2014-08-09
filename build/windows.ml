@@ -727,7 +727,7 @@ let do_adds builder =
   let djvulibre = add ("djvulibre", None)
     ~dir:"slackware64-current/l"
     ~dependencies:[]
-    ~version:"3.5.20"
+    ~version:"3.5.25.3"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.gz";
