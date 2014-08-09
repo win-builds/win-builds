@@ -506,7 +506,8 @@ let do_adds builder =
 
   let harfbuzz = add ("harfbuzz", None)
     ~dir:"slackware64-current/l"
-    ~dependencies:[]
+    (* TODO: the cairo dependency is only build-time; what about the others? *)
+    ~dependencies:[ cairo; freetype; glib2; icu4c ]
     ~version:"0.9.16"
     ~build:2
     ~sources:[
