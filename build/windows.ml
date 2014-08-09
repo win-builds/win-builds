@@ -200,7 +200,7 @@ let do_adds builder =
   let openssl = add ("openssl", None)
     ~dir:"slackware64-current/n"
     ~dependencies:[ ca_certificates ]
-    ~version:"1.0.1g"
+    ~version:"1.0.1i"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.gz"
