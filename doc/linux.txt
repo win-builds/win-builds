@@ -67,8 +67,16 @@ cave resolve -x dev-ocaml/findlib dev-lang/ocaml '>=app-arch/libarchive-3.1.2-r2
 Run the following to get all the source files:
 
 ------------------------------------------------------------------------
-for repo in win-builds slackware64-current mingw slackbuilds.org; do
-  git clone "http://git.notk.org/adrien/yypkg/$repo.git"
+git clone http://git.notk.org/adrien/yypkg/win-builds.git
+for repo in mingw slackware64-current slackbuilds.org; do
+  (set -e;
+   mkdir $repo
+   cd $repo
+   git init
+   git remote add -t master -f origin http://git.notk.org/adrien/yypkg/slackware64-current.git
+   git remote set-branches --add origin tarballs-${VERSION_STABLE}
+   git fetch
+  )
 done
 
 ------------------------------------------------------------------------
