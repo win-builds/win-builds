@@ -520,20 +520,20 @@ let do_adds builder =
       fribidi; harfbuzz; libsndfile;
       gnutls; curl; c_ares; dbus;
     ]
-    ~version:"1.9.2"
+    ~version:"1.11.0-beta1"
     ~build:1
     ~sources:[
-      "${PACKAGE}-${VERSION}.tar.gz";
+      "${PACKAGE}-${VERSION}.tar.xz";
     ]
   in
 
   let elementary = add ("elementary", None)
     ~dir:"slackbuilds.org/libraries"
     ~dependencies:[ efl ]
-    ~version:"1.9.2"
+    ~version:"1.11.0-beta1"
     ~build:1
     ~sources:[
-      "${PACKAGE}-${VERSION}.tar.gz";
+      "${PACKAGE}-${VERSION}.tar.xz";
     ]
   in
 

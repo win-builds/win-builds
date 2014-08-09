@@ -44,20 +44,19 @@ let lua = add ("lua", None)
 let efl = add ("efl", None)
   ~dir:"slackbuilds.org/libraries"
   ~dependencies:[ lua ]
-  ~version:"1.9.2"
+  ~version:"1.11.0-beta1"
   ~build:1
   ~sources:[
-    "${PACKAGE}-${VERSION}.tar.gz";
-    "win32-fix-ecore_evas-engine-search-path.patch";
+    "${PACKAGE}-${VERSION}.tar.xz";
   ]
 
 let elementary = add ("elementary", None)
   ~dir:"slackbuilds.org/libraries"
   ~dependencies:[ efl ]
-  ~version:"1.9.2"
+  ~version:"1.11.0-beta1"
   ~build:1
   ~sources:[
-    "${PACKAGE}-${VERSION}.tar.gz";
+    "${PACKAGE}-${VERSION}.tar.xz";
   ]
 
 let qt = add ("qt", Some "native")
