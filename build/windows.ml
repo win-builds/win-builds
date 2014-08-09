@@ -340,7 +340,7 @@ let do_adds builder =
 
   let gtk_2 =
     let dir =
-      if builder.prefix.host = Config.Arch.windows_64 then
+      if Config.(builder.Builder.prefix.Prefix.host = Arch.windows_64) then
         ""
       else
         "slackware64-current/l"
