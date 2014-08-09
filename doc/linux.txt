@@ -63,23 +63,7 @@ solved by slightly changing the patches below.
 cave resolve -x dev-ocaml/findlib dev-lang/ocaml '>=app-arch/libarchive-3.1.2-r2'
 ------------------------------------------------------------------------
 
-== Yypkg ==
-
-Build of yypkg and its dependencies is automated and straightforward; simply
-run:
-
-------------------------------------------------------------------------
-make -C win-builds/yypkg
-------------------------------------------------------------------------
-
-Then, install as root (it copies a single executable to /usr/local/bin), run:
-------------------------------------------------------------------------
-make -C win-builds/yypkg install
-------------------------------------------------------------------------
-
-== Build the cross-compiler ==
-
-=== Retrieve sources ===
+== Retrieve sources ==
 Run the following to get all the source files:
 
 ------------------------------------------------------------------------
@@ -99,6 +83,22 @@ When the build runs, if some source files are not already available in the
 directory of the sources, they will be copied from the
 "origin/tarballs-@@VERSION@@" branch. If you wish to provide your own version
 of a specific file, simply overwrite the one in the source tree.
+
+== Yypkg ==
+
+Build of yypkg and its dependencies is automated and straightforward; simply
+run:
+
+------------------------------------------------------------------------
+make -C win-builds/yypkg
+------------------------------------------------------------------------
+
+Then, install as root (it copies a single executable to /usr/local/bin), run:
+------------------------------------------------------------------------
+make -C win-builds/yypkg install
+------------------------------------------------------------------------
+
+== Build the cross-compiler ==
 
 === Build the cross-compiler ===
 
