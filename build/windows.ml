@@ -240,7 +240,7 @@ let do_adds builder =
   let gnutls = add ("gnutls", None)
     ~dir:"slackware64-current/n"
     ~dependencies:[ zlib; gmp; libtasn1; nettle; ca_certificates ]
-    ~version:"3.1.25"
+    ~version:"3.2.15"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz"
