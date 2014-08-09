@@ -299,8 +299,9 @@ let do_adds builder =
 
   let cairo = add ("cairo", None)
     ~dir:"slackware64-current/l"
-    ~dependencies:[ pixman ]
-    ~version:"1.12.14"
+    (* TODO: seems to be able to use pthread *)
+    ~dependencies:[ pixman; freetype; fontconfig; libpng ]
+    ~version:"1.12.16"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz"
