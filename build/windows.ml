@@ -230,7 +230,7 @@ let do_adds builder =
   let libtasn1 = add ("libtasn1", None)
     ~dir:"slackware64-current/l"
     ~dependencies:[]
-    ~version:"3.3"
+    ~version:"3.6"
     ~build:1
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz"
