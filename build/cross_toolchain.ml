@@ -18,13 +18,9 @@ let builder ~name ~target =
     packages = [];
   }
 
-let do_adds
-  (add :
-    (string * string option)
-    -> dir:string -> dependencies : Config.Builder.package list
-    -> version:string -> build:int
-    -> sources: string list -> Config.Builder.package)
-  =
+let do_adds builder =
+  let add = Config.Builder.register builder in
+
   let binutils = add ("binutils", None)
     ~dir:"slackware64-current/d"
     ~dependencies:[]
@@ -141,5 +137,5 @@ let builder_64 =
   builder ~name:"cross_toolchain_64" ~target:Config.Arch.windows_64
 
 let () =
-  do_adds (Config.Builder.register ~builder:builder_32);
-  do_adds (Config.Builder.register ~builder:builder_64)
+  do_adds builder_32;
+  do_adds builder_64

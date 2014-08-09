@@ -18,13 +18,9 @@ let builder ~cross ~name ~host =
     packages = [];
   }
 
-let do_adds
-  (add :
-    (string * string option)
-    -> dir:string -> dependencies : Config.Builder.package list
-    -> version:string -> build:int
-    -> sources: string list -> Config.Builder.package)
-  =
+let do_adds builder =
+  let add = Config.Builder.register ~builder in
+
   let xz_yypkg = add ("xz", Some "yypkg")
     ~dir:"slackware64-current/a"
     ~dependencies:[]
@@ -342,16 +338,23 @@ let do_adds
     ]
   in
 
-  let gtk_2 = add ("gtk+2", None)
-    ~dir:"slackware64-current/l"
-    ~dependencies:[ gdk_pixbuf2; pango; atk; cairo; glib2 ]
-    ~version:"2.24.20"
-    ~build:1
-    ~sources:[
-      "gtk+-${VERSION}.tar.xz";
-      "gtk+-2.24.x.icon-compat.am.diff.gz";
-      "gtk+-2.24.x.icon-compat.diff.gz";
-    ]
+  let gtk_2 =
+    let dir =
+      if builder.prefix.host = Config.Arch.windows_64 then
+        ""
+      else
+        "slackware64-current/l"
+    in
+    add ("gtk+2", None)
+      ~dir
+      ~dependencies:[ gdk_pixbuf2; pango; atk; cairo; glib2 ]
+      ~version:"2.24.20"
+      ~build:1
+      ~sources:[
+        "gtk+-${VERSION}.tar.xz";
+        "gtk+-2.24.x.icon-compat.am.diff.gz";
+        "gtk+-2.24.x.icon-compat.diff.gz";
+      ]
   in
 
   let glib_networking = add ("glib-networking", None)
@@ -995,5 +998,5 @@ let builder_64 =
   builder ~name:"windows_64" ~host:Config.Arch.windows_64 ~cross:Cross_toolchain.builder_64
 
 let () =
-  do_adds (Config.Builder.register ~builder:builder_32);
-  do_adds (Config.Builder.register ~builder:builder_64)
+  do_adds builder_32;
+  do_adds builder_64
