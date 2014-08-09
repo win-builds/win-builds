@@ -182,11 +182,7 @@ module Builder = struct
     );
     fun p -> Hashtbl.mem h (p.package, p.variant)
 
-  let add
-      ~push ~builder
-      (package, variant)
-      ~dir ~dependencies ~version ~build ~sources
-    =
+  let add ~push ~builder =
     let shall_build = shall_build builder.name in
     let rec colorize p =
       if not p.to_build then (
@@ -194,15 +190,6 @@ module Builder = struct
         List.iter colorize p.dependencies
       )
     in
-    let dict = [
-      "PACKAGE", package;
-      "VARIANT", (match variant with Some v -> v | None -> "");
-      "VERSION", version;
-      "BUILD", string_of_int build;
-      "TARGET_TRIPLET", builder.prefix.Prefix.target.Arch.triplet;
-      "HOST_TRIPLET", builder.prefix.Prefix.host.Arch.triplet;
-      "BUILD_TRIPLET", builder.prefix.Prefix.build.Arch.triplet;
-    ] in
     let add_aux p = (if shall_build p then colorize p); push p; p in
     let output = 
       if builder.prefix.Prefix.target <> builder.prefix.Prefix.host then
@@ -210,24 +197,32 @@ module Builder = struct
       else
         "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz"
     in
-    let sources =
-      "${PACKAGE}.SlackBuild"
-      :: "${PACKAGE}.yypkg.script"
-      :: "slack-desc"
-      :: sources
-    in
-    let sources =
-      match variant with
-      | Some variant -> ("config-" ^ variant) :: sources
-      | None -> sources
-    in
-    add_aux {
-      package; variant; dir; dependencies;
-      version; build;
-      sources = List.map (substitute_variables ~dict) sources;
-      output = substitute_variables ~dict output;
-      to_build = false;
-    }
+    fun (package, variant) ~dir ~dependencies ~version ~build ~sources ->
+      let dict = [
+        "PACKAGE", package;
+        "VARIANT", (match variant with Some v -> v | None -> "");
+        "VERSION", version;
+        "BUILD", string_of_int build;
+        "TARGET_TRIPLET", builder.prefix.Prefix.target.Arch.triplet;
+        "HOST_TRIPLET", builder.prefix.Prefix.host.Arch.triplet;
+        "BUILD_TRIPLET", builder.prefix.Prefix.build.Arch.triplet;
+      ] in
+      let sources =
+        List.concat [
+          (match variant with Some v -> [ "config-" ^ v ] | None -> []);
+          [ "${PACKAGE}.SlackBuild" ];
+          [ "${PACKAGE}.yypkg.script" ];
+          [ "slack-desc" ];
+           sources
+        ]
+      in
+      add_aux {
+        package; variant; dir; dependencies;
+        version; build;
+        sources = List.map (substitute_variables ~dict) sources;
+        output = substitute_variables ~dict output;
+        to_build = false;
+      }
 
   let register ~builder =
     add ~builder ~push:(fun p -> builder.packages <- (builder.packages @ [p]))
