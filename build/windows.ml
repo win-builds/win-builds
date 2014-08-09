@@ -45,7 +45,7 @@ let do_adds builder =
     ~dir:"mingw"
     ~dependencies:[]
     ~version:"v3.1.0"
-    ~build:1
+    ~build:2
     ~sources:[
       "mingw-w64-${VERSION}.tar.bz2"
     ]
@@ -55,7 +55,7 @@ let do_adds builder =
     ~dir:"mingw"
     ~dependencies:[]
     ~version:"v3.1.0"
-    ~build:1
+    ~build:2
     ~sources:[
       "mingw-w64-${VERSION}.tar.bz2"
     ]
@@ -75,7 +75,7 @@ let do_adds builder =
     ~dir:"slackware64-current/a"
     ~dependencies:[ win_iconv ]
     ~version:"0.18.3.1"
-    ~build:1
+    ~build:2
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.gz"
     ]
@@ -281,7 +281,7 @@ let do_adds builder =
     ~dir:"slackware64-current/l"
     ~dependencies:[]
     ~version:"3.0.13"
-    ~build:1
+    ~build:2
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz"
     ]
@@ -403,7 +403,7 @@ let do_adds builder =
     ~dir:"slackware64-current/l"
     ~dependencies:[]
     ~version:"51.2" (* NOTE: the version number in sources needs updating too *)
-    ~build:1
+    ~build:2
     ~sources:[
       "${PACKAGE}-51_2-src.tar.xz";
     ]
@@ -437,7 +437,7 @@ let do_adds builder =
     ~dir:"slackware64-current/l"
     ~dependencies:[]
     ~version:"0.8.2"
-    ~build:1
+    ~build:2
     ~sources:[
       "mpc-${VERSION}.tar.xz";
     ]
@@ -477,7 +477,7 @@ let do_adds builder =
     ~dir:"slackware64-current/l"
     ~dependencies:[]
     ~version:"0.19.2"
-    ~build:1
+    ~build:3
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz";
     ]
@@ -507,7 +507,7 @@ let do_adds builder =
     ~dir:"slackware64-current/l"
     ~dependencies:[]
     ~version:"0.9.16"
-    ~build:1
+    ~build:2
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz";
     ]
@@ -561,7 +561,7 @@ let do_adds builder =
     ~dir:"slackware64-current/n"
     ~dependencies:[]
     ~version:"1.14"
-    ~build:1
+    ~build:2
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz";
     ]
@@ -571,7 +571,7 @@ let do_adds builder =
     ~dir:"mingw"
     ~dependencies:[]
     ~version:"v3.1.0"
-    ~build:1
+    ~build:2
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.bz2";
     ]
@@ -672,7 +672,7 @@ let do_adds builder =
     ~dir:"slackware64-current/l"
     ~dependencies:[]
     ~version:"0.15.1b"
-    ~build:1
+    ~build:3
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.gz";
       "Makefile.am";
@@ -685,7 +685,7 @@ let do_adds builder =
     ~dir:"slackware64-current/l"
     ~dependencies:[]
     ~version:"0.15.1b"
-    ~build:1
+    ~build:4
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.gz";
     ]
@@ -695,7 +695,7 @@ let do_adds builder =
     ~dir:"slackware64-current/ap"
     ~dependencies:[ libid3tag; libmad ]
     ~version:"0.15.2b"
-    ~build:1
+    ~build:4
     ~sources:[
       "${PACKAGE}-${VERSION}.tar.xz";
       "${PACKAGE}-${VERSION}-fix-segfault.patch.gz";
