@@ -212,7 +212,6 @@ module Builder = struct
           (match variant with Some v -> [ "config-" ^ v ] | None -> []);
           [ "${PACKAGE}.SlackBuild" ];
           [ "${PACKAGE}.yypkg.script" ];
-          [ "slack-desc" ];
            sources
         ]
       in
