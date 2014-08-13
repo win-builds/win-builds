@@ -41,7 +41,7 @@ let lua = add ("lua", None)
     "src_makefile";
   ]
 
-let efl = add ("efl", None)
+let efl = add ("efl", Some "for-your-tools-only")
   ~dir:"slackbuilds.org/libraries"
   ~dependencies:[ lua ]
   ~version:"1.11.0-beta1"
