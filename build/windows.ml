@@ -156,10 +156,20 @@ let do_adds builder =
 
     let elementary = elementary ~variant ~dependencies:[ efl ] in
 
+    let ocaml_cryptokit = add ("ocaml-cryptokit", None)
+      ~dir:"slackbuilds.org/ocaml"
+      ~dependencies:[]
+      ~version:"1.9"
+      ~build:1
+      ~sources:[
+        "cryptokit-${VERSION}.tar.gz"
+      ]
+    in
+
     add ("yypkg", None)
       ~dir:""
       ~dependencies:[
-        xz; libarchive; elementary;
+        xz; libarchive; elementary; ocaml_cryptokit
       ]
       ~version:"0.0.0"
       ~build:1
@@ -458,7 +468,7 @@ let do_adds builder =
     let sqlite = add ("sqlite", None)
       ~dir:"slackware64-current/ap"
       ~dependencies:[]
-      ~version:"3.7.17" (* NOTE: the version number in sources needs updating too *)
+      ~version:"3071700"
       ~build:1
       ~sources:[
         "${PACKAGE}-src-3071700.tar.xz";
@@ -581,7 +591,8 @@ let do_adds builder =
     in
 
     let efl = efl ~variant:"regular" ~dependencies:[
-      libpng; giflib; libjpeg; fontconfig; freetype; lua;
+      libtiff; libpng; giflib; libjpeg;
+      fontconfig; freetype; lua;
       fribidi; harfbuzz; libsndfile;
       gnutls; curl; c_ares; dbus;
     ]
@@ -603,7 +614,7 @@ let do_adds builder =
 
     let wget = add ("wget", None)
       ~dir:"slackware64-current/n"
-      ~dependencies:[]
+      ~dependencies:[ openssl ]
       ~version:"1.14"
       ~build:2
       ~sources:[
@@ -627,7 +638,7 @@ let do_adds builder =
       ~version:"2.24"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz";
+        "${PACKAGE}-${VERSION}.tar.gz";
         "binutils.export.demangle.h.diff.gz";
         "binutils.no-config-h-check.diff.gz";
       ]
@@ -663,9 +674,19 @@ let do_adds builder =
       ]
     in
 
+    let libao = add ("libao", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[]
+      ~version:"1.1.0"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz";
+      ]
+    in
+
     let flac = add ("flac", None)
       ~dir:"slackware64-current/ap"
-      ~dependencies:[]
+      ~dependencies:[ libao (* TODO: check *) ]
       ~version:"1.2.1"
       ~build:1
       ~sources:[
@@ -682,16 +703,6 @@ let do_adds builder =
       ~build:1
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz";
-      ]
-    in
-
-    let libao = add ("libao", None)
-      ~dir:"slackware64-current/l"
-      ~dependencies:[]
-      ~version:"1.1.0"
-      ~build:1
-      ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz";
       ]
     in
 
@@ -731,7 +742,7 @@ let do_adds builder =
 
     let lcms = add ("lcms", None)
       ~dir:"slackware64-current/l"
-      ~dependencies:[]
+      ~dependencies:[ zlib; libtiff; libjpeg ]
       ~version:"1.19"
       ~build:1
       ~sources:[
@@ -755,7 +766,7 @@ let do_adds builder =
       ~version:"3.5.25.3"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz";
+        "${PACKAGE}-${VERSION}.tar.xz";
         "patches/0047-djvused-added-missing-command-remove-outline.patch";
         "patches/0053-portable-pthread_t-initialization.patch";
         "patches/0056-remove-extra-semi-in-test-for-std-c-includes.patch";
@@ -787,43 +798,33 @@ let do_adds builder =
       ]
     in
 
-    let speex = add ("speex", None)
-      ~dir:"slackbuilds.org/audio"
-      ~dependencies:[]
-      ~version:"1.2rc1"
-      ~build:3
-      ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz";
-      ]
-    in
-
     let opus = add ("opus", None)
       ~dir:"slackbuilds.org/audio"
       ~dependencies:[]
-      ~version:"2.34"
+      ~version:"1.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz";
+        "${PACKAGE}-${VERSION}.tar.gz";
       ]
     in
 
     let a52dec = add ("a52dec", None)
       ~dir:"slackbuilds.org/audio"
       ~dependencies:[]
-      ~version:"2.34"
+      ~version:"0.7.4"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz";
+        "${PACKAGE}-${VERSION}.tar.gz";
       ]
     in
 
     let libmpeg2 = add ("libmpeg2", None)
       ~dir:"slackbuilds.org/libraries"
       ~dependencies:[]
-      ~version:"2.34"
+      ~version:"0.5.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz";
+        "${PACKAGE}-${VERSION}.tar.gz";
       ]
     in
 
@@ -847,7 +848,7 @@ let do_adds builder =
       ]
     in
 
-    let opencore_amr = add ("opencore-amr", None)
+    (* let opencore_amr = add ("opencore-amr", None)
       ~dir:"slackbuilds.org/audio"
       ~dependencies:[]
       ~version:"0.1.3"
@@ -855,9 +856,9 @@ let do_adds builder =
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.gz";
       ]
-    in
+    in *)
 
-    let faad2 = add ("faad2", None)
+    (* let faad2 = add ("faad2", None)
       ~dir:"slackbuilds.org/audio"
       ~dependencies:[]
       ~version:"2.7"
@@ -865,7 +866,7 @@ let do_adds builder =
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.bz2";
       ]
-    in
+    in *)
 
     let lame = add ("lame", None)
       ~dir:"slackbuilds.org/libraries"
@@ -877,13 +878,17 @@ let do_adds builder =
       ]
     in
 
-    let qt = add ("qt", Some "windows")
+    let qt = add ("qt", Some "regular")
       ~dir:"slackware64-current/l"
-      ~dependencies:[]
-      ~version:"5.3.0"
+      ~dependencies:[ icu4c; zlib; sqlite; pcre; libpng; libjpeg; harfbuzz; dbus;
+        (* freetype; (* build with -system-freetype is broken and probably unsupported *) *)
+        (* win_iconv (* disabled by default in the build *) *)
+        (* giflib (* Qt never uses the sytem one! *) *)
+      ]
+      ~version:"5.3.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-everyhere-opensource-src-${VERSION}.tar.gz";
+        "${PACKAGE}-everywhere-opensource-src-${VERSION}.tar.gz";
         "0001-configure-use-pkg-config-for-libpng.patch";
         "0001-windployqt-Fix-cross-compilation.patch";
         "0002-Use-widl-instead-of-midl.-Also-set-QMAKE_DLLTOOL-to-.patch";
@@ -903,7 +908,7 @@ let do_adds builder =
 
     let ffmpeg = add ("ffmpeg", None)
       ~dir:"slackbuilds.org/multimedia"
-      ~dependencies:[ lame; x264 ]
+      ~dependencies:[ lame; x264; opus; libtheora; libvorbis; flac (* XXX: used? *) ]
       ~version:"2.2.3"
       ~build:1
       ~sources:[
@@ -916,6 +921,56 @@ let do_adds builder =
       ~dependencies:[]
       ~version:"4.0"
       ~build:5
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz";
+      ]
+    in
+
+    let json_c = add ("json-c", None)
+      ~dir:"slackbuilds.org/libraries"
+      ~dependencies:[]
+      ~version:"0.12"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz";
+      ]
+    in
+
+    let libgpg_error = add ("libgpg-error", None)
+      ~dir:"slackware64-current/n"
+      ~dependencies:[]
+      ~version:"1.13"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.bz2";
+      ]
+    in
+
+    let libgcrypt = add ("libgcrypt", None)
+      ~dir:"slackware64-current/n"
+      ~dependencies:[ libgpg_error ]
+      ~version:"1.6.1"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.bz2";
+      ]
+    in
+
+    let sdl2 = add ("SDL2", None)
+      ~dir:"slackbuilds.org/development"
+      ~dependencies:[ win_iconv ]
+      ~version:"2.0.3"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz";
+      ]
+    in
+
+    let openjpeg = add ("openjpeg", None)
+      ~dir:"slackbuilds.org/libraries"
+      ~dependencies:[ lcms; lcms2 ]
+      ~version:"2.1.0"
+      ~build:1
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.gz";
       ]
@@ -936,10 +991,14 @@ let do_adds builder =
       ~dependencies:[
         gcc; binutils; mingw_w64; gdb;
         elementary; gtk_2; ffmpeg;
+        libtheora; opus;
         madplay; icu4c; make; gperf; zz_config;
         jansson; libsigc_plus_plus;
         zlib; xz; winpthreads; pkg_config; libarchive;
         wget; dejavu_fonts_ttf;
+        openjpeg; sdl2; libgcrypt;
+        (* widl; *) glib_networking; libxml2; libsoup; djvulibre; a52dec; libmpeg2;
+        pcre
       ]
       ~version:"0.0.0"
       ~build:1
@@ -947,84 +1006,116 @@ let do_adds builder =
 
   in
 
-  (* let _experimental =
-    let sdl:base = add ("sdl:base", None)
-      ~dir:"# slackware64-current/l"
-      ~dependencies:[]
-
-    let sdl:image = add ("sdl:image", None)
-      ~dir:"# slackware64-current/l"
-      ~dependencies:[]
-
-    let sdl:mixer = add ("sdl:mixer", None)
-      ~dir:"# slackware64-current/l"
-      ~dependencies:[]
-
-    let sdl:net = add ("sdl:net", None)
-      ~dir:"# slackware64-current/l"
-      ~dependencies:[]
-
-    let sdl:ttf = add ("sdl:ttf", None)
-      ~dir:"# slackware64-current/l"
-      ~dependencies:[]
-
-    let dbus-glib = add ("dbus-glib", None)
-      ~dir:"# slackware64-current/l"
-      ~dependencies:[]
-
-    let webkitgtk = add ("webkitgtk", None)
-      ~dir:"# slackbuilds.org/libraries"
-      ~dependencies:[]
-
-    let gucharmap = add ("gucharmap", None)
-      ~dir:"slackware64-current/xap"
-      ~dependencies:[ gtk_3 ]
-
-    (* includes <pwd.h> *)
-    let geeqie = add ("geeqie", None)
-      ~dir:"slackware64-current/xap"
-      ~dependencies:[]
-
-    let luajit = add ("luajit", None)
-      ~dir:"slackbuilds.org/development"
-      ~dependencies:[]
-
-    let file = add ("file", None)
-      ~dir:"slackware64-current/a"
-      ~dependencies:[]
-
-    let libxslt = add ("libxslt", None)
-      ~dir:"slackware64-current/l"
-      ~dependencies:[]
-    let cdparanoia = add ("cdparanoia", None)
-      ~dir:"slackware64-current/ap"
-      ~dependencies:[]
-    (* requires ddk *)
-    let libcdio = add ("libcdio", None)
-      ~dir:"slackware64-current/l"
-      ~dependencies:[]
-
-    let libdvdread = add ("libdvdread", None)
-      ~dir:"slackware64-current/l"
-      ~dependencies:[]
-
-    let libidn = add ("libidn", None)
-      ~dir:"slackware64-current/l"
-      ~dependencies:[]
-    let fdk_aac = add ("fdk-aac", None)
-      ~dir:"mingw"
-      ~dependencies:[]
-      ~version:"2.34"
+  let _experimental =
+    add ("experimental", None)
+      ~dir:""
+      ~dependencies:[
+      ]
+      ~version:"0.0.0"
       ~build:1
+      ~sources:[]
+
+    (* 
+      let sdl:base = add ("sdl:base", None)
+        ~dir:"# slackware64-current/l"
+        ~dependencies:[]
+
+      let sdl:image = add ("sdl:image", None)
+        ~dir:"# slackware64-current/l"
+        ~dependencies:[]
+
+      let sdl:mixer = add ("sdl:mixer", None)
+        ~dir:"# slackware64-current/l"
+        ~dependencies:[]
+
+      let sdl:net = add ("sdl:net", None)
+        ~dir:"# slackware64-current/l"
+        ~dependencies:[]
+
+      let sdl:ttf = add ("sdl:ttf", None)
+        ~dir:"# slackware64-current/l"
+        ~dependencies:[]
+
+      let dbus-glib = add ("dbus-glib", None)
+        ~dir:"# slackware64-current/l"
+        ~dependencies:[]
+
+      let webkitgtk = add ("webkitgtk", None)
+        ~dir:"# slackbuilds.org/libraries"
+        ~dependencies:[]
+
+      let gucharmap = add ("gucharmap", None)
+        ~dir:"slackware64-current/xap"
+        ~dependencies:[ gtk_3 ]
+
+      (* includes <pwd.h> *)
+      let geeqie = add ("geeqie", None)
+        ~dir:"slackware64-current/xap"
+        ~dependencies:[]
+
+      let luajit = add ("luajit", None)
+        ~dir:"slackbuilds.org/development"
+        ~dependencies:[]
+
+      let file = add ("file", None)
+        ~dir:"slackware64-current/a"
+        ~dependencies:[]
+
+      let libxslt = add ("libxslt", None)
+        ~dir:"slackware64-current/l"
+        ~dependencies:[]
+      let cdparanoia = add ("cdparanoia", None)
+        ~dir:"slackware64-current/ap"
+        ~dependencies:[]
+      (* requires ddk *)
+      let libcdio = add ("libcdio", None)
+        ~dir:"slackware64-current/l"
+        ~dependencies:[]
+
+      let libdvdread = add ("libdvdread", None)
+        ~dir:"slackware64-current/l"
+        ~dependencies:[]
+
+      let libidn = add ("libidn", None)
+        ~dir:"slackware64-current/l"
+        ~dependencies:[]
+      let fdk_aac = add ("fdk-aac", None)
+        ~dir:"mingw"
+        ~dependencies:[]
+        ~version:"2.34"
+        ~build:1
+        ~sources:[
+          "${PACKAGE}-${VERSION}.tar.xz";
+        ]
+      in
+
+      let libcddb = add ("libcddb", None)
+        ~dir:"slackware64-current/l"
+        ~dependencies:[]
+    *)
+
+  in
+
+  let _disabled =
+    let speex = add ("speex", None)
+      ~dir:"slackbuilds.org/audio"
+      ~dependencies:[ (* libogg *) ]
+      ~version:"1.2rc1"
+      ~build:3
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz";
+        "${PACKAGE}-${VERSION}.tar.gz";
       ]
     in
 
-    let libcddb = add ("libcddb", None)
-      ~dir:"slackware64-current/l"
-      ~dependencies:[]
-  *)
+    add ("disabled", None)
+      ~dir:""
+      ~dependencies:[
+      ]
+      ~version:"0.0.0"
+      ~build:1
+      ~sources:[]
+
+  in
 
   ()
 
