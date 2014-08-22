@@ -35,7 +35,15 @@ module B = struct
     let mod_time_opt file =
       try (Unix.lstat file).Unix.st_mtime with _ -> 0.
     in
-    (List.fold_left mod_time_err 0. sources) > (mod_time_opt output)
+    (* TODO: collect all the files that are more recent *)
+    if (List.fold_left mod_time_err 0. sources) > (mod_time_opt output) then (
+      log dbg "One of %s is more recent than the output.\n%!"
+        (String.concat ", " sources);
+      true
+    )
+    else
+      false
+
 
   let build_one builder =
     run [| "mkdir"; "-p"; builder.yyoutput; builder.logs |];
