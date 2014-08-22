@@ -55,36 +55,35 @@ module B = struct
       let output = Filename.concat builder.yyoutput p.output in
       let sources_dir_ize = Filename.concat (Filename.concat p.dir p.package) in
       let sources = (List.map sources_dir_ize p.sources) in
-      if
-        p.dir = ""
-        || (fun b -> (if b then progress "[%s] %s is already up-to-date.\n%!" builder.prefix.Prefix.nickname p.package); b) (not (needs_rebuild ~sources ~output))
-      then
-        ()
-      else (
-        progress "[%s] Building %s\n%!" builder.prefix.Prefix.nickname (name p);
-        let dir = Filename.concat p.dir p.package in
-        let variant = match p.variant with None -> "" | Some s -> "-" ^ s in
-        let log =
-          let filename = Filename.concat builder.logs (name p) in
-          let flags = [ Unix.O_RDWR; Unix.O_CREAT; Unix.O_TRUNC ] in
-          Unix.openfile filename flags 0o644
-        in
-        let run command = run ~stdout:log ~stderr:log ~env command in
-        run [|
-          "sh"; "-cex";
-          String.concat "; " [
-            sp "cd %S" dir;
-            sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
-            sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
-            sp "export VERSION=%S" p.version;
-            sp "export BUILD=%d" p.build;
-            sp "if [ -e config%s ]; then . ./config%s; fi" variant variant;
-            sp "exec bash -x %s.SlackBuild" p.package
-          ]
-        |];
-        run [| "yypkg"; "--upgrade"; "--install-new"; output |];
-        Unix.close log
-      )
+      if p.dir = "" || not (needs_rebuild ~sources ~output) then
+        fun () ->
+          progress "[%s] %s is already up-to-date.\n%!" builder.prefix.Prefix.nickname (name p)
+      else
+        fun () -> (
+          progress "[%s] Building %s\n%!" builder.prefix.Prefix.nickname (name p);
+          let dir = Filename.concat p.dir p.package in
+          let variant = match p.variant with None -> "" | Some s -> "-" ^ s in
+          let log =
+            let filename = Filename.concat builder.logs (name p) in
+            let flags = [ Unix.O_RDWR; Unix.O_CREAT; Unix.O_TRUNC ] in
+            Unix.openfile filename flags 0o644
+          in
+          let run command = run ~stdout:log ~stderr:log ~env command in
+          run [|
+            "sh"; "-cex";
+            String.concat "; " [
+              sp "cd %S" dir;
+              sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
+              sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
+              sp "export VERSION=%S" p.version;
+              sp "export BUILD=%d" p.build;
+              sp "if [ -e config%s ]; then . ./config%s; fi" variant variant;
+              sp "exec bash -x %s.SlackBuild" p.package
+            ]
+          |];
+          run [| "yypkg"; "--upgrade"; "--install-new"; output |];
+          Unix.close log
+        )
 end
 
 let build ~failer builder =
