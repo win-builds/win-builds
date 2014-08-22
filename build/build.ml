@@ -101,8 +101,9 @@ let build ~failer builder =
       progress "[%s] Building: %s\n%!"
         builder.prefix.Prefix.nickname
         (String.concat ", " (List.map name packages));
-      ListLabels.iter packages ~f:(fun p ->
-        let res = (try B.build_one builder p; true with _ -> false) in
+      let p_builds = List.map (fun p -> p, B.build_one builder p) packages in
+      ListLabels.iter p_builds ~f:(fun (p, p_build) ->
+        let res = (try p_build (); true with _ -> false) in
         if !failer then
           failwith "Aborting because another thread did so."
         else (
