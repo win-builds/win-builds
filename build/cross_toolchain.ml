@@ -24,10 +24,10 @@ let do_adds builder =
   let binutils = add ("binutils", None)
     ~dir:"slackware64-current/d"
     ~dependencies:[]
-    ~version:"2.23.2"
+    ~version:"2.24"
     ~build:1
     ~sources:[
-      "binutils-${VERSION}.tar.xz";
+      "binutils-${VERSION}.tar.gz";
       "binutils.export.demangle.h.diff.gz";
       "binutils.no-config-h-check.diff.gz";
     ]
@@ -35,19 +35,19 @@ let do_adds builder =
 
   let mingw_w64_add = add
     ~dir:"mingw"
-    ~version:"3.1.0"
+    ~version:"v3.1.0"
     ~build:1
     ~sources:[
-      "mingw-w64-v${VERSION}.tar.bz2"
+      "mingw-w64-${VERSION}.tar.bz2"
     ]
   in
 
   let gcc_add = add
     ~dir:"slackware64-current/d"
-    ~version:"4.8.2"
+    ~version:"4.8.3"
     ~build:1
     ~sources:[
-      "gcc-v${VERSION}.tar.xz"
+      "gcc-${VERSION}.tar.xz"
     ]
   in
 
@@ -56,40 +56,40 @@ let do_adds builder =
   in
 
   let gcc_core = gcc_add ("gcc", Some "core")
-    ~dependencies:[ mingw_w64_headers ]
+    ~dependencies:[ binutils; mingw_w64_headers ]
   in
 
   let mingw_w64_full = mingw_w64_add ("mingw-w64", Some "full")
-    ~dependencies:[ gcc_core ]
+    ~dependencies:[ binutils; gcc_core ]
   in
 
   let winpthreads = add ("winpthreads", None)
     ~dir:"mingw"
-    ~dependencies:[ gcc_core; mingw_w64_full ]
-    ~version:"3.1.0"
+    ~dependencies:[ binutils; gcc_core; mingw_w64_full ]
+    ~version:"v3.1.0"
     ~build:1
     ~sources:[
-      "winpthreads-v${VERSION}.tar.bz2"
+      "mingw-w64-${VERSION}.tar.bz2"
     ]
   in
 
   let gcc_full = gcc_add ("gcc", Some "full")
-    ~dependencies:[ gcc_core; mingw_w64_full; winpthreads ]
+    ~dependencies:[ binutils; gcc_core; mingw_w64_full; winpthreads ]
   in
 
   (* let widl = add ("widl", None)
     ~dir:"mingw"
     ~dependencies:[]
-    ~version:"3.1.0"
+    ~version:"v3.1.0"
     ~build:1
     ~sources:[
-      "winpthreads-v${version}.tar.bz2"
+      "winpthreads-${version}.tar.bz2"
     ]
   *)
 
   let flexdll = add ("flexdll", None)
     ~dir:"mingw"
-    ~dependencies:[ gcc_full; mingw_w64_full; binutils ]
+    ~dependencies:[ binutils; gcc_full; mingw_w64_full; binutils ]
     ~version:"0.31"
     ~build:1
     ~sources:[
@@ -98,19 +98,23 @@ let do_adds builder =
   in
 
   let ocaml = add ("ocaml", None)
-    ~dir:"slackbuilds.org"
-    ~dependencies:[ flexdll ]
-    ~version:"4.02.0"
-    ~build:1
-    ~sources:[]
+    ~dir:"slackbuilds.org/ocaml"
+    ~dependencies:[ binutils; flexdll; gcc_full; mingw_w64_full ]
+    ~version:"4.01.0-trunk"
+    ~build:2
+    ~sources:[
+      "${PACKAGE}-${VERSION}.tar.gz";
+    ]
   in
 
   let ocaml_findlib = add ("ocaml-findlib", None)
-    ~dir:"slackbuilds.org"
-    ~dependencies:[]
-    ~version:"4.02.0"
+    ~dir:"slackbuilds.org/ocaml"
+    ~dependencies:[ ocaml ]
+    ~version:"1.5.2"
     ~build:1
-    ~sources:[]
+    ~sources:[
+      "findlib-${VERSION}.tar.gz"
+    ]
   in
 
   let _all = add ("all", None)
@@ -123,7 +127,7 @@ let do_adds builder =
 
   let _yypkg = add ("yypkg", None)
     ~dir:""
-    ~dependencies:[ ocaml; ocaml_findlib ]
+    ~dependencies:[ flexdll; ocaml; ocaml_findlib ]
     ~version:"1.0.0"
     ~build:1
     ~sources:[]
