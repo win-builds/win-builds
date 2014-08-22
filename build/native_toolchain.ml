@@ -23,11 +23,12 @@ let add =
   Config.Builder.register ~builder
 
 let ocaml = add ("ocaml", None)
-  ~dir:"slackbuilds.org"
+  ~dir:"slackbuilds.org/ocaml"
   ~dependencies:[]
-  ~version:"4.01.0"
-  ~build:1
-  ~sources:[ (* XXX *)
+  ~version:"4.01.0-trunk"
+  ~build:2
+  ~sources:[
+    "${PACKAGE}-${VERSION}.tar.gz"
   ]
 
 let lua = add ("lua", None)
@@ -62,7 +63,7 @@ let elementary = add ("elementary", None)
 let qt = add ("qt", Some "native")
   ~dir:"slackware64-current/l"
   ~dependencies:[]
-  ~version:"1.9.2"
+  ~version:"5.3.1"
   ~build:1
   ~sources:[
     "qt-everywhere-opensource-src-${VERSION}.tar.gz";
