@@ -1,4 +1,4 @@
-export VERSION_DEV := 1.5-dev1
+export VERSION_DEV := 1.5-dev2
 export VERSION_STABLE := 1.4.0
 
 YYPKG_FILES := http://win-builds.org/yypkg
