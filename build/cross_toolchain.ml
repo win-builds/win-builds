@@ -77,15 +77,15 @@ let do_adds builder =
     ~dependencies:[ binutils; gcc_core; mingw_w64_full; winpthreads ]
   in
 
-  (* let widl = add ("widl", None)
+  let widl = add ("widl", None)
     ~dir:"mingw"
     ~dependencies:[]
     ~version:"v3.1.0"
     ~build:1
     ~sources:[
-      "winpthreads-${version}.tar.bz2"
+      "mingw-w64-${VERSION}.tar.bz2"
     ]
-  *)
+  in
 
   let flexdll = add ("flexdll", None)
     ~dir:"mingw"
@@ -119,7 +119,7 @@ let do_adds builder =
 
   let _all = add ("all", None)
     ~dir:""
-    ~dependencies:[ gcc_full; mingw_w64_full; binutils; mingw_w64_full ]
+    ~dependencies:[ gcc_full; mingw_w64_full; binutils; mingw_w64_full; widl ]
     ~version:"0.0.0"
     ~build:1
     ~sources:[]
