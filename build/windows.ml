@@ -976,6 +976,16 @@ let do_adds builder =
       ]
     in
 
+    let libxslt = add ("libxslt", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[ libxml2 ]
+      ~version:"1.1.28"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz";
+      ]
+    in
+
     let zz_config = add ("zz_config", None)
       ~dir:"mingw"
       ~dependencies:[]
@@ -998,7 +1008,7 @@ let do_adds builder =
         wget; dejavu_fonts_ttf;
         openjpeg; sdl2; libgcrypt;
         widl; glib_networking; libxml2; libsoup; djvulibre; a52dec; libmpeg2;
-        pcre
+        pcre; libxslt
       ]
       ~version:"0.0.0"
       ~build:1
@@ -1061,9 +1071,6 @@ let do_adds builder =
         ~dir:"slackware64-current/a"
         ~dependencies:[]
 
-      let libxslt = add ("libxslt", None)
-        ~dir:"slackware64-current/l"
-        ~dependencies:[]
       let cdparanoia = add ("cdparanoia", None)
         ~dir:"slackware64-current/ap"
         ~dependencies:[]
