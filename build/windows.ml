@@ -1039,6 +1039,17 @@ let do_adds builder =
       ]
     in
 
+    (* TODO: check for new version *)
+    let libcdio = add ("libcdio", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[ (* libcddb *) ]
+      ~version:"0.83"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz";
+      ]
+    in
+
     add ("experimental", None)
       ~dir:""
       ~dependencies:[
@@ -1095,10 +1106,6 @@ let do_adds builder =
 
       let cdparanoia = add ("cdparanoia", None)
         ~dir:"slackware64-current/ap"
-        ~dependencies:[]
-      (* requires ddk *)
-      let libcdio = add ("libcdio", None)
-        ~dir:"slackware64-current/l"
         ~dependencies:[]
 
       let libdvdread = add ("libdvdread", None)
