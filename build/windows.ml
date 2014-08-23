@@ -997,7 +997,7 @@ let do_adds builder =
         zlib; xz; winpthreads; pkg_config; libarchive;
         wget; dejavu_fonts_ttf;
         openjpeg; sdl2; libgcrypt;
-        (* widl; *) glib_networking; libxml2; libsoup; djvulibre; a52dec; libmpeg2;
+        widl; glib_networking; libxml2; libsoup; djvulibre; a52dec; libmpeg2;
         pcre
       ]
       ~version:"0.0.0"
