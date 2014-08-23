@@ -178,6 +178,16 @@ let do_adds builder =
   in
 
   let _all =
+    let mingw_w64_tool_add name = add (name, None)
+      ~dir:"mingw"
+      ~dependencies:[]
+      ~version:"v3.1.0"
+      ~build:1
+      ~sources:[
+        "mingw-w64-${VERSION}.tar.bz2"
+      ]
+    in
+
     let winpthreads = add ("winpthreads", None)
       ~dir:"mingw"
       ~dependencies:[]
@@ -188,15 +198,13 @@ let do_adds builder =
       ]
     in
 
-    let widl = add ("widl", None)
-      ~dir:"mingw"
-      ~dependencies:[]
-      ~version:"v3.1.0"
-      ~build:2
-      ~sources:[
-        "mingw-w64-${VERSION}.tar.bz2"
-      ]
-    in
+    let gendef = mingw_w64_tool_add "gendef" in
+
+    let genidl = mingw_w64_tool_add "genidl" in
+
+    let genpeimg = mingw_w64_tool_add "genpeimg" in
+
+    let widl = mingw_w64_tool_add "widl" in
 
     let win_iconv = add ("win-iconv", None)
       ~dir:"mingw"

@@ -51,6 +51,16 @@ let do_adds builder =
     ]
   in
 
+  let mingw_w64_tool_add name = add (name, None)
+    ~dir:"mingw"
+    ~dependencies:[]
+    ~version:"v3.1.0"
+    ~build:1
+    ~sources:[
+      "mingw-w64-${VERSION}.tar.bz2"
+    ]
+  in
+
   let mingw_w64_headers = mingw_w64_add ("mingw-w64", Some "headers")
     ~dependencies:[]
   in
@@ -77,15 +87,13 @@ let do_adds builder =
     ~dependencies:[ binutils; gcc_core; mingw_w64_full; winpthreads ]
   in
 
-  let widl = add ("widl", None)
-    ~dir:"mingw"
-    ~dependencies:[]
-    ~version:"v3.1.0"
-    ~build:1
-    ~sources:[
-      "mingw-w64-${VERSION}.tar.bz2"
-    ]
-  in
+  let gendef = mingw_w64_tool_add "gendef" in
+
+  let genidl = mingw_w64_tool_add "genidl" in
+
+  let genpeimg = mingw_w64_tool_add "genpeimg" in
+
+  let widl = mingw_w64_tool_add "widl" in
 
   let flexdll = add ("flexdll", None)
     ~dir:"mingw"
