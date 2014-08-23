@@ -1025,6 +1025,20 @@ let do_adds builder =
   in
 
   let _experimental =
+    let libidn = add ("libidn", None)
+      (* NOTE: Uses gnulib with MSVC bits licensd as GPLv3; *NOT* LGPL. *)
+      (* NOTE: Wget can depend on libidn (wget's license has to be checked). *)
+      (* NOTE: Also, the gnulib MSVC bits don't compile; maybe an update would
+       * fix them. *)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[]
+      ~version:"1.25"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz";
+      ]
+    in
+
     add ("experimental", None)
       ~dir:""
       ~dependencies:[
@@ -1091,9 +1105,6 @@ let do_adds builder =
         ~dir:"slackware64-current/l"
         ~dependencies:[]
 
-      let libidn = add ("libidn", None)
-        ~dir:"slackware64-current/l"
-        ~dependencies:[]
       let fdk_aac = add ("fdk-aac", None)
         ~dir:"mingw"
         ~dependencies:[]
