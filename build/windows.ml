@@ -1039,7 +1039,7 @@ let do_adds builder =
       (* NOTE: Uses gnulib with MSVC bits licensd as GPLv3; *NOT* LGPL. *)
       (* NOTE: Wget can depend on libidn (wget's license has to be checked). *)
       (* NOTE: Also, the gnulib MSVC bits don't compile; maybe an update would
-       * fix them. *)
+       *       fix them. *)
       ~dir:"slackware64-current/l"
       ~dependencies:[]
       ~version:"1.25"
@@ -1049,10 +1049,26 @@ let do_adds builder =
       ]
     in
 
+    (* NOTE: dependency on regex *)
+    (* NOTE: has an enum field "SEARCH_ALL" which conflicts with a #define from
+     *       Windows and is public API. *)
+    let libcddb = add ("libcddb", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[]
+      ~version:"1.3.2"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz";
+      ]
+    in
+
     (* TODO: check for new version *)
+    (* TODO: check why it might try to build cdparanoia *)
+    (* TODO: cdtext.c:216:3: warning: implicit declaration of function ‘bzero’
+     *       [-Wimplicit-function-declaration] *)
     let libcdio = add ("libcdio", None)
       ~dir:"slackware64-current/l"
-      ~dependencies:[ (* libcddb *) ]
+      ~dependencies:[ libcddb ]
       ~version:"0.83"
       ~build:1
       ~sources:[
@@ -1116,7 +1132,7 @@ let do_adds builder =
 
       let cdparanoia = add ("cdparanoia", None)
         ~dir:"slackware64-current/ap"
-        ~dependencies:[]
+        ~dependencies:[ libcdio? ]
 
       let fdk_aac = add ("fdk-aac", None)
         ~dir:"mingw"
@@ -1128,9 +1144,6 @@ let do_adds builder =
         ]
       in
 
-      let libcddb = add ("libcddb", None)
-        ~dir:"slackware64-current/l"
-        ~dependencies:[]
     *)
 
   in
