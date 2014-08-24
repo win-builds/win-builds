@@ -1030,8 +1030,11 @@ let do_adds builder =
         zlib; xz; winpthreads; pkg_config; libarchive;
         wget; dejavu_fonts_ttf;
         openjpeg; sdl2; libgcrypt;
-        widl; glib_networking; libxml2; libsoup; djvulibre; a52dec; libmpeg2;
-        pcre; libxslt; libdvdread
+        glib_networking; libxml2; libsoup; djvulibre; a52dec; libmpeg2;
+        pcre; libxslt; libdvdread;
+        gendef; genidl; genpeimg; widl;
+        json_c;
+        qt;
       ]
       ~version:"0.0.0"
       ~build:1
