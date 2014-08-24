@@ -994,6 +994,16 @@ let do_adds builder =
       ]
     in
 
+    let libdvdread = add ("libdvdread", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[]
+      ~version:"4.2.0"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.bz2";
+      ]
+    in
+
     let zz_config = add ("zz_config", None)
       ~dir:"mingw"
       ~dependencies:[]
@@ -1016,7 +1026,7 @@ let do_adds builder =
         wget; dejavu_fonts_ttf;
         openjpeg; sdl2; libgcrypt;
         widl; glib_networking; libxml2; libsoup; djvulibre; a52dec; libmpeg2;
-        pcre; libxslt
+        pcre; libxslt; libdvdread
       ]
       ~version:"0.0.0"
       ~build:1
@@ -1106,10 +1116,6 @@ let do_adds builder =
 
       let cdparanoia = add ("cdparanoia", None)
         ~dir:"slackware64-current/ap"
-        ~dependencies:[]
-
-      let libdvdread = add ("libdvdread", None)
-        ~dir:"slackware64-current/l"
         ~dependencies:[]
 
       let fdk_aac = add ("fdk-aac", None)
