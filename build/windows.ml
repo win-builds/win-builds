@@ -19,7 +19,8 @@ let builder ~cross ~name ~host =
   }
 
 let do_adds builder =
-  let add = Config.Builder.register ~builder in
+  let add_full = Config.Builder.register ~builder in
+  let add = add_full ?outputs:None in
 
   let xz ~variant ~dependencies =
     add ("xz", Some variant)
@@ -652,13 +653,17 @@ let do_adds builder =
       ]
     in
 
-    let gcc = add ("gcc", Some "full")
+    let gcc = add_full ("gcc", Some "full")
       ~dir:"slackware64-current/d"
       ~dependencies:[ gmp; mpfr; libmpc ]
       ~version:"4.8.3"
       ~build:1
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz";
+      ]
+      ~outputs:[
+        "gcc-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz";
+        "gcc-g++-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz"
       ]
     in
 

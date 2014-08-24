@@ -19,7 +19,8 @@ let builder ~name ~target =
   }
 
 let do_adds builder =
-  let add = Config.Builder.register ~builder in
+  let add_full = Config.Builder.register ~builder in
+  let add = add_full ?outputs:None in
 
   let binutils = add ("binutils", None)
     ~dir:"slackware64-current/d"
@@ -42,12 +43,16 @@ let do_adds builder =
     ]
   in
 
-  let gcc_add = add
+  let gcc_add = add_full
     ~dir:"slackware64-current/d"
     ~version:"4.8.3"
     ~build:1
     ~sources:[
       "gcc-${VERSION}.tar.xz"
+    ]
+    ~outputs:[
+      "gcc-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz";
+      "gcc-g++-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz"
     ]
   in
 
@@ -127,7 +132,10 @@ let do_adds builder =
 
   let _all = add ("all", None)
     ~dir:""
-    ~dependencies:[ gcc_full; mingw_w64_full; binutils; mingw_w64_full; widl ]
+    ~dependencies:[
+      gcc_full; mingw_w64_full; binutils; mingw_w64_full;
+      gendef; genidl; genpeimg; widl;
+    ]
     ~version:"0.0.0"
     ~build:1
     ~sources:[]

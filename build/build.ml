@@ -8,7 +8,7 @@ let name p =
   | None -> p.package
 
 module B = struct
-  let needs_rebuild ~sources ~output =
+  let needs_rebuild ~sources ~outputs =
     let get_file file =
       if not (Sys.file_exists file) then
         try
@@ -32,11 +32,13 @@ module B = struct
         max prev (Unix.lstat file).Unix.st_mtime
       ) ()
     in
-    let mod_time_opt file =
-      try (Unix.lstat file).Unix.st_mtime with _ -> 0.
+    let mod_time_opt prev file =
+      max prev (try (Unix.lstat file).Unix.st_mtime with _ -> 0.)
     in
     (* TODO: collect all the files that are more recent *)
-    if (List.fold_left mod_time_err 0. sources) > (mod_time_opt output) then (
+    let mod_time_sources = List.fold_left mod_time_err 0. sources in
+    let mod_time_outputs = List.fold_left mod_time_opt 0. outputs in
+    if mod_time_sources > mod_time_outputs then (
       log dbg "One of %s is more recent than the output.\n%!"
         (String.concat ", " sources);
       true
@@ -52,10 +54,10 @@ module B = struct
       || Sys.readdir builder.prefix.Prefix.yyprefix = [| |] then
       run [| "yypkg"; "--init"; "--prefix"; builder.prefix.Prefix.yyprefix |]);
     fun p ->
-      let output = Filename.concat builder.yyoutput p.output in
+      let outputs = List.map (Filename.concat builder.yyoutput) p.outputs in
       let sources_dir_ize = Filename.concat (Filename.concat p.dir p.package) in
       let sources = (List.map sources_dir_ize p.sources) in
-      if p.dir = "" || not (needs_rebuild ~sources ~output) then
+      if p.dir = "" || not (needs_rebuild ~sources ~outputs) then
         fun () ->
           progress "[%s] %s is already up-to-date.\n%!" builder.prefix.Prefix.nickname (name p)
       else
@@ -81,7 +83,9 @@ module B = struct
               sp "exec bash -x %s.SlackBuild" p.package
             ]
           |];
-          run [| "yypkg"; "--upgrade"; "--install-new"; output |];
+          ListLabels.iter outputs ~f:(fun output ->
+            run [| "yypkg"; "--upgrade"; "--install-new"; output |]
+          );
           Unix.close log
         )
 end

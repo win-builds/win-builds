@@ -103,7 +103,7 @@ module Builder = struct
     version : string;
     build : int;
     sources : string list;
-    output : string;
+    outputs : string list;
     mutable to_build : bool;
   }
 
@@ -191,13 +191,16 @@ module Builder = struct
       )
     in
     let add_aux p = (if shall_build p then colorize p); push p; p in
-    let output = 
+    let default_output () =
       if builder.prefix.Prefix.target <> builder.prefix.Prefix.host then
         "${PACKAGE}-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz"
       else
         "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz"
     in
-    fun (package, variant) ~dir ~dependencies ~version ~build ~sources ->
+    fun (package, variant)
+      ?(outputs=[default_output ()])
+      ~dir ~dependencies ~version ~build ~sources
+    ->
       let dict = [
         "PACKAGE", package;
         "VARIANT", (match variant with Some v -> v | None -> "");
@@ -219,7 +222,7 @@ module Builder = struct
         package; variant; dir; dependencies;
         version; build;
         sources = List.map (substitute_variables ~dict) sources;
-        output = substitute_variables ~dict output;
+        outputs = List.map (substitute_variables ~dict) outputs;
         to_build = false;
       }
 

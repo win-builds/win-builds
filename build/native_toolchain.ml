@@ -19,8 +19,10 @@ let builder =
     packages = [];
   }
 
-let add =
+let add_full =
   Config.Builder.register ~builder
+
+let add = add_full ?outputs:None
 
 let ocaml = add ("ocaml", None)
   ~dir:"slackbuilds.org/ocaml"
