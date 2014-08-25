@@ -1009,6 +1009,21 @@ let do_adds builder =
       ]
     in
 
+    let sox = add ("sox", None)
+      ~dir:"slackware64-current/ap"
+      ~dependencies:[
+        libao; libmad; libid3tag; lame; libvorbis; libogg; libsndfile; ffmpeg;
+        (* NOTE: available: wavpack *)
+        (* NOTE: available: magic *)
+        (* NOTE: available: libpng ! *)
+      ]
+      ~version:"14.4.1"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz";
+      ]
+    in
+
     let zz_config = add ("zz_config", None)
       ~dir:"mingw"
       ~dependencies:[]
