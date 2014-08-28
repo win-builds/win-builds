@@ -15,11 +15,11 @@ efl="ocaml-efl-${EFL_VERSION}"
 yypkg="yypkg-${YYPKG_VERSION}"
 
 download_and_extract() {
-  rm -f "${1}"
-  if ! [ -e "tarballs/${1}" ]; then
-    (cd tarballs && wget ${YYPKG_FILES}/${1})
+  rm -rf "${1}" "${1}.${2}"
+  if ! [ -e "tarballs/${1}.${2}" ]; then
+    (cd tarballs && wget "${YYPKG_FILES}/${1}.${2}")
   fi
-  tar xf "tarballs/${1}"
+  tar xf "tarballs/${1}.${2}"
 }
 
 build_oasis() {
@@ -35,14 +35,13 @@ P() {
   patch --verbose -p1 < "${CWD}/patches/${1}"
 }
 
-for tarball in ${cryptokit} ${fileutils} ${archive}; do
-  download_and_extract ${tarball}.tar.gz
-done
-for tarball in ${yypkg} ${efl}; do
-  download_and_extract ${tarball}.tar.xz
-done
+download_and_extract "${cryptokit}" "tar.gz"
+download_and_extract "${fileutils}" "tar.gz"
+download_and_extract "${archive}" "tar.gz"
+download_and_extract "${efl}" "tar.xz"
+download_and_extract "${yypkg}" "tar.xz"
 for tarball in ${libocaml}; do
-  download_and_extract libocaml_${tarball}.${LIBOCAML_VERSION}.tar.xz
+  download_and_extract libocaml_${tarball}.${LIBOCAML_VERSION} tar.xz
 done
 
 mkdir -p ${OCAMLFIND_DESTDIR}/stublibs
