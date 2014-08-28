@@ -74,7 +74,7 @@ for repo in mingw slackware64-current slackbuilds.org; do
    cd $repo
    git init
    git remote add -t master -f origin http://git.notk.org/adrien/yypkg/slackware64-current.git
-   git remote set-branches --add origin tarballs-${VERSION_STABLE}
+   git remote set-branches --add origin tarballs-@@VERSION_STABLE@@
    git fetch
   )
 done
