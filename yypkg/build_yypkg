@@ -7,15 +7,7 @@ else
   YYPKG_TARGET="yypkg-no-gui"
 fi
 
-lo_http="libocaml_http.${LIBOCAML_VERSION}"
-lo_uri="libocaml_uri.${LIBOCAML_VERSION}"
-lo_plus="libocaml_plus.${LIBOCAML_VERSION}"
-lo_ipv6="libocaml_ipv6_address.${LIBOCAML_VERSION}"
-lo_ipv4="libocaml_ipv4_address.${LIBOCAML_VERSION}"
-lo_lexing="libocaml_lexing.${LIBOCAML_VERSION}"
-lo_exception="libocaml_exception.${LIBOCAML_VERSION}"
-lo_option="libocaml_option.${LIBOCAML_VERSION}"
-libocaml="${lo_option} ${lo_exception} ${lo_lexing} ${lo_plus} ${lo_ipv4} ${lo_ipv6} ${lo_uri} ${lo_http}"
+libocaml="option exception lexing plus ipv4_address ipv6_address uri http"
 fileutils="ocaml-fileutils-${FILEUTILS_VERSION}"
 archive="ocaml-archive-${ARCHIVE_VERSION}"
 cryptokit="cryptokit-${CRYPTOKIT_VERSION}"
@@ -46,8 +38,11 @@ patch_() {
 for tarball in ${cryptokit} ${fileutils} ${archive}; do
   download_and_extract ${tarball}.tar.gz
 done
-for tarball in ${yypkg} ${libocaml} ${efl}; do
+for tarball in ${yypkg} ${efl}; do
   download_and_extract ${tarball}.tar.xz
+done
+for tarball in ${libocaml}; do
+  download_and_extract libocaml_${tarball}.${LIBOCAML_VERSION}.tar.xz
 done
 
 mkdir -p ${OCAMLFIND_DESTDIR}/stublibs
@@ -79,7 +74,7 @@ mkdir -p ${OCAMLFIND_DESTDIR}/stublibs
 # libocaml
 for lib in ${libocaml}; do
   (
-    cd ${lib}
+    cd libocaml_${lib}.${LIBOCAML_VERSION}
     make
     make install
   )
