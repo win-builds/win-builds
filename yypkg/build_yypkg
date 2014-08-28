@@ -1,0 +1,102 @@
+#!/bin/sh -ex
+
+CWD="$(cd "$(dirname "${0}")" && pwd)"
+if pkg-config --exists 'elementary >= 1.11'; then
+  YYPKG_TARGET="yypkg"
+else
+  YYPKG_TARGET="yypkg-no-gui"
+fi
+
+lo_http="libocaml_http.${LIBOCAML_VERSION}"
+lo_uri="libocaml_uri.${LIBOCAML_VERSION}"
+lo_plus="libocaml_plus.${LIBOCAML_VERSION}"
+lo_ipv6="libocaml_ipv6_address.${LIBOCAML_VERSION}"
+lo_ipv4="libocaml_ipv4_address.${LIBOCAML_VERSION}"
+lo_lexing="libocaml_lexing.${LIBOCAML_VERSION}"
+lo_exception="libocaml_exception.${LIBOCAML_VERSION}"
+lo_option="libocaml_option.${LIBOCAML_VERSION}"
+libocaml="${lo_option} ${lo_exception} ${lo_lexing} ${lo_plus} ${lo_ipv4} ${lo_ipv6} ${lo_uri} ${lo_http}"
+fileutils="ocaml-fileutils-${FILEUTILS_VERSION}"
+archive="ocaml-archive-${ARCHIVE_VERSION}"
+cryptokit="cryptokit-${CRYPTOKIT_VERSION}"
+efl="ocaml-efl-${EFL_VERSION}"
+yypkg="yypkg-${YYPKG_VERSION}"
+
+download_and_extract() {
+  rm -f "${1}"
+  if ! [ -e "tarballs/${1}" ]; then
+    (cd tarballs && wget ${YYPKG_FILES}/${1})
+  fi
+  tar xf "tarballs/${1}"
+}
+
+build_oasis() {
+  local NAME="${1}"
+  local CONFIGURE_ARGS="${2:-""}"
+  local make="ocaml setup.ml"
+	${make} -configure --prefix "${OCAMLFIND_DESTDIR}" ${CONFIGURE_ARGS} \
+	&& ${make} -build \
+	&& (${make} -uninstall || true; ocamlfind remove "${NAME}" || true; ${make} -install)
+}
+
+patch_() {
+  patch --verbose -p1 < "${CWD}/patches/${1}"
+}
+
+for tarball in ${cryptokit} ${fileutils} ${archive}; do
+  download_and_extract ${tarball}.tar.gz
+done
+for tarball in ${yypkg} ${libocaml} ${efl}; do
+  download_and_extract ${tarball}.tar.xz
+done
+
+mkdir -p ${OCAMLFIND_DESTDIR}/stublibs
+
+# cryptokit
+(
+  cd ${cryptokit}
+  build_oasis cryptokit ""
+)
+
+# fileutils
+(
+  cd ${fileutils}
+  patch_ fileutils/0001-FileUtil-replace-stat.is_link-boolean-with-a-Link-va.patch
+  patch_ fileutils/0002-FileUtil-symlinks-patch-2.patch
+  build_oasis fileutils ""
+)
+
+# archive
+(
+  cd ${archive}
+  patch_ archive/0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch
+  patch_ archive/0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch
+  patch_ archive/0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch
+  patch_ archive/0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch
+  build_oasis archive "--disable-archivelwt --disable-tests --disable-docs"
+)
+
+# libocaml
+for lib in ${libocaml}; do
+  (
+    cd ${lib}
+    make
+    make install
+  )
+done
+
+# ocaml-efl
+# TODO: test for availability of EFL 1.11 and enable or disable GUI accordingly
+if [ x"${YYPKG_TARGET}" = "yypkg" ]; then
+(
+  cd ${efl}
+  build_oasis efl ""
+)
+fi
+
+# yypkg
+(
+  cd ${yypkg}
+  make "${YYPKG_TARGET}"
+)
+

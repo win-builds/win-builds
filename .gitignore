@@ -20,10 +20,11 @@ build/_build/
 *.native
 *.byte
 
+yypkg/ocaml-efl-*
 yypkg/ocaml-archive-*
 yypkg/ocaml-fileutils-*
 yypkg/cryptokit-*
 yypkg/libocaml_*
 yypkg/yypkg-*
-yypkg/*.tar.xz
+yypkg/tarballs
 yypkg/deps
