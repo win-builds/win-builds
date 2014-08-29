@@ -42,7 +42,7 @@ let waitpid log_level command =
   | Unix.WSTOPPED i ->
       f "Command `%s' has been stopped with signal %d.\n%!" command.cmd i
 
-let run ?(stdout=Unix.stdout) ?(stderr=Unix.stderr) ?env a =
+let run ?(stdin=Unix.stdin) ?(stdout=Unix.stdout) ?(stderr=Unix.stderr) ?env a =
   let cmd = String.concat " " (Array.to_list a) in
   log dbg "Running `%s'%!" cmd;
   let env = match env with
@@ -50,7 +50,7 @@ let run ?(stdout=Unix.stdout) ?(stderr=Unix.stderr) ?env a =
     | Some env -> env
   in
   log dbg ", env = { %s }%!" (String.concat ", " (Array.to_list env));
-  let pid = Unix.create_process_env a.(0) a env Unix.stdin stdout stderr in
+  let pid = Unix.create_process_env a.(0) a env stdin stdout stderr in
   log dbg ", pid = %d.\n%!" pid;
   waitpid dbg { pid = pid; cmd = cmd }
 
