@@ -11,3 +11,5 @@ LIBOCAML_VERSION := v2014-08-08
 EFL_VERSION := 1.11.0
 
 WEB := notk.org:/var/www/win-builds.org
+
+export MIRROR := http://win-builds.org/$(VERSION_DEV)/tarballs

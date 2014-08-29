@@ -28,9 +28,9 @@ let do_adds builder =
     ~version:"2.24"
     ~build:1
     ~sources:[
-      "binutils-${VERSION}.tar.gz";
-      "binutils.export.demangle.h.diff.gz";
-      "binutils.no-config-h-check.diff.gz";
+      "binutils-${VERSION}.tar.gz", "1b2bc33003f4997d38fadaa276c1f0321329ec56";
+      "binutils.export.demangle.h.diff.gz", "";
+      "binutils.no-config-h-check.diff.gz", "";
     ]
   in
 
@@ -39,7 +39,7 @@ let do_adds builder =
     ~version:"v3.1.0"
     ~build:1
     ~sources:[
-      "mingw-w64-${VERSION}.tar.bz2"
+      "mingw-w64-${VERSION}.tar.bz2", "c167b1dc114a13c465fe6adcce9dc65c509baf75"
     ]
   in
 
@@ -48,7 +48,7 @@ let do_adds builder =
     ~version:"4.8.3"
     ~build:1
     ~sources:[
-      "gcc-${VERSION}.tar.xz"
+      "gcc-${VERSION}.tar.xz", "f2f894d6652f697fede264c16c028746e9ee6243";
     ]
     ~outputs:[
       "gcc-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz";
@@ -62,7 +62,7 @@ let do_adds builder =
     ~version:"v3.1.0"
     ~build:1
     ~sources:[
-      "mingw-w64-${VERSION}.tar.bz2"
+      "mingw-w64-${VERSION}.tar.bz2", ""
     ]
   in
 
@@ -84,7 +84,7 @@ let do_adds builder =
     ~version:"v3.1.0"
     ~build:1
     ~sources:[
-      "mingw-w64-${VERSION}.tar.bz2"
+      "mingw-w64-${VERSION}.tar.bz2", ""
     ]
   in
 
@@ -106,7 +106,7 @@ let do_adds builder =
     ~version:"0.31"
     ~build:1
     ~sources:[
-      "flexdll-0.31.tar.gz"
+      "flexdll-0.31.tar.gz", "7ca63bf8d6c731fd95e0d434a8cfbcc718b99d62"
     ]
   in
 
@@ -116,7 +116,7 @@ let do_adds builder =
     ~version:"4.01.0-trunk"
     ~build:2
     ~sources:[
-      "${PACKAGE}-${VERSION}.tar.gz";
+      "${PACKAGE}-${VERSION}.tar.gz", "8996881034bec1c222ed91259238ea151b42a11d";
     ]
   in
 
@@ -126,7 +126,7 @@ let do_adds builder =
     ~version:"1.5.2"
     ~build:1
     ~sources:[
-      "findlib-${VERSION}.tar.gz"
+      "findlib-${VERSION}.tar.gz", "4c37dabd03abe5b594785427d8f5e4adf60e6d9f"
     ]
   in
 

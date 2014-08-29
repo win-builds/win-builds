@@ -9,25 +9,53 @@ let name p =
 
 module B = struct
   let needs_rebuild ~sources ~outputs =
-    let get_file file =
-      if not (Sys.file_exists file) then
+    let file_matches_sha1 ~sha1 ~file =
+      if sha1 = "" then
+        true
+      else
+        let pipe_read, pipe_write = Unix.pipe () in
+        let line = Lib.sp "%s *%s\n" sha1 file in
+        let l = String.length line in
+        assert (l = Unix.write pipe_write line 0 l);
+        Unix.close pipe_write;
         try
-          let i = String.index file '/' in
-          let dir = String.sub file 0 i in
-          let file = String.sub file (i+1) (String.length file - (i+1)) in
-          run [|
-            "git";
-            Lib.sp "--git-dir=%s/.git" dir;
-            Lib.sp "--work-tree=%s" dir;
-            "checkout";
-            Lib.sp "origin/tarballs-%s" Args.version_short;
-            file
-          |]
-        with _ ->
-          ()
+          run ~stdin:pipe_read [| "sha1sum"; "--status"; "--check"; "--strict" |];
+          true
+        with Failure _ ->
+          false
     in
-    let mod_time_err prev file =
-      get_file file;
+    let download ~file =
+      run [| "wget"; "-O"; file; Filename.concat (Sys.getenv "MIRROR") file |]
+    in
+    let rec get_file ?(tries=0) ~sha1 ~file =
+      let retry () =
+        log cri "Failed retrieving file %S (SHA1=%s).\n" file sha1;
+        if tries > 1 then (
+          log cri "Trying again: %d attempt(s) left.\n" tries;
+          get_file ~tries:(tries-1) ~sha1 ~file
+        )
+        else (
+          log cri "No attempt left.\nFAILED!\n";
+          (try Sys.remove file with Sys_error _ -> ());
+          failwith (Lib.sp "Download of %S (SHA1=%s)." file sha1)
+        )
+      in
+      let matches =
+        try
+          (if not (Sys.file_exists file) then download ~file);
+          file_matches_sha1 ~sha1 ~file
+        with
+          _ -> false
+      in
+      if not matches then
+        retry ()
+      else
+        ()
+    in
+    let mod_time_err prev (file, sha1) =
+      (if sha1 <> "" then
+        get_file ~tries:3 ~sha1 ~file
+      );
       Unix.handle_unix_error (fun () ->
         max prev (Unix.lstat file).Unix.st_mtime
       ) ()
@@ -40,7 +68,7 @@ module B = struct
     let mod_time_outputs = List.fold_left mod_time_opt 0. outputs in
     if mod_time_sources > mod_time_outputs then (
       log dbg "One of %s is more recent than the output.\n%!"
-        (String.concat ", " sources);
+        (String.concat ", " (List.map fst sources));
       true
     )
     else
@@ -56,7 +84,7 @@ module B = struct
     fun p ->
       let outputs = List.map (Filename.concat builder.yyoutput) p.outputs in
       let sources_dir_ize = Filename.concat (Filename.concat p.dir p.package) in
-      let sources = (List.map sources_dir_ize p.sources) in
+      let sources = List.map (fun (f, s) -> sources_dir_ize f, s) p.sources in
       if p.dir = "" || not (needs_rebuild ~sources ~outputs) then
         fun () ->
           progress "[%s] %s is already up-to-date.\n%!" builder.prefix.Prefix.nickname (name p)

@@ -102,7 +102,7 @@ module Builder = struct
     dependencies : package list;
     version : string;
     build : int;
-    sources : string list;
+    sources : (string * string) list;
     outputs : string list;
     mutable to_build : bool;
   }
@@ -212,16 +212,16 @@ module Builder = struct
       ] in
       let sources =
         List.concat [
-          (match variant with Some v -> [ "config-" ^ v ] | None -> []);
-          [ "${PACKAGE}.SlackBuild" ];
-          [ "${PACKAGE}.yypkg.script" ];
+          (match variant with Some v -> [ "config-" ^ v, "" ] | None -> []);
+          [ "${PACKAGE}.SlackBuild", "" ];
+          [ "${PACKAGE}.yypkg.script", "" ];
            sources
         ]
       in
       add_aux {
         package; variant; dir; dependencies;
         version; build;
-        sources = List.map (substitute_variables ~dict) sources;
+        sources = List.map (fun (f, s) -> substitute_variables ~dict f, s) sources;
         outputs = List.map (substitute_variables ~dict) outputs;
         to_build = false;
       }
