@@ -1042,7 +1042,7 @@ let do_adds builder =
       ~dependencies:[
         gcc; binutils; mingw_w64; gdb;
         elementary; gtk_2; ffmpeg;
-        libtheora; opus;
+        libtheora; opus; sox;
         madplay; icu4c; make; gperf; zz_config;
         jansson; libsigc_plus_plus;
         zlib; xz; winpthreads; pkg_config; libarchive;
