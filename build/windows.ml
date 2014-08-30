@@ -165,7 +165,7 @@ let do_adds builder =
       ~version:"1.9"
       ~build:1
       ~sources:[
-        "cryptokit-${VERSION}.tar.gz", "0dd76e76acc4dbee8175b9eca393df99b81fc096";
+        "cryptokit-${VERSION}.tar.gz", "2e90f27d05fe68a79747e64eef481835291babf4";
       ]
     in
 
