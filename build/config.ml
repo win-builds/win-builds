@@ -132,7 +132,6 @@ module Builder = struct
     let host = t.prefix.P.host in
     let target = t.prefix.P.target in
     let libdirsuffix = if host.A.bits = 64 then "64" else "" in
-        (match t.cross_prefix with Some p -> Env.Set [ p ] | None -> Env.Keep);
     Env.to_array (Env.process (Env.get ()) [
       "PATH", t.path;
       "PKG_CONFIG_PATH", t.pkg_config_path; (* FIXME: base on libdir *)
