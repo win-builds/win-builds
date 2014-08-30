@@ -116,7 +116,11 @@ module Builder = struct
     logs : string;
     yyoutput : string;
     tmp : Env.t;
+    (* prefix of native tools and libraries *)
     mutable native_prefix : string option;
+    (* prefix of the cross toolchain *)
+    mutable cross_prefix : string option;
+    (* prefix of the cross system *)
     mutable target_prefix : string option;
     mutable packages : package list;
   }
@@ -127,15 +131,25 @@ module Builder = struct
     let build = t.prefix.P.build in
     let host = t.prefix.P.host in
     let target = t.prefix.P.target in
+    let libdirsuffix = if host.A.bits = 64 then "64" else "" in
+        (match t.cross_prefix with Some p -> Env.Set [ p ] | None -> Env.Keep);
     Env.to_array (Env.process (Env.get ()) [
       "PATH", t.path;
       "PKG_CONFIG_PATH", t.pkg_config_path; (* FIXME: base on libdir *)
       "PKG_CONFIG_LIBDIR", t.pkg_config_libdir; (* FIXME: base on libdir *)
+      "OCAMLFIND_CONF", Env.Set [ t.prefix.P.yyprefix ^ "/etc/findlib.conf" ];
+      "OCAMLLIB",
+        (match t.native_prefix with
+        | Some p -> Env.Set [ p ^ "/lib" ^ libdirsuffix ^ "/ocaml" ]
+        | None -> Env.Keep);
       "YYPREFIX", Env.Set [ t.prefix.P.yyprefix ];
-      (* "PREFIX", Env.Set [ Str.(replace_first (regexp "/") "" prefix) ]; *)
+      (* PREFIX is set right before calling the build script in the same way;
+       * better or worse?
+       * "PREFIX", Env.Set [ Str.(replace_first (regexp "/") "" prefix) ];
+       *)
       "YYOUTPUT", Env.Set [ t.yyoutput ];
       "TMP", t.tmp;
-      "LIBDIRSUFFIX", Env.Set [ if host.A.bits = 64 then "64" else "" ];
+      "LIBDIRSUFFIX", Env.Set [ libdirsuffix ];
       "HOST_EXE_FORMAT", Env.Set [ host.A.exe_format ];
       "TARGET_EXE_FORMAT", Env.Set [ target.A.exe_format ];
       "BUILD_EXE_FORMAT", Env.Set [ build.A.exe_format ];
@@ -145,6 +159,8 @@ module Builder = struct
       "HOST_TRIPLET", Env.Set [ host.A.triplet ];
       "TARGET_TRIPLET", Env.Set [ target.A.triplet ];
       "BUILD_TRIPLET", Env.Set [ build.A.triplet ];
+      "YYPREFIX_CROSS",
+        (match t.cross_prefix with Some p -> Env.Set [ p ] | None -> Env.Keep);
       "YYPREFIX_NATIVE",
         (match t.native_prefix with Some p -> Env.Set [ p ] | None -> Env.Keep);
       "YYPREFIX_TARGET",

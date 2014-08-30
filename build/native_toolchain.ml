@@ -15,7 +15,9 @@ let builder =
     pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
     pkg_config_libdir = Env.Keep;
     tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
-    target_prefix = None; native_prefix = None;
+    target_prefix = None;
+    cross_prefix  = None;
+    native_prefix = None;
     packages = [];
   }
 

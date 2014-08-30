@@ -14,7 +14,9 @@ let builder ~cross ~name ~host =
     pkg_config_path = Env.Clear;
     pkg_config_libdir = Env.Set [ Filename.concat prefix.libdir "pkgconfig" ] ;
     tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
-    target_prefix = None; native_prefix = Some Native_toolchain.builder.prefix.Prefix.yyprefix;
+    target_prefix = None;
+    cross_prefix  = Some cross.Config.Builder.prefix.Prefix.yyprefix;
+    native_prefix = Some Native_toolchain.builder.prefix.Prefix.yyprefix;
     packages = [];
   }
 

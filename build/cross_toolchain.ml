@@ -14,7 +14,9 @@ let builder ~name ~target =
     pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
     pkg_config_libdir = Env.Keep;
     tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
-    target_prefix = None; native_prefix = None;
+    target_prefix = None; (* updated from Windows *)
+    cross_prefix =  None;
+    native_prefix = None;
     packages = [];
   }
 
@@ -126,7 +128,8 @@ let do_adds builder =
     ~version:"1.5.2"
     ~build:1
     ~sources:[
-      "findlib-${VERSION}.tar.gz", "4c37dabd03abe5b594785427d8f5e4adf60e6d9f"
+      "findlib-${VERSION}.tar.gz", "4c37dabd03abe5b594785427d8f5e4adf60e6d9f";
+      "findlib.conf.in", "";
     ]
   in
 
