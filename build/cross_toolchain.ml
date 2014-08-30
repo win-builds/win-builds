@@ -51,8 +51,8 @@ let do_adds builder =
       "gcc-${VERSION}.tar.xz", "f2f894d6652f697fede264c16c028746e9ee6243";
     ]
     ~outputs:[
-      "gcc-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz";
-      "gcc-g++-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz"
+      "gcc-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz";
+      "gcc-g++-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz"
     ]
   in
 
