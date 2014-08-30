@@ -155,7 +155,7 @@ let do_adds builder =
 
     let xz = xz ~variant ~dependencies:[] in
 
-    let libarchive = libarchive ~variant ~dependencies:[] in
+    let libarchive = libarchive ~variant ~dependencies:[ xz ] in
 
     let efl = efl ~variant ~dependencies:[ dbus; freetype; lua; zlib; libjpeg ] in
 
