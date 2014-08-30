@@ -905,7 +905,6 @@ let do_adds builder =
       ~sources:[
         "${PACKAGE}-everywhere-opensource-src-${VERSION}.tar.gz", "3244dd34f5fb695e903eaa49c6bd0838b9bf7a73";
         "0001-configure-use-pkg-config-for-libpng.patch", "";
-        "0001-windployqt-Fix-cross-compilation.patch", "";
         "0002-Use-widl-instead-of-midl.-Also-set-QMAKE_DLLTOOL-to-.patch", "";
         "0003-Tell-qmake-to-use-pkg-config.patch", "";
         "Qt.pc", "";
