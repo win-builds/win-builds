@@ -8,7 +8,10 @@ let name p =
   | None -> p.package
 
 module B = struct
-  let needs_rebuild ~sources ~outputs =
+  let get_files l =
+    let download ~file =
+      run [| "wget"; "-O"; file; Filename.concat (Sys.getenv "MIRROR") file |]
+    in
     let file_matches_sha1 ~sha1 ~file =
       if sha1 = "" then
         true
@@ -23,9 +26,6 @@ module B = struct
           true
         with Failure _ ->
           false
-    in
-    let download ~file =
-      run [| "wget"; "-O"; file; Filename.concat (Sys.getenv "MIRROR") file |]
     in
     let rec get_file ?(tries=0) ~sha1 ~file =
       let retry () =
@@ -52,10 +52,12 @@ module B = struct
       else
         ()
     in
+    ListLabels.iter l ~f:(fun (file, sha1) ->
+      if sha1 <> "" then get_file ~tries:3 ~sha1 ~file
+    )
+
+  let needs_rebuild ~sources ~outputs =
     let mod_time_err prev (file, sha1) =
-      (if sha1 <> "" then
-        get_file ~tries:3 ~sha1 ~file
-      );
       Unix.handle_unix_error (fun () ->
         max prev (Unix.lstat file).Unix.st_mtime
       ) ()
@@ -74,7 +76,6 @@ module B = struct
     else
       false
 
-
   let build_one builder =
     run [| "mkdir"; "-p"; builder.yyoutput; builder.logs |];
     let env = env builder in
@@ -85,6 +86,7 @@ module B = struct
       let outputs = List.map (Filename.concat builder.yyoutput) p.outputs in
       let sources_dir_ize = Filename.concat (Filename.concat p.dir p.package) in
       let sources = List.map (fun (f, s) -> sources_dir_ize f, s) p.sources in
+      get_files sources;
       if p.dir = "" || not (needs_rebuild ~sources ~outputs) then
         fun () ->
           progress "[%s] %s is already up-to-date.\n%!" builder.prefix.Prefix.nickname (name p)
