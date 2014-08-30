@@ -271,13 +271,15 @@ let do_adds builder =
     in
 
     add ("yypkg", None)
-      ~dir:""
-      ~dependencies:[
-        elementary; ocaml_cryptokit; ocaml_fileutils; ocaml_archive; ocaml_efl;
+      ~dir:"slackbuilds.org/ocaml"
+      ~dependencies:[ ocaml_findlib; ocaml_cryptokit;
+          ocaml_fileutils; ocaml_archive; ocaml_efl; libocaml_http
       ]
-      ~version:"0.0.0"
+      ~version:"1.9-beta1"
       ~build:1
-      ~sources:[]
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz", "f86c055a6ce5e996983cd76a3836333da7424d30";
+      ]
 
   in
 
