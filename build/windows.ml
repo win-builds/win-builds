@@ -914,7 +914,6 @@ let do_adds builder =
         "qt5-dont-add-resource-files-to-qmake-libs.patch", "";
         "qt5-dont-build-host-libs-static.patch", "";
         "qt5-qmake-implib-dll-a.patch", "";
-        "qt5-qmake-implib-dll-a.patch~", "";
         "qt5-use-system-zlib-in-host-libs.patch", "";
         "qt5-workaround-qtbug-29426.patch", "";
       ]
