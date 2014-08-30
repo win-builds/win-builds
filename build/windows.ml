@@ -161,9 +161,20 @@ let do_adds builder =
 
     let elementary = elementary ~variant ~dependencies:[ efl ] in
 
-    let ocaml_cryptokit = add ("ocaml-cryptokit", None)
+    let ocaml_findlib = add ("ocaml-findlib", None)
       ~dir:"slackbuilds.org/ocaml"
       ~dependencies:[]
+      ~version:"1.5.2"
+      ~build:1
+      ~sources:[
+        "findlib-${VERSION}.tar.gz", "4c37dabd03abe5b594785427d8f5e4adf60e6d9f";
+        "findlib.conf.in", "";
+      ]
+    in
+
+    let ocaml_cryptokit = add ("ocaml-cryptokit", None)
+      ~dir:"slackbuilds.org/ocaml"
+      ~dependencies:[ ocaml_findlib ]
       ~version:"1.9"
       ~build:1
       ~sources:[
@@ -171,10 +182,46 @@ let do_adds builder =
       ]
     in
 
+    let ocaml_fileutils = add ("ocaml-fileutils", None)
+      ~dir:"slackbuilds.org/ocaml"
+      ~dependencies:[ ocaml_findlib ]
+      ~version:"0.4.5"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz", "94d02385a55eef373eb96f256068d3efa724016b";
+        "0001-FileUtil-replace-stat.is_link-boolean-with-a-Link-va.patch", "";
+        "0002-FileUtil-symlinks-patch-2.patch", "";
+      ]
+    in
+
+    let ocaml_archive = add ("ocaml-archive", None)
+      ~dir:"slackbuilds.org/ocaml"
+      ~dependencies:[ libarchive; ocaml_findlib; ocaml_fileutils ]
+      ~version:"2.8.4+2"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz", "4705e7eca920f6d831f2b8020d648d7caa18bb04";
+        "0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch", "";
+        "0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch", "";
+        "0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch", "";
+        "0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch", "";
+      ]
+    in
+
+    let ocaml_efl = add ("ocaml-efl", None)
+      ~dir:"slackbuilds.org/ocaml"
+      ~dependencies:[ ocaml_findlib ]
+      ~version:"1.11.1"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz", "c06511ef058d0676ff1873515e3b07af0e2a987a";
+      ]
+    in
+
     add ("yypkg", None)
       ~dir:""
       ~dependencies:[
-        xz; libarchive; elementary; ocaml_cryptokit
+        elementary; ocaml_cryptokit; ocaml_fileutils; ocaml_archive; ocaml_efl;
       ]
       ~version:"0.0.0"
       ~build:1
