@@ -208,6 +208,58 @@ let do_adds builder =
       ]
     in
 
+    let libocaml_http =
+      let libocaml_add subpackage ~dependencies ~sha1 =
+        add ("libocaml_" ^ subpackage, None)
+          ~dir:"slackbuilds.org/ocaml"
+          ~dependencies:(ocaml_findlib :: dependencies)
+          ~version:"v2014-08-08"
+          ~build:1
+          ~sources:[ "${PACKAGE}.${VERSION}.tar.xz", sha1 ]
+      in
+
+      let exception_ = libocaml_add "exception"
+        ~dependencies:[]
+        ~sha1:"69c73123a46f9bc3f3b9a6ec13074d7009d8829b"
+      in
+
+      let option_ = libocaml_add "option"
+        ~dependencies:[]
+        ~sha1:"06401a24a9fc86a796c5ca9dd24a38c7d761cfea"
+      in
+
+      let lexing = libocaml_add "lexing"
+        ~dependencies:[ exception_ ]
+        ~sha1:"3d8ad03b73f423f2dc35e8fc8d77eb662b99c7e7"
+      in
+
+      let plus = libocaml_add "plus"
+        ~dependencies:[ exception_ ]
+        ~sha1:"ee63b54f3be5e855c4b7995dd29e384b09ce5ff6"
+      in
+
+      let ipv4_address = libocaml_add "ipv4_address"
+        ~dependencies:[ exception_; option_ ]
+        ~sha1:"2cf54d0e9e77b9ed61ecd2ad3c9cfe4a50c79513"
+      in
+
+      let ipv6_address = libocaml_add "ipv6_address"
+        ~dependencies:[ exception_; lexing ]
+        ~sha1:"12498c816ce3e10bd945f9d6dd4eff01c2400df7"
+      in
+
+      let uri = libocaml_add "uri"
+        ~dependencies:[
+           exception_; ipv4_address; ipv6_address; lexing; option_; plus
+         ]
+        ~sha1:"7335da49acfdd61f262bd41e417e422f7ee2e9c2"
+      in
+
+      libocaml_add "http"
+        ~dependencies:[ lexing; option_; plus; uri ]
+        ~sha1:"79a164edaa5421e987883a87a4643a86cac8c971"
+    in
+
     let ocaml_efl = add ("ocaml-efl", None)
       ~dir:"slackbuilds.org/ocaml"
       ~dependencies:[ ocaml_findlib ]
