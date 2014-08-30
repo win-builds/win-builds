@@ -1,7 +1,8 @@
 let cri = 0
 let err = 1
 let wrn = 2
-let dbg = 3
+let inf = 3
+let dbg = 4
 
 let log_threshold =
   try
@@ -9,9 +10,10 @@ let log_threshold =
     | "CRI" | "cri" -> cri
     | "ERR" | "err" -> err
     | "WRN" | "wrn" -> wrn
+    | "INF" | "inf" -> inf
     | "DBG" | "dbg" -> dbg
-    | s -> try int_of_string s with _ -> dbg
-  with _ -> err
+    | s -> try int_of_string s with _ -> inf
+  with _ -> inf
 
 let log level =
   (if log_threshold >= level then Printf.fprintf else Printf.ifprintf) stderr
