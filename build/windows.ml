@@ -262,7 +262,7 @@ let do_adds builder =
 
     let ocaml_efl = add ("ocaml-efl", None)
       ~dir:"slackbuilds.org/ocaml"
-      ~dependencies:[ ocaml_findlib ]
+      ~dependencies:[ ocaml_findlib; elementary ]
       ~version:"1.11.1"
       ~build:1
       ~sources:[
