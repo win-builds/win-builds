@@ -57,20 +57,22 @@ module B = struct
     )
 
   let needs_rebuild ~sources ~outputs =
-    let mod_time_err prev (file, sha1) =
+    let ts_err file =
       Unix.handle_unix_error (fun () ->
-        max prev (Unix.lstat file).Unix.st_mtime
+        (Unix.lstat file).Unix.st_mtime
       ) ()
     in
-    let mod_time_opt prev file =
-      max prev (try (Unix.lstat file).Unix.st_mtime with _ -> 0.)
+    let ts_opt file =
+      try (Unix.lstat file).Unix.st_mtime with _ -> 0.
     in
-    (* TODO: collect all the files that are more recent *)
-    let mod_time_sources = List.fold_left mod_time_err 0. sources in
-    let mod_time_outputs = List.fold_left mod_time_opt 0. outputs in
-    if mod_time_sources > mod_time_outputs then (
-      log dbg "One of %s is more recent than the output.\n%!"
-        (String.concat ", " (List.map fst sources));
+    let ts_sources = List.map (fun (file, _) -> file, ts_err file) sources in
+    let ts_outputs = List.map (fun file -> file, ts_opt file) outputs in
+    let assoc_data_fold_left f = List.fold_left (fun p (_k, v) -> f p v) in
+    let ts_sources_max = assoc_data_fold_left max 0. ts_sources in
+    let ts_outputs_min = assoc_data_fold_left min infinity ts_outputs in
+    if ts_outputs_min < ts_sources_max then (
+      let l = List.filter (fun (_f, ts) -> ts > ts_outputs_min) ts_sources in
+      log inf "Output is older than %s.\n%!" (String.concat ", " (List.map fst l));
       true
     )
     else
