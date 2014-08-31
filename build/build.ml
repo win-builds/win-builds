@@ -71,8 +71,17 @@ module B = struct
     let ts_sources_max = assoc_data_fold_left max 0. ts_sources in
     let ts_outputs_min = assoc_data_fold_left min infinity ts_outputs in
     if ts_outputs_min < ts_sources_max then (
-      let l = List.filter (fun (_f, ts) -> ts > ts_outputs_min) ts_sources in
-      log inf "Output is older than %s.\n%!" (String.concat ", " (List.map fst l));
+      (* TODO: these log messages need context but it's really annoying to do
+        * without a better log function which requires ikfprintf which requires
+        * ocaml 4.00 so for now... *)
+      (if ts_outputs = [] then
+        ()
+        (* log inf "Output doesn't exist.\n%!" *)
+      else
+        let l = List.filter (fun (_f, ts) -> ts > ts_outputs_min) ts_sources in
+        log inf "Output is older than %s.\n%!"
+          (String.concat ", " (List.map (fun f -> Filename.basename (fst f)) l))
+      );
       true
     )
     else
