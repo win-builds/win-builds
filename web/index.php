@@ -71,6 +71,10 @@
   <div id="package-list-list" class="flexbox"></div>
 </div>
 
+<div id="screenshot" style="text-align: center;">
+  <img alt="Screenshot of the win-builds GUI package manager" src="screenshot.png">
+</div>
+
 <?php include 'footer.html'; ?>
 </body>
 </html>
