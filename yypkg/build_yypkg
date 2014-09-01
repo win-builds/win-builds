@@ -80,7 +80,6 @@ for lib in ${libocaml}; do
 done
 
 # ocaml-efl
-# TODO: test for availability of EFL 1.11 and enable or disable GUI accordingly
 if [ x"${YYPKG_TARGET}" = "yypkg" ]; then
 (
   cd ${efl}
