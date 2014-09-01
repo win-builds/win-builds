@@ -21,16 +21,17 @@ let builder ~name ~target =
   }
 
 let do_adds builder =
+  let open Common in
   let add_full = Config.Builder.register ~builder in
   let add = add_full ?outputs:None in
 
   let binutils = add ("binutils", None)
     ~dir:"slackware64-current/d"
     ~dependencies:[]
-    ~version:"2.24"
+    ~version:Version.binutils
     ~build:1
     ~sources:[
-      "binutils-${VERSION}.tar.gz", "1b2bc33003f4997d38fadaa276c1f0321329ec56";
+      Source.binutils;
       "binutils.export.demangle.h.diff.gz", "";
       "binutils.no-config-h-check.diff.gz", "";
     ]
@@ -38,19 +39,19 @@ let do_adds builder =
 
   let mingw_w64_add = add
     ~dir:"mingw"
-    ~version:"v3.1.0"
+    ~version:Version.mingw_w64
     ~build:1
     ~sources:[
-      "mingw-w64-${VERSION}.tar.bz2", "c167b1dc114a13c465fe6adcce9dc65c509baf75"
+      Source.mingw_w64;
     ]
   in
 
   let gcc_add = add_full
     ~dir:"slackware64-current/d"
-    ~version:"4.8.3"
+    ~version:Version.gcc
     ~build:1
     ~sources:[
-      "gcc-${VERSION}.tar.xz", "f2f894d6652f697fede264c16c028746e9ee6243";
+      Source.gcc;
     ]
     ~outputs:[
       "gcc-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz";
@@ -61,10 +62,10 @@ let do_adds builder =
   let mingw_w64_tool_add name = add (name, None)
     ~dir:"mingw"
     ~dependencies:[]
-    ~version:"v3.1.0"
+    ~version:Version.mingw_w64
     ~build:1
     ~sources:[
-      "mingw-w64-${VERSION}.tar.bz2", ""
+      Source.mingw_w64;
     ]
   in
 
@@ -83,10 +84,10 @@ let do_adds builder =
   let winpthreads = add ("winpthreads", None)
     ~dir:"mingw"
     ~dependencies:[ binutils; gcc_core; mingw_w64_full ]
-    ~version:"v3.1.0"
+    ~version:Version.mingw_w64
     ~build:1
     ~sources:[
-      "mingw-w64-${VERSION}.tar.bz2", ""
+      Source.mingw_w64
     ]
   in
 
