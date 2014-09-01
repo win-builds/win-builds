@@ -14,7 +14,7 @@ doc doc-upload:
 	$(MAKE) -C doc $@
 
 web web-upload:
-	$(MAKE) -C web $(patsubst web-%,%,$@)
+	$(MAKE) -C web $@
 
 release-upload:
 	cd .. && \

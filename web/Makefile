@@ -2,6 +2,8 @@ include ../Makefile.data
 
 FILES = index support documentation download news
 
+all web: temp $(patsubst %,temp/%.html,$(FILES))
+
 temp:
 	mkdir -p temp
 
@@ -13,7 +15,7 @@ temp/%.html: temp footer.html header.html head.php %.php style.css ../Makefile.d
 	      -e 's/@@VERSION_DEV@@/$(VERSION_DEV)/g' \
 	  > "$@"
 
-upload: $(patsubst %,temp/%.html,$(FILES))
+web-upload upload: web
 	rsync -avzLP "temp/" "$(WEB)/"
 
 .PHONY: upload
