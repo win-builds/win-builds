@@ -30,7 +30,7 @@ http_request.onreadystatechange = function() {
 
     var a_all = document.getElementById("package-list-all");
     a_all.removeChild(a_all.firstChild);
-    a_all.appendChild(document.createTextNode(l.length + " packages"));
+    a_all.appendChild(document.createTextNode(l.length + " packages (click for full list)"));
 
     package_list_div = document.getElementById("package-list-list");
 
