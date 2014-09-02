@@ -103,6 +103,10 @@ let do_adds builder =
 
   let widl = mingw_w64_tool_add "widl" in
 
+  let libmangle = mingw_w64_tool_add "libmangle" in
+
+  let winstorecompat = mingw_w64_tool_add "winstorecompat" in
+
   let flexdll = add ("flexdll", None)
     ~dir:"mingw"
     ~dependencies:[ binutils; gcc_full; mingw_w64_full; binutils ]

@@ -313,6 +313,10 @@ let do_adds builder =
 
     let widl = mingw_w64_tool_add "widl" in
 
+    let libmangle = mingw_w64_tool_add "libmangle" in
+
+    let winstorecompat = mingw_w64_tool_add "winstorecompat" in
+
     let win_iconv = add ("win-iconv", None)
       ~dir:"mingw"
       ~dependencies:[]
