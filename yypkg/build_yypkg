@@ -7,7 +7,7 @@ else
   YYPKG_TARGET="yypkg-no-gui"
 fi
 
-libocaml="option exception lexing plus ipv4_address ipv6_address uri http"
+libocaml="exception option lexing plus ipv4_address ipv6_address uri http"
 fileutils="ocaml-fileutils-${FILEUTILS_VERSION}"
 archive="ocaml-archive-${ARCHIVE_VERSION}"
 cryptokit="cryptokit-${CRYPTOKIT_VERSION}"
