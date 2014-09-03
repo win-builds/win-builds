@@ -84,7 +84,7 @@ for lib in ${libocaml}; do
 done
 
 # ocaml-efl
-if [ x"${YYPKG_TARGET}" = "yypkg" ]; then
+if [ x"${YYPKG_TARGET}" = x"yypkg" ]; then
 (
   cd ${efl}
   build_oasis efl ""
