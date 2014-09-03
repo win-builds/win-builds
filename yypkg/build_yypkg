@@ -39,7 +39,7 @@ P() {
 download_and_extract "${cryptokit}" "tar.gz"
 download_and_extract "${fileutils}" "tar.gz"
 download_and_extract "${archive}" "tar.gz"
-if [ x"${YYPKG_TARGET}" = "yypkg" ]; then
+if [ x"${YYPKG_TARGET}" = x"yypkg" ]; then
   download_and_extract "${efl}" "tar.xz"
 fi
 download_and_extract "${yypkg}" "tar.xz"
