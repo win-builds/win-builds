@@ -17,6 +17,7 @@ yypkg="yypkg-${YYPKG_VERSION}"
 download_and_extract() {
   rm -rf "${1}" "${1}.${2}"
   if ! [ -e "tarballs/${1}.${2}" ]; then
+    mkdir -p tarballs
     (cd tarballs && wget "${YYPKG_FILES}/${1}.${2}")
   fi
   tar xf "tarballs/${1}.${2}"
