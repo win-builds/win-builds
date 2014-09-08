@@ -108,10 +108,10 @@ let do_adds builder =
     add ("freetype", Some variant)
       ~dir:"slackware64-current/l"
       ~dependencies
-      ~version:"2.5.0.1"
+      ~version:"2.5.3"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "9cd4182ca53c343fc8ac4dc41ab178567b4afd09";
+        "${PACKAGE}-${VERSION}.tar.xz", "6c6455e5a58b2af56f0a403be0769b6dd47f6d1b";
         "freetype.illadvisederror.diff.gz", "";
         "freetype.subpixel.rendering.diff.gz", "";
       ]
