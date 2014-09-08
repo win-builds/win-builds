@@ -729,7 +729,7 @@ let do_adds builder =
       ]
     in
 
-    let libarchive = libarchive ~variant:"yypkg" ~dependencies:[] in
+    let libarchive = libarchive ~variant:"regular" ~dependencies:[ nettle ] in
 
     let wget = add ("wget", None)
       ~dir:"slackware64-current/n"
