@@ -54,7 +54,7 @@ let do_adds builder =
       ~version:"1.11.2"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "6faabf84126f2ba790b77adef658aaaa03154bf7";
+        "${PACKAGE}-${VERSION}.tar.xz", "81007abb130e087d01101d082661ada0a8879568";
       ]
   in
 
@@ -65,7 +65,7 @@ let do_adds builder =
       ~version:"1.11.2"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "0cbbc65719e9550a803aa351f474bd6ad7e93695";
+        "${PACKAGE}-${VERSION}.tar.xz", "d756b9c4763beebfbf494b9d2ee42cc2828dd4d8";
       ]
   in
 
