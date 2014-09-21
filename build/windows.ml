@@ -1143,6 +1143,127 @@ let do_adds builder =
       ]
     in
 
+    let ocaml_findlib = add ("ocaml-findlib", None)
+      ~dir:"slackbuilds.org/ocaml"
+      ~dependencies:[]
+      ~version:"1.5.2"
+      ~build:1
+      ~sources:[
+        "findlib-${VERSION}.tar.gz", "4c37dabd03abe5b594785427d8f5e4adf60e6d9f";
+        "findlib.conf.in", "";
+      ]
+    in
+
+    let ocaml_cryptokit = add ("ocaml-cryptokit", None)
+      ~dir:"slackbuilds.org/ocaml"
+      ~dependencies:[ ocaml_findlib ]
+      ~version:"1.9"
+      ~build:1
+      ~sources:[
+        "cryptokit-${VERSION}.tar.gz", "2e90f27d05fe68a79747e64eef481835291babf4";
+      ]
+    in
+
+    let ocaml_fileutils = add ("ocaml-fileutils", None)
+      ~dir:"slackbuilds.org/ocaml"
+      ~dependencies:[ ocaml_findlib ]
+      ~version:"0.4.5"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz", "94d02385a55eef373eb96f256068d3efa724016b";
+        "0001-FileUtil-replace-stat.is_link-boolean-with-a-Link-va.patch", "";
+        "0002-FileUtil-symlinks-patch-2.patch", "";
+      ]
+    in
+
+    let ocaml_archive = add ("ocaml-archive", None)
+      ~dir:"slackbuilds.org/ocaml"
+      ~dependencies:[ libarchive; ocaml_findlib; ocaml_fileutils ]
+      ~version:"2.8.4+2"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz", "4705e7eca920f6d831f2b8020d648d7caa18bb04";
+        "0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch", "";
+        "0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch", "";
+        "0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch", "";
+        "0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch", "";
+      ]
+    in
+
+    let libocaml_http =
+      let libocaml_add subpackage ~dependencies ~sha1 =
+        add ("libocaml_" ^ subpackage, None)
+          ~dir:"slackbuilds.org/ocaml"
+          ~dependencies:(ocaml_findlib :: dependencies)
+          ~version:"v2014-08-08"
+          ~build:1
+          ~sources:[ "${PACKAGE}.${VERSION}.tar.xz", sha1 ]
+      in
+
+      let exception_ = libocaml_add "exception"
+        ~dependencies:[]
+        ~sha1:"69c73123a46f9bc3f3b9a6ec13074d7009d8829b"
+      in
+
+      let option_ = libocaml_add "option"
+        ~dependencies:[]
+        ~sha1:"06401a24a9fc86a796c5ca9dd24a38c7d761cfea"
+      in
+
+      let lexing = libocaml_add "lexing"
+        ~dependencies:[ exception_ ]
+        ~sha1:"3d8ad03b73f423f2dc35e8fc8d77eb662b99c7e7"
+      in
+
+      let plus = libocaml_add "plus"
+        ~dependencies:[ exception_ ]
+        ~sha1:"ee63b54f3be5e855c4b7995dd29e384b09ce5ff6"
+      in
+
+      let ipv4_address = libocaml_add "ipv4_address"
+        ~dependencies:[ exception_; option_ ]
+        ~sha1:"2cf54d0e9e77b9ed61ecd2ad3c9cfe4a50c79513"
+      in
+
+      let ipv6_address = libocaml_add "ipv6_address"
+        ~dependencies:[ exception_; lexing ]
+        ~sha1:"12498c816ce3e10bd945f9d6dd4eff01c2400df7"
+      in
+
+      let uri = libocaml_add "uri"
+        ~dependencies:[
+           exception_; ipv4_address; ipv6_address; lexing; option_; plus
+         ]
+        ~sha1:"7335da49acfdd61f262bd41e417e422f7ee2e9c2"
+      in
+
+      libocaml_add "http"
+        ~dependencies:[ lexing; option_; plus; uri ]
+        ~sha1:"79a164edaa5421e987883a87a4643a86cac8c971"
+    in
+
+    let ocaml_efl = add ("ocaml-efl", None)
+      ~dir:"slackbuilds.org/ocaml"
+      ~dependencies:[ ocaml_findlib; elementary ]
+      ~version:"1.11.1"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz", "c06511ef058d0676ff1873515e3b07af0e2a987a";
+      ]
+    in
+
+    let yypkg = add ("yypkg", None)
+      ~dir:"slackbuilds.org/ocaml"
+      ~dependencies:[ ocaml_findlib; ocaml_cryptokit;
+          ocaml_fileutils; ocaml_archive; ocaml_efl; libocaml_http;
+      ]
+      ~version:"1.9-beta3"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz", "e79563de67f5b2d835b8964c2ccd38c8aacce6ea";
+      ]
+    in
+
     add ("all", None)
       ~dir:""
       ~dependencies:[
