@@ -1,6 +1,6 @@
 include ../Makefile.data
 
-DOCS:=packaging msys-cygwin linux
+DOCS := packaging msys-cygwin linux
 DOCS_TXT := $(DOCS:%=%.txt)
 DOCS_HTML := $(DOCS:%=%.html)
 
