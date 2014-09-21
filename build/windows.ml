@@ -51,10 +51,10 @@ let do_adds builder =
     add ("efl", Some variant)
       ~dir:"slackbuilds.org/libraries"
       ~dependencies
-      ~version:"1.11.0-beta1"
+      ~version:"1.11.2"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "485b8cdd9eb4b7c0cfa0a1e5208b94043fd21bf7";
+        "${PACKAGE}-${VERSION}.tar.xz", "6faabf84126f2ba790b77adef658aaaa03154bf7";
       ]
   in
 
@@ -62,10 +62,10 @@ let do_adds builder =
     add ("elementary", Some variant)
       ~dir:"slackbuilds.org/libraries"
       ~dependencies
-      ~version:"1.11.0-beta1"
+      ~version:"1.11.2"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "f182ed80fda417cbd2c15a0b25fbf2d9d3652ca8";
+        "${PACKAGE}-${VERSION}.tar.xz", "0cbbc65719e9550a803aa351f474bd6ad7e93695";
       ]
   in
 
