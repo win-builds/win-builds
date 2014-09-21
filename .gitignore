@@ -28,3 +28,5 @@ yypkg/libocaml_*
 yypkg/yypkg-*
 yypkg/tarballs
 yypkg/deps
+
+file_list
