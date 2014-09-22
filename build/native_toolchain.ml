@@ -52,7 +52,7 @@ let efl = add ("efl", Some "for-your-tools-only")
   ~version:"1.11.2"
   ~build:1
   ~sources:[
-    "${PACKAGE}-${VERSION}.tar.xz", "485b8cdd9eb4b7c0cfa0a1e5208b94043fd21bf7";
+    "${PACKAGE}-${VERSION}.tar.xz", "81007abb130e087d01101d082661ada0a8879568";
   ]
 
 let elementary = add ("elementary", None)
@@ -61,7 +61,7 @@ let elementary = add ("elementary", None)
   ~version:"1.11.2"
   ~build:1
   ~sources:[
-    "${PACKAGE}-${VERSION}.tar.xz", "f182ed80fda417cbd2c15a0b25fbf2d9d3652ca8";
+    "${PACKAGE}-${VERSION}.tar.xz", "d756b9c4763beebfbf494b9d2ee42cc2828dd4d8";
   ]
 
 let qt = add ("qt", Some "native")
