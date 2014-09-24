@@ -17,7 +17,7 @@ web web-upload:
 	$(MAKE) -C web $@
 
 tarballs-upload:
-	LOGLEVEL=inf make WINDOWS= CROSS_TOOLCHAIN= NATIVE= 2>&1 \
+	LOGLEVEL=dbg make WINDOWS= CROSS_TOOLCHAIN= NATIVE= 2>&1 \
 	  | sed -n 's; [^ ]\+ -> source=\(.\+/.\+/.\+\);\1; p' > file_list
 	rsync -avP --delete-after --files-from=file_list .. $(WEB)/$(VERSION_DEV)/tarballs/$$dir/
 	rm file_list

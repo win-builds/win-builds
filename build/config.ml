@@ -230,9 +230,9 @@ module Builder = struct
         ]
       in
       let sources = List.map (fun (f, s) -> substitute_variables ~dict f, s) sources in
-      Lib.(log inf "Adding package %S.\n%!" package);
+      Lib.(log dbg "Adding package %S.\n%!" package);
       ListLabels.iter sources ~f:(fun (source, _sha1) ->
-        Lib.(log inf " %s -> source=%s/%s/%s\n%!" package dir package source));
+        Lib.(log dbg " %s -> source=%s/%s/%s\n%!" package dir package source));
       add_aux {
         package; variant; dir; dependencies;
         version; build;
