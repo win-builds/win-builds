@@ -545,23 +545,16 @@ let do_adds builder =
       ]
     in
 
-    let gtk_2 =
-      let dir =
-        if Config.(builder.Builder.prefix.Prefix.host = Arch.windows_64) then
-          ""
-        else
-          "slackware64-current/l"
-      in
-      add ("gtk+2", None)
-        ~dir
-        ~dependencies:[ gdk_pixbuf2; pango; atk; cairo; glib2 ]
-        ~version:"2.24.20"
-        ~build:1
-        ~sources:[
-          "gtk+-${VERSION}.tar.xz", "89315bf05dd3d626a50bae5417942ee4428012c9";
-          "gtk+-2.24.x.icon-compat.am.diff.gz", "";
-          "gtk+-2.24.x.icon-compat.diff.gz", "";
-        ]
+    let gtk_2 = add ("gtk+2", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[ gdk_pixbuf2; pango; atk; cairo; glib2 ]
+      ~version:"2.24.20"
+      ~build:1
+      ~sources:[
+        "gtk+-${VERSION}.tar.xz", "89315bf05dd3d626a50bae5417942ee4428012c9";
+        "gtk+-2.24.x.icon-compat.am.diff.gz", "";
+        "gtk+-2.24.x.icon-compat.diff.gz", "";
+      ]
     in
 
     let glib_networking = add ("glib-networking", None)
