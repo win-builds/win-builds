@@ -28,7 +28,7 @@ build_oasis() {
   local CONFIGURE_ARGS="${2:-""}"
   local make="ocaml setup.ml"
 	${make} -configure --prefix "${OCAMLFIND_DESTDIR}" ${CONFIGURE_ARGS} \
-	&& ${make} -build \
+	&& ${make} -build -j 4 \
 	&& (${make} -uninstall || true; ocamlfind remove "${NAME}" || true; ${make} -install)
 }
 
