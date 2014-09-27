@@ -10,6 +10,6 @@ all yypkg:
 	./build_yypkg
 
 install:
-	cp -L yypkg-$(YYPKG_VERSION)/src/yypkg.native /usr/local/bin/yypkg
+	cp -L yypkg-$(YYPKG_VERSION)/src/yypkg.native $${BINDIR:-/usr/local/bin}/yypkg
 
 .PHONY: all yypkg install
