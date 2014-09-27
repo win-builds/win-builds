@@ -47,6 +47,7 @@ download_and_extract "${yypkg}" "tar.xz"
 for tarball in ${libocaml}; do
   download_and_extract libocaml_${tarball}.${LIBOCAML_VERSION} tar.xz
 done
+cp post-ocamllex libocaml_lexing.${LIBOCAML_VERSION}/src
 
 mkdir -p ${OCAMLFIND_DESTDIR}/stublibs
 

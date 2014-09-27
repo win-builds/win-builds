@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e -u
+! [ ${DEBUG:+set} ] || set -x
+ml=$1
+mv -f "$ml" "$ml".tmp
+sed <"$ml".tmp >"$ml" \
+ -e '/\( lexbuf\.Lexing\.refill_buff lexbuf\); $/ { N; s/\n// }' \
+ -e 's/\( lexbuf\.Lexing\.refill_buff lexbuf\); \(.*\)$/\1 (fun () -> \2)/'
+rm -f "$@".tmp
