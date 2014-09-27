@@ -48,6 +48,7 @@ for tarball in ${libocaml}; do
   download_and_extract libocaml_${tarball}.${LIBOCAML_VERSION} tar.xz
 done
 cp post-ocamllex libocaml_lexing.${LIBOCAML_VERSION}/src
+sed -i '/-w @a-4-6-7-9-23-26-27-29-41/ s/@//' libocaml_lexing.${LIBOCAML_VERSION}/lib/libocaml/make/GNUmakefile
 
 mkdir -p ${OCAMLFIND_DESTDIR}/stublibs
 
