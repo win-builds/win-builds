@@ -1,0 +1,30 @@
+From 5fbd757c8061cc9c047dfb01616cdd290d7b43a8 Mon Sep 17 00:00:00 2001
+From: Adrien Nader <adrien@notk.org>
+Date: Sun, 28 Sep 2014 13:17:10 +0200
+Subject: [PATCH] stubs: ARCHIVE_EXTRACT_{MAC_METADATA,NO_HFS_COMPRESSION} are
+ recent.
+
+---
+ src/Archive_stub.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/Archive_stub.c b/src/Archive_stub.c
+index 2c58bea..91c5627 100644
+--- a/src/Archive_stub.c
++++ b/src/Archive_stub.c
+@@ -56,8 +56,12 @@ static int flag_matches[][2] = {
+     { ARCHIVE_EXTRACT_NO_OVERWRITE_NEWER, OCAML_ARCHIVE_EXTRACT_NO_OVERWRITE_NEWER },
+     { ARCHIVE_EXTRACT_SPARSE, OCAML_ARCHIVE_EXTRACT_SPARSE },
+     { ARCHIVE_EXTRACT_MAC_METADATA, OCAML_ARCHIVE_EXTRACT_MAC_METADATA },
++#ifdef ARCHIVE_EXTRACT_NO_HFS_COMPRESSION
+     { ARCHIVE_EXTRACT_NO_HFS_COMPRESSION, OCAML_ARCHIVE_EXTRACT_NO_HFS_COMPRESSION },
++#endif
++#ifdef ARCHIVE_EXTRACT_HFS_COMPRESSION_FORCED
+     { ARCHIVE_EXTRACT_HFS_COMPRESSION_FORCED, OCAML_ARCHIVE_EXTRACT_HFS_COMPRESSION_FORCED },
++#endif
+ };
+ 
+ static int
+-- 
+1.7.10.4
+
