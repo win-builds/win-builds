@@ -160,13 +160,15 @@ let build ~failer builder =
       let p_builds = List.map (fun p -> p, B.build_one builder p) packages in
       ListLabels.iter p_builds ~f:(fun (p, p_build) ->
         let res = (try p_build (); true with _ -> false) in
-        if !failer then
-          failwith "Aborting because another thread did so."
+        if not res then (
+          failer := true;
+          failwith ("Build of " ^ p.package ^ " failed.")
+        )
         else (
-          if not res then (
-            failer := true;
-            failwith ("Build of " ^ p.package ^ " failed.")
-          )
+          if !failer then
+            failwith "Aborting because another thread did so."
+          else
+            ()
         )
       );
     ));
