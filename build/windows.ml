@@ -868,7 +868,7 @@ let do_adds builder =
       ~version:"5.3.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-everywhere-opensource-src-${VERSION}.tar.gz", "3244dd34f5fb695e903eaa49c6bd0838b9bf7a73";
+        "qt-everywhere-opensource-src-${VERSION}.tar.xz", "66b33ea66eb05a864e7ae417179ea24c8a45ec10";
         "0001-configure-use-pkg-config-for-libpng.patch", "";
         "0002-Use-widl-instead-of-midl.-Also-set-QMAKE_DLLTOOL-to-.patch", "";
         "0003-Tell-qmake-to-use-pkg-config.patch", "";
