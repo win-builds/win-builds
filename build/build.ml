@@ -109,45 +109,44 @@ module B = struct
       let sources_dir_ize = Filename.concat (Filename.concat p.dir p.package) in
       let sources = List.map (fun (f, s) -> sources_dir_ize f, s) p.sources in
       get_files sources;
-      if p.dir = "" || not (needs_rebuild ~sources ~outputs) then
-        fun () ->
-          progress "[%s] %s is already up-to-date.\n%!" builder.prefix.Prefix.nickname (name p)
-      else
-        fun () -> (
-          progress "[%s] Building %s\n%!" builder.prefix.Prefix.nickname (name p);
-          let dir = Filename.concat p.dir p.package in
-          let variant = match p.variant with None -> "" | Some s -> "-" ^ s in
-          let log =
-            let filename = Filename.concat builder.logs (name p) in
-            let flags = [ Unix.O_RDWR; Unix.O_CREAT; Unix.O_TRUNC ] in
-            Unix.openfile filename flags 0o644
-          in
-          let run command = run ~stdout:log ~stderr:log ~env command in
-          (try
-            run [|
-              "sh"; "-cex";
-              String.concat "; " [
-                sp "cd %S" dir;
-                sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
-                sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
-                sp "export VERSION=%S" p.version;
-                sp "export BUILD=%d" p.build;
-                sp "if [ -e config%s ]; then . ./config%s; fi" variant variant;
-                sp "exec bash -x %s.SlackBuild" p.package
-              ]
-            |];
-          with e ->
-            ListLabels.iter outputs ~f:(fun output ->
-              try Unix.unlink output with _ -> ()
-            );
-            Unix.close log;
-            raise e
-          );
+      if p.dir = "" || not (needs_rebuild ~sources ~outputs) then (
+        progress "[%s] %s is already up-to-date.\n%!" builder.prefix.Prefix.nickname (name p)
+      )
+      else (
+        progress "[%s] Building %s\n%!" builder.prefix.Prefix.nickname (name p);
+        let dir = Filename.concat p.dir p.package in
+        let variant = match p.variant with None -> "" | Some s -> "-" ^ s in
+        let log =
+          let filename = Filename.concat builder.logs (name p) in
+          let flags = [ Unix.O_RDWR; Unix.O_CREAT; Unix.O_TRUNC ] in
+          Unix.openfile filename flags 0o644
+        in
+        let run command = run ~stdout:log ~stderr:log ~env command in
+        (try
+          run [|
+            "sh"; "-cex";
+            String.concat "; " [
+              sp "cd %S" dir;
+              sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
+              sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
+              sp "export VERSION=%S" p.version;
+              sp "export BUILD=%d" p.build;
+              sp "if [ -e config%s ]; then . ./config%s; fi" variant variant;
+              sp "exec bash -x %s.SlackBuild" p.package
+            ]
+          |];
+        with e ->
           ListLabels.iter outputs ~f:(fun output ->
-            run [| "yypkg"; "--upgrade"; "--install-new"; output |]
+            try Unix.unlink output with _ -> ()
           );
-          Unix.close log
-        )
+          Unix.close log;
+          raise e
+        );
+        ListLabels.iter outputs ~f:(fun output ->
+          run [| "yypkg"; "--upgrade"; "--install-new"; output |]
+        );
+        Unix.close log
+      )
 end
 
 let build ~failer builder =
@@ -165,10 +164,10 @@ let build ~failer builder =
       progress "[%s] Checking %s\n%!"
         builder.prefix.Prefix.nickname
         (String.concat ", " (List.map name packages));
-      let p_builds = List.map (fun p -> p, B.build_one builder p) packages in
+      let builder = B.build_one builder in
       let rec aux = function
-        | (p, p_build) :: tl ->
-            if not (try p_build (); true with _ -> false) then (
+        | p :: tl ->
+            if not (try builder p; true with _ -> false) then (
               failer := true;
               Some ("Build of " ^ p.package ^ " failed.")
             )
@@ -181,7 +180,7 @@ let build ~failer builder =
         | [] ->
             None
       in
-      may prerr_endline (aux p_builds);
+      may prerr_endline (aux packages);
     ));
     progress "[%s] Setting up repository.\n%!" builder.prefix.Prefix.nickname;
     try
