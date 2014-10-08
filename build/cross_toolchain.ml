@@ -40,7 +40,6 @@ let do_adds builder =
   let mingw_w64_add = add
     ~dir:"mingw"
     ~version:Version.mingw_w64
-    ~build:1
     ~sources:[
       Source.mingw_w64;
     ]
@@ -49,7 +48,6 @@ let do_adds builder =
   let gcc_add = add_full
     ~dir:"slackware64-current/d"
     ~version:Version.gcc
-    ~build:1
     ~sources:[
       Source.gcc;
     ]
@@ -70,15 +68,15 @@ let do_adds builder =
   in
 
   let mingw_w64_headers = mingw_w64_add ("mingw-w64", Some "headers")
-    ~dependencies:[]
+    ~build:(-1) ~dependencies:[]
   in
 
   let gcc_core = gcc_add ("gcc", Some "core")
-    ~dependencies:[ binutils; mingw_w64_headers ]
+    ~build:(-1) ~dependencies:[ binutils; mingw_w64_headers ]
   in
 
   let mingw_w64_full = mingw_w64_add ("mingw-w64", Some "full")
-    ~dependencies:[ binutils; gcc_core ]
+    ~build:1 ~dependencies:[ binutils; gcc_core ]
   in
 
   let winpthreads = add ("winpthreads", None)
@@ -92,7 +90,7 @@ let do_adds builder =
   in
 
   let gcc_full = gcc_add ("gcc", Some "full")
-    ~dependencies:[ binutils; gcc_core; mingw_w64_full; winpthreads ]
+    ~build:1 ~dependencies:[ binutils; gcc_core; mingw_w64_full; winpthreads ]
   in
 
   let gendef = mingw_w64_tool_add "gendef" in
