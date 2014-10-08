@@ -123,18 +123,26 @@ module B = struct
             Unix.openfile filename flags 0o644
           in
           let run command = run ~stdout:log ~stderr:log ~env command in
-          run [|
-            "sh"; "-cex";
-            String.concat "; " [
-              sp "cd %S" dir;
-              sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
-              sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
-              sp "export VERSION=%S" p.version;
-              sp "export BUILD=%d" p.build;
-              sp "if [ -e config%s ]; then . ./config%s; fi" variant variant;
-              sp "exec bash -x %s.SlackBuild" p.package
-            ]
-          |];
+          (try
+            run [|
+              "sh"; "-cex";
+              String.concat "; " [
+                sp "cd %S" dir;
+                sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
+                sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
+                sp "export VERSION=%S" p.version;
+                sp "export BUILD=%d" p.build;
+                sp "if [ -e config%s ]; then . ./config%s; fi" variant variant;
+                sp "exec bash -x %s.SlackBuild" p.package
+              ]
+            |];
+          with e ->
+            ListLabels.iter outputs ~f:(fun output ->
+              try Unix.unlink output with _ -> ()
+            );
+            Unix.close log;
+            raise e
+          );
           ListLabels.iter outputs ~f:(fun output ->
             run [| "yypkg"; "--upgrade"; "--install-new"; output |]
           );
