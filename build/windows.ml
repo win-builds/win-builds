@@ -133,7 +133,7 @@ let do_adds builder =
       ~dir:"slackware64-current/a"
       ~dependencies
       ~version:"1.6.12"
-      ~build:1
+      ~build:(if variant = "regular" then 1 else -1)
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz", "340e8e09413040503f7afc0dd6ae97b78a52b517";
       ]
@@ -144,7 +144,7 @@ let do_adds builder =
       ~dir:"slackware64-current/l"
       ~dependencies
       ~version:"0.9.16"
-      ~build:2
+      ~build:(if variant = "regular" then 2 else -1)
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz", "d7fa8ef7f2eca07e29d94f448f6196c9b3022d64";
       ]
@@ -155,7 +155,7 @@ let do_adds builder =
       ~dir:"slackware64-current/x"
       ~dependencies
       ~version:"2.11.1"
-      ~build:1
+      ~build:(if variant = "regular" then 1 else -1)
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.gz", "4f83bab1834f60345f1ef3920ac393d9f9c609ab";
       ]
