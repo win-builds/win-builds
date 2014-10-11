@@ -103,7 +103,16 @@ module B = struct
     let env = env builder in
     (if not (Sys.file_exists builder.prefix.Prefix.yyprefix)
       || Sys.readdir builder.prefix.Prefix.yyprefix = [| |] then
-      run [| "yypkg"; "--init"; "--prefix"; builder.prefix.Prefix.yyprefix |]);
+    (
+      let version = Sys.getenv "VERSION_DEV" in
+      let host = builder.prefix.Prefix.host in
+      run ~env [| "yypkg"; "--init" |];
+      run ~env [| "yypkg"; "--config"; "--predicates"; "--set";
+        Lib.sp "host=%s" host.Arch.triplet |];
+      run ~env [| "yypkg"; "--config"; "--set-mirror";
+        Lib.sp "http://win-builds.org/%s/packages/windows_%d"
+          version host.Arch.bits |];
+    ));
     fun p ->
       let outputs = List.map (Filename.concat builder.yyoutput) p.outputs in
       let sources_dir_ize = Filename.concat (Filename.concat p.dir p.package) in
