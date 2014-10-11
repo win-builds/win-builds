@@ -177,6 +177,9 @@ let build ~failer builder =
         (String.concat ", " (List.map name packages));
       let env = B.build_env builder in
       let rec aux = function
+        | { package = "download" } :: tl ->
+            run ~env [| "yypkg"; "--web"; "--auto" |];
+            aux tl
         | p :: tl ->
             if not (try B.build_one ~builder ~env p; true with _ -> false) then(
               failer := true;
