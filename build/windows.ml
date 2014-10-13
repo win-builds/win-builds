@@ -1268,6 +1268,17 @@ let do_adds builder =
 
   in
 
+  let _download =
+    (* fake package to reserve the name and make it known to the builder *)
+    add ("download", None)
+      ~dir:""
+      ~dependencies:[
+      ]
+      ~version:"0.0.0"
+      ~build:1
+      ~sources:[]
+  in
+
   let _disabled =
     let _speex = add ("speex", None)
       ~dir:"slackbuilds.org/audio"

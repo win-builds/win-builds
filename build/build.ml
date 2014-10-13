@@ -178,7 +178,7 @@ let build ~failer builder =
       let env = B.build_env builder in
       let rec aux = function
         | { package = "download" } :: tl ->
-            run ~env [| "yypkg"; "--web"; "--auto" |];
+            run ~env [| "yypkg"; "--web"; "--auto"; "yes" |];
             aux tl
         | p :: tl ->
             if not (try B.build_one ~builder ~env p; true with _ -> false) then(
