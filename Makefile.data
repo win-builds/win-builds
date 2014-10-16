@@ -1,8 +1,8 @@
-export VERSION_DEV := 1.5-dev2
+export VERSION_DEV := 1.5-rc1
 export VERSION_STABLE := 1.4.0
 
 YYPKG_FILES := http://win-builds.org/yypkg
-YYPKG_VERSION := 1.9-rc1
+YYPKG_VERSION := 1.9-rc3
 
 FILEUTILS_VERSION := 0.4.5
 ARCHIVE_VERSION := 2.8.4+2
