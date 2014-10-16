@@ -571,6 +571,7 @@ let do_adds builder =
       fontconfig; freetype; lua;
       fribidi; harfbuzz; libsndfile;
       gnutls; curl; c_ares; dbus;
+      (* openjpeg; current it doesn't work *)
     ]
     in
 
