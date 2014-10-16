@@ -25,23 +25,23 @@ let do_adds builder =
   let add_full = Config.Builder.register ~builder in
   let add = add_full ?outputs:None in
 
-  let xz ~variant ~dependencies =
+  let xz_add ~variant ~dependencies =
     add ("xz", Some variant)
       ~dir:"slackware64-current/a"
       ~dependencies
       ~version:"5.0.5"
-      ~build:1
+      ~build:(if variant = "regular" then 1 else -1)
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz", "56f1d78117f0c32bbb1cfd40117aa7f55bee8765";
       ]
   in
 
-  let libarchive ~variant ~dependencies =
+  let libarchive_add ~variant ~dependencies =
     add ("libarchive", Some variant)
       ~dir:"slackware64-current/l"
       ~dependencies
       ~version:"3.1.2"
-      ~build:1
+      ~build:(if variant = "regular" then 1 else -1)
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.gz", "6a991777ecb0f890be931cec4aec856d1a195489";
       ]
@@ -214,7 +214,7 @@ let do_adds builder =
       ]
     in
 
-    let xz = xz ~variant:"regular" ~dependencies:[ gettext ] in
+    let xz = xz_add ~variant:"regular" ~dependencies:[ gettext ] in
 
     let zlib = zlib ~variant:"regular" ~dependencies:[] in
 
@@ -586,7 +586,7 @@ let do_adds builder =
       ]
     in
 
-    let libarchive = libarchive ~variant:"regular" ~dependencies:[ nettle ] in
+    let libarchive = libarchive_add ~variant:"regular" ~dependencies:[ nettle ] in
 
     let wget = add ("wget", None)
       ~dir:"slackware64-current/n"
@@ -1112,17 +1112,21 @@ let do_adds builder =
     let _yypkg =
       let variant = "yypkg" in
 
-      let dbus_yypkg = dbus_add ~variant ~dependencies:[ expat ] in
+      let dbus = dbus_add ~variant ~dependencies:[ expat ] in
 
-      let harfbuzz_yypkg = harfbuzz_add ~variant ~dependencies:[ freetype ] in
+      let harfbuzz = harfbuzz_add ~variant ~dependencies:[ freetype ] in
 
-      let fontconfig_yypkg = fontconfig_add ~variant ~dependencies:[ freetype; expat ] in
+      let fontconfig = fontconfig_add ~variant ~dependencies:[ freetype; expat ] in
+
+      let xz = xz_add ~variant ~dependencies:[] in
+
+      let libarchive = libarchive_add ~variant ~dependencies:[ xz ] in
 
       add ("yypkg", None)
         ~dir:"slackbuilds.org/ocaml"
         ~dependencies:[ ocaml_findlib; ocaml_cryptokit;
             ocaml_fileutils; ocaml_archive; ocaml_efl; libocaml_http;
-            dbus_yypkg; harfbuzz_yypkg; fontconfig_yypkg;
+            dbus; harfbuzz; fontconfig; libarchive
         ]
         ~version:"1.9-rc2"
         ~build:1
