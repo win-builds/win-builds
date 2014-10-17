@@ -172,9 +172,19 @@ let do_adds builder =
       ]
     in
 
-    let winpthreads = add ("winpthreads", None)
+    let mingw_w64 = add ("mingw-w64", Some "full")
       ~dir:"mingw"
       ~dependencies:[]
+      ~version:Version.mingw_w64
+      ~build:2
+      ~sources:[
+        Source.mingw_w64;
+      ]
+    in
+
+    let winpthreads = add ("winpthreads", None)
+      ~dir:"mingw"
+      ~dependencies:[ mingw_w64 ]
       ~version:Version.mingw_w64
       ~build:2
       ~sources:[
@@ -596,16 +606,6 @@ let do_adds builder =
       ~build:2
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz", "cfa0906e6f72c1c902c29b52d140c22ecdcd617e";
-      ]
-    in
-
-    let mingw_w64 = add ("mingw-w64", Some "full")
-      ~dir:"mingw"
-      ~dependencies:[]
-      ~version:Version.mingw_w64
-      ~build:2
-      ~sources:[
-        Source.mingw_w64;
       ]
     in
 
