@@ -1149,7 +1149,7 @@ let do_adds builder =
         openjpeg; sdl2; libgcrypt;
         glib_networking; libxml2; libsoup; djvulibre; a52dec; libmpeg2;
         pcre; libxslt; libdvdread;
-        gendef; genidl; genpeimg; widl;
+        gendef; genidl; genpeimg; widl; libmangle; winstorecompat;
         json_c;
         qt;
       ]
