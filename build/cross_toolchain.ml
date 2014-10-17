@@ -103,8 +103,6 @@ let do_adds builder =
 
   let libmangle = mingw_w64_tool_add "libmangle" in
 
-  let winstorecompat = mingw_w64_tool_add "winstorecompat" in
-
   let flexdll = add ("flexdll", None)
     ~dir:"mingw"
     ~dependencies:[ binutils; gcc_full; mingw_w64_full; binutils ]
@@ -140,7 +138,7 @@ let do_adds builder =
     ~dir:""
     ~dependencies:[
       gcc_full; mingw_w64_full; binutils; mingw_w64_full;
-      gendef; genidl; genpeimg; widl;
+      gendef; genidl; genpeimg; widl; libmangle;
     ]
     ~version:"0.0.0"
     ~build:1
