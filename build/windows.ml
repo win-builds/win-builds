@@ -1129,10 +1129,10 @@ let do_adds builder =
             ocaml_fileutils; ocaml_archive; ocaml_efl; libocaml_http;
             dbus; harfbuzz; fontconfig; libarchive
         ]
-        ~version:"1.9-rc2"
+        ~version:"1.9-rc3"
         ~build:1
         ~sources:[
-          "${PACKAGE}-${VERSION}.tar.xz", "c695aaf1e1142a9999aa772683cf62a122004cf3";
+          "${PACKAGE}-${VERSION}.tar.xz", "e9c18b851eff92a2863313c25147c025b4b746b0";
         ]
     in
 
