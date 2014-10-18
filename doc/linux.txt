@@ -128,13 +128,17 @@ paths change. If you intend to rebuild all packages on your machine
 anyway, you can edit `build/config.ml`, look for `/opt/̀` and replace it with
 the value you wish.
 
+NOTE: specifying 'NATIVE_TOOLCHAIN=all' below will build Qt which takes a
+*very* long time to build; use 'NATIVE_TOOLCHAIN=all_but_qt' instead if
+you don't need Qt support.
+
 * As root:
 
 ------------------------------------------------------------------------
 make -C win-builds NATIVE_TOOLCHAIN=all CROSS_TOOLCHAIN=all
 ------------------------------------------------------------------------
 
-* Using fakeroot:
+* Or, using fakeroot:
 
 First create the needed directories as root and chown them to yourself;
 symlinks will work just fine:
