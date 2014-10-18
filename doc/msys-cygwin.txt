@@ -64,14 +64,14 @@ want to install for a second architecture.
 
 == Change toolchain on-the-fly ==
 
-The 'win-builds-switch' script takes care of everything; run it in your
-shell like:
+The 'win-builds-switch' script takes care of everything; source it in your
+shell:
 
 ------------------------------------------------------------------------
 # To switch to the i686 toolchain
-. /opt/windows_32/bin/win-builds-switch 32
+source /opt/windows_32/bin/win-builds-switch
 # To switch to the x86_64 toolchain
-. /opt/windows_64/bin/win-builds-switch 64
+source /opt/windows_64/bin/win-builds-switch
 ------------------------------------------------------------------------
 
 == Set a default toolchain (optional) ==
@@ -81,7 +81,7 @@ user's profile. The command will be executed each time an interactive shell is
 started and will be valid for everything started from them.
 
 ------------------------------------------------------------------------
-echo '. /opt/windows_32/bin/win-builds-switch 32' >> ~/.profile
+echo 'source /opt/windows_32/bin/win-builds-switch' >> ~/.profile
 ------------------------------------------------------------------------
 
 == Check gcc works ==
