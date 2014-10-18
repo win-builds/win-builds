@@ -92,3 +92,10 @@ let _all = add ("all", None)
   ~version:"0.0.0"
   ~build:1
   ~sources:[]
+
+let _all_but_qt = add ("all_but_qt", None)
+  ~dir:""
+  ~dependencies:[ lua; efl; elementary ]
+  ~version:"0.0.0"
+  ~build:1
+  ~sources:[]
