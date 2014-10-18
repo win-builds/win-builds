@@ -61,11 +61,20 @@ module B = struct
     let chan_ack = Event.new_channel () in
     ignore (Thread.create (fun () ->
       while true do
-        get_files (Event.sync (Event.receive chan_send));
-        ignore (Event.sync (Event.receive chan_ack))
+        Event.sync (Event.send chan_ack (
+          try
+            get_files (Event.sync (Event.receive chan_send));
+            None
+          with exn ->
+            Some exn
+        ))
       done
     ) ());
-    (fun l -> Event.sync (Event.send chan_send l); Event.sync (Event.send chan_ack ()))
+    (fun l ->
+      Event.sync (Event.send chan_send l);
+      match Event.sync (Event.receive chan_ack) with
+      | None -> ()
+      | Some exn -> raise exn)
 
   let needs_rebuild ~sources ~outputs =
     let ts_err file =
