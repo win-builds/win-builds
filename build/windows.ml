@@ -997,7 +997,7 @@ let do_adds builder =
       ~version:"1.0.0"
       ~build:3
       ~sources:[
-        "win-builds-switch", "";
+        "win-builds-switch.in", "";
       ]
     in
 
