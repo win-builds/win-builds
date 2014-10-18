@@ -16,9 +16,9 @@
   <li><a href="#known_issues">Known issues</a></li>
   <li>On dedicated pages:
     <ul>
-      <li><a href="@@VERSION_DEV@@/msys-cygwin.html">MSYS and Cygwin</a></li>
-      <li><a href="@@VERSION_DEV@@/linux.html">Linux and Build yourself</a></li>
-      <li><a href="@@VERSION_DEV@@/packaging.html">Packaging</a></li>
+      <li><a href="@@VERSION@@/msys-cygwin.html">MSYS and Cygwin</a></li>
+      <li><a href="@@VERSION@@/linux.html">Linux and Build yourself</a></li>
+      <li><a href="@@VERSION@@/packaging.html">Packaging</a></li>
     </ul>
   </li>
 </ul>
@@ -29,12 +29,12 @@ GTK+, EFL and Qt applications and provide several networking components along
 with the toolchain itself.
 <ul>
   <li>i686:
-    <a href="@@VERSION_DEV@@/packages/windows_32/package_list.html">Package list</a>
-    <a href="@@VERSION_DEV@@/logs/windows_32/">Build logs</a>
+    <a href="@@VERSION@@/packages/windows_32/package_list.html">Package list</a>
+    <a href="@@VERSION@@/logs/windows_32/">Build logs</a>
   </li>
   <li>x86_64:
-    <a href="@@VERSION_DEV@@/packages/windows_64/package_list.html">Package list</a>
-    <a href="@@VERSION_DEV@@/logs/windows_64/">Build logs</a>
+    <a href="@@VERSION@@/packages/windows_64/package_list.html">Package list</a>
+    <a href="@@VERSION@@/logs/windows_64/">Build logs</a>
   </li>
 </ul>
 
@@ -59,7 +59,7 @@ with the toolchain itself.
   </ul>
 
 <p>
-  For Cygwin and MSYS, the preferred way to set these is through the win-builds-switch script as described in the <a href="@@VERSION_DEV@@/msys-cygwin.html#_change_toolchain_on_the_fly">documentation for these</a>.
+  For Cygwin and MSYS, the preferred way to set these is through the win-builds-switch script as described in the <a href="@@VERSION@@/msys-cygwin.html#_change_toolchain_on_the_fly">documentation for these</a>.
 </p>
 
 <p>
@@ -77,7 +77,7 @@ with the toolchain itself.
 <h2>GUI</h2>
 <p>
   Browse for the win-builds installation you wish to update, enter the 'bin' 
-  directory and double-click on yypkg-@@VERSION_DEV@@.exe. The GUI will 
+  directory and double-click on yypkg-@@VERSION@@.exe. The GUI will 
   appeart, retrieve the current package list, display it and ask for 
   confirmation before processing them.
 </p>

@@ -1,4 +1,4 @@
-export VERSION_DEV := 1.5-rc1
+export VERSION := 1.5-rc1
 
 YYPKG_FILES := http://win-builds.org/yypkg
 YYPKG_VERSION := 1.9-rc3
@@ -11,4 +11,4 @@ EFL_VERSION := 1.11.1
 
 WEB := notk.org:/var/www/win-builds.org
 
-export MIRROR := http://win-builds.org/$(VERSION_DEV)/tarballs
+export MIRROR := http://win-builds.org/$(VERSION)/tarballs

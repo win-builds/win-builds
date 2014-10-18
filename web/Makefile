@@ -11,7 +11,7 @@ temp:
 temp/index.html: package-list.js
 temp/%.html: temp footer.html header.html head.php %.php style.css ../Makefile.data
 	php "$*.php" \
-	  | sed 's/@@VERSION_DEV@@/$(VERSION_DEV)/g' \
+	  | sed 's/@@VERSION@@/$(VERSION)/g' \
 	  > "$@"
 
 web-upload upload: web

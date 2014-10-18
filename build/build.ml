@@ -157,7 +157,7 @@ module B = struct
     (if not (Sys.file_exists builder.prefix.Prefix.yyprefix)
       || Sys.readdir builder.prefix.Prefix.yyprefix = [| |] then
     (
-      let version = Sys.getenv "VERSION_DEV" in
+      let version = Sys.getenv "VERSION" in
       let host = builder.prefix.Prefix.host in
       run ~env [| "yypkg"; "--init" |];
       run ~env [| "yypkg"; "--config"; "--predicates"; "--set";

@@ -10,9 +10,9 @@
 <h1>Windows</h1>
 
 Installation on Windows can be done for MSYS, Cygwin or without them.
-Download the <a href="@@VERSION_DEV@@/yypkg-@@VERSION_DEV@@.zip">package manager</a> (2.3MB), extract it and run bin/yypkg-@@VERSION_DEV@@.exe.
+Download the <a href="@@VERSION@@/yypkg-@@VERSION@@.zip">package manager</a> (2.3MB), extract it and run bin/yypkg-@@VERSION@@.exe.
 
-For MSYS or Cygwin, also read <a href="@@VERSION_DEV@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>.
+For MSYS or Cygwin, also read <a href="@@VERSION@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>.
 
 <p>
 Packages are 85MB and size on disk is 470MB. Note that installation doesn't
@@ -34,7 +34,7 @@ or 2003 might work but is unsupported.
 <p>
 No fully cross-distribution binaries can be realistically provided on Linux. As 
 such the process is slightly longer and on a <a 
-href="@@VERSION_DEV@@/linux.html">separate page in the documentation</a>.
+href="@@VERSION@@/linux.html">separate page in the documentation</a>.
 </p>
 
 <p>
@@ -47,7 +47,7 @@ of CPU time (modern desktop to Atom-class notebook).
 It shall be possible to use win-builds on other systems too even if this has
 not been tried so far. The main requirement is a POSIX system with a GNU
 userspace (<code>sed</code>, <code>cp</code>, etc.). Building will follow the 
-steps in the <a href="@@VERSION_DEV@@/linux.html">documentation for Linux</a>.
+steps in the <a href="@@VERSION@@/linux.html">documentation for Linux</a>.
 </p>
 
 <?php include 'footer.html'; ?>

@@ -10,7 +10,7 @@ let work_dir =
   else
     Lib.make_path_absolute_if_not args.(1)
 
-let version = Sys.getenv "VERSION_DEV"
+let version = Sys.getenv "VERSION"
 
 let version_short =
   try

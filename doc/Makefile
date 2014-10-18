@@ -8,8 +8,8 @@ version.config: ../Makefile.data Makefile
 	echo '[blockdef-listing]' > $@
 	echo 'subs=specialcharacters,callouts,replacements' >> $@
 	echo '[replacements]' >> $@
-	echo '@@VERSION@@=$(VERSION_DEV)' >> $@
-	echo '@@VERSION_DEV@@=$(VERSION_DEV)' >> $@
+	echo '@@VERSION@@=$(VERSION)' >> $@
+	echo '@@VERSION@@=$(VERSION)' >> $@
 	echo '@@MIRROR@@=$(MIRROR)' >> $@
 
 %.html: %.txt version.config
@@ -22,7 +22,7 @@ version.config: ../Makefile.data Makefile
 doc: $(DOCS_HTML)
 
 doc-upload: doc
-	rsync -avLP $(DOCS_HTML) $(DOCS_TXT) docbook-xsl.css ../web/style.css "$(WEB)/$(VERSION_DEV)/"
+	rsync -avLP $(DOCS_HTML) $(DOCS_TXT) docbook-xsl.css ../web/style.css "$(WEB)/$(VERSION)/"
 
 clean:
 	rm -f $(DOCS_HTML)
