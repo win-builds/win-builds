@@ -158,13 +158,14 @@ module B = struct
       || Sys.readdir builder.prefix.Prefix.yyprefix = [| |] then
     (
       let version = Sys.getenv "VERSION" in
-      let host = builder.prefix.Prefix.host in
       run ~env [| "yypkg"; "--init" |];
       run ~env [| "yypkg"; "--config"; "--predicates"; "--set";
-        Lib.sp "host=%s" host.Arch.triplet |];
+        Lib.sp "host=%s" builder.prefix.Prefix.host.Arch.triplet |];
+      run ~env [| "yypkg"; "--config"; "--predicates"; "--set";
+        Lib.sp "target=%s" builder.prefix.Prefix.target.Arch.triplet |];
       run ~env [| "yypkg"; "--config"; "--set-mirror";
         Lib.sp "http://win-builds.org/%s/packages/windows_%d"
-          version host.Arch.bits |];
+          version builder.prefix.Prefix.host.Arch.bits |];
     ));
     env
 end
