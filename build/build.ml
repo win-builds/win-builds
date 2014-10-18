@@ -196,10 +196,12 @@ let build ~failer builder =
       in
       may prerr_endline (aux packages);
     ));
-    progress "[%s] Setting up repository.\n%!" builder.prefix.Prefix.nickname;
-    try
-      run [| "yypkg"; "--repository"; "--generate"; builder.yyoutput |]
-    with _ -> Printf.eprintf "ERROR: Couldn't create repository!\n%!"
+    if try (Sys.readdir builder.yyoutput) <> [| |] with _ -> false then (
+      progress "[%s] Setting up repository.\n%!" builder.prefix.Prefix.nickname;
+      try
+        run [| "yypkg"; "--repository"; "--generate"; builder.yyoutput |]
+      with _ -> Printf.eprintf "ERROR: Couldn't create repository!\n%!"
+    )
   )
   else
     ()
