@@ -11,6 +11,7 @@ version.config: ../Makefile.data Makefile
 	echo '@@VERSION@@=$(VERSION_DEV)' >> $@
 	echo '@@VERSION_STABLE@@=$(VERSION_STABLE)' >> $@
 	echo '@@VERSION_DEV@@=$(VERSION_DEV)' >> $@
+	echo '@@MIRROR@@=$(MIRROR)' >> $@
 
 %.html: %.txt version.config
 	a2x -f xhtml \
