@@ -56,14 +56,11 @@ then 'Apply Changes'.
 
 == Win-builds Installation ==
 
-Run either MSYS or Cygwin according to what you have installed then download link:yypkg-@@VERSION@@.exe[] and run it from the command-line as:
-
-* for MSYS: './yypkg-@@VERSION@@.exe --deploy --host msys'
-* for Cygwin: './yypkg-@@VERSION@@.exe --deploy --host cygwin'
-
-The package manager will prompt for the architectures to install win-builds
-for and will prompt for confirmation before the actual installation of each
-architecture that has been chosen.
+link:yypkg-@@VERSION@@.zip[Download the installer], extract it and run
+bin/yypkg-@@VERSION@@.exe. Select one of Cygwin or MSYS, set the architecture
+for which to install binaries (64b host is required to use the 64b toolchain)
+and provide their installation path. Run the installer a second time if you
+want to install for a second architecture.
 
 == Change toolchain on-the-fly ==
 
