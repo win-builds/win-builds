@@ -25,11 +25,11 @@ tarballs-upload:
 release-upload:
 	cd .. && \
 	  rsync -avzP \
-	  --include='/$(VERSION_STABLE)' \
-	  --include='/$(VERSION_STABLE)/logs' \
-	  --include='/$(VERSION_STABLE)/packages' \
+	  --include='/$(VERSION_DEV)' \
+	  --include='/$(VERSION_DEV)/logs' \
+	  --include='/$(VERSION_DEV)/packages' \
 	  --exclude='memo_pkg' \
-	  --exclude='/$(VERSION_STABLE)/*' \
-	  $(VERSION_STABLE) $(WEB)/
+	  --exclude='/$(VERSION_DEV)/*' \
+	  $(VERSION_DEV) $(WEB)/
 
 .PHONY: doc web build yypkg

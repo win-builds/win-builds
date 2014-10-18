@@ -10,17 +10,14 @@
 <h1>Windows</h1>
 
 Installation on Windows can be done for MSYS, Cygwin or without them.
-Download the <a href="@@VERSION_STABLE@@/yypkg-@@VERSION_STABLE@@.exe">package manager</a> (2.3MB) and:
-<ul>
-  <li>for use without MSYS or Cygwin: double-click on it</li>
-  <li>for MSYS: run it from the command-line as: <pre style="display: inline">yypkg-@@VERSION_STABLE@@.exe --deploy --host msys</pre> and read <a href="@@VERSION_STABLE@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>.</li>
-  <li>for Cygwin: run it from the command-line as: <pre style="display: inline">yypkg-@@VERSION_STABLE@@.exe --deploy --host cygwin</pre> and read <a href="@@VERSION_STABLE@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>. It will use the toolchain provided through Cygwin.</li>
-</ul>
+Download the <a href="@@VERSION_DEV@@/yypkg-@@VERSION_DEV@@.zip">package manager</a> (2.3MB), extract it and run bin/yypkg-@@VERSION_DEV@@.exe.
+
+For MSYS or Cygwin, also read <a href="@@VERSION_DEV@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>.
 
 <p>
-Packages are 65MB and size on disk is 400MB. Note that installation doesn't
+Packages are 85MB and size on disk is 470MB. Note that installation doesn't
 change system settings and in particular doesn't change environment variables
-like PATH or PKG_CONFIG_PATH/LIBDIR.
+like <code>PATH</code>, <code>PKG_CONFIG_PATH</code> and <code>PKG_CONFIG_LIBDIR</code>.
 </p>
 
 <p>
@@ -29,32 +26,28 @@ announces mailing-list</a>.
 </p>
 
 <p>
-NOTE: the 64 bits toolchain requires a 64 bits host.
-</p>
-
-<p>
-NOTE: installing on Windows XP works but you should really considering
-switching to something more up-to-date and still supported; some gtk-related
-programs that run at the end of the installation might fail but this will not
-make installation fail.
+NOTE: the 64 bits toolchain requires a 64 bits host; installing on Windows XP 
+or 2003 might work but is unsupported.
 </p>
 
 <h1>Linux</h1>
 <p>
-Installation on Linux builds GCC locally in order to have binaries which match the current Linux distribution. The whole process is automated.
+No fully cross-distribution binaries can be realistically provided on Linux. As 
+such the process is slightly longer and on a <a 
+href="@@VERSION_DEV@@/linux.html">separate page in the documentation</a>.
 </p>
 
 <p>
-The detailled explanations are in the <a
-href="@@VERSION_STABLE@@/linux.html">documentation for Linux</a>.
+The process should take around 5 minutes of user time and from 15 to 60 minutes 
+of CPU time (modern desktop to Atom-class notebook).
 </p>
 
 <h1>Other systems</h1>
 <p>
 It shall be possible to use win-builds on other systems too even if this has
 not been tried so far. The main requirement is a POSIX system with a GNU
-userspace and building will follow the steps in the <a
-href="@@VERSION_STABLE@@/linux.html">documentation for Linux</a>.
+userspace (<code>sed</code>, <code>cp</code>, etc.). Building will follow the 
+steps in the <a href="@@VERSION_DEV@@/linux.html">documentation for Linux</a>.
 </p>
 
 <?php include 'footer.html'; ?>

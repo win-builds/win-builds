@@ -31,7 +31,7 @@
     <h2 class="hl-title">Large, coherent set of packages</h2>
     <ul class="hl-list">
       <li>Qt, Curl, EFL, freetype, GTK+, lua, openssl, sqlite, wget, zlib, ...</li>
-      <li><a href="@@VERSION_STABLE@@/packages/windows_32/package_list.html">90 libraries and tools on Windows</a></li>
+      <li><a href="@@VERSION_DEV@@/packages/windows_32/package_list.html">90 libraries and tools on Windows</a></li>
     </ul>
   </div>
   <div class="hl">
@@ -39,6 +39,7 @@
     <ul class="hl-list">
       <li>Set up a complete development environment in 5 minutes on a broadband connection</li>
       <li>Test without any setup thanks to prepared virtual machines</li>
+      <li>GUI for easy usage</li>
     </ul>
   </div>
   <div class="hl">
@@ -68,7 +69,7 @@
 <div id="package-list">
   <div id="package-list-header">
     <div class="arrow arrow-left" id="package-list-prev" onclick="set_packages(-3)"></div>
-    <a id="package-list-all" href="@@VERSION_STABLE@@/packages/windows_32/package_list.html">Full package list</a>
+    <a id="package-list-all" href="@@VERSION_DEV@@/packages/windows_32/package_list.html">Full package list</a>
     <div class="arrow arrow-right" id="package-list-next" onclick="set_packages(3)"></div>
   </div>
   <div id="package-list-list" class="flexbox"></div>

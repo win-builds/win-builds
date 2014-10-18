@@ -16,25 +16,25 @@
   <li><a href="#known_issues">Known issues</a></li>
   <li>On dedicated pages:
     <ul>
-      <li><a href="@@VERSION_STABLE@@/msys-cygwin.html">MSYS and Cygwin</a></li>
-      <li><a href="@@VERSION_STABLE@@/linux.html">Linux and Build yourself</a></li>
-      <li><a href="@@VERSION_STABLE@@/packaging.html">Packaging</a></li>
+      <li><a href="@@VERSION_DEV@@/msys-cygwin.html">MSYS and Cygwin</a></li>
+      <li><a href="@@VERSION_DEV@@/linux.html">Linux and Build yourself</a></li>
+      <li><a href="@@VERSION_DEV@@/packaging.html">Packaging</a></li>
     </ul>
   </li>
 </ul>
 
 <h1 id="package_lists">Package lists</h1>
-All series combined, there are around 65 packages. They are enough to build 
-GTK+ and EFL applications and also provide several networking components plus 
-the toolchain itself.
+All series combined, there are around 90 packages. They are enough to build 
+GTK+, EFL and Qt applications and provide several networking components along 
+with the toolchain itself.
 <ul>
   <li>i686:
-    <a href="@@VERSION_STABLE@@/packages/windows_32/package_list.html">Package list</a>
-    <a href="@@VERSION_STABLE@@/logs/windows_32/">Build logs</a>
+    <a href="@@VERSION_DEV@@/packages/windows_32/package_list.html">Package list</a>
+    <a href="@@VERSION_DEV@@/logs/windows_32/">Build logs</a>
   </li>
   <li>x86_64:
-    <a href="@@VERSION_STABLE@@/packages/windows_64/package_list.html">Package list</a>
-    <a href="@@VERSION_STABLE@@/logs/windows_64/">Build logs</a>
+    <a href="@@VERSION_DEV@@/packages/windows_64/package_list.html">Package list</a>
+    <a href="@@VERSION_DEV@@/logs/windows_64/">Build logs</a>
   </li>
 </ul>
 
@@ -59,7 +59,7 @@ the toolchain itself.
   </ul>
 
 <p>
-  For Cygwin and MSYS, the preferred way to set these is through the win-builds-switch script as described in the <a href="@@VERSION_STABLE@@/msys-cygwin.html#_change_toolchain_on_the_fly">documentation for these</a>.
+  For Cygwin and MSYS, the preferred way to set these is through the win-builds-switch script as described in the <a href="@@VERSION_DEV@@/msys-cygwin.html#_change_toolchain_on_the_fly">documentation for these</a>.
 </p>
 
 <p>
@@ -74,26 +74,18 @@ the toolchain itself.
   repository.
 </p>
 
-<h2>Simple (full) updates</h2>
+<h2>GUI</h2>
 <p>
   Browse for the win-builds installation you wish to update, enter the 'bin' 
-  directory and double-click on yypkg.exe; it will retrieve the current package 
-  list, display the list of updates and ask for confirmation before processing 
-  them.
+  directory and double-click on yypkg-@@VERSION_DEV@@.exe. The GUI will 
+  appeart, retrieve the current package list, display it and ask for 
+  confirmation before processing them.
 </p>
 
-<h2>Selective updates</h2>
+<h2>Command-line</h2>
   Start a shell: cmd.exe, msys or cygwin. To start the update for all packages, run: <pre>yypkg --web</pre>
 
   In order to restrict the packages to consider for update, use the --packages argument: <pre>yypkg --web --packages &lt;package1&gt; &lt;package2&gt;</pre>
-
-<h1 id="known_issues">Known issues</h1>
-<p>
-  <ul>
-    <li>Graphical installer is being reworked and is not available yet.</li>
-    <li>Windows XP/2k3 don’t handle junctions and even hardlinks very well, making their removal by hand difficult.</li>
-  </ul>
-</p>
 
 <?php include 'footer.html'; ?>
 </body>
