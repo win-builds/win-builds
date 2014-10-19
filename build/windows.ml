@@ -55,6 +55,7 @@ let do_adds builder =
       ~build:1
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz", "81007abb130e087d01101d082661ada0a8879568";
+        "0001-Ecore_Win32-Fix-string-for-the-BackSpace-key-on-Wind.patch", "";
       ]
   in
 
