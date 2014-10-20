@@ -37,11 +37,14 @@ let do_adds builder =
     ]
   in
 
-  let mingw_w64_add = add
+  let mingw_w64_add = add_full
     ~dir:"mingw"
     ~version:Version.mingw_w64
     ~sources:[
       Source.mingw_w64;
+    ]
+    ~outputs:[
+      "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz";
     ]
   in
 
@@ -52,40 +55,49 @@ let do_adds builder =
       Source.gcc;
     ]
     ~outputs:[
-      "gcc-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz";
-      "gcc-g++-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz"
+      "${PACKAGE}-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz";
+      "${PACKAGE}-g++-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz"
     ]
   in
 
-  let mingw_w64_tool_add name = add (name, None)
+  let mingw_w64_tool_add name = add_full (name, None)
     ~dir:"mingw"
     ~dependencies:[]
     ~version:Version.mingw_w64
     ~build:1
+    ~outputs:[
+      "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz";
+    ]
     ~sources:[
       Source.mingw_w64;
     ]
   in
 
   let mingw_w64_headers = mingw_w64_add ("mingw-w64", Some "headers")
-    ~build:(-1) ~dependencies:[]
+    ~build:(-1)
+    ~dependencies:[]
   in
 
   let gcc_core = gcc_add ("gcc", Some "core")
-    ~build:(-1) ~dependencies:[ binutils; mingw_w64_headers ]
+    ~build:(-1)
+    ~dependencies:[ binutils; mingw_w64_headers ]
   in
 
   let mingw_w64_full = mingw_w64_add ("mingw-w64", Some "full")
-    ~build:1 ~dependencies:[ binutils; gcc_core ]
+    ~build:1
+    ~dependencies:[ binutils; gcc_core ]
   in
 
-  let winpthreads = add ("winpthreads", None)
+  let winpthreads = add_full ("winpthreads", None)
     ~dir:"mingw"
     ~dependencies:[ binutils; gcc_core; mingw_w64_full ]
     ~version:Version.mingw_w64
     ~build:1
     ~sources:[
       Source.mingw_w64
+    ]
+    ~outputs:[
+      "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz";
     ]
   in
 
@@ -100,8 +112,6 @@ let do_adds builder =
   let genpeimg = mingw_w64_tool_add "genpeimg" in
 
   let widl = mingw_w64_tool_add "widl" in
-
-  let libmangle = mingw_w64_tool_add "libmangle" in
 
   let flexdll = add ("flexdll", None)
     ~dir:"mingw"
@@ -138,7 +148,7 @@ let do_adds builder =
     ~dir:""
     ~dependencies:[
       gcc_full; mingw_w64_full; binutils; mingw_w64_full;
-      gendef; genidl; genpeimg; widl; libmangle;
+      gendef; genidl; genpeimg; widl;
     ]
     ~version:"0.0.0"
     ~build:1
