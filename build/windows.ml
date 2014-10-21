@@ -56,10 +56,6 @@ let do_adds builder =
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz", "81007abb130e087d01101d082661ada0a8879568";
         "0001-Ecore_Win32-Fix-string-for-the-BackSpace-key-on-Wind.patch", "";
-        "0001-edje_cc-Print-out-the-right-file-name-on-the-error-m.patch", "";
-        "0002-edje_cc-Use-eina_file_mkstemp-to-avoid-problems-with.patch", "";
-        "0003-edje_cc_parse-Use-eina_file_mkstemp-to-avoid-problem.patch", "";
-        "0004-edje_cc-Remove-no-longer-needed-extern-tmp_dir.patch", "";
       ]
   in
 
