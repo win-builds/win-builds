@@ -1,5 +1,5 @@
 module Version = struct
-  let mingw_w64 = "v3.2.0"
+  let mingw_w64 = "v3.3.0"
 
   let gcc = "4.8.3"
 
@@ -8,7 +8,7 @@ end
 
 module Source = struct
   let mingw_w64 =
-    "mingw-w64-${VERSION}.tar.bz2", "edd7ce33e36689fa35ab2c9799c4e8f33e288d70"
+    "mingw-w64-${VERSION}.tar.bz2", "d31eac960d42e791970697eae5724e529c81dcd6"
 
   let gcc =
     "gcc-${VERSION}.tar.xz", "f2f894d6652f697fede264c16c028746e9ee6243"
