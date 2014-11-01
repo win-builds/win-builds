@@ -44,6 +44,8 @@ let do_adds builder =
       ~build:(if variant = "regular" then 1 else -1)
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.gz", "6a991777ecb0f890be931cec4aec856d1a195489";
+        "0001-windows-don-t-undef-stat-since-it-my-be-defined-to-s.patch", "";
+        "use-static-asserts-to-guarantee-abi-compatibility.patch", "";
       ]
   in
 
