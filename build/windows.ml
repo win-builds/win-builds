@@ -1047,20 +1047,6 @@ let do_adds builder =
       ]
     in
 
-    let ocaml_archive = add ("ocaml-archive", None)
-      ~dir:"slackbuilds.org/ocaml"
-      ~dependencies:[ libarchive; ocaml_findlib; ocaml_fileutils ]
-      ~version:"2.8.4+2"
-      ~build:1
-      ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "4705e7eca920f6d831f2b8020d648d7caa18bb04";
-        "0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch", "";
-        "0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch", "";
-        "0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch", "";
-        "0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch", "";
-      ]
-    in
-
     let libocaml_http =
       let libocaml_add subpackage ~dependencies ~sha1 =
         add ("libocaml_" ^ subpackage, None)
@@ -1135,6 +1121,20 @@ let do_adds builder =
       let xz = xz_add ~variant ~dependencies:[] in
 
       let libarchive = libarchive_add ~variant ~dependencies:[ xz ] in
+
+      let ocaml_archive = add ("ocaml-archive", None)
+        ~dir:"slackbuilds.org/ocaml"
+        ~dependencies:[ libarchive; ocaml_findlib; ocaml_fileutils ]
+        ~version:"2.8.4+2"
+        ~build:1
+        ~sources:[
+          "${PACKAGE}-${VERSION}.tar.gz", "4705e7eca920f6d831f2b8020d648d7caa18bb04";
+          "0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch", "";
+          "0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch", "";
+          "0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch", "";
+          "0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch", "";
+        ]
+      in
 
       add ("yypkg", None)
         ~dir:"slackbuilds.org/ocaml"
