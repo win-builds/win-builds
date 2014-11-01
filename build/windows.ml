@@ -561,6 +561,16 @@ let do_adds builder =
       ]
     in
 
+    let check = add ("check", None)
+      ~dir:"slackbuilds.org/development"
+      ~dependencies:[]
+      ~version:"0.9.14"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz", "4b79e2d485d014ddb438e322b64235347d57b0ff";
+      ]
+    in
+
     let libsndfile = add ("libsndfile", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[]
