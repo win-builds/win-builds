@@ -86,16 +86,18 @@ let qt = add ("qt", Some "native")
     "qt5-workaround-qtbug-29426.patch", "";
   ]
 
-let _all = add ("all", None)
+let _all = add_full ("all", None)
   ~dir:""
   ~dependencies:[ lua; qt; efl; elementary ]
   ~version:"0.0.0"
   ~build:1
   ~sources:[]
+  ~outputs:[]
 
-let _all_but_qt = add ("all_but_qt", None)
+let _all_but_qt = add_full ("all_but_qt", None)
   ~dir:""
   ~dependencies:[ lua; efl; elementary ]
   ~version:"0.0.0"
   ~build:1
   ~sources:[]
+  ~outputs:[]

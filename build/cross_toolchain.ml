@@ -157,7 +157,7 @@ let do_adds builder =
     ]
   in
 
-  let _all = add ("all", None)
+  let _all = add_full ("all", None)
     ~dir:""
     ~dependencies:[
       gcc_full; mingw_w64_full; binutils; mingw_w64_full;
@@ -166,14 +166,16 @@ let do_adds builder =
     ~version:"0.0.0"
     ~build:1
     ~sources:[]
+    ~outputs:[]
   in
 
-  let _yypkg = add ("yypkg", None)
+  let _yypkg = add_full ("yypkg", None)
     ~dir:""
     ~dependencies:[ flexdll; ocaml; ocaml_findlib ]
     ~version:"1.0.0"
     ~build:1
     ~sources:[]
+    ~outputs:[]
   in
 
   ()

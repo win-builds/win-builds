@@ -1149,7 +1149,7 @@ let do_adds builder =
         ]
     in
 
-    add ("all", None)
+    add_full ("all", None)
       ~dir:""
       ~dependencies:[
         gcc; binutils; mingw_w64; gdb;
@@ -1169,6 +1169,7 @@ let do_adds builder =
       ~version:"0.0.0"
       ~build:1
       ~sources:[]
+      ~outputs:[]
 
   in
 
@@ -1214,13 +1215,14 @@ let do_adds builder =
       ]
     in
 
-    add ("experimental", None)
+    add_full ("experimental", None)
       ~dir:""
       ~dependencies:[
       ]
       ~version:"0.0.0"
       ~build:1
       ~sources:[]
+      ~outputs:[]
 
     (* 
       let sdl:base = add ("sdl:base", None)
@@ -1288,13 +1290,13 @@ let do_adds builder =
 
   let _download =
     (* fake package to reserve the name and make it known to the builder *)
-    add ("download", None)
+    add_full ("download", None)
       ~dir:""
-      ~dependencies:[
-      ]
+      ~dependencies:[]
       ~version:"0.0.0"
       ~build:1
       ~sources:[]
+      ~outputs:[]
   in
 
   let _disabled =
@@ -1308,13 +1310,13 @@ let do_adds builder =
       ]
     in
 
-    add ("disabled", None)
+    add_full ("disabled", None)
       ~dir:""
-      ~dependencies:[
-      ]
+      ~dependencies:[]
       ~version:"0.0.0"
       ~build:1
       ~sources:[]
+      ~outputs:[]
 
   in
 
