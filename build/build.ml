@@ -139,9 +139,7 @@ module B = struct
           ]
         |];
       with e ->
-        ListLabels.iter outputs ~f:(fun output ->
-          try Unix.unlink output with _ -> ()
-        );
+        List.iter (fun output -> try Unix.unlink output with _ -> ()) outputs;
         Unix.close log;
         raise e
       );
