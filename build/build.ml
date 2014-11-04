@@ -190,6 +190,9 @@ let build ~failer builder =
         | { package = "download" } :: tl ->
             run ~env [| "yypkg"; "--web"; "--auto"; "yes" |];
             aux tl
+        | { package = "devshell" } :: tl ->
+            run ~env [| try Sys.getenv "SHELL" with Not_found -> "/bin/bash" |];
+            aux tl
         | p :: tl ->
             if not (try B.build_one ~builder ~env p; true with _ -> false) then(
               failer := true;
