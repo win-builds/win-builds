@@ -196,18 +196,18 @@ let build ~failer builder =
         | p :: tl ->
             if not (try B.build_one ~builder ~env p; true with _ -> false) then(
               failer := true;
-              Some ("Build of " ^ p.package ^ " failed.")
+              prerr_endline ("Build of " ^ p.package ^ " failed.")
             )
             else (
               if !failer then
-                Some "Aborting because another thread did so."
+                prerr_endline "Aborting because another thread did so."
               else
                 aux tl
             )
         | [] ->
-            None
+            ()
       in
-      may prerr_endline (aux packages);
+      aux packages
     ));
     if try (Sys.readdir builder.yyoutput) <> [| |] with _ -> false then (
       progress "[%s] Setting up repository.\n%!" builder.prefix.Prefix.nickname;
