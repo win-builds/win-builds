@@ -104,6 +104,7 @@ module Builder = struct
     build : int;
     sources : (string * string) list;
     outputs : string list;
+    devshell : bool;
     mutable to_build : bool;
   }
 
@@ -187,11 +188,13 @@ module Builder = struct
     let h = Hashtbl.create 200 in
     ListLabels.iter (Str.split (Str.regexp ",") l) ~f:(fun e ->
       match Str.split (Str.regexp ":") e with
-      | [ n; v ] -> Hashtbl.add h (n, Some v) true
-      | [ n ] -> Hashtbl.add h (n, None) true
+      | [ n ] -> Hashtbl.add h (n, None, false) true
+      | [ n; "devshell" ] -> Hashtbl.add h (n, None, true) true
+      | [ n; v ] -> Hashtbl.add h (n, Some v, false) true
+      | [ n; v; "devshell" ] -> Hashtbl.add h (n, Some v, true) true
       | _ -> assert false
     );
-    fun p -> Hashtbl.mem h (p.package, p.variant)
+    fun p -> Hashtbl.mem h (p.package, p.variant, p.devshell)
 
   let add ~push ~builder =
     let shall_build = shall_build builder.name in
@@ -233,13 +236,19 @@ module Builder = struct
       Lib.(log dbg "Adding package %S.\n%!" package);
       ListLabels.iter sources ~f:(fun (source, _sha1) ->
         Lib.(log dbg " %s -> source=%s/%s/%s\n%!" package dir package source));
-      add_aux {
+      let p = {
         package; variant; dir; dependencies;
         version; build;
         sources;
         outputs = List.map (substitute_variables ~dict) outputs;
         to_build = false;
+        devshell = false;
       }
+      in
+      (* Automatically inject a "devshell" package and don't return it since it
+       * makes no sense to have other packages depend on it. *)
+      ignore (add_aux { p with devshell = true });
+      add_aux p
 
   let register ~builder =
     add ~builder ~push:(fun p -> builder.packages <- (builder.packages @ [p]))

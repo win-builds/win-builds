@@ -107,46 +107,60 @@ module B = struct
     else
       false
 
+  let run_build_shell ~devshell ~run p =
+    let dir = Filename.concat p.dir p.package in
+    let variant = match p.variant with None -> "" | Some s -> "-" ^ s in
+    run [|
+      "sh"; "-cex";
+      String.concat "; " [
+        sp "cd %S" dir;
+        sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
+        sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
+        sp "export VERSION=%S" p.version;
+        sp "export BUILD=%d" p.build;
+        sp "if [ -e config%s ]; then . ./config%s; fi" variant variant;
+        if not devshell then
+          sp "exec bash -x %s.SlackBuild" p.package
+        else
+          sp "exec %s" (try Sys.getenv "SHELL" with Not_found -> "/bin/bash")
+
+      ]
+    |]
+
+  let build_one_package ~builder ~outputs ~env p =
+    let log =
+      let filename = Filename.concat builder.logs (name p) in
+      let flags = [ Unix.O_RDWR; Unix.O_CREAT; Unix.O_TRUNC ] in
+      Unix.openfile filename flags 0o644
+    in
+    let run command = run ~stdout:log ~stderr:log ~env command in
+    (try run_build_shell ~devshell:false ~run p with e ->
+      List.iter (fun output -> try Unix.unlink output with _ -> ()) outputs;
+      Unix.close log;
+      raise e
+    );
+    ListLabels.iter outputs ~f:(fun output ->
+      run [| "yypkg"; "--upgrade"; "--install-new"; output |]
+    );
+    Unix.close log
+
+  let build_one_devshell ~env p =
+    run_build_shell ~devshell:true ~run:(run ~env) p
+
   let build_one ~env ~builder p =
     let outputs = List.map (Filename.concat builder.yyoutput) p.outputs in
     let sources_dir_ize = Filename.concat (Filename.concat p.dir p.package) in
     let sources = List.map (fun (f, s) -> sources_dir_ize f, s) p.sources in
     get_files sources;
-    if not (needs_rebuild ~sources ~outputs) then (
-      progress "[%s] %s is already up-to-date.\n%!" builder.prefix.Prefix.nickname (name p)
-    )
+    if p.devshell then
+      build_one_devshell ~env p
     else (
-      progress "[%s] Building %s\n%!" builder.prefix.Prefix.nickname (name p);
-      let dir = Filename.concat p.dir p.package in
-      let variant = match p.variant with None -> "" | Some s -> "-" ^ s in
-      let log =
-        let filename = Filename.concat builder.logs (name p) in
-        let flags = [ Unix.O_RDWR; Unix.O_CREAT; Unix.O_TRUNC ] in
-        Unix.openfile filename flags 0o644
-      in
-      let run command = run ~stdout:log ~stderr:log ~env command in
-      (try
-        run [|
-          "sh"; "-cex";
-          String.concat "; " [
-            sp "cd %S" dir;
-            sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
-            sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
-            sp "export VERSION=%S" p.version;
-            sp "export BUILD=%d" p.build;
-            sp "if [ -e config%s ]; then . ./config%s; fi" variant variant;
-            sp "exec bash -x %s.SlackBuild" p.package
-          ]
-        |];
-      with e ->
-        List.iter (fun output -> try Unix.unlink output with _ -> ()) outputs;
-        Unix.close log;
-        raise e
-      );
-      ListLabels.iter outputs ~f:(fun output ->
-        run [| "yypkg"; "--upgrade"; "--install-new"; output |]
-      );
-      Unix.close log
+      if not (needs_rebuild ~sources ~outputs) then (
+        progress "[%s] %s is already up-to-date.\n%!" builder.prefix.Prefix.nickname (name p)
+      )
+      else (
+        progress "[%s] Building %s\n%!" builder.prefix.Prefix.nickname (name p);
+        build_one_package ~builder ~outputs ~env p)
     )
 
   let build_env builder =
