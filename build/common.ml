@@ -4,6 +4,10 @@ module Version = struct
   let gcc = "4.8.3"
 
   let binutils = "2.24"
+
+  let efl = "1.11.2"
+
+  let elementary = "1.11.2"
 end
 
 module Source = struct
@@ -15,4 +19,10 @@ module Source = struct
 
   let binutils =
     "binutils-${VERSION}.tar.gz", "1b2bc33003f4997d38fadaa276c1f0321329ec56"
+
+  let efl =
+    "${PACKAGE}-${VERSION}.tar.xz", "81007abb130e087d01101d082661ada0a8879568"
+
+  let elementary =
+    "${PACKAGE}-${VERSION}.tar.xz", "d756b9c4763beebfbf494b9d2ee42cc2828dd4d8"
 end

@@ -53,11 +53,11 @@ let do_adds builder =
     add ("efl", Some variant)
       ~dir:"slackbuilds.org/libraries"
       ~dependencies
-      ~version:"1.11.2"
+      ~version:Version.efl
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "81007abb130e087d01101d082661ada0a8879568";
-        "0001-Ecore_Win32-Fix-string-for-the-BackSpace-key-on-Wind.patch", "";
+        Source.efl;
+        (* "0001-Ecore_Win32-Fix-string-for-the-BackSpace-key-on-Wind.patch", ""; *)
       ]
   in
 
@@ -65,10 +65,10 @@ let do_adds builder =
     add ("elementary", Some variant)
       ~dir:"slackbuilds.org/libraries"
       ~dependencies
-      ~version:"1.11.2"
+      ~version:Version.elementary
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "d756b9c4763beebfbf494b9d2ee42cc2828dd4d8";
+        Source.elementary
       ]
   in
 

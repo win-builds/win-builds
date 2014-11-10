@@ -49,19 +49,19 @@ let lua = add ("lua", None)
 let efl = add ("efl", Some "for-your-tools-only")
   ~dir:"slackbuilds.org/libraries"
   ~dependencies:[ lua ]
-  ~version:"1.11.2"
+  ~version:Common.Version.efl
   ~build:1
   ~sources:[
-    "${PACKAGE}-${VERSION}.tar.xz", "81007abb130e087d01101d082661ada0a8879568";
+    Common.Source.efl
   ]
 
 let elementary = add ("elementary", None)
   ~dir:"slackbuilds.org/libraries"
   ~dependencies:[ efl ]
-  ~version:"1.11.2"
+  ~version:Common.Version.elementary
   ~build:1
   ~sources:[
-    "${PACKAGE}-${VERSION}.tar.xz", "d756b9c4763beebfbf494b9d2ee42cc2828dd4d8";
+    Common.Source.elementary
   ]
 
 let qt = add ("qt", Some "native")
