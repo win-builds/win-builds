@@ -1,4 +1,4 @@
-export VERSION := 1.5-rc1
+export VERSION := 1.5-rc2
 
 YYPKG_FILES := http://win-builds.org/yypkg
 YYPKG_VERSION := 1.9-rc5
