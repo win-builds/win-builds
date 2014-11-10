@@ -7,6 +7,12 @@ let name p =
   | Some variant -> String.concat ":" [ p.package; variant ]
   | None -> p.package
 
+let check_euid () =
+  if Unix.geteuid () != 0 then (
+    Printf.eprintf "This program must be run as root or under fakeroot. Aborting.\n";
+    exit (-1)
+  )
+
 module B = struct
   let get_files l =
     let download ~file =
@@ -190,6 +196,7 @@ let build ~failer builder =
       false
   in
   if something_to_do then (
+    check_euid ();
     let packages = List.filter (fun p -> p.to_build) builder.packages in
     (if packages <> [] then (
       progress "[%s] Checking %s\n%!"
