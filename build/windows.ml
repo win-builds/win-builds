@@ -1165,6 +1165,7 @@ let do_adds builder =
         gendef; genidl; genpeimg; widl; libmangle; winstorecompat;
         json_c;
         qt;
+        check;
       ]
       ~version:"0.0.0"
       ~build:1
