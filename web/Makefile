@@ -1,6 +1,6 @@
 include ../Makefile.data
 
-FILES = index support documentation download news
+FILES = index support documentation download news comparison
 
 temp/screenshot.png: temp screenshot-windows.png
 	pngnq -L < screenshot-windows.png > temp/screenshot.png
