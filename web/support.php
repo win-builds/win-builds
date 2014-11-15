@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php $page = 'support'; include 'head.php'; ?>
+<?php
+$page = 'support';
+$page_description = 'How to get support: bug tracker, mailing-list, IRC.';
+$page_title = 'Support';
+include 'head.php';
+?>
 </head>
 
 <body>

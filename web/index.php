@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php $page = 'index'; include 'head.php'; ?>
+<?php
+$page = 'index';
+$page_description = 'Up-to-date, comprehensive and easy-to-use packaging system for Windows with GUI.';
+$page_title = '(Free) Software Packaging and Building For Windows';
+include 'head.php';
+?>
 <script>
 <?php include 'package-list.js'; ?>
 </script>

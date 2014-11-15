@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php $page = 'news'; include 'head.php'; ?>
+<?php
+$page = 'news';
+$page_description = 'News';
+$page_title = 'News';
+include 'head.php';
+?>
 </head>
 
 <body>

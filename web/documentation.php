@@ -2,7 +2,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php $page = 'documentation'; include 'head.php'; ?>
+<?php
+$page = 'documentation';
+$page_description = 'Documentation about installation, re-building, packaging, ...';
+$page_title = 'Documentation';
+include 'head.php';
+?>
 </head>
 
 <body>

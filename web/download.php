@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php $page = 'download'; include 'head.php'; ?>
+<?php
+$page = 'download';
+$page_description = 'Download and Install';
+$page_title = 'Download and Install';
+include 'head.php';
+?>
 </head>
 
 <body>
