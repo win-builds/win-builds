@@ -2,8 +2,10 @@ include ../Makefile.data
 
 FILES = index support documentation download news
 
-all web: temp $(patsubst %,temp/%.html,$(FILES))
-	cp -a screenshot.png temp
+temp/screenshot.png: temp screenshot-windows.png
+	pngnq -L < screenshot-windows.png > temp/screenshot.png
+
+all web: temp $(patsubst %,temp/%.html,$(FILES)) temp/screenshot.png
 
 temp:
 	mkdir -p temp
