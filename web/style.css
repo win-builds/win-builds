@@ -86,7 +86,7 @@ h1 {
   flex-direction: row;
 }
 
-.hl, .package-example {
+.hl {
   -ms-flex: 0 1 32%;
   -moz-flex: 0 1 32%;
   -webkit-flex: 0 1 32%;
@@ -98,25 +98,13 @@ h1 {
   border-top: 1px black solid;
 }
 
-.package-example {
-  height: 4em;
+.package-list {
+  padding-left: 4px;
+  padding-right: 8px;
 }
 
-#package-list {
-  padding-top: 1em;
-  padding-bottom: 1em;
-}
-
-#package-list-header {
-  text-align: center;
-}
-
-#package-list-prev {
-  float: left;
-}
-
-#package-list-next {
-  float: right;
+.package-list .package-list-item {
+  list-style: none;
 }
 
 @media screen and (max-width: 50em), screen and (orientation: portrait) {
