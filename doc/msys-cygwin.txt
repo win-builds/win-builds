@@ -56,7 +56,7 @@ then 'Apply Changes'.
 
 == Win-builds Installation ==
 
-link:yypkg-@@VERSION@@.zip[Download the installer], extract it and run
+link:win-builds-@@VERSION@@.zip[Download the installer], extract it and run
 bin/yypkg-@@VERSION@@.exe. Select one of Cygwin or MSYS, set the architecture
 for which to install binaries (64b host is required to use the 64b toolchain)
 and provide their installation path. Run the installer a second time if you
