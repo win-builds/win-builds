@@ -67,8 +67,13 @@ h1 {
 }
 
 .navlist div div a {
-  margin-bottom: 0.4em;
-  margin-top: 0.4em;
+  text-decoration: none;
+  outline: none;
+  color: inherit;
+}
+
+.navlist div div a:hover {
+  text-decoration: underline;
 }
 
 .flexbox {
