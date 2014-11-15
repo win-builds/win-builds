@@ -215,9 +215,21 @@ module Builder = struct
       ?(outputs=[default_output ()])
       ~dir ~dependencies ~version ~build ~sources
     ->
+      let is_virtual = (sources = []) in
+      let s_of_variant ?(pref="") = function Some v -> pref ^ v | None -> "" in
+      (if not is_virtual then (
+        Lib.log Lib.dbg
+          "Adding package %S%s %S %d.\n%!"
+          package
+          (s_of_variant ~pref:":" variant)
+          version
+          build;
+      ));
+      ListLabels.iter sources ~f:(fun (source, _sha1) ->
+        Lib.(log dbg " %s -> source=%s/%s/%s\n%!" package dir package source));
       let dict = [
         "PACKAGE", package;
-        "VARIANT", (match variant with Some v -> v | None -> "");
+        "VARIANT", s_of_variant variant;
         "VERSION", version;
         "BUILD", string_of_int build;
         "TARGET_TRIPLET", builder.prefix.Prefix.target.Arch.triplet;
@@ -229,13 +241,10 @@ module Builder = struct
           (match variant with Some v -> [ "config-" ^ v, "" ] | None -> []);
           [ "${PACKAGE}.SlackBuild", "" ];
           [ "${PACKAGE}.yypkg.script", "" ];
-           sources
+          sources
         ]
       in
       let sources = List.map (fun (f, s) -> substitute_variables ~dict f, s) sources in
-      Lib.(log dbg "Adding package %S.\n%!" package);
-      ListLabels.iter sources ~f:(fun (source, _sha1) ->
-        Lib.(log dbg " %s -> source=%s/%s/%s\n%!" package dir package source));
       let p = {
         package; variant; dir; dependencies;
         version; build;
