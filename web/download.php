@@ -21,7 +21,7 @@ Download and run the
 For MSYS or Cygwin, also read <a href="@@VERSION@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>.
 
 <p>
-Packages are 85MB and size on disk is 470MB. Note that installation doesn't
+Packages are 105MB and size on disk is 600MB. Installation doesn't
 change system settings and in particular doesn't change environment variables
 like <code>PATH</code>, <code>PKG_CONFIG_PATH</code> and <code>PKG_CONFIG_LIBDIR</code>.
 </p>
