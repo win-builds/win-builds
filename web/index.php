@@ -7,9 +7,6 @@ $page_description = 'Up-to-date, comprehensive and easy-to-use packaging system 
 $page_title = '(Free) Software Packaging and Building For Windows';
 include 'head.php';
 ?>
-<script>
-<?php include 'package-list.js'; ?>
-</script>
 </head>
 
 <body>
