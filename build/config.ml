@@ -224,8 +224,6 @@ module Builder = struct
           version
           build;
       ));
-      ListLabels.iter sources ~f:(fun (source, _sha1) ->
-        Lib.(log dbg " %s -> source=%s/%s/%s\n%!" package dir package source));
       let dict = [
         "PACKAGE", package;
         "VARIANT", s_of_variant variant;
@@ -244,6 +242,8 @@ module Builder = struct
         ]
       in
       let sources = List.map (fun (f, s) -> substitute_variables ~dict f, s) sources in
+      ListLabels.iter sources ~f:(fun (source, _sha1) ->
+        Lib.(log dbg " %s -> source=%s/%s/%s\n%!" package dir package source));
       let p = {
         package; variant; dir; dependencies;
         version; build;
