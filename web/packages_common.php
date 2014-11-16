@@ -35,11 +35,23 @@ function load_packages(&$packages, $file) {
   }
 }
 
+function xml_of_version_and_bits($version, $bits) {
+  return '../' . $version . '/packages/windows_' . $bits . '/package_list.xml';
+}
+
 function load_repositories($version) {
   $l = [];
-  load_packages($l, '../' . $version . '/packages/windows_32/package_list.xml');
-  load_packages($l, '../' . $version . '/packages/windows_64/package_list.xml');
+  load_packages($l, xml_of_version_and_bits($version, '32'));
+  load_packages($l, xml_of_version_and_bits($version, '64'));
   return $l;
 }
 
+function repository_sizes($version) {
+  $xml = simplexml_load_file(xml_of_version_and_bits($version, '32'));
+
+  $sizes['compressed'] = $xml['size_compressed'];
+  $sizes['expanded'] = $xml['size_expanded'];
+
+  return $sizes;
+}
 ?>

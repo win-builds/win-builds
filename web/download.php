@@ -12,6 +12,12 @@ include 'head.php';
 <body>
 <?php include 'header.html'; ?>
 
+<?php
+
+include 'packages_common.php';
+$sizes = repository_sizes('@@VERSION@@');
+?>
+
 <h1>Windows</h1>
 
 Installation on Windows can be done for MSYS, Cygwin or without them.
@@ -21,7 +27,9 @@ Download and run the
 For MSYS or Cygwin, also read <a href="@@VERSION@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>.
 
 <p>
-Packages are 105MB and size on disk is 600MB. Installation doesn't
+Packages weigh <?=$sizes['compressed']?> and
+size on disk is <?=$sizes['expanded']?>.
+Installation doesn't
 change system settings and in particular doesn't change environment variables
 like <code>PATH</code>, <code>PKG_CONFIG_PATH</code> and <code>PKG_CONFIG_LIBDIR</code>.
 </p>

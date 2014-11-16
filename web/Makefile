@@ -12,10 +12,10 @@ temp:
 
 temp/%.html: temp footer.html header.html head.php %.php style.css ../Makefile.data
 	sed 's/@@VERSION@@/$(VERSION)/g' "$*.php" \
-		| php \
+	  | php \
 	  > "$@"
 
-temp/packages.html temp/index.html: packages_common.php
+temp/packages.html temp/index.html temp/download.html: packages_common.php
 
 web-upload upload: web
 	rsync -avzLP "temp/" "$(WEB)/"
