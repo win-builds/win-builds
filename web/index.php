@@ -3,7 +3,7 @@
 <head>
 <?php
 $page = 'index';
-$page_description = 'Up-to-date, comprehensive and easy-to-use packaging system for Windows with GUI.';
+$page_description = 'Up-to-date, comprehensive and easy-to-use packaging system for Windows with a cute GUI.';
 $page_title = '(Free) Software Packaging and Building For Windows';
 include 'head.php';
 ?>
@@ -12,7 +12,15 @@ include 'head.php';
 <body>
 <?php include 'header.html'; ?>
 
-<h1>Win-builds - (Free) Software Building and Packaging For Windows</h1>
+<?php
+
+include 'packages_common.php';
+$packages = load_repositories('@@VERSION@@');
+$package_count = count($packages);
+
+?>
+
+<h1>(Free) Software Building and Packaging For Windows</h1>
 
 <p>
   Win-builds creates binary packages of libraries and tools for Windows from
@@ -33,7 +41,7 @@ include 'head.php';
     <h2 class="hl-title">Large, coherent set of packages</h2>
     <ul class="hl-list">
       <li>Qt, Curl, EFL, freetype, GTK+, lua, openssl, sqlite, wget, zlib, ...</li>
-      <li><a href="@@VERSION@@/packages/windows_32/package_list.html">90 libraries and tools on Windows</a></li>
+      <li><a href="packages.html"><?=$package_count?> libraries and tools on Windows</a></li>
     </ul>
   </div>
   <div class="hl">
@@ -70,19 +78,19 @@ include 'head.php';
 
 <table style="margin: auto;"><tr>
 <td id="screenhot">
-  <img alt="Screenshot of the win-builds GUI package manager" src="screenshot.png">
+  <a href="download.html">
+    <img alt="Screenshot of the win-builds GUI package manager" src="screenshot.png">
+  </a>
 </td>
 <td>
   <div style="height: 548px; overflow-y: scroll;">
     <ul class="package-list">
 <?php
-include 'temp/packages_overview_data.php';
 
 foreach ($packages as $package) {
-  $name = $package[0];
-  $version = $package[1];
-  $build = $package[2];
-  echo "<li class=\"package-list-item\"><a href=\"packages_overview.html#$name\">$name</a></li>";
+  $name = $package['name'];
+  $version = $package['version'];
+  echo "<li class=\"package-list-item\"><a href=\"packages.html#$name\" title=\"$name $version\">$name</a></li>";
 }
 ?>
     </ul>
