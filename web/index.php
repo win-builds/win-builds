@@ -90,7 +90,8 @@ $package_count = count($packages);
 foreach ($packages as $package) {
   $name = $package['name'];
   $version = $package['version'];
-  echo "<li class=\"package-list-item\"><a href=\"packages.html#$name\" title=\"$name $version\">$name</a></li>";
+  $description = $package['description'];
+  echo "<li class=\"package-list-item\"><a href=\"packages.html#$name\" title=\"$name $version - $description\">$name</a></li>";
 }
 ?>
     </ul>
