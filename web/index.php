@@ -75,95 +75,16 @@ include 'head.php';
 <td>
   <div style="height: 548px; overflow-y: scroll;">
     <ul class="package-list">
-      <li class="package-list-item">SDL2</li>
-      <li class="package-list-item">a52dec</li>
-      <li class="package-list-item">atk</li>
-      <li class="package-list-item">binutils</li>
-      <li class="package-list-item">c-ares</li>
-      <li class="package-list-item">ca-certificates</li>
-      <li class="package-list-item">cairo</li>
-      <li class="package-list-item">check</li>
-      <li class="package-list-item">curl</li>
-      <li class="package-list-item">dbus</li>
-      <li class="package-list-item">dejavu-fonts-ttf</li>
-      <li class="package-list-item">djvulibre</li>
-      <li class="package-list-item">efl</li>
-      <li class="package-list-item">elementary</li>
-      <li class="package-list-item">expat</li>
-      <li class="package-list-item">ffmpeg</li>
-      <li class="package-list-item">flac</li>
-      <li class="package-list-item">fontconfig</li>
-      <li class="package-list-item">freetype</li>
-      <li class="package-list-item">fribidi</li>
-      <li class="package-list-item">gcc</li>
-      <li class="package-list-item">gdb</li>
-      <li class="package-list-item">gdk-pixbuf2</li>
-      <li class="package-list-item">gendef</li>
-      <li class="package-list-item">genidl</li>
-      <li class="package-list-item">genpeimg</li>
-      <li class="package-list-item">gettext</li>
-      <li class="package-list-item">giflib</li>
-      <li class="package-list-item">glib-networking</li>
-      <li class="package-list-item">glib2</li>
-      <li class="package-list-item">gmp</li>
-      <li class="package-list-item">gnutls</li>
-      <li class="package-list-item">gperf</li>
-      <li class="package-list-item">gtk+2</li>
-      <li class="package-list-item">harfbuzz</li>
-      <li class="package-list-item">icu4c</li>
-      <li class="package-list-item">jansson</li>
-      <li class="package-list-item">json-c</li>
-      <li class="package-list-item">lame</li>
-      <li class="package-list-item">lcms</li>
-      <li class="package-list-item">lcms2</li>
-      <li class="package-list-item">libao</li>
-      <li class="package-list-item">libarchive</li>
-      <li class="package-list-item">libdvdread</li>
-      <li class="package-list-item">libffi</li>
-      <li class="package-list-item">libgcrypt</li>
-      <li class="package-list-item">libgpg-error</li>
-      <li class="package-list-item">libid3tag</li>
-      <li class="package-list-item">libjpeg</li>
-      <li class="package-list-item">libmad</li>
-      <li class="package-list-item">libmangle</li>
-      <li class="package-list-item">libmpc</li>
-      <li class="package-list-item">libmpeg2</li>
-      <li class="package-list-item">libogg</li>
-      <li class="package-list-item">libpng</li>
-      <li class="package-list-item">libsigc++</li>
-      <li class="package-list-item">libsndfile</li>
-      <li class="package-list-item">libsoup</li>
-      <li class="package-list-item">libtasn1</li>
-      <li class="package-list-item">libtheora</li>
-      <li class="package-list-item">libtiff</li>
-      <li class="package-list-item">libvorbis</li>
-      <li class="package-list-item">libxml2</li>
-      <li class="package-list-item">libxslt</li>
-      <li class="package-list-item">lua</li>
-      <li class="package-list-item">madplay</li>
-      <li class="package-list-item">make</li>
-      <li class="package-list-item">mingw-w64</li>
-      <li class="package-list-item">mpfr</li>
-      <li class="package-list-item">nettle</li>
-      <li class="package-list-item">openjpeg</li>
-      <li class="package-list-item">openssl</li>
-      <li class="package-list-item">opus</li>
-      <li class="package-list-item">pango</li>
-      <li class="package-list-item">pcre</li>
-      <li class="package-list-item">pixman</li>
-      <li class="package-list-item">pkg-config</li>
-      <li class="package-list-item">qt</li>
-      <li class="package-list-item">sox</li>
-      <li class="package-list-item">sqlite</li>
-      <li class="package-list-item">wget</li>
-      <li class="package-list-item">widl</li>
-      <li class="package-list-item">win-iconv</li>
-      <li class="package-list-item">winpthreads</li>
-      <li class="package-list-item">winstorecompat</li>
-      <li class="package-list-item">x264</li>
-      <li class="package-list-item">xz</li>
-      <li class="package-list-item">zlib</li>
-      <li class="package-list-item">zz_config</li>
+<?php
+include 'temp/packages_overview_data.php';
+
+foreach ($packages as $package) {
+  $name = $package[0];
+  $version = $package[1];
+  $build = $package[2];
+  echo "<li class=\"package-list-item\"><a href=\"packages_overview.html#$name\">$name</a></li>";
+}
+?>
     </ul>
   </div>
 </td>

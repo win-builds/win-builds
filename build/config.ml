@@ -219,9 +219,8 @@ module Builder = struct
       let s_of_variant ?(pref="") = function Some v -> pref ^ v | None -> "" in
       (if not is_virtual then (
         Lib.log Lib.dbg
-          "Adding package %S%s %S %d.\n%!"
-          package
-          (s_of_variant ~pref:":" variant)
+          "Adding package %S %S %d.\n%!"
+          (package ^ (s_of_variant ~pref:":" variant))
           version
           build;
       ));
