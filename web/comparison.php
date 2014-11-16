@@ -12,6 +12,8 @@ include 'head.php';
 <body>
 <?php include 'header.html'; ?>
 
+<h1>Comparison with other systems</h1>
+
 <p>
 There are several other environments based on
 <a href="http://mingw-w64.sourceforge.net">mingw-w64</a>. More than one being 
@@ -34,7 +36,7 @@ This should matter especially if you are using several systems during your
 development.
 </p>
 
-<h3>Compared to <a href="http://cygwin.com">Cygwin</a></h3>
+<h2>Compared to <a href="http://cygwin.com">Cygwin</a></h2>
 <p>
 <a href="http://cygwin.com">Cygwin</a> is a POSIX-like environment which runs 
 on Windows and is installed through a package manager.
@@ -64,7 +66,7 @@ layer but Win-builds can be used to provide native libraries that your
 application will use.
 </p>
 
-<h3>With Fedora/RHEL/CentOS and OpenSuse</h3>
+<h2>Compared to Fedora/RHEL/CentOS and OpenSuse</h2>
 <p>
 Packages in these Linux distributions have existed for several years. There are 
 many of them and they are well-maintained. It's possible to use the library 
@@ -72,7 +74,7 @@ packages on another Linux distribution or on Windows but it's not trivial
 either and will require a compatible toolchain.
 </p>
 
-<h3>With <a href="http://mxe.cc">MXE</a></h3>
+<h2>Compared to <a href="http://mxe.cc">MXE</a></h2>
 <p>
 This is not a binary distribution but a set of build recipes which can be run 
 by invoking <code>make</code>. It has a larger set of recipes but builds only 
@@ -81,7 +83,7 @@ with licenses such as the LGPL. It also does not run on Windows. Since it
 builds everything, it can take a long time to install.
 </p>
 
-<h3>With Mingw-builds</h3>
+<h2>Compared to Mingw-builds</h2>
 
 <p>
 TBD. Few notable differences: very bleeding-edge, many patches, only runs on 
