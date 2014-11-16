@@ -8,6 +8,14 @@ function bits_of_triplet($bits) {
   }
 }
 
+function version_without_build($version) {
+  return preg_replace('/(.*)-\\d+/', '\1', $version);
+}
+
+function package_version($packages, $package) {
+  return version_without_build($packages[$package]['version']);
+}
+
 function load_packages(&$packages, $file) {
   $xml = simplexml_load_file($file);
   foreach($xml->package as $package_node) {

@@ -55,8 +55,8 @@ $package_count = count($packages);
   <div class="hl">
     <h2 class="hl-title">32/64bits</h2>
     <ul class="hl-list">
-      <li>GCC 4.8.3 - C, C++</li>
-      <li>Mingw-w64 3.2.0</li>
+      <li>GCC <?=package_version($packages, 'gcc')?> - C, C++</li>
+      <li>Mingw-w64 <?=package_version($packages, 'mingw-w64')?></li>
     </ul>
   </div>
   <div class="hl">
