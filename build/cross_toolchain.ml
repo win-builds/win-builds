@@ -102,7 +102,7 @@ let do_adds builder =
   in
 
   let gcc_full = gcc_add ("gcc", Some "full")
-    ~build:1 ~dependencies:[ binutils; gcc_core; mingw_w64_full; winpthreads ]
+    ~build:2 ~dependencies:[ binutils; gcc_core; mingw_w64_full; winpthreads ]
   in
 
   let gendef = mingw_w64_tool_add "gendef" in

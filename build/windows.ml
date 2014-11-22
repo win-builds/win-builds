@@ -638,7 +638,7 @@ let do_adds builder =
       ~dir:"slackware64-current/d"
       ~dependencies:[ gmp; mpfr; libmpc ]
       ~version:Version.gcc
-      ~build:1
+      ~build:2
       ~sources:[
         Source.gcc
       ]
