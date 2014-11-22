@@ -901,10 +901,10 @@ let do_adds builder =
     let ffmpeg = add ("ffmpeg", None)
       ~dir:"slackbuilds.org/multimedia"
       ~dependencies:[ lame; x264; opus; libtheora; libvorbis; flac (* XXX: used? *) ]
-      ~version:"2.2.3"
+      ~version:"2.2.10"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "945e18bf910ae14519eabf8e585e2e946dd58660";
+        "${PACKAGE}-${VERSION}.tar.bz2", "384639c014d1cc747c54da311d9edadea6c482ca";
       ]
     in
 
