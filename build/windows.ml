@@ -758,7 +758,7 @@ let do_adds builder =
       ~dir:"slackware64-current/l"
       ~dependencies:[]
       ~version:"3.5.25.3"
-      ~build:1
+      ~build:2
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz", "66e3f4f2c5db863eb5a32ff31d4b01faaa5e1916";
         "patches/0047-djvused-added-missing-command-remove-outline.patch", "";
