@@ -378,10 +378,10 @@ let do_adds builder =
     let glib2 = add ("glib2", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[ libffi ]
-      ~version:"2.36.4"
+      ~version:"2.42.1"
       ~build:1
       ~sources:[
-        "glib-${VERSION}.tar.xz", "ae189818c9f4ae8e404cc17c195f3e1c644fd97a";
+        "glib-${VERSION}.tar.xz", "b5158fd434f01e84259155c04ff93026a090e586";
       ]
     in
 
@@ -418,11 +418,11 @@ let do_adds builder =
 
     let gdk_pixbuf2 = add ("gdk-pixbuf2", None)
       ~dir:"slackware64-current/l"
-      ~dependencies:[]
-      ~version:"2.28.2"
+      ~dependencies:[ glib2 ]
+      ~version:"2.30.8"
       ~build:1
       ~sources:[
-        "gdk-pixbuf-${VERSION}.tar.xz", "9876d0a20f592f8fb2a52d4a86ec43d607661beb";
+        "gdk-pixbuf-${VERSION}.tar.xz", "6277b4e5b5e334b3669f15ae0376e184be9e8cd8";
         "gdk-pixbuf.pnglz.diff.gz", "";
       ]
     in
@@ -430,10 +430,10 @@ let do_adds builder =
     let gtk_2 = add ("gtk+2", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[ gdk_pixbuf2; pango; atk; cairo; glib2 ]
-      ~version:"2.24.20"
+      ~version:"2.24.25"
       ~build:1
       ~sources:[
-        "gtk+-${VERSION}.tar.xz", "89315bf05dd3d626a50bae5417942ee4428012c9";
+        "gtk+-${VERSION}.tar.xz", "017ee13f172a64026c4e77c3744eeabd5e017694";
         "gtk+-2.24.x.icon-compat.am.diff.gz", "";
         "gtk+-2.24.x.icon-compat.diff.gz", "";
       ]
