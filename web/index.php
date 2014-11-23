@@ -25,7 +25,7 @@ $package_count = count($packages);
 <p>
   Win-builds creates binary packages of libraries and tools for Windows from
   source. It provides a package manager and runs on Windows, MSYS, Cygwin and
-  Linux.
+  Linux. It is entirely free software.
 </p>
 
 <div class="flexbox">
