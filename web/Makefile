@@ -4,6 +4,7 @@ FILES = index support documentation download news comparison packages
 
 temp/screenshot.png: temp screenshot-windows.png
 	pngnq -L < screenshot-windows.png > temp/screenshot.png
+	advpng -h >/dev/null && advpng -z -4 temp/screenshot.png
 
 all web: temp $(patsubst %,temp/%.html,$(FILES)) temp/screenshot.png
 
