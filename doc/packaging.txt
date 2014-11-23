@@ -1,9 +1,19 @@
 = Packaging =
 
 == Environment ==
-Build the packages that already exist. This will ensure you have
-everything needed in a working state; documentation for this is on
-link:diy.html[doc-diy].
+If you haven't already, build the packages that already exist. This will
+ensure you have everything needed and working; you can check
+link:linux.html[the corresponding documentation].
+
+== Be ready to ask questions ==
+Packaging is usually an experience with many issues and dirty work-arounds.
+Some of these are quite common and easy to spot for someone who has already
+seen similar issues so don't hesitate to hit link:/support.html[one of the
+support channels] ans ask questions.
+
+The questions will help build documentation. For issues that have already been
+solved elsewhere in the project the answers will be easy; the difficult part
+is in making the list of possible issues. Again, don't hesitate to ask.
 
 == Check whether a Linux build script already exists ==
 
@@ -11,33 +21,40 @@ There is a fairly large number of slackware build scripts, either
 - In one of the subdirectory (a "series") of
   link:http://cgit.notk.org/adrien/slackware-git-track/slackware64-current.ext.git/tree/slackware64-current/source[slackware]
 - On link:http://slackbuilds.org[slackbuilds.org] (community repository of
-  build scripts)
+  build scripts) which full repository is in the "`slackbuilds.org`" directory.
 
 If such a build script exist, read <<Existing>>. Otherwise, read <<New>>.
 
 [[Existing]]
 == Port an existing build script ==
-=== Do the initial import ===
-Copy the directory in the corresponding git repository: either
-link:http://cgit.notk.org/adrien/yypkg/slackware64-current.git/[slackware64-current]
-or
-link:http://cgit.notk.org/adrien/yypkg/slackbuilds.org.git/[slackbuilds.org].
-
-In our example, we'll reuse the speex package from slackbuilds.org.  A simple
-way to copy it is to run the following from the parent directory of
-win-builds:
+=== Copy the build script ===
+For slackbuilds.org all the files are already there. For slackware64-current,
+you need to copy them first. For example, libgcrypt is inside
+"`slackware64-current/n`" so you'd run a command similar to this one:
 
 ------------------------------------------------------------------------
-cd slackbuilds.org
-lftp -c 'connect http://slackbuilds.org/slackbuilds/14.1/audio; mirror speex'
+cd slackware64-current/n
+lftp -c 'connect http://mirrors.slackware.com/slackware/slackware64-current/source/n; mirror libgcrypt'
 ------------------------------------------------------------------------
 
 === Port the build script (mostly search-replace) ===
-* Replace all occurrences of 'usr' with '$\{PREFIX\}' (verbatim, don't
-  expand the variable)
+* Add a '.yypkg.script' file to the package directory; if you have nothing
+  specific to set for the packaging (by far the usual case), you only have to
+  "`cp`" another one; any will do except gcc's; don't forget to name it after
+  the package however. For instance:
++
+------------------------------------------------------------------------
+cp ../../l/libjpeg.yypkg.script newpackage.yypkg.script
+------------------------------------------------------------------------
 
-* Delete the block of code that sets SLKCFLAGS and LIBDIRSUFFIX; it starts
-like:
+* Update the values for "`packager_email`" and "`packager_name`" in the
+  '.yypkg.script' file.
+
+* Replace all occurrences of "`usr`" with "`${PREFIX}`" (verbatim: don't
+  expand the variable). This means "`/usr/`" becomes "`${PREFIX}`".
+
+* Delete the block of code that sets `SLKCFLAGS` and `LIBDIRSUFFIX`; it starts
+like this:
 +
 ------------------------------------------------------------------------
 if [ "$ARCH" = "i486" ]; then
@@ -46,23 +63,21 @@ if [ "$ARCH" = "i486" ]; then
 elif [ "$ARCH" = "i686" ]; then
 ------------------------------------------------------------------------
 
-* Replace occurrences of '$SLKCFLAGS' with '-O2'
-* Add '--host=$\{HOST_TRIPLET\}' to the configure invocation.
+* Replace occurrences of "`$SLKCFLAGS`" with "`-O2`"
+* Add "`--host=${HOST_TRIPLET}`" to the configure invocation. If this involves
+  adding a newline in a configure call, don't forget to escape it with "`\`"
+  right before it.
 
-* Locate the 'strip' invocation; it looks like:
+* Locate the "`strip`" invocation; it looks like:
 +
 ------------------------------------------------------------------------
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 ------------------------------------------------------------------------
 +
-Replace 'grep ELF' with 'grep $\{HOST_EXE_FORMAT\}' and 'xargs strip' with
-'xargs $\{HOST_STRIP\}'.
+Replace "`grep ELF`" with "`grep ${HOST_EXE_FORMAT}`" and "`xargs strip`" with
+"`xargs ${HOST_STRIP}`".
 
-* Add a .yypkg.script file to the package directory; if you have nothing
-  specific to set for the packaging (by far the usual case), you only have to
-  'cp' another one; any except gcc's will do; don't forget to give it a proper
-  name.
 * Go near the end of the file and replace:
 +
 ------------------------------------------------------------------------
@@ -88,64 +103,106 @@ cat ${CWD}/${PKGNAM}.yypkg.script | sed \
 +
 Some packages don't set the 'PKGNAM' variable but instead hardcode the
 package name throughout the script; in that case, use the package name
-instead of '$\{PKGNAM\}'.
+instead of "`${PKGNAM}`".
 
 * If there are many source files, replace the 'find + chmod'
-  commands which are used to reset file permissions to sane default with
-  'chmod -R u+w,go+r-w,a-s .'.
-
-=== Add your package to the list ===
-Edit win-builds/build-packages.sh and add your package to the
-appropriate list; you need to put your package after all the other
-packages it depends on.
-
-=== Test your package ===
-You can now build your package like any other package. See the
-link:diy.html#Start-the-build[documentation on building packages]
-for a howto. Remember to put the source tarball in the directory of the build
-scripts, i.e. next to the .SlackBuild file.
-
-=== Add the tarballs to git ===
-You need a local branch for the remote "binaries" branch:
+  commands which are used to reset file permissions to sane default with:
++
 ------------------------------------------------------------------------
-git branch binaries origin/binaries
-------------------------------------------------------------------------
-
-Now you need to commit the tarballs in this branch. In order to commit
-to this branch without doing many operations, I've created a script that
-commits to a different branch without checking it out.
-Usage is:
-------------------------------------------------------------------------
-git ctb <branch> <files...>
-------------------------------------------------------------------------
-Example:
-------------------------------------------------------------------------
-git ctb binaries flexdll/flexdll-0.30.tar.gz mingw-w64/mingw-w64-v2.0.7.tar.gz
-------------------------------------------------------------------------
-
-Here, "ctb" is an alias in my ~/.gitconfig:
-
-------------------------------------------------------------------------
-[alias]
-  ctb = !commit-to-branch.sh
-------------------------------------------------------------------------
-
-In turn, "commit-to-branch.sh" is a shell script which I store in my
-$PATH and which content is:
-------------------------------------------------------------------------
-include::../commit-to-branch.sh[]
+chmod -R u+w,go+r-w,a-s .
 ------------------------------------------------------------------------
 
 [[New]]
-== Create A New Package ==
-If it does not, `cd` in the
-link:http://cgit.notk.org/adrien/yypkg/mingw.git/[mingw] git repository and
-copy the `pixman` directory.
+== Or, start from a similar package ==
+Create a new directory for your package inside "`mingw/`" and copy an existing
+build script that is similar:
 
-You then need to adjust the names in the files you've copied:
+* for autotools-based systems, copy
+  "`slackware64-current/n/libgcrypt.SlackBuild`" and
+  "`slackware64-current/n/libgcrypt.yypkg.script`"
+* for cmake-based systems, copy
+  "`slackbuilds.org/libraries/openjpeg.SlackBuild`" and
+  "`slackbuilds.org/libraries/openjpeg.yypkg.script`"
+
+CMake-based build systems are much less friendly for cross-compilation and
+especially to Windows compared to autotools ones and "`openjpeg.SlackBuild`"
+has more kludges but they can't be easily avoided for cmake-based systems.
+
+You will probably have to add package-specific bits. This is why having
+references in the form of native linux build scripts can help a lot.
+
+== Download the sources ==
+You will have to download the sources in the same directory as your build
+script.
+
+Also note that the extension of the sources can matter: slackbuilds
+unfortunately tend to assume one such as in the following snippet (assumes
+`".bz2"`) and you'll need to ensure the build script matches the tarball
+extension.
 
 ------------------------------------------------------------------------
-sed -i 's/pixman/ABCD/g' ABCD/ABCD.SlackBuild
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.bz2 || exit 1
+cd $PKGNAM-$VERSION
 ------------------------------------------------------------------------
 
-TBD
+== Add your package to the list ==
+Before building you need to let the builer know about your package. In the
+'win-builds' git repository, edit "`build/windows.ml`". You need to add an
+entry after all the package dependencies. The list is written in OCaml but
+you only need to understand the basic syntax.
+
+For instance, `libgcrypt` depends on `libgpg-error` and needs to be added
+below it so that it can reference it.
+------------------------------------------------------------------------
+(* defines a new variable: libgcrypt
+ * it is the result of a call to the "add" function with 6 arguments:
+ * - ("libgcrypt", None): the package name is "libgcrypt" and there no
+ *   so-called "variant" for it
+ * - ~dir: the directory containing the package; the full path will be
+ *   "slackware64-current/n/libgcrypt"
+ * - ~dependencies: the list of dependencies, separated by ';' and enclosed
+ *   between '[' and ']'.
+ * - ~version: the package version as a string
+ * - ~build: the package build number, as an integer
+ * - ~sources: the list of sources which are not tracked in git (i.e. large
+ *   binaries); each entry is made of the filename followed by the SHA1 of the
+ *   file; the filename can contain ${PACKAGE} and ${VERSION} to not repeat
+ *   the values given as ~version and in the first argument to the "add"
+ *   function.
+*)
+let libgcrypt = add ("libgcrypt", None)
+  ~dir:"slackware64-current/n"
+  ~dependencies:[ libgpg_error ]
+  ~version:"1.6.1"
+  ~build:1
+  ~sources:[
+    "${PACKAGE}-${VERSION}.tar.bz2", "d9b63ac3b17a6972fc11150d136925b702f02";
+  ]
+in
+------------------------------------------------------------------------
+
+Note the trailing "`in`": the OCaml construct is "`let ... in`" and the syntax
+requires that "`in`" after each new variable creation.
+
+== Test your package ==
+You can now build your package like any other package, i.e. with a command
+similar to:
+
+------------------------------------------------------------------------
+make -C win-builds WINDOWS=your_package
+------------------------------------------------------------------------
+
+This will build your package for windows for both 32b and 64b. The logs will
+be stored inside "`@@VERSION@@/logs/windows_??/your_package`".
+
+You will most likely have to build, check the logs and change your build
+script several times.
+
+Remember you can build for only one architecture at once. This will save CPU
+time and allow iterating faster. The syntax is:
+
+------------------------------------------------------------------------
+make -C win-builds WINDOWS_64=your_package
+------------------------------------------------------------------------
+
