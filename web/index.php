@@ -64,7 +64,7 @@ $package_count = count($packages);
     <ul class="hl-list">
       <li>Be in control of your infrastructure</li>
       <li>Customize as you wish</li>
-      <li>Fully-documented</li>
+      <li>Well-documented</li>
     </ul>
   </div>
   <div class="hl">
