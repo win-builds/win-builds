@@ -73,11 +73,17 @@ dependency list of ffmpeg]), use a backport or migrate.
 
 === Arch Linux ===
 
+List below is incomplete: read and adapt the list in the <<Debian,Debian>>
+section to fit Arch Linux.
+
 ------------------------------------------------------------------------
 pacman -S ocaml ocaml-findlib
 ------------------------------------------------------------------------
 
 === Exherbo ===
+
+List below is incomplete: read and adapt the list in the <<Debian,Debian>>
+section to fit Exherbo.
 
 ------------------------------------------------------------------------
 cave resolve -x dev-ocaml/findlib dev-lang/ocaml '>=app-arch/libarchive-3.1.2-r2'
