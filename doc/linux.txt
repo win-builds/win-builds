@@ -268,17 +268,17 @@ version, build number and sources.
 Below is the description for the freetype package from the windows series:
 
 ------------------------------------------------------------------------
-  let freetype = add ("freetype", None)
-    ~dir:"slackware64-current/l"
-    ~dependencies:[ zlib; libpng ]
-    ~version:"2.5.0.1"
-    ~build:1
-    ~sources:[
-      "freetype-${VERSION}.tar.xz";
-      "freetype.illadvisederror.diff.gz";
-      "freetype.subpixel.rendering.diff.gz";
-    ]
-  in
+let freetype = add ("freetype", None)
+  ~dir:"slackware64-current/l"
+  ~dependencies:[ zlib; libpng ]
+  ~version:"2.5.0.1"
+  ~build:1
+  ~sources:[
+    "freetype-${VERSION}.tar.xz";
+    "freetype.illadvisederror.diff.gz";
+    "freetype.subpixel.rendering.diff.gz";
+  ]
+in
 ------------------------------------------------------------------------
 
 The package is named "freetype", doesn't have a variant ("None" in the code),
