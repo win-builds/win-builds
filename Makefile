@@ -11,10 +11,10 @@ build:
 			./win-builds/build/build.byte $(VERSION) )
 
 doc doc-upload:
-	$(MAKE) -C doc $@
+	$(MAKE) -C doc -j4 $@
 
 web web-upload:
-	$(MAKE) -C web $@
+	$(MAKE) -C web -j4 $@
 
 tarballs-upload:
 	LOGLEVEL=dbg make WINDOWS= CROSS_TOOLCHAIN= NATIVE= 2>&1 \
