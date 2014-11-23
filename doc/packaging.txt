@@ -206,3 +206,15 @@ time and allow iterating faster. The syntax is:
 make -C win-builds WINDOWS_64=your_package
 ------------------------------------------------------------------------
 
+=== devshell feature ===
+
+While developing you might want to have a shell. To do so, simply append
+"`:devshell`" to your target:
+
+------------------------------------------------------------------------
+make -C win-builds WINDOWS_64=your_package:devshell
+------------------------------------------------------------------------
+
+It will give you a shell configured just like the shell used to run the
+SlackBuild except that it will try to use your own shell and not necessarily
+bash. You can then play the build script by hand to see what is going wrong.
