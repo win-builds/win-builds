@@ -35,6 +35,7 @@ reference. For other distributions, if you are able to complete the lists with
 the right package name, please send it either on the
 link:/support.html[users mailing list] or on the link:/bugs[bug tracker].
 
+[[Debian]]
 === Debian (squeeze or wheezy) and Ubuntu (>= 12.04) ===
 
 ------------------------------------------------------------------------
@@ -81,6 +82,26 @@ pacman -S ocaml ocaml-findlib
 ------------------------------------------------------------------------
 cave resolve -x dev-ocaml/findlib dev-lang/ocaml '>=app-arch/libarchive-3.1.2-r2'
 ------------------------------------------------------------------------
+
+=== Slackware ===
+
+A default slackware install ships almost everything needed. The only
+exceptions are
+link:http://slackbuilds.org/repository/14.1/development/ocaml/[OCaml] and
+link:http://slackbuilds.org/repository/14.1/libraries/ocaml-findlib/[ocaml-findlib]
+(both on http://slackbuilds.org).
+
+They can be installed through sbopkg with the following command:
+------------------------------------------------------------------------
+sbopkg -i "ocaml ocaml-findlib"
+------------------------------------------------------------------------
+
+Slackware -current as of September 2014 has proper software for the build and
+is the main development platform for win-builds.
+
+Previous Slackware versions haven't been tested. They should work except for
+their older version of automake which can be an issue for madplay (see the
+<<Debian,section on the topic in the documentation for Debian>>).
 
 == Retrieve sources ==
 Run the following to get all the source files:
