@@ -110,6 +110,7 @@ h1 {
 
 .package-list .package-list-item {
   list-style: none;
+  margin-right: 2em;
 }
 
 @media screen and (max-width: 50em), screen and (orientation: portrait) {
