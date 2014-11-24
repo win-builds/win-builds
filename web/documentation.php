@@ -69,7 +69,8 @@ with the toolchain itself.
 
 <p>
   If you are using bare cmd.exe or an IDE, you need to refer to their 
-  respective documentations for detail on how to set tese environment variables.
+  respective documentations for detail on how to set these environment
+  variables.
 </p>
 
 <h1 id="package_updates">Package updates</h1>
@@ -83,7 +84,7 @@ with the toolchain itself.
 <p>
   Browse for the win-builds installation you wish to update, enter the 'bin' 
   directory and double-click on yypkg-@@VERSION@@.exe. The GUI will 
-  appeart, retrieve the current package list, display it and ask for 
+  appear, retrieve the current package list, display it and ask for
   confirmation before processing them.
 </p>
 
