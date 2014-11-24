@@ -49,17 +49,17 @@ with the toolchain itself.
   touch system settings, it is necessary to change these by hand.
 </p>
 
-  The only settings used are the <pre style="display: inline">PATH</pre> and 
-  <pre style="display: inline">PKG_CONFIG_LIBDIR</pre> environment variables:
+  The only settings used are the <code>PATH</code> and 
+  <code>PKG_CONFIG_LIBDIR</code> environment variables:
 
   <ul>
     <li>
-      <pre style="display: inline">PATH</pre> (not on Cygwin):
-      prepend <pre style="display: inline">&lt;install-dir&gt;\bin</pre>.
+      <code>PATH</code> (not on Cygwin):
+      prepend <code>&lt;install-dir&gt;\bin</code>.
     </li>
     <li>
-      <pre style="display: inline">PKG_CONFIG_LIBDIR</pre>:
-      set to <pre style="display: inline">&lt;install-dir&gt;\lib\pkgconfig</pre> for 32 bits toolchains and <pre style="display: inline">&lt;install-dir&gt;\lib64\pkgconfig</pre> for 64 bits toolchains.
+      <code>PKG_CONFIG_LIBDIR</code>:
+      set to <code>&lt;install-dir&gt;\lib\pkgconfig</code> for 32 bits toolchains and <code>&lt;install-dir&gt;\lib64\pkgconfig</code> for 64 bits toolchains.
     </li>
   </ul>
 
