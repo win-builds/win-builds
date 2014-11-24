@@ -186,3 +186,8 @@ pre {
   border-color: black;
   border: 1px solid;
 }
+
+code {
+  border-color: black;
+  border-bottom: 1px dotted;
+}
