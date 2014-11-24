@@ -13,11 +13,21 @@ include 'head.php';
 <?php
 include 'header.html';
 
-echo "<h1>Package List</h1>";
-
 include 'packages_common.php';
+$sizes = repository_sizes('@@VERSION@@');
 $packages = load_repositories('@@VERSION@@');
+?>
 
+<h1>Package List</h1>
+
+<p>
+Size of packages: <?=$sizes['compressed']?>.
+</p>
+<p>
+Size on disk: <?=$sizes['expanded']?>.
+</p>
+
+<?php
 function print_p($title, $content) {
   if (isset($content) && $content !== "") {
     if (isset($title ) && $title !== "") {

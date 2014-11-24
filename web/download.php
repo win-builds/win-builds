@@ -12,12 +12,6 @@ include 'head.php';
 <body>
 <?php include 'header.html'; ?>
 
-<?php
-
-include 'packages_common.php';
-$sizes = repository_sizes('@@VERSION@@');
-?>
-
 <h1>Windows</h1>
 
 <p>
