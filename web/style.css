@@ -179,3 +179,10 @@ ul {
   border-bottom: 1em solid transparent;
   border-left: 1em solid black;
 }
+
+pre {
+  margin-left: 1em;
+  padding: 0.5em;
+  border-color: black;
+  border: 1px solid;
+}
