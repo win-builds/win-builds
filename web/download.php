@@ -20,27 +20,26 @@ $sizes = repository_sizes('@@VERSION@@');
 
 <h1>Windows</h1>
 
-Installation on Windows can be done for MSYS, Cygwin or without them.
-Download and run the
-<a href="@@VERSION@@/win-builds-@@VERSION@@.zip">package manager</a>.
-
-For MSYS or Cygwin, also read <a href="@@VERSION@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>.
-
 <p>
-Packages weigh <?=$sizes['compressed']?> and
-size on disk is <?=$sizes['expanded']?>.
-Installation doesn't
-change system settings and in particular doesn't change environment variables
-like <code>PATH</code>, <code>PKG_CONFIG_PATH</code> and <code>PKG_CONFIG_LIBDIR</code>.
+Installation on Windows can be done for MSYS, Cygwin or without them.
+Simply download and run the
+<a href="@@VERSION@@/win-builds-@@VERSION@@.zip">package manager</a>.
 </p>
 
 <p>
-More information can be found in the <a href="documentation.html">documentation</a>; make sure to subscribe at least to the <a href="support.html">(security)
+Installation doesn't change system settings and in particular doesn't change
+environment variables like <code>PATH</code>, <code>PKG_CONFIG_PATH</code> and
+<code>PKG_CONFIG_LIBDIR</code>.
+For MSYS or Cygwin, also read <a href="@@VERSION@@/msys-cygwin.html#_change_toolchain_on_the_fly">how to switch to the toolchain you want</a>.
+</p>
+
+<p>
+More information can be found in the <a href="documentation.html">documentation</a>; make sure you subscribe at least to the <a href="support.html">(security)
 announces mailing-list</a>.
 </p>
 
 <p>
-NOTE: the 64 bits toolchain requires a 64 bits host; installing on Windows XP 
+NOTE: the 64 bits toolchain requires a 64 bits host; installing on Windows XP
 or 2003 might work but is unsupported.
 </p>
 
