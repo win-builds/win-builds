@@ -188,11 +188,14 @@ fakeroot make -C win-builds NATIVE_TOOLCHAIN=all CROSS_TOOLCHAIN=all
 
 There are two approaches possible:
 
-* Download package (a couple minutes of download (2*80MB)):
+* Download package (a couple minutes of download (2*110MB)):
 
 ------------------------------------------------------------------------
 make -C win-builds WINDOWS=download
 ------------------------------------------------------------------------
+
+A few commands will try to run at the very end of the installation and will
+fail. These can be safely ignored.
 
 * Build the packages yourself (a few hours of CPU time):
 
@@ -200,7 +203,7 @@ make -C win-builds WINDOWS=download
 make -C win-builds WINDOWS=all
 ------------------------------------------------------------------------
 
-== Customization ==
+== Customization (optional) ==
 
 === Selective rebuilds ===
 
