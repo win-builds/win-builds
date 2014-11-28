@@ -226,7 +226,7 @@ As an example, to build only the "cross_toolchain" and "windows" series,
 one would run:
 
 -------------------------------------------------------------------------
-make CROSS_TOOLCHAIN=all WINDOWS=all
+make -C win-builds CROSS_TOOLCHAIN=all WINDOWS=all
 ------------------------------------------------------------------------
 
 The package "all" is virtual and selects every stable package from the series.
@@ -241,7 +241,7 @@ Last, if you want to build a specific set of packages, you need to call make
 as such:
 
 ------------------------------------------------------------------------
-make WINDOWS=libjpeg,libpng,lua
+make -C win-builds WINDOWS=libjpeg,libpng,lua
 ------------------------------------------------------------------------
 
 Packages will only get rebuilt if at least one of their sources is more recent
