@@ -12,6 +12,22 @@ include 'head.php';
 <body>
 <?php include 'header.html'; ?>
 
+<h1><a href="1.5.0">1.5.0 - TBA</a></h1>
+<h2><a href="1.5-rc2">1.5-rc2 - 03/12/2014</a></h2>
+<ul>
+  <li>GUI package manager</li>
+  <li>GUI installer</li>
+  <li>Much simpler installation on Linux</li>
+  <li>Updated installation instructions for Linux which are more straight-forward and cover more distributions</li>
+  <li>Single executable installer on Windows</li>
+  <li>30 more packages</li>
+  <li>Usual very long list of small improvements and version updates</li>
+  <li>More automated builds of packages on Linux, drastically shortening package development cycles</li>
+  <li>Completed the documentation on packaging</li>
+  <li>Put back default include paths for GCC on Windows</li>
+  <li>Simpler switching between toolchains</li>
+</ul>
+
 <h1><a href="1.4.0">1.4.0 - 25/05/2014</a></h1>
 <h2><a href="1.4.0">1.4.0 final - 25/05/2014</a></h2>
 <ul>
