@@ -13,6 +13,7 @@ include 'head.php';
 <?php include 'header.html'; ?>
 
 <h1><a href="1.4.0">1.4.0 - 25/05/2014</a></h1>
+<h2><a href="1.4.0">1.4.0 final - 25/05/2014</a></h2>
 <ul>
   <li>Documentation updates.</li>
   <li>Pango's cache is properly created at install.</li>
@@ -27,7 +28,7 @@ include 'head.php';
   <li>Improved website.</li>
 </ul>
 
-<h1><a href="1.4-beta1">1.4-beta1 - 10/05/2014</a></h1>
+<h2><a href="1.4-beta1">1.4-beta1 - 10/05/2014</a></h2>
 <ul>
   <li>Merged all the package manager executables together.</li>
   <li>The package manager is now its own installer.</li>
@@ -40,6 +41,7 @@ include 'head.php';
 </ul>
 
 <h1><a href="1.3.0">1.3.0 - 11/01/2014</a></h1>
+<h2><a href="1.3.0">1.3.0 final - 11/01/2014</a></h2>
 <ul>
   <li>All executables in bin/ have the .exe extension now (applies to gcc.exe, openssl.exe, xmlwf.exe from expat).</li>
   <li>Many small fixes to the installer scripts for windows platforms.</li>
@@ -48,7 +50,7 @@ include 'head.php';
   <li>The 'win-builds-switch' script used 'exit'; it now uses 'return'.</li>
 </ul>
 
-<h1><a href="1.3-rc1">1.3-rc1 - 22/12/2013</a></h1>
+<h2><a href="1.3-rc1">1.3-rc1 - 22/12/2013</a></h2>
 <ul>
   <li>Fixed the "mingw" symlink in the root dir on windows.</li>
   <li>Implement reparse point handling in Yypkg for the symlink
@@ -62,19 +64,19 @@ include 'head.php';
   <li>Check that the 'win-builds-switch.sh' script is called in the right way by the user.</li>
 </ul>
 
-<h1><a href="1.3-beta3">1.3-beta3 - 11/12/2013</a></h1>
+<h2><a href="1.3-beta3">1.3-beta3 - 11/12/2013</a></h2>
 <ul>
   <li>Fixes for dbus and yypkg.exe which was an old binary in 1.2.</li>
   <li>Improved documentation, add documentation for using with MSYS.</li>
   <li>The package metadata format changes (version field is now a free-form string).</li>
 </ul>
 
-<h1><a href="1.3-beta2">1.3-beta2 - 4/12/2013</a></h1>
+<h2><a href="1.3-beta2">1.3-beta2 - 4/12/2013</a></h2>
 <ul>
   <li>Several fixes and mostly documentation or usability improvements.</li>
 </ul>
 
-<h1><a href="1.3-beta1">1.3-beta1 - 27/11/2013</a></h1>
+<h2><a href="1.3-beta1">1.3-beta1 - 27/11/2013</a></h2>
 <ul>
   <li>Improved symlink fallbacks on Windows.</li>
   <li>Proofread documentation.</li>
@@ -83,20 +85,21 @@ include 'head.php';
   <li>General improvements and bug fixes.</li>
 </ul>
 
-<h1><a href="1.3-alpha2">1.3-alpha2 - 14/11/2013</a></h1>
+<h2><a href="1.3-alpha2">1.3-alpha2 - 14/11/2013</a></h2>
 <ul>
   <li>GCC 4.8, Mingw-w64 v3, package updates.</li>
   <li>Nice symlink fallbacks on Windows (junctions and hardlinks as appropriate).</li>
 </ul>
 
 <h1><a href="1.2-rc1">1.2-rc1 - 02/04/2013</a></h1>
+<h2><a href="1.2-rc1">1.2-rc1 final - 02/04/2013</a></h2>
 <ul>
   <li>Fixes an issue with less in the chroot.</li>
   <li>Fix GCC's spec file, its --libdir on i686 and the location of libgcc_s_sjlj-1.dll.</li>
   <li>Create the GTK+ and Pango caches automatically.</li>
 </ul>
 
-<h1><a href="1.2-beta1">1.2-beta1 - 29/03/2013</a></h1>
+<h2><a href="1.2-beta1">1.2-beta1 - 29/03/2013</a></h2>
 <ul>
   <li>Stabilizes the native i686 compiler and adds an experimental x86_64 one.</li>
   <li>Include a WIP OCaml cross-compiler to i686 and new yypkg binaries, built with it.</li>
