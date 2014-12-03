@@ -13,76 +13,95 @@ include 'head.php';
 <?php include 'header.html'; ?>
 
 <h1><a href="1.4.0">1.4.0 - 25/05/2014</a></h1>
-  Documentation updates.<br>
-  Pango's cache is properly created at install.<br>
-  Post-inst actions failed if installation was not started from command-line.<br>
-  Fontconfig's font.conf had a hardcoded path.<br>
-  Yypkg retries downloads which have failed.<br>
-  Yypkg is fully compatible with OCaml 3.12.1.<br>
-  Checked build with Ubuntu 12.04.<br>
-  Yypkg always tries to guess its installation prefix now.<br>
-  Much improved download progress information.<br>
-  Add madplay and libid3tag (mostly to test libmad).<br>
-  Improved website.<br>
+<ul>
+  <li>Documentation updates.</li>
+  <li>Pango's cache is properly created at install.</li>
+  <li>Post-inst actions failed if installation was not started from command-line.</li>
+  <li>Fontconfig's font.conf had a hardcoded path.</li>
+  <li>Yypkg retries downloads which have failed.</li>
+  <li>Yypkg is fully compatible with OCaml 3.12.1.</li>
+  <li>Checked build with Ubuntu 12.04.</li>
+  <li>Yypkg always tries to guess its installation prefix now.</li>
+  <li>Much improved download progress information.</li>
+  <li>Add madplay and libid3tag (mostly to test libmad).</li>
+  <li>Improved website.</li>
+</ul>
 
 <h1><a href="1.4-beta1">1.4-beta1 - 10/05/2014</a></h1>
-  Merged all the package manager executables together.<br>
-  The package manager is now its own installer.<br>
-  Much simpler install process on Windows.<br>
-  Updated packages, numerous small fixes.<br>
-  Easier package updates.<br>
-  Removal of the chroot for Linux usage.<br>
-  Cleaner and faster build process on Linux.<br>
-  Updated documentation.<br>
+<ul>
+  <li>Merged all the package manager executables together.</li>
+  <li>The package manager is now its own installer.</li>
+  <li>Much simpler install process on Windows.</li>
+  <li>Updated packages, numerous small fixes.</li>
+  <li>Easier package updates.</li>
+  <li>Removal of the chroot for Linux usage.</li>
+  <li>Cleaner and faster build process on Linux.</li>
+  <li>Updated documentation.</li>
+</ul>
 
 <h1><a href="1.3.0">1.3.0 - 11/01/2014</a></h1>
-  All executables in bin/ have the .exe extension now (applies to gcc.exe, openssl.exe, xmlwf.exe from expat).<br>
-  Many small fixes to the installer scripts for windows platforms.<br>
-  Update to mingw-w64 3.1.0 (maintenance release).<br>
-  Don't run gtk and gdk cache update tools on Cygwin on XP/2k3 (they crash); ask the user to run them from a fresh cmd.exe.<br>
-  The 'win-builds-switch' script used 'exit'; it now uses 'return'.
+<ul>
+  <li>All executables in bin/ have the .exe extension now (applies to gcc.exe, openssl.exe, xmlwf.exe from expat).</li>
+  <li>Many small fixes to the installer scripts for windows platforms.</li>
+  <li>Update to mingw-w64 3.1.0 (maintenance release).</li>
+  <li>Don't run gtk and gdk cache update tools on Cygwin on XP/2k3 (they crash); ask the user to run them from a fresh cmd.exe.</li>
+  <li>The 'win-builds-switch' script used 'exit'; it now uses 'return'.</li>
+</ul>
 
 <h1><a href="1.3-rc1">1.3-rc1 - 22/12/2013</a></h1>
-  Fixed the "mingw" symlink in the root dir on windows.<br>
-  Implement reparse point handling in Yypkg for the symlink
-  fallback instead of calling mklink.exe (unavailable on XP).<br>
-  Fixed wrong mirror in the Linux chroot.<br>
-  Fix extra symlinks to gfortran binaries.<br>
-  Restore .exe extensions for GCC files.<br>
-  Some files weren't removed when uninstalling a package on Windows.<br>
-  Update libjpeg (fixes
-<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-6629">CVE-2013-6629</a>).<br>
-  The OCaml cross-compiler was unable to build bindings to C libraries.<br>
-  Check that the 'win-builds-switch.sh' script is called in the right way by the user.
+<ul>
+  <li>Fixed the "mingw" symlink in the root dir on windows.</li>
+  <li>Implement reparse point handling in Yypkg for the symlink
+  <li>fallback instead of calling mklink.exe (unavailable on XP).</li>
+  <li>Fixed wrong mirror in the Linux chroot.</li>
+  <li>Fix extra symlinks to gfortran binaries.</li>
+  <li>Restore .exe extensions for GCC files.</li>
+  <li>Some files weren't removed when uninstalling a package on Windows.</li>
+  <li>Update libjpeg (fixes <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-6629">CVE-2013-6629</a>).</li>
+  <li>The OCaml cross-compiler was unable to build bindings to C libraries.</li>
+  <li>Check that the 'win-builds-switch.sh' script is called in the right way by the user.</li>
+</ul>
 
 <h1><a href="1.3-beta3">1.3-beta3 - 11/12/2013</a></h1>
-  Fixes for dbus and yypkg.exe which was an old binary in 1.2.<br>
-  Improved documentation, add documentation for using with MSYS.<br>
-  The package metadata format changes (version field is now a free-form string).<br>
+<ul>
+  <li>Fixes for dbus and yypkg.exe which was an old binary in 1.2.</li>
+  <li>Improved documentation, add documentation for using with MSYS.</li>
+  <li>The package metadata format changes (version field is now a free-form string).</li>
+</ul>
 
 <h1><a href="1.3-beta2">1.3-beta2 - 4/12/2013</a></h1>
-  Several fixes and mostly documentation or usability improvements.
+<ul>
+  <li>Several fixes and mostly documentation or usability improvements.</li>
+</ul>
 
 <h1><a href="1.3-beta1">1.3-beta1 - 27/11/2013</a></h1>
-  Improved symlink fallbacks on Windows.<br>
-  Proofread documentation.<br>
-  New yypkg binaries for Windows.<br>
-  Improved OCaml cross-compiler setup.<br>
-  General improvements and bug fixes.<br>
+<ul>
+  <li>Improved symlink fallbacks on Windows.</li>
+  <li>Proofread documentation.</li>
+  <li>New yypkg binaries for Windows.</li>
+  <li>Improved OCaml cross-compiler setup.</li>
+  <li>General improvements and bug fixes.</li>
+</ul>
 
 <h1><a href="1.3-alpha2">1.3-alpha2 - 14/11/2013</a></h1>
-  GCC 4.8, Mingw-w64 v3, package updates.<br>
-  Nice symlink fallbacks on Windows (junctions and hardlinks as appropriate).
+<ul>
+  <li>GCC 4.8, Mingw-w64 v3, package updates.</li>
+  <li>Nice symlink fallbacks on Windows (junctions and hardlinks as appropriate).</li>
+</ul>
 
 <h1><a href="1.2-rc1">1.2-rc1 - 02/04/2013</a></h1>
-  Fixes an issue with less in the chroot.<br>
-  Fix GCC's spec file, its --libdir on i686 and the location of libgcc_s_sjlj-1.dll.<br>
-  Create the GTK+ and Pango caches automatically .
+<ul>
+  <li>Fixes an issue with less in the chroot.</li>
+  <li>Fix GCC's spec file, its --libdir on i686 and the location of libgcc_s_sjlj-1.dll.</li>
+  <li>Create the GTK+ and Pango caches automatically.</li>
+</ul>
 
 <h1><a href="1.2-beta1">1.2-beta1 - 29/03/2013</a></h1>
-  Stabilizes the native i686 compiler and adds an experimental x86_64 one.<br>
-  Include a WIP OCaml cross-compiler to i686 and new yypkg binaries, built with it.<br>
-  On Windows, an SFX installer is provided.
+<ul>
+  <li>Stabilizes the native i686 compiler and adds an experimental x86_64 one.</li>
+  <li>Include a WIP OCaml cross-compiler to i686 and new yypkg binaries, built with it.</li>
+  <li>On Windows, an SFX installer is provided.</li>
+</ul>
 
 <?php include 'footer.html'; ?>
 </body>
