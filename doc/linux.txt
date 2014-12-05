@@ -149,11 +149,14 @@ make -C win-builds/yypkg install BINDIR=/usr/local/bin
 Building the packages requires a root environment (for chown and umask);
 such an environment can also be emulated through fakeroot for convenience.
 
-Everything will be installed inside /opt. The reason is that it is available
+Everything will be installed inside `/opt`. The reason is that it is available
 on all systems and binaries tend to store paths, making them not portable if
 paths change. If you intend to rebuild all packages on your machine
 anyway, you can edit `build/config.ml`, look for `/opt/̀` and replace it with
 the value you wish.
+
+If a build fails, you should look at the log file stored as
+`@@VERSION@@/logs/<series>/<package_name>`.
 
 NOTE: specifying 'NATIVE_TOOLCHAIN=all' below will build Qt which takes a
 *very* long time to build; use 'NATIVE_TOOLCHAIN=all_but_qt' instead if
