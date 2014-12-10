@@ -984,10 +984,30 @@ let do_adds builder =
     let libdvdread = add ("libdvdread", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[]
-      ~version:"4.2.0"
+      ~version:"5.0.0"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "431bc92195f27673bfdd2be67ce0f58338da8d3b";
+        "${PACKAGE}-${VERSION}.tar.bz2", "f1fadbf19fd8d3a9a63ff610ec8ce9021ebc6947";
+      ]
+    in
+
+    let libdvdnav = add ("libdvdnav", None)
+      ~dir:"slackbuilds.org/libraries"
+      ~dependencies:[ libdvdread ]
+      ~version:"5.0.1"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.bz2", "9c234fc1a11f760c90cc278b702b1e41fc418b7e";
+      ]
+    in
+
+    let libdvdcss = add ("libdvdcss", None)
+      ~dir:"slackbuilds.org/libraries"
+      ~dependencies:[]
+      ~version:"1.3.0"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.bz2", "b3ccd70a510aa04d644f32b398489a3122a7e11a";
       ]
     in
 
@@ -1163,7 +1183,7 @@ let do_adds builder =
         wget; dejavu_fonts_ttf;
         openjpeg; sdl2; libgcrypt;
         glib_networking; libxml2; libsoup; djvulibre; a52dec; libmpeg2;
-        pcre; libxslt; libdvdread;
+        pcre; libxslt; libdvdread; libdvdnav; libdvdcss;
         gendef; genidl; genpeimg; widl; libmangle; winstorecompat;
         json_c;
         qt;
