@@ -614,9 +614,9 @@ let do_adds builder =
 
     let wget = add ("wget", None)
       ~dir:"slackware64-current/n"
-      ~dependencies:[ openssl ]
+      ~dependencies:[ openssl; (* probably pcre too, for after 1.5 *) ]
       ~version:"1.14"
-      ~build:2
+      ~build:3
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz", "cfa0906e6f72c1c902c29b52d140c22ecdcd617e";
       ]
