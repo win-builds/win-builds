@@ -739,9 +739,10 @@ let do_adds builder =
       ~dir:"slackware64-current/l"
       ~dependencies:[ zlib; libtiff; libjpeg ]
       ~version:"1.19"
-      ~build:1
+      ~build:2
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz", "f10eca160062562fabd4e9c7c8fb65db61da9dbf";
+        "lcms1.19-avoid-buffer-overflows-CVE-2013-4276.patch", "";
       ]
     in
 
