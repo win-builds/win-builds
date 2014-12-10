@@ -29,11 +29,12 @@ let do_adds builder =
     ~dir:"slackware64-current/d"
     ~dependencies:[]
     ~version:Version.binutils
-    ~build:1
+    ~build:2
     ~sources:[
       Source.binutils;
       "binutils.export.demangle.h.diff.gz", "";
       "binutils.no-config-h-check.diff.gz", "";
+      "binutils-fix-seg-fault-in-strings-on-corrupt-pe.patch", "";
     ]
   in
 
