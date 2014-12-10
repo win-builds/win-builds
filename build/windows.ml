@@ -837,10 +837,10 @@ let do_adds builder =
     let jansson = add ("jansson", None)
       ~dir:"slackbuilds.org/libraries"
       ~dependencies:[]
-      ~version:"2.5"
+      ~version:"2.6"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "144e31826b7ab9a648511759c43b23db5865f4db";
+        "${PACKAGE}-${VERSION}.tar.bz2", "a232e0f3de4bad49b6b682f4e5df14d6c4d02676";
       ]
     in
 
