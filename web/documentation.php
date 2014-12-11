@@ -23,6 +23,7 @@ include 'head.php';
       <li><a href="#package_updates__cli">Using the command-line Interface</a></li>
     </ul>
   </li>
+  <li><a href="#win_builds_update">Updating from one win-builds release to another</a>
   <li><a href="#known_limitations">Known limitations</a>
     <ul>
       <li><a href="#known_limitations__proxies">Proxies</a></li>
@@ -109,6 +110,21 @@ run:
 argument:
 </p>
 <pre>yypkg --web --packages &lt;package1&gt; &lt;package2&gt;</pre>
+
+<h1 id="win_builds_update">Updating from one win-builds release to another</h1>
+<p>
+Starting with the the 1.4 release, it is possible to update easily from one 
+version to another.
+</p>
+
+<p>
+Simply download
+<a href="@@VERSION@@/win-builds-@@VERSION@@.exe">win-builds-@@VERSION@@.exe</a> 
+and replace the <code>bin/yypkg.exe</code> file from your installation with it. 
+Then, double-click on this file, click on <code>Change Mirror</code> in the 
+upper-left corner and replace <code>1.4.0</code> with <code>1.5.0</code> in the 
+URI.
+</p>
 
 <h1 id="known_limitations">Known limitations</h1>
 
