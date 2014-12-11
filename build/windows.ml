@@ -135,10 +135,10 @@ let do_adds builder =
     add ("dbus", Some variant)
       ~dir:"slackware64-current/a"
       ~dependencies
-      ~version:"1.6.12"
+      ~version:"1.6.28"
       ~build:(if variant = "regular" then 1 else -1)
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "340e8e09413040503f7afc0dd6ae97b78a52b517";
+        "${PACKAGE}-${VERSION}.tar.gz", "cc8fd21f2123a58ad78c4e50c8f5b330a39cc21f";
       ]
   in
 
