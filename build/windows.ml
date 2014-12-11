@@ -474,10 +474,11 @@ let do_adds builder =
     let libsoup = add ("libsoup", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[ glib2; sqlite ]
-      ~version:"2.42.2"
+      ~version:"2.42.3"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "8d2a660879c4cf00379ceab04c3e479dedd1405c";
+        "${PACKAGE}-${VERSION}.tar.xz", "252424b83e395716beca4ea2ef78944826e83873";
+        "libsoup-2.42.3.1-fix-build-without-ntml.patch", "";
       ]
     in
 
