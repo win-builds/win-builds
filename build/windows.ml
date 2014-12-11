@@ -452,10 +452,10 @@ let do_adds builder =
     let libxml2 = add ("libxml2", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[]
-      ~version:"2.9.1"
+      ~version:"2.9.2"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "dfefed2ce782fdeb956878d51918cc82ba2ebbfb";
+        "${PACKAGE}-${VERSION}.tar.gz", "f46a37ea6d869f702e03f393c376760f3cbee673";
       ]
     in
 
