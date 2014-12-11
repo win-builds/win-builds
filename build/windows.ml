@@ -525,10 +525,10 @@ let do_adds builder =
     let libogg = add ("libogg", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[]
-      ~version:"1.3.0"
+      ~version:"1.3.2"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "d74e7514f268d58a171b4b9baf15602fd8060c33";
+        "${PACKAGE}-${VERSION}.tar.xz", "5e525ec6a4135066932935c01d2c309ea5009f8d";
       ]
     in
 
