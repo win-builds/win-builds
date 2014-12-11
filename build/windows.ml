@@ -555,10 +555,10 @@ let do_adds builder =
     let fribidi = add ("fribidi", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[]
-      ~version:"0.19.2"
+      ~version:"0.19.6"
       ~build:3
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "dc844759c129cfe7b389873458175414411768b2";
+        "${PACKAGE}-${VERSION}.tar.bz2", "5a6ff82fdee31d27053c39e03223666ac1cb7a6a";
       ]
     in
 
