@@ -748,10 +748,10 @@ let do_adds builder =
     let lcms2 = add ("lcms2", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[]
-      ~version:"2.4"
+      ~version:"2.6"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "ba6d7b21cf500301634be1381809d27bcd96522c";
+        "${PACKAGE}-${VERSION}.tar.gz", "b0ecee5cb8391338e6c281d1c11dcae2bc22a5d2";
       ]
     in
 
