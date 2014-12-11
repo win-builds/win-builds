@@ -683,12 +683,10 @@ let do_adds builder =
     let flac = add ("flac", None)
       ~dir:"slackware64-current/ap"
       ~dependencies:[ libao (* TODO: check *) ]
-      ~version:"1.2.1"
+      ~version:"1.3.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "8a979b348cd641ff7ac7023046dc693683a77dba";
-        "flac.gcc45.diff.gz", "";
-        "flac.man.diff.gz", "";
+        "${PACKAGE}-${VERSION}.tar.xz", "38e17439d11be26207e4af0ff50973815694b26f";
       ]
     in
 
