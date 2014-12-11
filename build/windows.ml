@@ -535,10 +535,10 @@ let do_adds builder =
     let libvorbis = add ("libvorbis", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[ libogg ]
-      ~version:"1.3.3"
+      ~version:"1.3.4"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "31d1a0ec4815bf1ee638b0f2850f03efcd48022a";
+        "${PACKAGE}-${VERSION}.tar.xz", "b99724acdf3577982b3146b9430d765995ecf9e1";
       ]
     in
 
