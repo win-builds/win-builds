@@ -238,10 +238,10 @@ let do_adds builder =
     let libpng = add ("libpng", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[ zlib ]
-      ~version:"1.4.12"
+      ~version:"1.4.14"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "88972bbd8b7625c7d7c90f395cda1e4bb68a702c";
+        "${PACKAGE}-${VERSION}.tar.xz", "402271bcd9af622e2f3ff378d57cd73c2dda7ad5";
       ]
     in
 
