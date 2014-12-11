@@ -943,10 +943,10 @@ let do_adds builder =
     let libgcrypt = add ("libgcrypt", None)
       ~dir:"slackware64-current/n"
       ~dependencies:[ libgpg_error ]
-      ~version:"1.6.1"
+      ~version:"1.6.2"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "f03d9b63ac3b17a6972fc11150d136925b702f02";
+        "${PACKAGE}-${VERSION}.tar.bz2", "cc31aca87e4a3769cb86884a3f5982b2cc8eb7ec";
       ]
     in
 
