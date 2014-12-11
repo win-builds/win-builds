@@ -338,10 +338,10 @@ let do_adds builder =
     let curl = add ("curl", None)
       ~dir:"slackware64-current/n"
       ~dependencies:[ ca_certificates ]
-      ~version:"7.36.0"
+      ~version:"7.39.0"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "c39b120585a8a8d64ef14459d6d5f22831d4a7c4";
+        "${PACKAGE}-${VERSION}.tar.lzma", "a72fa6615d112960be609cdcf720f6332da822db";
       ]
     in
 
