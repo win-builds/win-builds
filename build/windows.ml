@@ -960,6 +960,7 @@ let do_adds builder =
       ]
     in
 
+    (* This is vulnerable to CVE-2014-7901 and probably others *)
     let openjpeg = add ("openjpeg", None)
       ~dir:"slackbuilds.org/libraries"
       ~dependencies:[ lcms; lcms2 ]
