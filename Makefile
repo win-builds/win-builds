@@ -29,7 +29,7 @@ installer:
 	yypkg --init; \
 	rm -f installer/bin/yypkg; \
 	cd ../$(VERSION)/packages/windows_32; \
-	for p in dbus*--* fontconfig*--* harfbuzz*--* curl* c-ares* winpthreads* gcc* zlib* win-iconv* gettext* lua* libjpeg* libpng* expat* freetype* fribidi* efl* elementary* dejavu-fonts-ttf* yypkg-$(YYPKG_VERSION)-*; do \
+	for p in dbus*--* fontconfig*--* harfbuzz*--* c-ares* winpthreads* gcc* zlib* win-iconv* gettext* lua* libjpeg* libpng* expat* freetype* fribidi* efl* elementary* dejavu-fonts-ttf* yypkg-$(YYPKG_VERSION)-*; do \
 	  yypkg --install "$${p}"; \
 	done
 	cd installer; \
@@ -37,11 +37,14 @@ installer:
 	find bin -name '*.exe' \! -name 'yypkg*.exe' -exec rm -rf {} +; \
 	rm -rf {doc,i686-w64-mingw32,include,info,libexec,man,var}; \
 	rm -rf etc/yypkg.d; \
+	rm -rf bin/libecore_{audio,avahi,ipc}-1.dll bin/libeolian-1.dll; \
+	rm -rf bin/libgomp-1.dll bin/lib{quadmath,ssp}-0.dll; \
+	rm -rf bin/{edje_recc,eina-bench-cmp,gettext.sh,vieet} bin/*-config; \
 	rm -rf lib/evas/modules/{engines/software_ddraw,loaders,savers}; \
 	rm -rf lib/{ethumb,elementary,gcc,cmake,cpp.exe,*.def,pkgconfig,python2.7,efreet,ethumb_client}; \
 	find lib \( -name '*.dll.a' -o -name '*.a' \) -exec rm -rf {} +; \
-	rm -rf share/elementary/images; \
-	rm -rf share/eolian; \
+	rm -rf lib/libgomp.spec lib/dbus-1; \
+	rm -rf share/{elementary/images,eolian,applications,icons,mime,gdb,eo,dbus}; \
 	rm -rf share/{locale,elementary/objects,curl,gettext,aclocal}
 	find . -type l -exec rm {} +
 	tar cv -C installer --exclude='bin/yypkg_wrapper.exe' . \
