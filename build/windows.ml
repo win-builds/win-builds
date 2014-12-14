@@ -586,8 +586,9 @@ let do_adds builder =
 
     let harfbuzz = harfbuzz_add
       ~variant:"regular"
-      (* TODO: the cairo dependency is only build-time; what about the others? *)
-      ~dependencies:[ cairo; freetype; glib2; icu4c ]
+      (* TODO: the cairo dependency is only build-time and the glib2 and icu4c
+       * ones are probably dlopen()'ed *)
+      ~dependencies:[ cairo; freetype; glib2; icu4c; libpng ]
     in
 
     let efl = efl ~variant:"regular" ~dependencies:[
