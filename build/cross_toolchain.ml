@@ -11,12 +11,13 @@ let builder ~name ~target =
     name;
     prefix; logs; yyoutput;
     path = Env.Prepend [ bindir prefix; bindir Native_toolchain.builder.prefix ];
+    (* FIXME: this should also include native_prefix *)
     pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
     pkg_config_libdir = Env.Keep;
     tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
-    target_prefix = None; (* updated from Windows *)
-    cross_prefix =  None;
-    native_prefix = None;
+    target_prefix = None; (* updated from the Windows module *)
+    cross_prefix  = None;
+    native_prefix = Some Native_toolchain.builder.prefix.Prefix.yyprefix;
     packages = [];
   }
 
