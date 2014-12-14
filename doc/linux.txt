@@ -158,10 +158,6 @@ the value you wish.
 If a build fails, you should look at the log file stored as
 `@@VERSION@@/logs/<series>/<package_name>`.
 
-NOTE: specifying 'NATIVE_TOOLCHAIN=all' below will build Qt which takes a
-*very* long time to build; use 'NATIVE_TOOLCHAIN=all_but_qt' instead if
-you don't need Qt support.
-
 * As root:
 
 ------------------------------------------------------------------------

@@ -93,11 +93,3 @@ let _all = add_full ("all", None)
   ~build:1
   ~sources:[]
   ~outputs:[]
-
-let _all_but_qt = add_full ("all_but_qt", None)
-  ~dir:""
-  ~dependencies:[ lua; efl; elementary ]
-  ~version:"0.0.0"
-  ~build:1
-  ~sources:[]
-  ~outputs:[]
