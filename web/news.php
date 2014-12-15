@@ -60,6 +60,22 @@ $releases =
     'steps' =>
     [
       [
+        'version' => '1.5-rc3',
+        'date' => '15/12/2014',
+        'entries' =>
+        [
+          'All applicable security updates done',
+          'Package manager on Windows cleans upon exit',
+          'Smaller installer on Windows',
+          'libdvdread updated to videolan\'s version; libdvdnav and libdvdcss added',
+          'Support for upgrading from 1.4 to 1.5 on Windows and Linux',
+          'fribidi doesn\'t use glib\'s memory allocators anymore',
+          'Cross-compilation support for qmake',
+          'Much faster installation on Linux thanks to a stripped-down installatio of Qt',
+          'Various improvements with the script which updates a shell with the right environment for the chosen toolchain on Linux and compatibility fixes for zsh',
+        ]
+      ],
+      [
         'version' => '1.5-rc2',
         'date' => '03/12/2014',
         'entries' =>
@@ -76,7 +92,7 @@ $releases =
           'Put back default include paths for GCC on Windows',
           'Simpler switching between toolchains',
         ]
-      ]
+      ],
     ],
   ],
   [
