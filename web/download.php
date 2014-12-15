@@ -17,7 +17,7 @@ include 'head.php';
 <p>
 Installation on Windows can be done for MSYS, Cygwin or without them.
 Simply download and run the
-<a href="@@VERSION@@/win-builds-@@VERSION@@.zip">package manager</a>.
+<a href="@@VERSION@@/win-builds-@@VERSION@@.exe">package manager</a>.
 </p>
 
 <p>
