@@ -73,12 +73,18 @@ dependency list of ffmpeg]), use a backport or migrate.
 
 === Arch Linux ===
 
-List below is incomplete: read and adapt the list in the <<Debian,Debian>>
-section to fit Arch Linux.
+Install the following from the main repositories:
+------------------------------------------------------------------------
+ocaml ocaml-findlib wget
+------------------------------------------------------------------------
 
+Install the following from AUR:
 ------------------------------------------------------------------------
-pacman -S ocaml ocaml-findlib
+makedepend
 ------------------------------------------------------------------------
+
+You might also have to read and adapt the list in the <<Debian,Debian>>
+section to fit Arch Linux.
 
 === Exherbo ===
 
