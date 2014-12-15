@@ -54,6 +54,9 @@ installer:
 	  ../yypkg/src/wrapper.native $$(stat --printf='%s' win-builds-$(VERSION).tar.xz)) \
 	  > win-builds-$(VERSION).exe
 
+installer-upload: installer
+	rsync -avP win-builds-$(VERSION).exe $(WEB)/$(VERSION)/
+
 release-upload:
 	cd .. && \
 	  rsync -avzP \
