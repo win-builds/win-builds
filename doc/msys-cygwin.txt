@@ -43,7 +43,7 @@ anywhere else but remember to keep the various paths consistent.
 6. In the new window, select 'All packages' and then 'MSYS Base System'.
 
 7. On the right of the window, right-click on 'msys-base' and select 'Mark for
-installation'.
+installation'. Do the same for 'msys-bash'.
 
 8. Now click on 'Installation' in the menu bar at the top of the window and
 then 'Apply Changes'.
