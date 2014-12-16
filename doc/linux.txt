@@ -75,7 +75,7 @@ dependency list of ffmpeg]), use a backport or migrate.
 
 Install the following from the main repositories:
 ------------------------------------------------------------------------
-ocaml ocaml-findlib wget
+intltool ocaml ocaml-findlib wget
 ------------------------------------------------------------------------
 
 Install the following from AUR:
