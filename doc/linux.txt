@@ -60,8 +60,8 @@ by hand] on top of the system one.
 * Debian wheezy and Ubuntu 12.04 have an old 'autoreconf' that generates
 bad code; avoid calling it when developing, use a backport or migrate.
 Build scripts do their best to avoid calling it but it is needed for some
-packages (madplay and libtheora) which can therefore not be rebuilt on vanilla
-Debian wheezy and Ubuntu 12.04.
+packages (madplay, libtheora and libxml2 [can be commented out]) which can
+therefore not be rebuilt on vanilla Debian wheezy and Ubuntu 12.04.
 
 * Debian wheezy has old yasm which x264 doesn't handle; disable x264's
 build and its use in ffmpeg (link:#_build_script_configuration[edit build

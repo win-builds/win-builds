@@ -453,7 +453,7 @@ let do_adds builder =
       ~dir:"slackware64-current/l"
       ~dependencies:[]
       ~version:"2.9.2"
-      ~build:1
+      ~build:2
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.gz", "f46a37ea6d869f702e03f393c376760f3cbee673";
       ]
