@@ -150,7 +150,7 @@ let do_adds builder =
     ~dir:"mingw"
     ~dependencies:[]
     ~version:"1.0.0"
-    ~build:3
+    ~build:4
     ~sources:[
       "win-builds-switch.in", "";
     ]
