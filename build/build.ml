@@ -126,7 +126,7 @@ module B = struct
         if not devshell then
           sp "exec bash -x %s.SlackBuild" p.package
         else
-          sp "exec %s" (try Sys.getenv "SHELL" with Not_found -> "/bin/bash")
+          sp "exec /bin/bash --norc"
 
       ]
     |]
