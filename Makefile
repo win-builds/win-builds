@@ -58,13 +58,12 @@ installer-upload: installer
 	rsync -avP win-builds-$(VERSION).exe $(WEB)/$(VERSION)/
 
 release-upload:
-	cd .. && \
-	  rsync -avzP \
-	  --include='/$(VERSION)' \
-	  --include='/$(VERSION)/logs' \
-	  --include='/$(VERSION)/packages' \
+	rsync -avzP \
 	  --exclude='memo_pkg' \
-	  --exclude='/$(VERSION)/*' \
-	  $(VERSION) $(WEB)/
+	  --delete-after \
+	  --no-perms \
+	  $(VERSION)/{logs,packages} \
+	  $(WEB)/$(VERSION)/
+
 
 .PHONY: doc web build yypkg installer
