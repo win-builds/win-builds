@@ -122,8 +122,8 @@ Simply download
 <a href="@@VERSION@@/win-builds-@@VERSION@@.exe">win-builds-@@VERSION@@.exe</a> 
 and replace the <code>bin/yypkg.exe</code> file from your installation with it. 
 Then, double-click on this file, click on <code>Change Mirror</code> in the 
-upper-left corner and replace <code>1.4.0</code> with <code>1.5.0</code> in the 
-URI.
+upper-left corner and replace <code>1.4.0</code> with <code>@@VERSION@@</code> 
+in the URI.
 </p>
 
 <h1 id="known_limitations">Known limitations</h1>
