@@ -175,6 +175,12 @@ C:\path\to\the\newly\created\directory\@@VERSION@@
 </pre>
 
 <p>
+You should see a window similar to the following one. Note the middle field 
+which prompts for a mirror.
+</p>
+<div style="text-align: center"><img src="install_mirror_path.png"></div>
+
+<p>
 When updating packages, simply re-run the <code>wget</code> command and then
 double-click on <code>bin/yypkg.exe</code>.
 </p>

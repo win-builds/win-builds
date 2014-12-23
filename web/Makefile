@@ -6,7 +6,11 @@ temp/screenshot.png: temp screenshot-windows.png
 	pngnq -L < screenshot-windows.png > temp/screenshot.png
 	advpng -h >/dev/null && advpng -z -4 temp/screenshot.png
 
-all web: temp $(patsubst %,temp/%.html,$(FILES)) temp/screenshot.png
+temp/%.png: temp %.png
+	pngnq -L < $*.png > $@
+	advpng -h >/dev/null && advpng -z -4 $@
+
+all web: temp $(patsubst %,temp/%.html,$(FILES)) temp/screenshot.png temp/install_mirror_path.png
 
 temp:
 	mkdir -p temp
