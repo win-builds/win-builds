@@ -1360,6 +1360,16 @@ let do_adds builder =
   in
 
   let _disabled =
+    let _vpnc = add ("vpnc", None)
+      ~dir:"slackbuilds.org/network"
+      ~dependencies:[ (* libogg *) ]
+      ~version:"0.5.3"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz", "321527194e937371c83b5e7c38e46fca4f109304";
+      ]
+    in
+
     let _speex = add ("speex", None)
       ~dir:"slackbuilds.org/audio"
       ~dependencies:[ (* libogg *) ]
