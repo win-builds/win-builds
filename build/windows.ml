@@ -1225,10 +1225,36 @@ let do_adds builder =
       ]
     in
 
-    (* TODO: check for new version *)
-    (* TODO: check why it might try to build cdparanoia *)
-    (* TODO: cdtext.c:216:3: warning: implicit declaration of function ‘bzero’
-     *       [-Wimplicit-function-declaration] *)
+    let _pdcurses = add ("PDCurses", None)
+      ~dir:"mingw"
+      ~dependencies:[]
+      ~version:"3.4"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz", "e36684442a6171cc3a5165c8c49c70f67db7288c";
+      ]
+    in
+
+    let _readline = add ("readline", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[ _pdcurses ]
+      ~version:"5.2"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.bz2", "";
+      ]
+    in
+
+    let _wineditline = add ("wineditline", None)
+      ~dir:"mingw"
+      ~dependencies:[]
+      ~version:"2.101"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.bz2", "7943ffde32830adff5e70aec76da78899d1e20ae";
+      ]
+    in
+
     let _libcdio = add ("libcdio", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[ _libcddb ]
