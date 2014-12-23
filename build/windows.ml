@@ -1239,6 +1239,16 @@ let do_adds builder =
       ]
     in
 
+    let _miniupnpc = add ("miniupnpc", None)
+      ~dir:"slackbuilds.org/libraries"
+      ~dependencies:[]
+      ~version:"1.9"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz", "643001d52e322c52a7c9fdc8f31a7920f4619fc0";
+      ]
+    in
+
     add_full ("experimental", None)
       ~dir:""
       ~dependencies:[
