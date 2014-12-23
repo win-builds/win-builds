@@ -377,7 +377,7 @@ let do_adds builder =
 
     let glib2 = add ("glib2", None)
       ~dir:"slackware64-current/l"
-      ~dependencies:[ libffi ]
+      ~dependencies:[ libffi; gettext ]
       ~version:"2.42.1"
       ~build:1
       ~sources:[
