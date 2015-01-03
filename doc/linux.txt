@@ -120,7 +120,7 @@ Run the following to get all the source files:
 
 ------------------------------------------------------------------------
 for repo in win-builds mingw slackware64-current slackbuilds.org; do
-  git clone http://git.notk.org/adrien/yypkg/${repo}.git
+  git clone http://git.notk.org/gitolite/win-builds/${repo}.git
 done
 
 ------------------------------------------------------------------------
