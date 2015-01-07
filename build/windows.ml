@@ -572,16 +572,6 @@ let do_adds builder =
       ]
     in
 
-    let libsndfile = add ("libsndfile", None)
-      ~dir:"slackware64-current/l"
-      ~dependencies:[]
-      ~version:"1.0.25"
-      ~build:1
-      ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "cfd2c6eaaed3bce1e90140cf899cf2358348944f";
-      ]
-    in
-
     let dbus = dbus_add ~variant:"regular" ~dependencies:[ expat ] in
 
     let harfbuzz = harfbuzz_add
@@ -590,17 +580,6 @@ let do_adds builder =
        * ones are probably dlopen()'ed *)
       ~dependencies:[ cairo; freetype; glib2; icu4c; libpng ]
     in
-
-    let efl = efl ~variant:"regular" ~dependencies:[
-      libtiff; libpng; giflib; libjpeg;
-      fontconfig; freetype; lua;
-      fribidi; harfbuzz; libsndfile;
-      gnutls; curl; c_ares; dbus;
-      (* openjpeg; current it doesn't work *)
-    ]
-    in
-
-    let elementary = elementary ~variant:"regular" ~dependencies:[ efl ] in
 
     let pkg_config = add ("pkg-config", None)
       ~dir:"slackware64-current/d"
@@ -690,6 +669,27 @@ let do_adds builder =
         "${PACKAGE}-${VERSION}.tar.xz", "38e17439d11be26207e4af0ff50973815694b26f";
       ]
     in
+
+    let libsndfile = add ("libsndfile", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[ flac; libogg; libvorbis ]
+      ~version:"1.0.25"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz", "cfd2c6eaaed3bce1e90140cf899cf2358348944f";
+      ]
+    in
+
+    let efl = efl ~variant:"regular" ~dependencies:[
+      libtiff; libpng; giflib; libjpeg;
+      fontconfig; freetype; lua;
+      fribidi; harfbuzz; libsndfile;
+      gnutls; curl; c_ares; dbus;
+      (* openjpeg; current it doesn't work *)
+    ]
+    in
+
+    let elementary = elementary ~variant:"regular" ~dependencies:[ efl ] in
 
     let gdb = add ("gdb", None)
       ~dir:"slackware64-current/d"
