@@ -1,7 +1,7 @@
 export VERSION := 1.5-rc3
 
 YYPKG_FILES := http://win-builds.org/yypkg
-YYPKG_VERSION := 1.9-rc8
+YYPKG_VERSION := 1.9.0
 
 FILEUTILS_VERSION := 0.4.5
 ARCHIVE_VERSION := 2.8.4+2
