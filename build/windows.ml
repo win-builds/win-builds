@@ -54,7 +54,7 @@ let do_adds builder =
       ~dir:"slackbuilds.org/libraries"
       ~dependencies
       ~version:Version.efl
-      ~build:1
+      ~build:2
       ~sources:[
         Source.efl;
         (* "0001-Ecore_Win32-Fix-string-for-the-BackSpace-key-on-Wind.patch", ""; *)
@@ -66,7 +66,7 @@ let do_adds builder =
       ~dir:"slackbuilds.org/libraries"
       ~dependencies
       ~version:Version.elementary
-      ~build:1
+      ~build:2
       ~sources:[
         Source.elementary
       ]
