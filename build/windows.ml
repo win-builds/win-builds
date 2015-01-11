@@ -882,7 +882,7 @@ let do_adds builder =
         (* giflib (* Qt never uses the sytem one! *) *)
       ]
       ~version:"5.3.1"
-      ~build:2
+      ~build:3
       ~sources:[
         "qt-everywhere-opensource-src-${VERSION}.tar.xz", "66b33ea66eb05a864e7ae417179ea24c8a45ec10";
         "0001-configure-use-pkg-config-for-libpng.patch", "";
