@@ -111,9 +111,12 @@ sbopkg -i "ocaml ocaml-findlib"
 Slackware -current as of September 2014 has proper software for the build and
 is the main development platform for win-builds.
 
-Previous Slackware versions haven't been tested. They should work except for
-their older version of automake which can be an issue for madplay (see the
-<<Debian,section on the topic in the documentation for Debian>>).
+Previous Slackware versions have some components that are too old. Overall
+they should work except for their older version of automake which can be an
+issue for madplay, libtheora and libxml2 (see the <<Debian,section on the
+topic in the documentation for Debian>>). It is strongly advised to migrate to
+-current (or any release more recent than 14.1) if rebuilding these packages
+is wanted.
 
 == Retrieve sources ==
 Run the following to get all the source files:
