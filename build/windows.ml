@@ -182,6 +182,7 @@ let do_adds builder =
       ~build:2
       ~sources:[
         Source.mingw_w64;
+        "0001-intrinsics-don-t-include-d-f-i-vec.h-from-inside-int.patch", "";
       ]
     in
 
@@ -191,7 +192,7 @@ let do_adds builder =
       ~version:Version.mingw_w64
       ~build:2
       ~sources:[
-        Source.mingw_w64
+        Source.mingw_w64;
       ]
     in
 
