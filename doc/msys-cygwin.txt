@@ -105,10 +105,10 @@ Then run the following commands in order to test each toolchain:
 
 ------------------------------------------------------------------------
 # First, the 32 bits toolchain
-. /opt/windows_32/bin/win-builds-switch 32
+source /opt/windows_32/bin/win-builds-switch
 i686-w64-mingw32-gcc -o gtk_hello_world.exe gtk_hello_world.c $(pkg-config --cflags --libs gtk+-2.0)
 
 # Then, the 64 bits toolchain
-. /opt/windows_64/bin/win-builds-switch 64
+source /opt/windows_64/bin/win-builds-switch
 x86_64-w64-mingw32-gcc -o gtk_hello_world.exe gtk_hello_world.c $(pkg-config --cflags --libs gtk+-2.0)
 ------------------------------------------------------------------------
