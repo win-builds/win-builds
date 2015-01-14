@@ -68,7 +68,7 @@ let qt = add ("qt", Some "native")
   ~dir:"slackware64-current/l"
   ~dependencies:[]
   ~version:"5.3.1"
-  ~build:1
+  ~build:4
   ~sources:[
     "qt-everywhere-opensource-src-${VERSION}.tar.xz", "66b33ea66eb05a864e7ae417179ea24c8a45ec10";
     "Qt.pc", "";

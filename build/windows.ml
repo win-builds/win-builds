@@ -883,12 +883,13 @@ let do_adds builder =
         (* giflib (* Qt never uses the sytem one! *) *)
       ]
       ~version:"5.3.1"
-      ~build:3
+      ~build:4
       ~sources:[
         "qt-everywhere-opensource-src-${VERSION}.tar.xz", "66b33ea66eb05a864e7ae417179ea24c8a45ec10";
         "0001-configure-use-pkg-config-for-libpng.patch", "";
         "0002-Use-widl-instead-of-midl.-Also-set-QMAKE_DLLTOOL-to-.patch", "";
         "0003-Tell-qmake-to-use-pkg-config.patch", "";
+        "0001-QCoreApplication-ibraryPaths-discovers-plugpath-rela.patch", "";
         "Qt.pc", "";
         "qt.fix.broken.gif.crash.diff.gz", "";
         "qt.mysql.h.diff.gz", "";
