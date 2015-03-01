@@ -10,12 +10,6 @@ build:
 		WINDOWS_64=$(WINDOWS),$(WINDOWS_64) \
 			./win-builds/build/build.byte $(VERSION) )
 
-doc doc-upload:
-	$(MAKE) -C doc -j4 $@
-
-web web-upload:
-	$(MAKE) -C web -j4 $@
-
 tarballs-upload:
 	LOGLEVEL=dbg make WINDOWS= CROSS_TOOLCHAIN= NATIVE= 2>&1 \
 	  | sed -n 's; [^ ]\+ -> source=\(.\+/.\+/.\+\);\1; p' > file_list
@@ -66,4 +60,4 @@ release-upload:
 	  $(WEB)/$(VERSION)/
 
 
-.PHONY: doc web build yypkg installer
+.PHONY: build yypkg installer
