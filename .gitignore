@@ -34,3 +34,4 @@ yypkg/deps
 file_list
 
 installer
+Makefile.data.local

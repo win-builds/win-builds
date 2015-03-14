@@ -12,3 +12,5 @@ EFL_VERSION := 1.11.1
 WEB := notk.org:/var/www/win-builds.org
 
 export MIRROR := http://win-builds.org/$(VERSION)/tarballs
+
+-include Makefile.data.local
