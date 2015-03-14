@@ -403,9 +403,26 @@ let do_adds builder =
       ]
     in
 
-    let pango = add ("pango", None)
+    let icu4c = add ("icu4c", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[]
+      ~version:"51.2" (* NOTE: the version number in sources needs updating too *)
+      ~build:2
+      ~sources:[
+        "${PACKAGE}-51_2-src.tar.xz", "c50ed0a3870478d81ac5f7d765619f83e9be6032";
+      ]
+    in
+
+    let harfbuzz = harfbuzz_add
+      ~variant:"regular"
+      (* TODO: the cairo dependency is only build-time and the glib2 and icu4c
+       * ones are probably dlopen()'ed *)
+      ~dependencies:[ cairo; freetype; glib2; icu4c; libpng ]
+    in
+
+    let pango = add ("pango", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[ freetype; harfbuzz; cairo ]
       ~version:"1.34.1"
       ~build:1
       ~sources:[
@@ -476,16 +493,6 @@ let do_adds builder =
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz", "252424b83e395716beca4ea2ef78944826e83873";
         "libsoup-2.42.3.1-fix-build-without-ntml.patch", "";
-      ]
-    in
-
-    let icu4c = add ("icu4c", None)
-      ~dir:"slackware64-current/l"
-      ~dependencies:[]
-      ~version:"51.2" (* NOTE: the version number in sources needs updating too *)
-      ~build:2
-      ~sources:[
-        "${PACKAGE}-51_2-src.tar.xz", "c50ed0a3870478d81ac5f7d765619f83e9be6032";
       ]
     in
 
@@ -570,13 +577,6 @@ let do_adds builder =
     in
 
     let dbus = dbus_add ~variant:"regular" ~dependencies:[ expat ] in
-
-    let harfbuzz = harfbuzz_add
-      ~variant:"regular"
-      (* TODO: the cairo dependency is only build-time and the glib2 and icu4c
-       * ones are probably dlopen()'ed *)
-      ~dependencies:[ cairo; freetype; glib2; icu4c; libpng ]
-    in
 
     let pkg_config = add ("pkg-config", None)
       ~dir:"slackware64-current/d"
@@ -677,12 +677,44 @@ let do_adds builder =
       ]
     in
 
+    let lcms = add ("lcms", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[ zlib; libtiff; libjpeg ]
+      ~version:"1.19"
+      ~build:2
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz", "f10eca160062562fabd4e9c7c8fb65db61da9dbf";
+        "lcms1.19-avoid-buffer-overflows-CVE-2013-4276.patch", "";
+      ]
+    in
+
+    let lcms2 = add ("lcms2", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[]
+      ~version:"2.6"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz", "b0ecee5cb8391338e6c281d1c11dcae2bc22a5d2";
+      ]
+    in
+
+    (* This is vulnerable to CVE-2014-7901 and probably others *)
+    let openjpeg = add ("openjpeg", None)
+      ~dir:"slackbuilds.org/libraries"
+      ~dependencies:[ lcms; lcms2 ]
+      ~version:"2.1.0"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.gz", "c2a255f6b51ca96dc85cd6e85c89d300018cb1cb";
+      ]
+    in
+
     let efl = efl ~variant:"regular" ~dependencies:[
       libtiff; libpng; giflib; libjpeg;
       fontconfig; freetype; lua;
       fribidi; harfbuzz; libsndfile;
       gnutls; curl; c_ares; dbus;
-      (* openjpeg; current it doesn't work *)
+      openjpeg;
     ]
     in
 
@@ -729,27 +761,6 @@ let do_adds builder =
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.xz", "9012438e8be93068e271df0dbeaaefae0320a1a5";
         "${PACKAGE}-${VERSION}-fix-segfault.patch.gz", "";
-      ]
-    in
-
-    let lcms = add ("lcms", None)
-      ~dir:"slackware64-current/l"
-      ~dependencies:[ zlib; libtiff; libjpeg ]
-      ~version:"1.19"
-      ~build:2
-      ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "f10eca160062562fabd4e9c7c8fb65db61da9dbf";
-        "lcms1.19-avoid-buffer-overflows-CVE-2013-4276.patch", "";
-      ]
-    in
-
-    let lcms2 = add ("lcms2", None)
-      ~dir:"slackware64-current/l"
-      ~dependencies:[]
-      ~version:"2.6"
-      ~build:1
-      ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "b0ecee5cb8391338e6c281d1c11dcae2bc22a5d2";
       ]
     in
 
@@ -956,17 +967,6 @@ let do_adds builder =
       ~build:1
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.gz", "21c45586a4e94d7622e371340edec5da40d06ecc";
-      ]
-    in
-
-    (* This is vulnerable to CVE-2014-7901 and probably others *)
-    let openjpeg = add ("openjpeg", None)
-      ~dir:"slackbuilds.org/libraries"
-      ~dependencies:[ lcms; lcms2 ]
-      ~version:"2.1.0"
-      ~build:1
-      ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "c2a255f6b51ca96dc85cd6e85c89d300018cb1cb";
       ]
     in
 
