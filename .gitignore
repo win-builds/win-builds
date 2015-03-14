@@ -34,4 +34,6 @@ yypkg/deps
 file_list
 
 installer
+
+lxc_mount
 Makefile.data.local
