@@ -78,6 +78,10 @@ module Prefix = struct
   }
 
   let t ~build ~host ~target =
+    let basepath =
+      try Sys.getenv "YYBASEPATH" with
+      | Not_found -> Filename.concat (Sys.getcwd ()) "opt"
+    in
     let nickname, kind = (* FIXME *)
       if build = host then
         if build = target then
@@ -87,7 +91,7 @@ module Prefix = struct
       else
         Lib.sp "windows_%d" host.Arch.bits, "windows"
     in
-    let path = "/opt/" ^ nickname in
+    let path = Filename.concat basepath nickname in
     let libdir =
       Filename.concat path (if target.Arch.bits = 32 then "lib" else "lib64")
     in
