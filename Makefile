@@ -1,14 +1,45 @@
 include Makefile.data
 
-build:
+ifneq ($(WITH_LXC),)
+LXC_EXECUTE=lxc-execute -f /dev/null -n win-builds-$(VERSION) -s lxc.mount=$(shell pwd)/lxc_mount --
+else
+LXC_EXECUTE=
+endif
+
+default: build
+
+build_builder:
 	@ cd build && ocamlbuild -quiet build.byte
-	(cd .. && \
+
+build_real:
+	cd .. && \
+		. /etc/profile && \
+		LANG=C \
 		NATIVE_TOOLCHAIN=$(NATIVE_TOOLCHAIN) \
 		CROSS_TOOLCHAIN_32=$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_32) \
 		CROSS_TOOLCHAIN_64=$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_64) \
 		WINDOWS_32=$(WINDOWS),$(WINDOWS_32) \
 		WINDOWS_64=$(WINDOWS),$(WINDOWS_64) \
-			./win-builds/build/build.byte $(VERSION) )
+			./win-builds/build/build.byte $(VERSION)
+
+lxc_mount:
+	cat < /dev/null > lxc_mount
+	P=$(shell cd .. && pwd)/opt; \
+	for f in native_toolchain {cross_toolchain,windows}_{32,64}; do \
+		echo "$${P}/$${f} /opt/$${f} none bind 0 0" >> lxc_mount; \
+	done
+
+ifneq ($(WITH_LXC),)
+build: build_builder lxc_mount
+else
+build: build_builder
+endif
+	$(LXC_EXECUTE) $(shell which make) build_real \
+		NATIVE_TOOLCHAIN=$(NATIVE_TOOLCHAIN) \
+		CROSS_TOOLCHAIN_32=$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_32) \
+		CROSS_TOOLCHAIN_64=$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_64) \
+		WINDOWS_32=$(WINDOWS),$(WINDOWS_32) \
+		WINDOWS_64=$(WINDOWS),$(WINDOWS_64)
 
 tarballs-upload:
 	LOGLEVEL=dbg make WINDOWS= CROSS_TOOLCHAIN= NATIVE= 2>&1 \
@@ -60,4 +91,4 @@ release-upload:
 	  $(WEB)/$(VERSION)/
 
 
-.PHONY: build yypkg installer
+.PHONY: build yypkg installer build_real build_builder default
