@@ -193,7 +193,6 @@ let do_adds builder =
       ~build:2
       ~sources:[
         Source.mingw_w64;
-        "clock_gettime.patch", "";
       ]
     in
 
