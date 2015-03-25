@@ -193,6 +193,7 @@ let do_adds builder =
       ~build:2
       ~sources:[
         Source.mingw_w64;
+        "clock_gettime.patch", "";
       ]
     in
 
@@ -1033,7 +1034,7 @@ let do_adds builder =
       ~dir:"mingw"
       ~dependencies:[]
       ~version:"1.0.0"
-      ~build:6
+      ~build:7
       ~sources:[
         "win-builds-switch.in", "";
       ]
