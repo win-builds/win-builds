@@ -315,10 +315,10 @@ let do_adds builder =
     let libtasn1 = add ("libtasn1", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[]
-      ~version:"3.6"
+      ~version:"3.9"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "5d480b83526264a216b5822c2dcbffad26a792d9";
+        "${PACKAGE}-${VERSION}.tar.xz", "0e4907b0ff00f0199858a904d476b2ae73c33338";
       ]
     in
 
@@ -640,10 +640,10 @@ let do_adds builder =
     let pcre = add ("pcre", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[]
-      ~version:"8.33"
+      ~version:"8.36"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "ddfa04311c01a3882943814a3cd577080c877a8a"
+        "${PACKAGE}-${VERSION}.tar.xz", "9a074e9cbf3eb9f05213fd9ca5bc188644845ccc"
       ]
     in
 
