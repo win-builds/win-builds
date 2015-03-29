@@ -1,5 +1,9 @@
 include Makefile.data
 
+PREFIX := $(shell pwd)/deps/prefix
+export PATH := $(PREFIX)/bin:$(PATH)
+export LD_LIBRARY_PATH := $(PREFIX)/lib:$(LD_LIBRARY_PATH)
+
 ifneq ($(WITH_LXC),)
 LXC_EXECUTE=lxc-execute -f /dev/null -n win-builds-$(VERSION) -s lxc.mount=$(shell pwd)/lxc_mount --
 else
@@ -40,6 +44,9 @@ endif
 		CROSS_TOOLCHAIN_64=$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_64) \
 		WINDOWS_32=$(WINDOWS),$(WINDOWS_32) \
 		WINDOWS_64=$(WINDOWS),$(WINDOWS_64)
+
+deps:
+	make -C deps
 
 tarballs-upload:
 	LOGLEVEL=dbg make WINDOWS= CROSS_TOOLCHAIN= NATIVE= 2>&1 \
@@ -91,4 +98,4 @@ release-upload:
 	  $(WEB)/$(VERSION)/
 
 
-.PHONY: build yypkg installer build_real build_builder default
+.PHONY: build deps installer build_real build_builder default

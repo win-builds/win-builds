@@ -37,3 +37,14 @@ installer
 
 lxc_mount
 Makefile.data.local
+
+deps/prefix
+deps/coreutils-*
+deps/findutils-*
+deps/sed-*
+deps/make-*
+deps/findlib-*
+deps/ocaml-*
+deps/cryptokit-*
+deps/libocaml_*
+deps/tarballs
