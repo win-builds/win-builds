@@ -263,10 +263,10 @@ let do_adds builder =
     let gettext = add ("gettext", None)
       ~dir:"slackware64-current/a"
       ~dependencies:[ win_iconv ]
-      ~version:"0.18.3.1"
+      ~version:Common.Version.gettext
       ~build:2
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "a32c19a6e39450748f6e56d2ac6b8b0966a5ab05";
+        Common.Source.gettext;
       ]
     in
 
@@ -536,6 +536,26 @@ let do_adds builder =
       ~build:2
       ~sources:[
         "${PACKAGE}-${VERSION}.tar.gz", "f46a37ea6d869f702e03f393c376760f3cbee673";
+      ]
+    in
+
+    let libcroco = add ("libcroco", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[ libxml2; glib2; zlib; xz; pkg_config ]
+      ~version:"0.6.8"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz", "23a5c33a2a86d5e46173234f5fa88ac1e15de035";
+      ]
+    in
+
+    let gettext_tools = add ("gettext-tools", None)
+      ~dir:"slackware64-current/d"
+      ~dependencies:[ libcroco ]
+      ~version:Common.Version.gettext
+      ~build:1
+      ~sources:[
+        Common.Source.gettext
       ]
     in
 

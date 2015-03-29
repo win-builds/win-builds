@@ -1,8 +1,6 @@
 module Version = struct
   let mingw_w64 = "v3.3.0"
-
   let gcc = "4.8.3"
-
   let binutils = "2.24"
 
   let efl = "1.11.2"
@@ -11,12 +9,12 @@ module Version = struct
   let autoconf = "2.69"
   let automake = "1.14.1"
   let libtool = "2.4.4"
+  let gettext = "0.18.3.1"
 end
 
 module Source = struct
   let mingw_w64 =
     "mingw-w64-${VERSION}.tar.bz2", "d31eac960d42e791970697eae5724e529c81dcd6"
-
   let gcc =
     "gcc-${VERSION}.tar.xz", "f2f894d6652f697fede264c16c028746e9ee6243"
   let binutils =
@@ -33,4 +31,6 @@ module Source = struct
     "${PACKAGE}-${VERSION}.tar.xz", "2ced676f6b792a95c5919243f81790b1172c7f5b"
   let libtool =
     "${PACKAGE}-${VERSION}.tar.xz", "a62d0f9a5c8ddf2de2a3210a5ab712fd3b4531e9"
+  let gettext =
+    "gettext-${VERSION}.tar.gz", "a32c19a6e39450748f6e56d2ac6b8b0966a5ab05"
 end
