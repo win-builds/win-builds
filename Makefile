@@ -17,13 +17,14 @@ build_builder:
 
 build_real:
 	cd .. && \
+		PATH=/usr/bin:/bin \
 		. /etc/profile && \
 		LANG=C \
 		NATIVE_TOOLCHAIN=$(NATIVE_TOOLCHAIN) \
-		CROSS_TOOLCHAIN_32=$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_32) \
-		CROSS_TOOLCHAIN_64=$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_64) \
-		WINDOWS_32=$(WINDOWS),$(WINDOWS_32) \
-		WINDOWS_64=$(WINDOWS),$(WINDOWS_64) \
+		CROSS_TOOLCHAIN_32=$(CROSS_TOOLCHAIN_32) \
+		CROSS_TOOLCHAIN_64=$(CROSS_TOOLCHAIN_64) \
+		WINDOWS_32=$(WINDOWS_32) \
+		WINDOWS_64=$(WINDOWS_64) \
 			./win-builds/build/build.byte $(VERSION)
 
 lxc_mount:
@@ -38,7 +39,7 @@ build: build_builder lxc_mount
 else
 build: build_builder
 endif
-	$(LXC_EXECUTE) $(shell which make) build_real \
+	$(LXC_EXECUTE) $$(which make) build_real \
 		NATIVE_TOOLCHAIN=$(NATIVE_TOOLCHAIN) \
 		CROSS_TOOLCHAIN_32=$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_32) \
 		CROSS_TOOLCHAIN_64=$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_64) \
