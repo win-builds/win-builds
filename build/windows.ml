@@ -1239,6 +1239,7 @@ let do_adds builder =
     add_full ("all", None)
       ~dir:""
       ~dependencies:[
+        autoconf; automake; libtool; gettext_tools;
         gcc; binutils; mingw_w64; gdb;
         elementary; gtk_2; ffmpeg;
         libtheora; opus; sox;
