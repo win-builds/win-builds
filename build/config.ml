@@ -142,6 +142,7 @@ module Builder = struct
       "PKG_CONFIG_PATH", t.pkg_config_path; (* FIXME: base on libdir *)
       "PKG_CONFIG_LIBDIR", t.pkg_config_libdir; (* FIXME: base on libdir *)
       "OCAMLFIND_CONF", Env.Set [ t.prefix.P.yyprefix ^ "/etc/findlib.conf" ];
+      "ACLOCAL_PATH", Env.Set [ t.prefix.P.yyprefix ^ "/share/aclocal" ];
       "YYPREFIX", Env.Set [ t.prefix.P.yyprefix ];
       (* PREFIX is set right before calling the build script in the same way;
        * better or worse?

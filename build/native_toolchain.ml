@@ -26,6 +26,33 @@ let add_full =
 
 let add = add_full ?outputs:None
 
+let autoconf = add ("autoconf", None)
+  ~dir:"slackware64-current/d"
+  ~dependencies:[]
+  ~version:Common.Version.autoconf
+  ~build:1
+  ~sources:[
+    Common.Source.autoconf
+  ]
+
+let libtool = add ("libtool", None)
+  ~dir:"slackware64-current/d"
+  ~dependencies:[]
+  ~version:Common.Version.libtool
+  ~build:1
+  ~sources:[
+    Common.Source.libtool
+  ]
+
+let automake = add ("automake", None)
+  ~dir:"slackware64-current/d"
+  ~dependencies:[]
+  ~version:Common.Version.automake
+  ~build:1
+  ~sources:[
+    Common.Source.automake
+  ]
+
 let ocaml = add ("ocaml", None)
   ~dir:"slackbuilds.org/ocaml"
   ~dependencies:[]
@@ -88,7 +115,7 @@ let qt = add ("qt", Some "native")
 
 let _all = add_full ("all", None)
   ~dir:""
-  ~dependencies:[ lua; qt; efl; elementary ]
+  ~dependencies:[ autoconf; automake; libtool; lua; qt; efl; elementary ]
   ~version:"0.0.0"
   ~build:1
   ~sources:[]

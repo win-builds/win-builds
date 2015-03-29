@@ -175,6 +175,36 @@ let do_adds builder =
       ]
     in
 
+    let autoconf = add ("autoconf", None)
+      ~dir:"slackware64-current/d"
+      ~dependencies:[]
+      ~version:Common.Version.autoconf
+      ~build:1
+      ~sources:[
+        Common.Source.autoconf
+      ]
+    in
+
+    let libtool = add ("libtool", None)
+      ~dir:"slackware64-current/d"
+      ~dependencies:[]
+      ~version:Common.Version.libtool
+      ~build:1
+      ~sources:[
+        Common.Source.libtool
+      ]
+    in
+
+    let automake = add ("automake", None)
+      ~dir:"slackware64-current/d"
+      ~dependencies:[]
+      ~version:Common.Version.automake
+      ~build:1
+      ~sources:[
+        Common.Source.automake
+      ]
+    in
+
     let mingw_w64 = add ("mingw-w64", Some "full")
       ~dir:"mingw"
       ~dependencies:[]
