@@ -519,9 +519,19 @@ let do_adds builder =
       ]
     in
 
+    let icu4c = add ("icu4c", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[]
+      ~version:"51.2" (* NOTE: the version number in sources needs updating too *)
+      ~build:2
+      ~sources:[
+        "${PACKAGE}-51_2-src.tar.xz", "c50ed0a3870478d81ac5f7d765619f83e9be6032";
+      ]
+    in
+
     let libxml2 = add ("libxml2", None)
       ~dir:"slackware64-current/l"
-      ~dependencies:[ zlib; xz ]
+      ~dependencies:[ zlib; xz; icu4c ]
       ~version:"2.9.2"
       ~build:2
       ~sources:[
