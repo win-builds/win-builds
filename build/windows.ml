@@ -19,6 +19,7 @@ let builder ~cross ~name ~host =
     cross_prefix  = Some cross.Config.Builder.prefix.Prefix.yyprefix;
     native_prefix = Some Native_toolchain.builder.prefix.Prefix.yyprefix;
     packages = [];
+    redistributed = false;
   }
 
 let do_adds builder =

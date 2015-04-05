@@ -155,6 +155,7 @@ module Builder = struct
     (* prefix of the cross system *)
     mutable target_prefix : string option;
     mutable packages : Package.t list;
+    redistributed : bool;
   }
 
   let env t =
@@ -193,6 +194,7 @@ module Builder = struct
         (match t.native_prefix with Some p -> Env.Set [ p ] | None -> Env.Keep);
       "YYPREFIX_TARGET",
         (match t.target_prefix with Some p -> Env.Set [ p ] | None -> Env.Keep);
+      "YYLOWCOMPRESS", (if t.redistributed then Env.Keep else Env.Set [ "1" ]);
     ])
 
   let bindir prefix =

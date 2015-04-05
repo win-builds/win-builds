@@ -20,6 +20,7 @@ let builder ~name ~target =
     cross_prefix  = None;
     native_prefix = Some Native_toolchain.builder.prefix.yyprefix;
     packages = [];
+    redistributed = false;
   }
 
 let do_adds builder =

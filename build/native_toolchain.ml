@@ -20,6 +20,7 @@ let builder =
     cross_prefix  = None;
     native_prefix = None;
     packages = [];
+    redistributed = false;
   }
 
 let add_full =
