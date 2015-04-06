@@ -263,14 +263,10 @@ let do_adds builder =
     let libtiff = add ("libtiff", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[ libjpeg ]
-      ~version:"3.9.7"
+      ~version:"4.0.4beta"
       ~build:1
       ~sources:[
-        "tiff-${VERSION}.tar.xz", "92dd9600b3b7c0a1ec7a8b1d790c089cfe30ff2c";
-        "tiff-${VERSION}_CVE-2012-4447_CVE-2012-4564_CVE-2013-1960_CVE-2013-1961.diff.gz", "";
-        "tiff-${VERSION}_CVE-2013-4231.diff.gz", "";
-        "tiff-${VERSION}_CVE-2013-4232.diff.gz", "";
-        "tiff-${VERSION}_CVE-2013-4244.diff.gz", "";
+        "tiff-${VERSION}.tar.gz", "987568b81f6c40653eb79386fa0e163f3c6ab6fb";
       ]
     in
 
@@ -329,10 +325,10 @@ let do_adds builder =
     let gnutls = add ("gnutls", None)
       ~dir:"slackware64-current/n"
       ~dependencies:[ zlib; gmp; libtasn1; nettle; ca_certificates ]
-      ~version:"3.2.15"
+      ~version:"3.2.21"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "31f289b48b0bf054f5f8c16d3b878615d0ae06fc";
+        "${PACKAGE}-${VERSION}.tar.xz", "fa12e643ad21bcaf450d534f262c813d75843966";
       ]
     in
 
@@ -905,10 +901,10 @@ let do_adds builder =
     let ffmpeg = add ("ffmpeg", None)
       ~dir:"slackbuilds.org/multimedia"
       ~dependencies:[ lame; x264; opus; libtheora; libvorbis; flac (* XXX: used? *) ]
-      ~version:"2.2.10"
+      ~version:"2.2.14"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "384639c014d1cc747c54da311d9edadea6c482ca";
+        "${PACKAGE}-${VERSION}.tar.bz2", "217e9eb8bb04d8c9e9bb8e23f215e372cbf93b25";
       ]
     in
 
@@ -946,10 +942,10 @@ let do_adds builder =
     let libgcrypt = add ("libgcrypt", None)
       ~dir:"slackware64-current/n"
       ~dependencies:[ libgpg_error ]
-      ~version:"1.6.2"
+      ~version:"1.6.3"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "cc31aca87e4a3769cb86884a3f5982b2cc8eb7ec";
+        "${PACKAGE}-${VERSION}.tar.bz2", "9456e7b64db9df8360a1407a38c8c958da80bbf1";
       ]
     in
 
