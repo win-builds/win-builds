@@ -25,6 +25,18 @@ let do_adds builder =
   let add_full = Config.Builder.register ~builder in
   let add = add_full ?outputs:None in
 
+  (* TODO: move away from the bundled popt *)
+  let pkg_config_add ~variant ~dependencies =
+    add ("pkg-config", Some variant)
+      ~dir:"slackware64-current/d"
+      ~dependencies
+      ~version:"0.25"
+      ~build:(if variant = "regular" then 1 else -1)
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz", "d2e75fcdbda33cf1577a76b7b2beaa408f2aa299";
+      ]
+  in
+
   let xz_add ~variant ~dependencies =
     add ("xz", Some variant)
       ~dir:"slackware64-current/a"
@@ -402,6 +414,8 @@ let do_adds builder =
       ]
     in
 
+    let pkg_config_bootstrap = pkg_config_add ~variant:"bootstrap" ~dependencies:[] in
+
     let glib2 = add ("glib2", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[ libffi; gettext ]
@@ -411,6 +425,8 @@ let do_adds builder =
         "glib-${VERSION}.tar.xz", "b5158fd434f01e84259155c04ff93026a090e586";
       ]
     in
+
+    let pkg_config = pkg_config_add ~variant:"regular" ~dependencies:[ glib2 ] in
 
     let cairo = add ("cairo", None)
       ~dir:"slackware64-current/l"
@@ -607,16 +623,6 @@ let do_adds builder =
     in
 
     let dbus = dbus_add ~variant:"regular" ~dependencies:[ expat ] in
-
-    let pkg_config = add ("pkg-config", None)
-      ~dir:"slackware64-current/d"
-      ~dependencies:[]
-      ~version:"0.25"
-      ~build:1
-      ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "d2e75fcdbda33cf1577a76b7b2beaa408f2aa299";
-      ]
-    in
 
     let libarchive = libarchive_add ~variant:"regular" ~dependencies:[ nettle ] in
 
