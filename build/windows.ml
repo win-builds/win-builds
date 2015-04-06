@@ -416,9 +416,19 @@ let do_adds builder =
 
     let pkg_config_bootstrap = pkg_config_add ~variant:"bootstrap" ~dependencies:[] in
 
+    let pcre = add ("pcre", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[]
+      ~version:"8.36"
+      ~build:1
+      ~sources:[
+        "${PACKAGE}-${VERSION}.tar.xz", "9a074e9cbf3eb9f05213fd9ca5bc188644845ccc"
+      ]
+    in
+
     let glib2 = add ("glib2", None)
       ~dir:"slackware64-current/l"
-      ~dependencies:[ libffi; gettext ]
+      ~dependencies:[ libffi; gettext; pkg_config_bootstrap; pcre ]
       ~version:"2.42.1"
       ~build:1
       ~sources:[
@@ -628,7 +638,7 @@ let do_adds builder =
 
     let wget = add ("wget", None)
       ~dir:"slackware64-current/n"
-      ~dependencies:[ openssl; (* probably pcre too, for after 1.5 *) ]
+      ~dependencies:[ openssl; pcre ]
       ~version:"1.14"
       ~build:3
       ~sources:[
@@ -670,16 +680,6 @@ let do_adds builder =
       ~build:1
       ~sources:[
         "${PACKAGE}-snapshot-${VERSION}-2245-stable.tar.bz2", "3c838a7979f8962bac27de5078984cf3b6e2c210";
-      ]
-    in
-
-    let pcre = add ("pcre", None)
-      ~dir:"slackware64-current/l"
-      ~dependencies:[]
-      ~version:"8.36"
-      ~build:1
-      ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "9a074e9cbf3eb9f05213fd9ca5bc188644845ccc"
       ]
     in
 
