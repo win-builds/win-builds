@@ -318,7 +318,7 @@ let do_adds builder =
       ~version:"3.9"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "0e4907b0ff00f0199858a904d476b2ae73c33338";
+        "${PACKAGE}-${VERSION}.tar.gz", "0e4907b0ff00f0199858a904d476b2ae73c33338";
       ]
     in
 
@@ -643,7 +643,7 @@ let do_adds builder =
       ~version:"8.36"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "9a074e9cbf3eb9f05213fd9ca5bc188644845ccc"
+        "${PACKAGE}-${VERSION}.tar.bz2", "9a074e9cbf3eb9f05213fd9ca5bc188644845ccc"
       ]
     in
 
