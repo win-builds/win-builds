@@ -1,8 +1,8 @@
 include Makefile.data
 
-export PREFIX := $(shell pwd)/deps/prefix
-export PATH := $(PREFIX)/bin:$(PATH)
-export LD_LIBRARY_PATH := $(PREFIX)/lib:$(LD_LIBRARY_PATH)
+PREFIX := $(shell pwd)/deps/prefix
+PATH := $(PREFIX)/bin:$(PATH)
+LD_LIBRARY_PATH := $(PREFIX)/lib:$(LD_LIBRARY_PATH)
 
 ifneq ($(WITH_LXC),)
 LXC_EXECUTE=lxc-execute -f /dev/null -n win-builds-$(VERSION) -s lxc.mount=$(shell pwd)/lxc_mount --
@@ -13,15 +13,16 @@ endif
 default: build
 
 build_real:
-	export PATH=$(PATH) \
-	&& export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) \
-	&& cd .. \
+	cd .. \
 	&& LANG=C \
-	NATIVE_TOOLCHAIN=$(NATIVE_TOOLCHAIN) \
-	CROSS_TOOLCHAIN_32=$(CROSS_TOOLCHAIN_32) \
-	CROSS_TOOLCHAIN_64=$(CROSS_TOOLCHAIN_64) \
-	WINDOWS_32=$(WINDOWS_32) \
-	WINDOWS_64=$(WINDOWS_64) \
+	NATIVE_TOOLCHAIN="$(NATIVE_TOOLCHAIN)" \
+	CROSS_TOOLCHAIN_32="$(CROSS_TOOLCHAIN_32)" \
+	CROSS_TOOLCHAIN_64="$(CROSS_TOOLCHAIN_64)" \
+	WINDOWS_32="$(WINDOWS_32)" \
+	WINDOWS_64="$(WINDOWS_64)" \
+	PATH="$(PATH)" \
+	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH)" \
+	PREFIX="$(PREFIX)" \
 	echo '#mod_use "lib.ml";; #mod_use "config.ml";; #mod_use "sources.ml";; #mod_use "worker.ml";; #mod_use "common.ml";; #mod_use "native_toolchain.ml";; #mod_use "cross_toolchain.ml";; #mod_use "windows.ml";; #mod_use "build.ml";;' \
 	  | ocaml unix.cma str.cma -I +threads threads.cma -I "win-builds/build" -stdin $(VERSION)
 
@@ -38,11 +39,14 @@ else
 build:
 endif
 	$(LXC_EXECUTE) $$(which make) build_real \
-		NATIVE_TOOLCHAIN=$(NATIVE_TOOLCHAIN) \
-		CROSS_TOOLCHAIN_32=$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_32) \
-		CROSS_TOOLCHAIN_64=$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_64) \
-		WINDOWS_32=$(WINDOWS),$(WINDOWS_32) \
-		WINDOWS_64=$(WINDOWS),$(WINDOWS_64)
+		NATIVE_TOOLCHAIN="$(NATIVE_TOOLCHAIN)" \
+		CROSS_TOOLCHAIN_32="$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_32)" \
+		CROSS_TOOLCHAIN_64="$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_64)" \
+		WINDOWS_32="$(WINDOWS),$(WINDOWS_32)" \
+		WINDOWS_64="$(WINDOWS),$(WINDOWS_64)" \
+		PATH="$(PATH)" \
+		LD_LIBRARY_PATH="$(LD_LIBRARY_PATH)" \
+		PREFIX="$(PREFIX)"
 
 deps:
 	make -C deps
