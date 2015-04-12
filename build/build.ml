@@ -28,7 +28,7 @@ let build ~failer builder =
       let env = Worker.build_env builder in
       let rec aux = function
         | { package = "download" } :: tl ->
-            run ~env [| "yypkg"; "--web"; "--auto"; "yes" |];
+            run ~env [| "yypkg"; "--web"; "--auto"; "yes" |] ();
             aux tl
         | p :: tl ->
             if not (try Worker.build_one ~builder ~env p; true with _ -> false) then (
@@ -49,7 +49,7 @@ let build ~failer builder =
     if try (Sys.readdir builder.yyoutput) <> [| |] with _ -> false then (
       progress "[%s] Setting up repository.\n%!" builder.prefix.nickname;
       try
-        run [| "yypkg"; "--repository"; "--generate"; builder.yyoutput |]
+        run [| "yypkg"; "--repository"; "--generate"; builder.yyoutput |] ()
       with _ -> Printf.eprintf "ERROR: Couldn't create repository!\n%!"
     )
   )

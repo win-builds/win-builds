@@ -54,7 +54,7 @@ let run ?(stdin=Unix.stdin) ?(stdout=Unix.stdout) ?(stderr=Unix.stderr) ?env a =
   log dbg ", env = { %s }%!" (String.concat ", " (Array.to_list env));
   let pid = Unix.create_process_env a.(0) a env stdin stdout stderr in
   log dbg ", pid = %d.\n%!" pid;
-  waitpid dbg { pid = pid; cmd = cmd }
+  (fun () -> waitpid dbg { pid = pid; cmd = cmd })
 
 let make_path_absolute_if_not path =
   let cwd = Sys.getcwd () in

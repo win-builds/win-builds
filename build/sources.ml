@@ -10,21 +10,47 @@ module Patch = struct
 end
 
 module Git = struct
-  type fetch = { remote : string; obj: string; uri : string }
-  type source +=
+  type fetch = { remote : string; obj : string; uri : string }
+  type kind =
     | Fetch of fetch
     | Disk
-    | HEAD
     | Obj of string
+  type t = { tarball : string; dir : string; kind : kind }
+  type source += T of t
 
-  let get _ _ = ()
-  let ts id = infinity
+  let get ~p ~obj ~tarball ~dir =
+    let open Unix in
+    let tarball = sources_dir_ize p tarball in
+    let git_dir = sp "--git-dir=%s/.git" (sources_dir_ize p dir)  in
+    let snd_in, fst_out = pipe () in
+    set_close_on_exec snd_in;
+    let git = run ~stdout:fst_out [| "git"; git_dir; "archive"; obj |] in
+    close fst_out;
+    clear_close_on_exec snd_in;
+    let fd = openfile tarball [ O_WRONLY; O_CREAT ] 0o644 in
+    let gzip = run ~stdin:snd_in ~stdout:fd [| "gzip"; "-1" |] in
+    close snd_in;
+    close fd;
+    git ();
+    gzip ()
+
+  let get p ({ tarball; dir } as t) =
+    match t.kind with
+    | Fetch fetch -> (); get ~p ~obj:fetch.obj ~tarball ~dir
+    | Disk -> get ~p ~obj:"HEAD" ~tarball ~dir
+    | Obj obj -> get ~p ~obj:obj ~tarball ~dir
+
+  let ts ({ tarball } as t) =
+    match t.kind with
+    | Fetch _ -> tarball, 0.
+    | Obj _ -> tarball, 0.
+    | Disk -> "git-disk-is-always-more-recent", 0.
 end
 
 module Tarball = struct
   let get (file, sha1) =
     let download ~file =
-      run [| "wget"; "-O"; file; Filename.concat (Sys.getenv "MIRROR") file |]
+      run [| "wget"; "-O"; file; Filename.concat (Sys.getenv "MIRROR") file |] ()
     in
     let file_matches_sha1 ~sha1 ~file =
       if sha1 = "" then
@@ -35,11 +61,15 @@ module Tarball = struct
         let l = String.length line in
         assert (l = Unix.write pipe_write line 0 l);
         Unix.close pipe_write;
-        try
-          run ~stdin:pipe_read [| "sha1sum"; "--status"; "--check"; "--strict" |];
+        let res = (try
+          run ~stdin:pipe_read [| "sha1sum"; "--status"; "--check"; "--strict" |] ();
           true
         with Failure _ ->
           false
+        )
+        in
+        Unix.close pipe_read;
+        res
     in
     let rec get_file ?(tries=0) ~sha1 ~file =
       let retry () =
@@ -91,12 +121,9 @@ let get =
         try
           let p = Event.sync (Event.receive chan_send) in
           ListLabels.iter p.sources ~f:(fun x -> match x with
-            | WB _
+            | WB _ -> ()
             | Tarball _ -> Tarball.get p x
-            | Git.Fetch _ 
-            | Git.Disk
-            | Git.HEAD
-            | Git.Obj _ -> Git.get p x
+            | Git.T y -> Git.get p y
             | Patch _ -> Patch.get p x
             | _ -> assert false
           );
@@ -116,9 +143,15 @@ let timestamp = function
   | Patch patch -> patch, 0.
   | WB file
   | Tarball (file, _) -> file, Tarball.ts file
-  | Git.Fetch { Git.remote = id }
-  | Git.Obj id -> id, Git.ts id
-  | Git.Disk
-  | Git.HEAD -> "git-disk-is-always-more-recent", infinity
+  | Git.T x -> Git.ts x
   | _ -> assert false
+
+let substitute_variables_sources ~dict source =
+  let subst s = substitute_variables ~dict s in
+  match source with
+  | WB file -> WB (subst file)
+  | Patch file -> Patch (subst file)
+  | Tarball (file, s) -> Tarball (subst file, s)
+  | Git.T ({ Git.tarball } as x) -> Git.(T { x with tarball = subst tarball })
+  | x -> x
 

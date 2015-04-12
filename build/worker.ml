@@ -45,7 +45,7 @@ let run_build_shell ~devshell ~run p =
         sp "exec /bin/bash --norc"
 
     ]
-  |]
+  |] ()
 
 let build_one_package ~builder ~outputs ~env p =
   let log =
@@ -60,7 +60,7 @@ let build_one_package ~builder ~outputs ~env p =
     raise e
   );
   ListLabels.iter outputs ~f:(fun output ->
-    run [| "yypkg"; "--upgrade"; "--install-new"; output |]
+    run [| "yypkg"; "--upgrade"; "--install-new"; output |] ()
   );
   Unix.close log
 
@@ -82,19 +82,19 @@ let build_one ~env ~builder p =
   )
 
 let build_env builder =
-  run [| "mkdir"; "-p"; builder.yyoutput; builder.logs |];
+  run [| "mkdir"; "-p"; builder.yyoutput; builder.logs |] ();
   let env = env builder in
   (if not (Sys.file_exists builder.prefix.yyprefix)
     || Sys.readdir builder.prefix.yyprefix = [| |] then
   (
-    run ~env [| "yypkg"; "--init" |];
+    run ~env [| "yypkg"; "--init" |] ();
     run ~env [| "yypkg"; "--config"; "--predicates"; "--set";
-      Lib.sp "host=%s" builder.prefix.host.triplet |];
+      Lib.sp "host=%s" builder.prefix.host.triplet |] ();
     run ~env [| "yypkg"; "--config"; "--predicates"; "--set";
-      Lib.sp "target=%s" builder.prefix.target.triplet |];
+      Lib.sp "target=%s" builder.prefix.target.triplet |] ();
     run ~env [| "yypkg"; "--config"; "--set-mirror";
       Lib.sp "http://win-builds.org/%s/packages/windows_%d"
-        Lib.version builder.prefix.host.bits |];
+        Lib.version builder.prefix.host.bits |] ();
   ));
   env
 
@@ -143,16 +143,10 @@ let add ~push ~builder =
         sources
       ]
     in
-    let sources = ListLabels.map sources ~f:(function
-      | WB file -> WB (substitute_variables ~dict file)
-      | Patch file -> Patch (substitute_variables ~dict file)
-      | Tarball (file, s) -> Tarball (substitute_variables ~dict file, s)
-      | x -> x
-    ) in
     let p = {
       package; variant; dir; dependencies;
       version; build;
-      sources;
+      sources = List.map (substitute_variables_sources ~dict) sources;
       outputs = List.map (substitute_variables ~dict) outputs;
       to_build = false;
       devshell = false;

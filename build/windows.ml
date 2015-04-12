@@ -777,13 +777,27 @@ let do_adds builder =
       ]
     in
 
-    let efl = efl ~variant:"regular" ~dependencies:[
+    let efl_regular_deps = [
       libtiff; libpng; giflib; libjpeg;
       fontconfig; freetype; lua;
       fribidi; harfbuzz; libsndfile;
       gnutls; curl; c_ares; dbus;
       openjpeg;
     ]
+    in
+
+    let efl = efl ~variant:"regular" ~dependencies:efl_regular_deps in
+
+    let efl_git =
+      add ("efl", Some "regular-git")
+        ~dir:"slackbuilds.org/libraries"
+        ~dependencies:[]
+        ~version:"git"
+        ~build:0
+        ~sources:[
+          Git.(T { tarball = "${PACKAGE}-${VERSION}.tar.gz"; dir = "efl"; kind = Obj "HEAD" })
+          (* Tarball ("0001-Ecore_Win32-Fix-string-for-the-BackSpace-key-on-Wind.patch", ""); *)
+        ]
     in
 
     let elementary = elementary ~variant:"regular" ~dependencies:[ efl ] in
