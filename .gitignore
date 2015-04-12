@@ -48,3 +48,4 @@ deps/ocaml-*
 deps/cryptokit-*
 deps/libocaml_*
 deps/tarballs
+deps/yypkg-*
