@@ -1,6 +1,6 @@
 include Makefile.data
 
-PREFIX := $(shell pwd)/deps/prefix
+export PREFIX := $(shell pwd)/deps/prefix
 export PATH := $(PREFIX)/bin:$(PATH)
 export LD_LIBRARY_PATH := $(PREFIX)/lib:$(LD_LIBRARY_PATH)
 
