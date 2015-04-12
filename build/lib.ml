@@ -67,14 +67,12 @@ let may f = function
   | Some x -> f x
   | None -> ()
 
-let filename_concat l = List.fold_left Filename.concat "" l
+let work_dir =
+  if Array.length Sys.argv < 2 then (
+    log cri "Not enough arguments.\n%!";
+    exit 1
+  )
+  else
+    make_path_absolute_if_not Sys.argv.(1)
 
-let rev_uniq l =
-  let rec rev_uniq_rc accu cur = function
-    | t :: q when t = cur -> rev_uniq_rc accu cur q
-    | t :: q -> rev_uniq_rc (t :: accu) t q
-    | [] -> accu
-  in
-  match l with
-  | t :: q -> rev_uniq_rc [ t ] t q
-  | [] -> []
+let version = Sys.getenv "VERSION"

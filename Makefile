@@ -12,20 +12,18 @@ endif
 
 default: build
 
-build_builder:
-	@ cd build && ocamlbuild -quiet build.byte
-
 build_real:
-	cd .. && \
-		PATH=/usr/bin:/bin \
-		. /etc/profile && \
-		LANG=C \
-		NATIVE_TOOLCHAIN=$(NATIVE_TOOLCHAIN) \
-		CROSS_TOOLCHAIN_32=$(CROSS_TOOLCHAIN_32) \
-		CROSS_TOOLCHAIN_64=$(CROSS_TOOLCHAIN_64) \
-		WINDOWS_32=$(WINDOWS_32) \
-		WINDOWS_64=$(WINDOWS_64) \
-			./win-builds/build/build.byte $(VERSION)
+	export PATH=$(PATH) \
+	&& export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) \
+	&& cd .. \
+	&& LANG=C \
+	NATIVE_TOOLCHAIN=$(NATIVE_TOOLCHAIN) \
+	CROSS_TOOLCHAIN_32=$(CROSS_TOOLCHAIN_32) \
+	CROSS_TOOLCHAIN_64=$(CROSS_TOOLCHAIN_64) \
+	WINDOWS_32=$(WINDOWS_32) \
+	WINDOWS_64=$(WINDOWS_64) \
+	echo '#mod_use "lib.ml";; #mod_use "config.ml";; #mod_use "sources.ml";; #mod_use "worker.ml";; #mod_use "common.ml";; #mod_use "native_toolchain.ml";; #mod_use "cross_toolchain.ml";; #mod_use "windows.ml";; #mod_use "build.ml";;' \
+	  | ocaml unix.cma str.cma -I +threads threads.cma -I "win-builds/build" -stdin $(VERSION)
 
 lxc_mount:
 	cat < /dev/null > lxc_mount
@@ -35,9 +33,9 @@ lxc_mount:
 	done
 
 ifneq ($(WITH_LXC),)
-build: build_builder lxc_mount
+build: lxc_mount
 else
-build: build_builder
+build:
 endif
 	$(LXC_EXECUTE) $$(which make) build_real \
 		NATIVE_TOOLCHAIN=$(NATIVE_TOOLCHAIN) \
@@ -99,4 +97,4 @@ release-upload:
 	  $(WEB)/$(VERSION)/
 
 
-.PHONY: build deps installer build_real build_builder default
+.PHONY: build deps installer build_real default

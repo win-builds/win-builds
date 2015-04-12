@@ -2,10 +2,11 @@ let builder ~cross ~name ~host =
   let open Config in
   let build = Arch.slackware in
   let prefix = Prefix.t ~build ~host ~target:host in
-  let logs, yyoutput = Builder.logs_yyoutput ~nickname:prefix.Prefix.nickname in
+  let logs, yyoutput = Package.logs_yyoutput ~nickname:prefix.Prefix.nickname in
   cross.Config.Builder.target_prefix <- Some prefix.Prefix.yyprefix;
   let open Arch in
   let open Prefix in
+  let open Package in
   let open Builder in
   {
     name;
@@ -22,7 +23,8 @@ let builder ~cross ~name ~host =
 
 let do_adds builder =
   let open Common in
-  let add_full = Config.Builder.register ~builder in
+  let open Sources in
+  let add_full = Worker.register ~builder in
   let add = add_full ?outputs:None in
 
   (* TODO: move away from the bundled popt *)
@@ -33,7 +35,7 @@ let do_adds builder =
       ~version:"0.25"
       ~build:(if variant = "regular" then 1 else -1)
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "d2e75fcdbda33cf1577a76b7b2beaa408f2aa299";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "d2e75fcdbda33cf1577a76b7b2beaa408f2aa299");
       ]
   in
 
@@ -44,7 +46,7 @@ let do_adds builder =
       ~version:"5.0.5"
       ~build:(if variant = "regular" then 1 else -1)
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "56f1d78117f0c32bbb1cfd40117aa7f55bee8765";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "56f1d78117f0c32bbb1cfd40117aa7f55bee8765");
       ]
   in
 
@@ -55,9 +57,9 @@ let do_adds builder =
       ~version:"3.1.2"
       ~build:(if variant = "regular" then 1 else -1)
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "6a991777ecb0f890be931cec4aec856d1a195489";
-        "0001-windows-don-t-undef-stat-since-it-my-be-defined-to-s.patch", "";
-        "use-static-asserts-to-guarantee-abi-compatibility.patch", "";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "6a991777ecb0f890be931cec4aec856d1a195489");
+        Patch "0001-windows-don-t-undef-stat-since-it-my-be-defined-to-s.patch";
+        Patch "use-static-asserts-to-guarantee-abi-compatibility.patch";
       ]
   in
 
@@ -69,7 +71,7 @@ let do_adds builder =
       ~build:2
       ~sources:[
         Source.efl;
-        (* "0001-Ecore_Win32-Fix-string-for-the-BackSpace-key-on-Wind.patch", ""; *)
+        (* Tarball ("0001-Ecore_Win32-Fix-string-for-the-BackSpace-key-on-Wind.patch", ""); *)
       ]
   in
 
@@ -91,7 +93,7 @@ let do_adds builder =
       ~version:"v9a"
       ~build:2
       ~sources:[
-        "jpegsrc.${VERSION}.tar.gz", "d65ed6f88d318f7380a3a5f75d578744e732daca";
+        Tarball ("jpegsrc.${VERSION}.tar.gz", "d65ed6f88d318f7380a3a5f75d578744e732daca");
       ]
   in
 
@@ -102,7 +104,7 @@ let do_adds builder =
       ~version:"1.2.8"
       ~build:1
       ~sources:[
-        "zlib-${VERSION}.tar.xz", "961458ab8407e6192143b5f886ed8891e0def181";
+        Tarball ("zlib-${VERSION}.tar.xz", "961458ab8407e6192143b5f886ed8891e0def181");
       ]
   in
 
@@ -113,9 +115,9 @@ let do_adds builder =
       ~version:"5.1.5"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "b3882111ad02ecc6b972f8c1241647905cb2e3fc";
-        "${PACKAGE}.pc", "";
-        "src_makefile", "";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "b3882111ad02ecc6b972f8c1241647905cb2e3fc");
+        Patch "${PACKAGE}.pc";
+        Patch "src_makefile";
       ]
   in
 
@@ -126,9 +128,9 @@ let do_adds builder =
       ~version:"2.5.5"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "7b7460ef51a8fdb17baae53c6658fc1ad000a1c2";
-        "freetype.illadvisederror.diff.gz", "";
-        "freetype.subpixel.rendering.diff.gz", "";
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "7b7460ef51a8fdb17baae53c6658fc1ad000a1c2");
+        Patch "freetype.illadvisederror.diff.gz";
+        Patch "freetype.subpixel.rendering.diff.gz";
       ]
   in
 
@@ -139,7 +141,7 @@ let do_adds builder =
       ~version:"2.1.0"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "d739f9afeaf11fe231cbb0f684b69c7ba7dc11b7";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "d739f9afeaf11fe231cbb0f684b69c7ba7dc11b7");
       ]
   in
 
@@ -150,7 +152,7 @@ let do_adds builder =
       ~version:"1.6.28"
       ~build:(if variant = "regular" then 1 else -1)
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "cc8fd21f2123a58ad78c4e50c8f5b330a39cc21f";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "cc8fd21f2123a58ad78c4e50c8f5b330a39cc21f");
       ]
   in
 
@@ -161,7 +163,7 @@ let do_adds builder =
       ~version:"0.9.16"
       ~build:(if variant = "regular" then 2 else -1)
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "d7fa8ef7f2eca07e29d94f448f6196c9b3022d64";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "d7fa8ef7f2eca07e29d94f448f6196c9b3022d64");
       ]
   in
 
@@ -172,7 +174,7 @@ let do_adds builder =
       ~version:"2.11.1"
       ~build:(if variant = "regular" then 1 else -1)
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "4f83bab1834f60345f1ef3920ac393d9f9c609ab";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "4f83bab1834f60345f1ef3920ac393d9f9c609ab");
       ]
   in
 
@@ -224,7 +226,7 @@ let do_adds builder =
       ~build:2
       ~sources:[
         Source.mingw_w64;
-        "0001-intrinsics-don-t-include-d-f-i-vec.h-from-inside-int.patch", "";
+        Patch "0001-intrinsics-don-t-include-d-f-i-vec.h-from-inside-int.patch";
       ]
     in
 
@@ -256,7 +258,7 @@ let do_adds builder =
       ~version:"0.0.6"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "51ce281cd8ce2debf3226482e86e0e534141ed01";
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "51ce281cd8ce2debf3226482e86e0e534141ed01");
       ]
     in
 
@@ -284,7 +286,7 @@ let do_adds builder =
       ~version:"1.4.14"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "402271bcd9af622e2f3ff378d57cd73c2dda7ad5";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "402271bcd9af622e2f3ff378d57cd73c2dda7ad5");
       ]
     in
 
@@ -298,7 +300,7 @@ let do_adds builder =
       ~version:"4.1.6"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "b38d1f77afb1ea554acadeb3401cb34c6b8bf16b";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "b38d1f77afb1ea554acadeb3401cb34c6b8bf16b");
       ]
     in
 
@@ -308,7 +310,7 @@ let do_adds builder =
       ~version:"4.0.4beta"
       ~build:1
       ~sources:[
-        "tiff-${VERSION}.tar.gz", "987568b81f6c40653eb79386fa0e163f3c6ab6fb";
+        Tarball ("tiff-${VERSION}.tar.gz", "987568b81f6c40653eb79386fa0e163f3c6ab6fb");
       ]
     in
 
@@ -320,7 +322,7 @@ let do_adds builder =
       ~version:"20130906"
       ~build:1
       ~sources:[
-        "${PACKAGE}_${VERSION}.tar.gz", "7f197c1bf7c7fc82e9f8f2fec6d8cc65f6a6187b";
+        Tarball ("${PACKAGE}_${VERSION}.tar.gz", "7f197c1bf7c7fc82e9f8f2fec6d8cc65f6a6187b");
       ]
     in
 
@@ -330,7 +332,7 @@ let do_adds builder =
       ~version:"1.0.1l"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "4547a0b4269acf76b1f9e7d188896867d6fc8c18";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "4547a0b4269acf76b1f9e7d188896867d6fc8c18");
       ]
     in
 
@@ -340,7 +342,7 @@ let do_adds builder =
       ~version:"5.1.3"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "12cfe0911d64fcbd85835df9ddc18c99af8f9a45";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "12cfe0911d64fcbd85835df9ddc18c99af8f9a45");
       ]
     in
 
@@ -350,7 +352,7 @@ let do_adds builder =
       ~version:"2.7.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "48dac2b55a07e6cf4ebf74d069f0c26e7019ce99";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "48dac2b55a07e6cf4ebf74d069f0c26e7019ce99");
       ]
     in
 
@@ -360,7 +362,7 @@ let do_adds builder =
       ~version:"3.9"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "0e4907b0ff00f0199858a904d476b2ae73c33338";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "0e4907b0ff00f0199858a904d476b2ae73c33338");
       ]
     in
 
@@ -370,7 +372,7 @@ let do_adds builder =
       ~version:"3.2.21"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "fa12e643ad21bcaf450d534f262c813d75843966";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "fa12e643ad21bcaf450d534f262c813d75843966");
       ]
     in
 
@@ -380,7 +382,7 @@ let do_adds builder =
       ~version:"7.39.0"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.lzma", "a72fa6615d112960be609cdcf720f6332da822db";
+        Tarball ("${PACKAGE}-${VERSION}.tar.lzma", "a72fa6615d112960be609cdcf720f6332da822db");
       ]
     in
 
@@ -390,7 +392,7 @@ let do_adds builder =
       ~version:"1.10.0"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "e44e6575d5af99cb3a38461486e1ee8b49810eb5";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "e44e6575d5af99cb3a38461486e1ee8b49810eb5");
       ]
     in
 
@@ -400,7 +402,7 @@ let do_adds builder =
       ~version:"0.32.6"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "d136a0007e9bd24841a5324b01ce867892f997c7";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "d136a0007e9bd24841a5324b01ce867892f997c7");
       ]
     in
 
@@ -410,7 +412,7 @@ let do_adds builder =
       ~version:"3.0.13"
       ~build:2
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "03589fae4c732585476f5d93f691bbc446187ef7";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "03589fae4c732585476f5d93f691bbc446187ef7");
       ]
     in
 
@@ -422,7 +424,7 @@ let do_adds builder =
       ~version:"8.36"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "9a074e9cbf3eb9f05213fd9ca5bc188644845ccc"
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "9a074e9cbf3eb9f05213fd9ca5bc188644845ccc");
       ]
     in
 
@@ -432,7 +434,7 @@ let do_adds builder =
       ~version:"2.42.1"
       ~build:1
       ~sources:[
-        "glib-${VERSION}.tar.xz", "b5158fd434f01e84259155c04ff93026a090e586";
+        Tarball ("glib-${VERSION}.tar.xz", "b5158fd434f01e84259155c04ff93026a090e586");
       ]
     in
 
@@ -445,7 +447,7 @@ let do_adds builder =
       ~version:"1.12.18"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "a76940b58da9c83b8934264617135326c0918f9d";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "a76940b58da9c83b8934264617135326c0918f9d");
       ]
     in
 
@@ -455,7 +457,7 @@ let do_adds builder =
       ~version:"2.8.0"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "e8a9dacd22b31a6cb733ce66fb1c220cc6720970";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "e8a9dacd22b31a6cb733ce66fb1c220cc6720970");
       ]
     in
 
@@ -465,7 +467,7 @@ let do_adds builder =
       ~version:"51.2" (* NOTE: the version number in sources needs updating too *)
       ~build:2
       ~sources:[
-        "${PACKAGE}-51_2-src.tar.xz", "c50ed0a3870478d81ac5f7d765619f83e9be6032";
+        Tarball ("${PACKAGE}-51_2-src.tar.xz", "c50ed0a3870478d81ac5f7d765619f83e9be6032");
       ]
     in
 
@@ -482,7 +484,7 @@ let do_adds builder =
       ~version:"1.34.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "a6c224424eb3f0dcc231a8000591c05a85df689c";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "a6c224424eb3f0dcc231a8000591c05a85df689c");
       ]
     in
 
@@ -492,8 +494,8 @@ let do_adds builder =
       ~version:"2.30.8"
       ~build:1
       ~sources:[
-        "gdk-pixbuf-${VERSION}.tar.xz", "6277b4e5b5e334b3669f15ae0376e184be9e8cd8";
-        "gdk-pixbuf.pnglz.diff.gz", "";
+        Tarball ("gdk-pixbuf-${VERSION}.tar.xz", "6277b4e5b5e334b3669f15ae0376e184be9e8cd8");
+        Patch "gdk-pixbuf.pnglz.diff.gz";
       ]
     in
 
@@ -503,9 +505,9 @@ let do_adds builder =
       ~version:"2.24.25"
       ~build:1
       ~sources:[
-        "gtk+-${VERSION}.tar.xz", "017ee13f172a64026c4e77c3744eeabd5e017694";
-        "gtk+-2.24.x.icon-compat.am.diff.gz", "";
-        "gtk+-2.24.x.icon-compat.diff.gz", "";
+        Tarball ("gtk+-${VERSION}.tar.xz", "017ee13f172a64026c4e77c3744eeabd5e017694");
+        Patch "gtk+-2.24.x.icon-compat.am.diff.gz";
+        Patch "gtk+-2.24.x.icon-compat.diff.gz";
       ]
     in
 
@@ -515,7 +517,7 @@ let do_adds builder =
       ~version:"2.36.2"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "d4c2accd50ff4769f434cd552734fb2b0b2b3b81";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "d4c2accd50ff4769f434cd552734fb2b0b2b3b81");
       ]
     in
 
@@ -525,7 +527,7 @@ let do_adds builder =
       ~version:"51.2" (* NOTE: the version number in sources needs updating too *)
       ~build:2
       ~sources:[
-        "${PACKAGE}-51_2-src.tar.xz", "c50ed0a3870478d81ac5f7d765619f83e9be6032";
+        Tarball ("${PACKAGE}-51_2-src.tar.xz", "c50ed0a3870478d81ac5f7d765619f83e9be6032");
       ]
     in
 
@@ -535,7 +537,7 @@ let do_adds builder =
       ~version:"2.9.2"
       ~build:2
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "f46a37ea6d869f702e03f393c376760f3cbee673";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "f46a37ea6d869f702e03f393c376760f3cbee673");
       ]
     in
 
@@ -545,7 +547,7 @@ let do_adds builder =
       ~version:"0.6.8"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "23a5c33a2a86d5e46173234f5fa88ac1e15de035";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "23a5c33a2a86d5e46173234f5fa88ac1e15de035");
       ]
     in
 
@@ -565,9 +567,9 @@ let do_adds builder =
       ~version:"3071700"
       ~build:1
       ~sources:[
-        "${PACKAGE}-src-3071700.tar.xz", "eb5e12337d29ce2da9a9ed9b1d69f6c66c2e4877";
-        "COPYRIGHT.gz", "";
-        "configure.ac", "";
+        Tarball ("${PACKAGE}-src-3071700.tar.xz", "eb5e12337d29ce2da9a9ed9b1d69f6c66c2e4877");
+        Patch "COPYRIGHT.gz";
+        Patch "configure.ac";
       ]
     in
 
@@ -577,8 +579,8 @@ let do_adds builder =
       ~version:"2.42.3"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "252424b83e395716beca4ea2ef78944826e83873";
-        "libsoup-2.42.3.1-fix-build-without-ntml.patch", "";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "252424b83e395716beca4ea2ef78944826e83873");
+        Patch "libsoup-2.42.3.1-fix-build-without-ntml.patch";
       ]
     in
 
@@ -588,7 +590,7 @@ let do_adds builder =
       ~version:"3.0.4"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "78ea1a5660538bfa35bb5ccec9b18a0ec68e9e87";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "78ea1a5660538bfa35bb5ccec9b18a0ec68e9e87");
       ]
     in
 
@@ -598,7 +600,7 @@ let do_adds builder =
       ~version:"3.1.2"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "03e593cc6e26639ef5e60be1af8dc527209e5172";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "03e593cc6e26639ef5e60be1af8dc527209e5172");
       ]
     in
 
@@ -608,7 +610,7 @@ let do_adds builder =
       ~version:"0.8.2"
       ~build:2
       ~sources:[
-        "mpc-${VERSION}.tar.xz", "1a8a84a04aef025b690cbbdd299e745dd7416514";
+        Tarball ("mpc-${VERSION}.tar.xz", "1a8a84a04aef025b690cbbdd299e745dd7416514");
       ]
     in
 
@@ -618,7 +620,7 @@ let do_adds builder =
       ~version:"1.3.2"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "5e525ec6a4135066932935c01d2c309ea5009f8d";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "5e525ec6a4135066932935c01d2c309ea5009f8d");
       ]
     in
 
@@ -628,7 +630,7 @@ let do_adds builder =
       ~version:"1.3.4"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "b99724acdf3577982b3146b9430d765995ecf9e1";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "b99724acdf3577982b3146b9430d765995ecf9e1");
       ]
     in
 
@@ -638,7 +640,7 @@ let do_adds builder =
       ~version:"1.1.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "800aa48cf9e59d546c18ecdac1d06d7643cbb2d3";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "800aa48cf9e59d546c18ecdac1d06d7643cbb2d3");
       ]
     in
 
@@ -648,7 +650,7 @@ let do_adds builder =
       ~version:"0.19.6"
       ~build:3
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "5a6ff82fdee31d27053c39e03223666ac1cb7a6a";
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "5a6ff82fdee31d27053c39e03223666ac1cb7a6a");
       ]
     in
 
@@ -658,7 +660,7 @@ let do_adds builder =
       ~version:"0.9.14"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "4b79e2d485d014ddb438e322b64235347d57b0ff";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "4b79e2d485d014ddb438e322b64235347d57b0ff");
       ]
     in
 
@@ -672,7 +674,7 @@ let do_adds builder =
       ~version:"1.14"
       ~build:3
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "cfa0906e6f72c1c902c29b52d140c22ecdcd617e";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "cfa0906e6f72c1c902c29b52d140c22ecdcd617e");
       ]
     in
 
@@ -683,9 +685,9 @@ let do_adds builder =
       ~build:2
       ~sources:[
         Source.binutils;
-        "binutils.export.demangle.h.diff.gz", "";
-        "binutils.no-config-h-check.diff.gz", "";
-        "binutils-fix-seg-fault-in-strings-on-corrupt-pe.patch", "";
+        Patch "binutils.export.demangle.h.diff.gz";
+        Patch "binutils.no-config-h-check.diff.gz";
+        Patch "binutils-fix-seg-fault-in-strings-on-corrupt-pe.patch";
       ]
     in
 
@@ -709,7 +711,7 @@ let do_adds builder =
       ~version:"20131101"
       ~build:1
       ~sources:[
-        "${PACKAGE}-snapshot-${VERSION}-2245-stable.tar.bz2", "3c838a7979f8962bac27de5078984cf3b6e2c210";
+        Tarball ("${PACKAGE}-snapshot-${VERSION}-2245-stable.tar.bz2", "3c838a7979f8962bac27de5078984cf3b6e2c210");
       ]
     in
 
@@ -719,7 +721,7 @@ let do_adds builder =
       ~version:"1.1.0"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "9301bc4886f170c7122ab62677fb71cf001c04fd";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "9301bc4886f170c7122ab62677fb71cf001c04fd");
       ]
     in
 
@@ -729,7 +731,7 @@ let do_adds builder =
       ~version:"1.3.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "38e17439d11be26207e4af0ff50973815694b26f";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "38e17439d11be26207e4af0ff50973815694b26f");
       ]
     in
 
@@ -739,7 +741,7 @@ let do_adds builder =
       ~version:"1.0.25"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "cfd2c6eaaed3bce1e90140cf899cf2358348944f";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "cfd2c6eaaed3bce1e90140cf899cf2358348944f");
       ]
     in
 
@@ -749,8 +751,8 @@ let do_adds builder =
       ~version:"1.19"
       ~build:2
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "f10eca160062562fabd4e9c7c8fb65db61da9dbf";
-        "lcms1.19-avoid-buffer-overflows-CVE-2013-4276.patch", "";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "f10eca160062562fabd4e9c7c8fb65db61da9dbf");
+        Patch "lcms1.19-avoid-buffer-overflows-CVE-2013-4276.patch";
       ]
     in
 
@@ -760,7 +762,7 @@ let do_adds builder =
       ~version:"2.6"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "b0ecee5cb8391338e6c281d1c11dcae2bc22a5d2";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "b0ecee5cb8391338e6c281d1c11dcae2bc22a5d2");
       ]
     in
 
@@ -771,7 +773,7 @@ let do_adds builder =
       ~version:"2.1.0"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "c2a255f6b51ca96dc85cd6e85c89d300018cb1cb";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "c2a255f6b51ca96dc85cd6e85c89d300018cb1cb");
       ]
     in
 
@@ -792,7 +794,7 @@ let do_adds builder =
       ~version:"7.8"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "fc43f1f2e651df1c69e7707130fd6864c2d7a428";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "fc43f1f2e651df1c69e7707130fd6864c2d7a428");
       ]
     in
 
@@ -802,10 +804,10 @@ let do_adds builder =
       ~version:"0.15.1b"
       ~build:3
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "cac19cd00e1a907f3150cc040ccc077783496d76";
-        "Makefile.am", "";
-        "configure.ac", "";
-        "mad.pc.in", "";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "cac19cd00e1a907f3150cc040ccc077783496d76");
+        Patch "Makefile.am";
+        Patch "configure.ac";
+        Patch "mad.pc.in";
       ]
     in
 
@@ -815,7 +817,7 @@ let do_adds builder =
       ~version:"0.15.1b"
       ~build:4
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "4d867e8a8436e73cd7762fe0e85958e35f1e4306";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "4d867e8a8436e73cd7762fe0e85958e35f1e4306");
       ]
     in
 
@@ -825,8 +827,8 @@ let do_adds builder =
       ~version:"0.15.2b"
       ~build:4
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "9012438e8be93068e271df0dbeaaefae0320a1a5";
-        "${PACKAGE}-${VERSION}-fix-segfault.patch.gz", "";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "9012438e8be93068e271df0dbeaaefae0320a1a5");
+        Patch "${PACKAGE}-${VERSION}-fix-segfault.patch.gz";
       ]
     in
 
@@ -836,25 +838,25 @@ let do_adds builder =
       ~version:"3.5.25.3"
       ~build:2
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "66e3f4f2c5db863eb5a32ff31d4b01faaa5e1916";
-        "patches/0047-djvused-added-missing-command-remove-outline.patch", "";
-        "patches/0053-portable-pthread_t-initialization.patch", "";
-        "patches/0056-remove-extra-semi-in-test-for-std-c-includes.patch", "";
-        "patches/0058-fixed-for-mingw.patch", "";
-        "patches/0059-Attempt-to-work-around-typename-issues.patch", "";
-        "patches/0060-more-mingw-fixes.patch", "";
-        "patches/0061-removed-gstring-cruft.patch", "";
-        "patches/0063-windows-recompile-reveals-issues.patch", "";
-        "patches/0072-handle-period-in-crlf-files-as-well.patch", "";
-        "patches/0077-fix-for-filename-conversion.patch", "";
-        "patches/0079-locale-changes-for-win32.patch", "";
-        "patches/0088-fixed-trivial-crash.patch", "";
-        "patches/0094-meta-data-metadata.patch", "";
-        "patches/0105-Fixed-small-bugs-from-Maks.patch", "";
-        "patches/0107-Added-the-magic-win32-dll-option-in-LT_INIT-see-bug-.patch", "";
-        "patches/0108-Cast-pointers-to-size_t-instead-of-unsigned-long.patch", "";
-        "patches/0109-Added-code-to-define-inline-when-using-C.patch", "";
-        "patches/0115-Fixed-clang-warnings.patch", "";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "66e3f4f2c5db863eb5a32ff31d4b01faaa5e1916");
+        Patch "patches/0047-djvused-added-missing-command-remove-outline.patch";
+        Patch "patches/0053-portable-pthread_t-initialization.patch";
+        Patch "patches/0056-remove-extra-semi-in-test-for-std-c-includes.patch";
+        Patch "patches/0058-fixed-for-mingw.patch";
+        Patch "patches/0059-Attempt-to-work-around-typename-issues.patch";
+        Patch "patches/0060-more-mingw-fixes.patch";
+        Patch "patches/0061-removed-gstring-cruft.patch";
+        Patch "patches/0063-windows-recompile-reveals-issues.patch";
+        Patch "patches/0072-handle-period-in-crlf-files-as-well.patch";
+        Patch "patches/0077-fix-for-filename-conversion.patch";
+        Patch "patches/0079-locale-changes-for-win32.patch";
+        Patch "patches/0088-fixed-trivial-crash.patch";
+        Patch "patches/0094-meta-data-metadata.patch";
+        Patch "patches/0105-Fixed-small-bugs-from-Maks.patch";
+        Patch "patches/0107-Added-the-magic-win32-dll-option-in-LT_INIT-see-bug-.patch";
+        Patch "patches/0108-Cast-pointers-to-size_t-instead-of-unsigned-long.patch";
+        Patch "patches/0109-Added-code-to-define-inline-when-using-C.patch";
+        Patch "patches/0115-Fixed-clang-warnings.patch";
       ]
     in
 
@@ -864,7 +866,7 @@ let do_adds builder =
       ~version:"2.34"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "bde72791923ac34de00e396a176307b8b71bd1a1";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "bde72791923ac34de00e396a176307b8b71bd1a1");
       ]
     in
 
@@ -874,7 +876,7 @@ let do_adds builder =
       ~version:"1.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "35005f5549e2583f5770590135984dcfce6f3d58";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "35005f5549e2583f5770590135984dcfce6f3d58");
       ]
     in
 
@@ -884,7 +886,7 @@ let do_adds builder =
       ~version:"0.7.4"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "79b33bd8d89dad7436f85b9154ad35667aa37321";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "79b33bd8d89dad7436f85b9154ad35667aa37321");
       ]
     in
 
@@ -894,7 +896,7 @@ let do_adds builder =
       ~version:"0.5.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "0f9163d8fd52db5f577ebe45636f674252641fd7";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "0f9163d8fd52db5f577ebe45636f674252641fd7");
       ]
     in
 
@@ -904,7 +906,7 @@ let do_adds builder =
       ~version:"2.2.11"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "bbec3d8c54a17f19d63f9decbb91b0d79ea0d02e";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "bbec3d8c54a17f19d63f9decbb91b0d79ea0d02e");
       ]
     in
 
@@ -914,7 +916,7 @@ let do_adds builder =
       ~version:"2.6"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "a232e0f3de4bad49b6b682f4e5df14d6c4d02676";
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "a232e0f3de4bad49b6b682f4e5df14d6c4d02676");
       ]
     in
 
@@ -944,13 +946,13 @@ let do_adds builder =
       ~version:"3.99.5"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "03a0bfa85713adcc6b3383c12e2cc68a9cfbf4c4";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "03a0bfa85713adcc6b3383c12e2cc68a9cfbf4c4");
       ]
     in
 
     let qt = add ("qt", Some "regular")
       ~dir:"slackware64-current/l"
-      ~dependencies:[ icu4c; zlib; sqlite; pcre; libpng; libjpeg; harfbuzz; dbus;
+      ~dependencies:[ icu4c; zlib; sqlite; pcre; libpng; libjpeg; harfbuzz; dbus; openssl;
         (* freetype; (* build with -system-freetype is broken and probably unsupported *) *)
         (* win_iconv (* disabled by default in the build *) *)
         (* giflib (* Qt never uses the sytem one! *) *)
@@ -958,20 +960,20 @@ let do_adds builder =
       ~version:"5.3.1"
       ~build:4
       ~sources:[
-        "qt-everywhere-opensource-src-${VERSION}.tar.xz", "66b33ea66eb05a864e7ae417179ea24c8a45ec10";
-        "0001-configure-use-pkg-config-for-libpng.patch", "";
-        "0002-Use-widl-instead-of-midl.-Also-set-QMAKE_DLLTOOL-to-.patch", "";
-        "0003-Tell-qmake-to-use-pkg-config.patch", "";
-        "0001-QCoreApplication-ibraryPaths-discovers-plugpath-rela.patch", "";
-        "Qt.pc", "";
-        "qt.fix.broken.gif.crash.diff.gz", "";
-        "qt.mysql.h.diff.gz", "";
-        "qt.webkit-no_Werror.patch.gz", "";
-        "qt5-dont-add-resource-files-to-qmake-libs.patch", "";
-        "qt5-dont-build-host-libs-static.patch", "";
-        "qt5-qmake-implib-dll-a.patch", "";
-        "qt5-use-system-zlib-in-host-libs.patch", "";
-        "qt5-workaround-qtbug-29426.patch", "";
+        Tarball ("qt-everywhere-opensource-src-${VERSION}.tar.xz", "66b33ea66eb05a864e7ae417179ea24c8a45ec10");
+        Patch "0001-configure-use-pkg-config-for-libpng.patch";
+        Patch "0002-Use-widl-instead-of-midl.-Also-set-QMAKE_DLLTOOL-to-.patch";
+        Patch "0003-Tell-qmake-to-use-pkg-config.patch";
+        Patch "0001-QCoreApplication-ibraryPaths-discovers-plugpath-rela.patch";
+        Patch "Qt.pc";
+        Patch "qt.fix.broken.gif.crash.diff.gz";
+        Patch "qt.mysql.h.diff.gz";
+        Patch "qt.webkit-no_Werror.patch.gz";
+        Patch "qt5-dont-add-resource-files-to-qmake-libs.patch";
+        Patch "qt5-dont-build-host-libs-static.patch";
+        Patch "qt5-qmake-implib-dll-a.patch";
+        Patch "qt5-use-system-zlib-in-host-libs.patch";
+        Patch "qt5-workaround-qtbug-29426.patch";
       ]
     in
 
@@ -981,7 +983,7 @@ let do_adds builder =
       ~version:"2.2.14"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "217e9eb8bb04d8c9e9bb8e23f215e372cbf93b25";
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "217e9eb8bb04d8c9e9bb8e23f215e372cbf93b25");
       ]
     in
 
@@ -991,7 +993,7 @@ let do_adds builder =
       ~version:"4.0"
       ~build:5
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "b092020919f74d56118eafac2c202f25ff3b6e59";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "b092020919f74d56118eafac2c202f25ff3b6e59");
       ]
     in
 
@@ -1001,8 +1003,8 @@ let do_adds builder =
       ~version:"0.12"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "5580aad884076c219d41160cbd8bc12213d12c37";
-        "remove-unused-variable-size.patch", "";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "5580aad884076c219d41160cbd8bc12213d12c37");
+        Patch "remove-unused-variable-size.patch";
       ]
     in
 
@@ -1012,7 +1014,7 @@ let do_adds builder =
       ~version:"1.13"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "50fbff11446a7b0decbf65a6e6b0eda17b5139fb";
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "50fbff11446a7b0decbf65a6e6b0eda17b5139fb");
       ]
     in
 
@@ -1022,7 +1024,7 @@ let do_adds builder =
       ~version:"1.6.3"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "9456e7b64db9df8360a1407a38c8c958da80bbf1";
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "9456e7b64db9df8360a1407a38c8c958da80bbf1");
       ]
     in
 
@@ -1032,7 +1034,7 @@ let do_adds builder =
       ~version:"2.0.3"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "21c45586a4e94d7622e371340edec5da40d06ecc";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "21c45586a4e94d7622e371340edec5da40d06ecc");
       ]
     in
 
@@ -1042,7 +1044,7 @@ let do_adds builder =
       ~version:"1.1.28"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "ac0ca9da86581844ae8e77598b2d47a6d2432017";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "ac0ca9da86581844ae8e77598b2d47a6d2432017");
       ]
     in
 
@@ -1052,7 +1054,7 @@ let do_adds builder =
       ~version:"5.0.0"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "f1fadbf19fd8d3a9a63ff610ec8ce9021ebc6947";
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "f1fadbf19fd8d3a9a63ff610ec8ce9021ebc6947");
       ]
     in
 
@@ -1062,7 +1064,7 @@ let do_adds builder =
       ~version:"5.0.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "9c234fc1a11f760c90cc278b702b1e41fc418b7e";
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "9c234fc1a11f760c90cc278b702b1e41fc418b7e");
       ]
     in
 
@@ -1072,7 +1074,7 @@ let do_adds builder =
       ~version:"1.3.0"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "b3ccd70a510aa04d644f32b398489a3122a7e11a";
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "b3ccd70a510aa04d644f32b398489a3122a7e11a");
       ]
     in
 
@@ -1087,7 +1089,7 @@ let do_adds builder =
       ~version:"14.4.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "6df5d814edeb1b46354f8493507710ea95fefb2c";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "6df5d814edeb1b46354f8493507710ea95fefb2c");
       ]
     in
 
@@ -1097,7 +1099,7 @@ let do_adds builder =
       ~version:"1.0.0"
       ~build:7
       ~sources:[
-        "win-builds-switch.in", "";
+        Patch "win-builds-switch.in";
       ]
     in
 
@@ -1107,8 +1109,8 @@ let do_adds builder =
       ~version:"1.5.2"
       ~build:1
       ~sources:[
-        "findlib-${VERSION}.tar.gz", "4c37dabd03abe5b594785427d8f5e4adf60e6d9f";
-        "findlib.conf.in", "";
+        Tarball ("findlib-${VERSION}.tar.gz", "4c37dabd03abe5b594785427d8f5e4adf60e6d9f");
+        Patch "findlib.conf.in";
       ]
     in
 
@@ -1118,7 +1120,7 @@ let do_adds builder =
       ~version:"1.9"
       ~build:1
       ~sources:[
-        "cryptokit-${VERSION}.tar.gz", "2e90f27d05fe68a79747e64eef481835291babf4";
+        Tarball ("cryptokit-${VERSION}.tar.gz", "2e90f27d05fe68a79747e64eef481835291babf4");
       ]
     in
 
@@ -1128,9 +1130,9 @@ let do_adds builder =
       ~version:"0.4.5"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "94d02385a55eef373eb96f256068d3efa724016b";
-        "0001-FileUtil-replace-stat.is_link-boolean-with-a-Link-va.patch", "";
-        "0002-FileUtil-symlinks-patch-2.patch", "";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "94d02385a55eef373eb96f256068d3efa724016b");
+        Patch "0001-FileUtil-replace-stat.is_link-boolean-with-a-Link-va.patch";
+        Patch "0002-FileUtil-symlinks-patch-2.patch";
       ]
     in
 
@@ -1141,7 +1143,7 @@ let do_adds builder =
           ~dependencies:(ocaml_findlib :: dependencies)
           ~version:"v2014-08-08"
           ~build:1
-          ~sources:[ "${PACKAGE}.${VERSION}.tar.xz", sha1 ]
+          ~sources:[ Tarball ("${PACKAGE}.${VERSION}.tar.xz", sha1) ]
       in
 
       let exception_ = libocaml_add "exception"
@@ -1192,7 +1194,7 @@ let do_adds builder =
       ~version:"1.11.1"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "c06511ef058d0676ff1873515e3b07af0e2a987a";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "c06511ef058d0676ff1873515e3b07af0e2a987a");
       ]
     in
 
@@ -1215,11 +1217,11 @@ let do_adds builder =
         ~version:"2.8.4+2"
         ~build:1
         ~sources:[
-          "${PACKAGE}-${VERSION}.tar.gz", "4705e7eca920f6d831f2b8020d648d7caa18bb04";
-          "0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch", "";
-          "0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch", "";
-          "0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch", "";
-          "0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch", "";
+          Tarball ("${PACKAGE}-${VERSION}.tar.gz", "4705e7eca920f6d831f2b8020d648d7caa18bb04");
+          Patch "0001-_oasis-make-it-possible-to-not-build-tests-docs-and-.patch";
+          Patch "0002-Bind-extract-set_pathname-and-read_open_memory-strin.patch";
+          Patch "0003-stubs-bind-archive_entry_-set_-pathname-through-a-ma.patch";
+          Patch "0004-Bind-archive_entry_-set_-hard-sym-link-and-archive_e.patch";
         ]
       in
 
@@ -1232,7 +1234,7 @@ let do_adds builder =
         ~version:"1.9.0"
         ~build:1
         ~sources:[
-          "${PACKAGE}-${VERSION}.tar.xz", "f3d9d39037420f04c0155410b193f7d3a48ec486";
+          Tarball ("${PACKAGE}-${VERSION}.tar.xz", "f3d9d39037420f04c0155410b193f7d3a48ec486");
         ]
     in
 
@@ -1273,7 +1275,7 @@ let do_adds builder =
       ~version:"1.25"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "e1b18e18b0eca1852baff7ca55acce42096479da";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "e1b18e18b0eca1852baff7ca55acce42096479da");
       ]
     in
 
@@ -1286,7 +1288,7 @@ let do_adds builder =
       ~version:"1.3.2"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "1869ff09b522b9857f242ab4b06c5e115f46ff14";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "1869ff09b522b9857f242ab4b06c5e115f46ff14");
       ]
     in
 
@@ -1296,7 +1298,7 @@ let do_adds builder =
       ~version:"3.4"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "e36684442a6171cc3a5165c8c49c70f67db7288c";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "e36684442a6171cc3a5165c8c49c70f67db7288c");
       ]
     in
 
@@ -1306,7 +1308,7 @@ let do_adds builder =
       ~version:"5.2"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "";
+        Patch "${PACKAGE}-${VERSION}.tar.bz2";
       ]
     in
 
@@ -1316,7 +1318,7 @@ let do_adds builder =
       ~version:"2.101"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.bz2", "7943ffde32830adff5e70aec76da78899d1e20ae";
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "7943ffde32830adff5e70aec76da78899d1e20ae");
       ]
     in
 
@@ -1326,7 +1328,7 @@ let do_adds builder =
       ~version:"0.83"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.xz", "dc03799b2ab878def5e0517d70f65a91538e9bc1";
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "dc03799b2ab878def5e0517d70f65a91538e9bc1");
       ]
     in
 
@@ -1336,7 +1338,7 @@ let do_adds builder =
       ~version:"1.9"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "643001d52e322c52a7c9fdc8f31a7920f4619fc0";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "643001d52e322c52a7c9fdc8f31a7920f4619fc0");
       ]
     in
 
@@ -1431,7 +1433,7 @@ let do_adds builder =
       ~version:"0.5.3"
       ~build:1
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "321527194e937371c83b5e7c38e46fca4f109304";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "321527194e937371c83b5e7c38e46fca4f109304");
       ]
     in
 
@@ -1441,7 +1443,7 @@ let do_adds builder =
       ~version:"1.2rc1"
       ~build:3
       ~sources:[
-        "${PACKAGE}-${VERSION}.tar.gz", "52daa72572e844e5165315e208da539b2a55c5eb";
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "52daa72572e844e5165315e208da539b2a55c5eb");
       ]
     in
 

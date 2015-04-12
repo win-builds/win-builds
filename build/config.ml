@@ -98,20 +98,47 @@ module Prefix = struct
     { build; host; target; nickname; kind; yyprefix = path; libdir }
 end
 
-module Builder = struct
-  type package = {
+module Package = struct
+  type source = ..
+
+  type t = {
     dir : string;
     package : string;
     variant : string option;
-    dependencies : package list;
+    dependencies : t list;
     version : string;
     build : int;
-    sources : (string * string) list;
+    sources : source list;
     outputs : string list;
     devshell : bool;
     mutable to_build : bool;
   }
 
+  let substitute_variables ~dict s =
+    let f k =
+      try
+        List.assoc k dict
+      with Not_found as exn ->
+        Lib.log Lib.cri "Couldn't resolve variable %S.\n%!" k;
+        raise exn
+    in
+    let b = Buffer.create (String.length s) in
+    Buffer.add_substitute b f s;
+    Buffer.contents b
+
+  let sources_dir_ize p = Filename.concat (Filename.concat p.dir p.package)
+
+  let logs_yyoutput ~nickname =
+    let rel_path l = List.fold_left Filename.concat "" (Lib.work_dir :: l) in
+    (rel_path [ "logs"; nickname ]), (rel_path [ "packages"; nickname ])
+
+  let to_name p =
+    match p.variant with
+    | Some variant -> String.concat ":" [ p.package; variant ]
+    | None -> p.package
+end
+
+module Builder = struct
   type t = {
     name : string;
     prefix : Prefix.t;
@@ -127,7 +154,7 @@ module Builder = struct
     mutable cross_prefix : string option;
     (* prefix of the cross system *)
     mutable target_prefix : string option;
-    mutable packages : package list;
+    mutable packages : Package.t list;
   }
 
   let env t =
@@ -168,25 +195,8 @@ module Builder = struct
         (match t.target_prefix with Some p -> Env.Set [ p ] | None -> Env.Keep);
     ])
 
-  let logs_yyoutput ~nickname =
-    let rel_path l = Lib.filename_concat (Args.work_dir :: l) in
-    rel_path [ "logs"; nickname ],
-    rel_path [ "packages"; nickname ]
-
   let bindir prefix =
     Filename.concat prefix.Prefix.yyprefix "bin"
-
-  let substitute_variables ~dict s =
-    let f k =
-      try
-        List.assoc k dict
-      with Not_found as exn ->
-        Lib.log Lib.cri "Couldn't resolve variable %S.\n%!" k;
-        raise exn
-    in
-    let b = Buffer.create (String.length s) in
-    Buffer.add_substitute b f s;
-    Buffer.contents b
 
   let shall_build builder_name =
     let l = try Sys.getenv (String.uppercase builder_name) with Not_found -> "all" in
@@ -199,70 +209,5 @@ module Builder = struct
       | [ n; v; "devshell" ] -> Hashtbl.add h (n, Some v, true) true
       | _ -> assert false
     );
-    fun p -> Hashtbl.mem h (p.package, p.variant, p.devshell)
-
-  let add ~push ~builder =
-    let shall_build = shall_build builder.name in
-    let rec colorize p =
-      if not p.to_build then (
-        p.to_build <- true;
-        List.iter colorize p.dependencies
-      )
-    in
-    let add_aux p = (if shall_build p then colorize p); push p; p in
-    let default_output () =
-      if builder.prefix.Prefix.target <> builder.prefix.Prefix.host then
-        "${PACKAGE}-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz"
-      else
-        "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz"
-    in
-    fun (package, variant)
-      ?(outputs=[default_output ()])
-      ~dir ~dependencies ~version ~build ~sources
-    ->
-      let is_virtual = (sources = []) in
-      let s_of_variant ?(pref="") = function Some v -> pref ^ v | None -> "" in
-      (if not is_virtual then (
-        Lib.log Lib.dbg
-          "Adding package %S %S %d.\n%!"
-          (package ^ (s_of_variant ~pref:":" variant))
-          version
-          build;
-      ));
-      let dict = [
-        "PACKAGE", package;
-        "VARIANT", s_of_variant variant;
-        "VERSION", version;
-        "BUILD", string_of_int build;
-        "TARGET_TRIPLET", builder.prefix.Prefix.target.Arch.triplet;
-        "HOST_TRIPLET", builder.prefix.Prefix.host.Arch.triplet;
-        "BUILD_TRIPLET", builder.prefix.Prefix.build.Arch.triplet;
-      ] in
-      let sources =
-        List.concat [
-          (match variant with Some v -> [ "config-" ^ v, "" ] | None -> []);
-          [ "${PACKAGE}.SlackBuild", "" ];
-          [ "${PACKAGE}.yypkg.script", "" ];
-          sources
-        ]
-      in
-      let sources = List.map (fun (f, s) -> substitute_variables ~dict f, s) sources in
-      ListLabels.iter sources ~f:(fun (source, _sha1) ->
-        Lib.(log dbg " %s -> source=%s/%s/%s\n%!" package dir package source));
-      let p = {
-        package; variant; dir; dependencies;
-        version; build;
-        sources;
-        outputs = List.map (substitute_variables ~dict) outputs;
-        to_build = false;
-        devshell = false;
-      }
-      in
-      (* Automatically inject a "devshell" package and don't return it since it
-       * makes no sense to have other packages depend on it. *)
-      ignore (add_aux { p with devshell = true });
-      add_aux p
-
-  let register ~builder =
-    add ~builder ~push:(fun p -> builder.packages <- (builder.packages @ [p]))
+    fun p -> Hashtbl.mem h Package.(p.package, p.variant, p.devshell)
 end

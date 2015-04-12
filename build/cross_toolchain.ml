@@ -3,9 +3,10 @@ let builder ~name ~target =
   let build = Arch.slackware in (* XXX *)
   let host = Arch.slackware in (* XXX *)
   let prefix = Prefix.t ~build ~host ~target in
-  let logs, yyoutput = Builder.logs_yyoutput ~nickname:prefix.Prefix.nickname in
+  let logs, yyoutput = Package.logs_yyoutput ~nickname:prefix.Prefix.nickname in
   let open Arch in
   let open Prefix in
+  let open Package in
   let open Builder in
   {
     name;
@@ -14,16 +15,17 @@ let builder ~name ~target =
     (* FIXME: this should also include native_prefix *)
     pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
     pkg_config_libdir = Env.Keep;
-    tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
+    tmp = Env.Set [ Filename.concat prefix.yyprefix "tmp" ];
     target_prefix = None; (* updated from the Windows module *)
     cross_prefix  = None;
-    native_prefix = Some Native_toolchain.builder.prefix.Prefix.yyprefix;
+    native_prefix = Some Native_toolchain.builder.prefix.yyprefix;
     packages = [];
   }
 
 let do_adds builder =
   let open Common in
-  let add_full = Config.Builder.register ~builder in
+  let open Sources in
+  let add_full = Worker.register ~builder in
   let add = add_full ?outputs:None in
 
   let binutils = add ("binutils", None)
@@ -33,9 +35,9 @@ let do_adds builder =
     ~build:2
     ~sources:[
       Source.binutils;
-      "binutils.export.demangle.h.diff.gz", "";
-      "binutils.no-config-h-check.diff.gz", "";
-      "binutils-fix-seg-fault-in-strings-on-corrupt-pe.patch", "";
+      Patch "binutils.export.demangle.h.diff.gz";
+      Patch "binutils.no-config-h-check.diff.gz";
+      Patch "binutils-fix-seg-fault-in-strings-on-corrupt-pe.patch";
     ]
   in
 
@@ -121,7 +123,7 @@ let do_adds builder =
     ~version:"0.31"
     ~build:1
     ~sources:[
-      "flexdll-0.31.tar.gz", "7ca63bf8d6c731fd95e0d434a8cfbcc718b99d62"
+      Tarball ("${PACKAGE}-${VERSION}.tar.gz", "7ca63bf8d6c731fd95e0d434a8cfbcc718b99d62");
     ]
   in
 
@@ -131,7 +133,7 @@ let do_adds builder =
     ~version:"4.01.0-trunk"
     ~build:2
     ~sources:[
-      "${PACKAGE}-${VERSION}.tar.gz", "8996881034bec1c222ed91259238ea151b42a11d";
+      Tarball ("${PACKAGE}-${VERSION}.tar.gz", "8996881034bec1c222ed91259238ea151b42a11d");
     ]
   in
 
@@ -141,8 +143,8 @@ let do_adds builder =
     ~version:"1.5.2"
     ~build:1
     ~sources:[
-      "findlib-${VERSION}.tar.gz", "4c37dabd03abe5b594785427d8f5e4adf60e6d9f";
-      "findlib.conf.in", "";
+      Tarball ("findlib-${VERSION}.tar.gz", "4c37dabd03abe5b594785427d8f5e4adf60e6d9f");
+      Patch "findlib.conf.in";
     ]
   in
 
@@ -152,7 +154,7 @@ let do_adds builder =
     ~version:"1.0.0"
     ~build:6
     ~sources:[
-      "win-builds-switch.in", "";
+      WB "win-builds-switch.in";
     ]
     ~outputs:[
       "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz";
