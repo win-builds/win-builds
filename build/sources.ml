@@ -6,45 +6,109 @@ type source += WB of string
 type source += Patch of string
 
 module Patch = struct
-  let get _ _ = ()
+  let get _ = ()
 end
 
 module Git = struct
-  type fetch = { remote : string; obj : string; uri : string }
-  type kind =
-    | Fetch of fetch
-    | Disk
-    | Obj of string
-  type t = { tarball : string; dir : string; kind : kind }
+  type t = {
+    tarball : string;
+    dir : string;
+    prefix : string;
+    obj : string option;
+    uri : string option;
+    remote : string option;
+  }
   type source += T of t
 
-  let get ~p ~obj ~tarball ~dir =
+  let git_invoke ~dir =
+    let git args =
+      Array.of_list ("git" :: (sp "--git-dir=%s/.git" dir) :: args)
+    in
+    (fun op args ->
+      match op with
+      | `Archive -> git ("archive" :: args)
+      | `Fetch -> git ("fetch" :: args)
+      | `Remote -> git ("remote" :: args)
+      | `LsFiles -> git ( "ls-files" :: args)
+    )
+
+  let tar ~tarball ~git ~prefix ~dir =
     let open Unix in
-    let tarball = sources_dir_ize p tarball in
-    let git_dir = sp "--git-dir=%s/.git" (sources_dir_ize p dir)  in
     let snd_in, fst_out = pipe () in
     set_close_on_exec snd_in;
-    let git = run ~stdout:fst_out [| "git"; git_dir; "archive"; obj |] in
+    let git = run ~stdout:fst_out (git `LsFiles [ "HEAD" ]) in
     close fst_out;
     clear_close_on_exec snd_in;
-    let fd = openfile tarball [ O_WRONLY; O_CREAT ] 0o644 in
+    let trd_in, snd_out = pipe () in
+    set_close_on_exec trd_in;
+    let tar_args = [|
+      "tar"; "c";
+      "-C"; dir;
+      "-T"; "-";
+      "--transform"; Lib.sp "s;^;%s/;" prefix;
+    |] in
+    let tar = run ~stdin:snd_in ~stdout:snd_out tar_args in
+    close snd_in;
+    close snd_out;
+    clear_close_on_exec trd_in;
+    let fd = openfile tarball [ O_WRONLY; O_CREAT; O_TRUNC ] 0o644 in
+    let gzip = run ~stdin:trd_in ~stdout:fd [| "gzip"; "-1" |] in
+    close fd;
+    close trd_in;
+    git ();
+    tar ();
+    gzip ()
+
+
+  let archive ~obj ~tarball ~git ~prefix =
+    let open Unix in
+    let snd_in, fst_out = pipe () in
+    set_close_on_exec snd_in;
+    let prefix = sp "--prefix=%s/" prefix in
+    let git = run ~stdout:fst_out (git `Archive [ prefix; obj ])  in
+    close fst_out;
+    clear_close_on_exec snd_in;
+    let fd = openfile tarball [ O_WRONLY; O_CREAT; O_TRUNC ] 0o644 in
     let gzip = run ~stdin:snd_in ~stdout:fd [| "gzip"; "-1" |] in
     close snd_in;
     close fd;
     git ();
     gzip ()
 
-  let get p ({ tarball; dir } as t) =
-    match t.kind with
-    | Fetch fetch -> (); get ~p ~obj:fetch.obj ~tarball ~dir
-    | Disk -> get ~p ~obj:"HEAD" ~tarball ~dir
-    | Obj obj -> get ~p ~obj:obj ~tarball ~dir
+  let fetch ~git ~remote =
+    let f r = run (git `Fetch r) () in
+    match remote with
+    | Some remote -> f [ remote ]
+    | None -> f []
 
-  let ts ({ tarball } as t) =
-    match t.kind with
-    | Fetch _ -> tarball, 0.
-    | Obj _ -> tarball, 0.
-    | Disk -> "git-disk-is-always-more-recent", 0.
+  let remote_add ~uri ~git ~dir ?remote () =
+    (if (not (Sys.file_exists dir)) || (not (Sys.is_directory dir)) then
+      match remote with
+      | None ->
+          log dbg "Cloning %S at %S.\n%!" uri dir;
+          run [| "git"; "clone"; uri; dir |] ()
+      | Some remote ->
+          log dbg "Initializing a git repository at %S.\n%!" dir;
+          run [| "git"; "init"; dir |] ()
+    );
+    may (fun remote ->
+      log dbg "Adding a remote %S to %S at %S.\n%!" remote uri dir;
+      try run (git `Remote [ "add"; remote; uri]) () with _ -> ()
+    ) remote
+
+  let get ({ tarball; dir; obj; uri; remote; prefix } as t) =
+    let git = git_invoke ~dir in
+    match obj with
+    | None ->
+        tar ~tarball ~git ~dir ~prefix
+    | Some obj -> (
+        may (fun uri -> remote_add ~uri ~git ~dir ?remote ()) uri;
+        fetch ~remote ~git;
+        archive ~tarball ~obj ~git ~prefix
+    )
+
+  let ts _ =
+    "git-sources-are-always-more-recent", 0.
 end
 
 module Tarball = struct
@@ -98,13 +162,12 @@ module Tarball = struct
     in
     get_file ~tries:3 ~sha1 ~file
 
-  let get p = function
-    | Tarball (file0, sha1) ->
-        let file = sources_dir_ize p file0 in
-        Lib.(log dbg " %s -> source=%s\n%!" p.package file);
+  let get ~package = function
+    | Tarball (file, sha1) ->
+        Lib.(log dbg " %s -> source=%s\n%!" package file);
         get (file, sha1)
-    | WB file0 ->
-        get (sources_dir_ize p file0, "")
+    | WB file ->
+        get (file, "")
     | _ ->
         assert false
 
@@ -122,9 +185,9 @@ let get =
           let p = Event.sync (Event.receive chan_send) in
           ListLabels.iter p.sources ~f:(fun x -> match x with
             | WB _ -> ()
-            | Tarball _ -> Tarball.get p x
-            | Git.T y -> Git.get p y
-            | Patch _ -> Patch.get p x
+            | Tarball _ -> Tarball.get ~package:p.package x
+            | Git.T y -> Git.get y
+            | Patch _ -> Patch.get x
             | _ -> assert false
           );
           None
@@ -146,12 +209,18 @@ let timestamp = function
   | Git.T x -> Git.ts x
   | _ -> assert false
 
-let substitute_variables_sources ~dict source =
+let substitute_variables_sources ~dir ~package ~dict source =
+  let sources_dir_ize s = Filename.concat (Filename.concat dir package) s in
   let subst s = substitute_variables ~dict s in
   match source with
-  | WB file -> WB (subst file)
-  | Patch file -> Patch (subst file)
-  | Tarball (file, s) -> Tarball (subst file, s)
-  | Git.T ({ Git.tarball } as x) -> Git.(T { x with tarball = subst tarball })
+  | WB file -> WB (sources_dir_ize (subst file))
+  | Patch file -> Patch (sources_dir_ize (subst file))
+  | Tarball (file, s) -> Tarball (sources_dir_ize (subst file), s)
+  | Git.T ({ Git.tarball; prefix; dir} as x) ->
+      Git.(T { x with
+        tarball = sources_dir_ize (subst tarball);
+        dir = sources_dir_ize (subst dir);
+        prefix = subst prefix;
+      })
   | x -> x
 

@@ -795,7 +795,7 @@ let do_adds builder =
         ~version:"git"
         ~build:0
         ~sources:[
-          Git.(T { tarball = "${PACKAGE}-${VERSION}.tar.gz"; dir = "efl"; kind = Obj "HEAD" })
+          Git.(T { tarball = "${PACKAGE}-${VERSION}.tar.gz"; dir = "efl"; prefix = "${PACKAGE}-${VERSION}"; obj = Some "origin/master"; uri = Some "http://git.enlightenment.org/core/efl.git"; remote = Some "origin" })
           (* Tarball ("0001-Ecore_Win32-Fix-string-for-the-BackSpace-key-on-Wind.patch", ""); *)
         ]
     in

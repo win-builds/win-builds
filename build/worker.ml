@@ -8,7 +8,7 @@ open Lib
 
 let needs_rebuild ~sources ~outputs =
   let ts_outputs = ListLabels.map outputs ~f:(fun file ->
-    file, (try (Unix.lstat file).Unix.st_mtime with _ -> 0.)
+    file, (try Unix.((lstat file).st_mtime) with _ -> 0.)
   )
   in
   let ts_sources = List.map Sources.timestamp sources in
@@ -146,7 +146,7 @@ let add ~push ~builder =
     let p = {
       package; variant; dir; dependencies;
       version; build;
-      sources = List.map (substitute_variables_sources ~dict) sources;
+      sources = List.map (substitute_variables_sources ~dir ~package ~dict) sources;
       outputs = List.map (substitute_variables ~dict) outputs;
       to_build = false;
       devshell = false;
