@@ -45,7 +45,7 @@ sed:
 ocaml: make
 	$(call DOWNLOAD_AND_EXTRACT,ocaml-$(OCAML_VERSION),tar.xz)
 	(cd ocaml-$(OCAML_VERSION) \
-		&& ./configure -no-ocamldoc -no-debugger -prefix $(PREFIX) \
+		&& ./configure -no-debugger -prefix $(PREFIX) \
 		&& make world.opt \
 		&& make install)
 
