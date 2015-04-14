@@ -23,6 +23,7 @@ build_real:
 	PATH="$(PATH)" \
 	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH)" \
 	PREFIX="$(PREFIX)" \
+	MAKEFLAGS=-j5 \
 	echo '#mod_use "lib.ml";; #mod_use "config.ml";; #mod_use "sources.ml";; #mod_use "worker.ml";; #mod_use "common.ml";; #mod_use "native_toolchain.ml";; #mod_use "cross_toolchain.ml";; #mod_use "windows.ml";; #mod_use "build.ml";;' \
 	  | ocaml unix.cma str.cma -I +threads threads.cma -I "win-builds/build" -stdin $(VERSION)
 
@@ -30,7 +31,7 @@ lxc_mount:
 	cat < /dev/null > lxc_mount
 	P=$(shell cd .. && pwd)/opt; \
 	for f in native_toolchain {cross_toolchain,windows}_{32,64}; do \
-		echo "$${P}/$${f} /opt/$${f} none bind 0 0" >> lxc_mount; \
+	  echo "$${P}/$${f} /opt/$${f} none bind,create=dir 0 0" >> lxc_mount; \
 	done
 
 ifneq ($(WITH_LXC),)
@@ -49,7 +50,7 @@ endif
 		PREFIX="$(PREFIX)"
 
 deps:
-	make -C deps
+	make -C deps PREFIX="$(PREFIX)" PATH="$(PATH)" LD_LIBRARY_PATH="$(LD_LIBRARY_PATH)"
 
 tarballs-upload:
 	LOGLEVEL=dbg make WINDOWS= CROSS_TOOLCHAIN= NATIVE= 2>&1 \

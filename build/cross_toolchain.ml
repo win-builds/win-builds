@@ -1,6 +1,7 @@
 let builder ~name ~target =
   let open Config in
   let build = Arch.slackware in (* XXX *)
+  (* TODO *)
   let host = Arch.slackware in (* XXX *)
   let prefix = Prefix.t ~build ~host ~target in
   let logs, yyoutput = Package.logs_yyoutput ~nickname:prefix.Prefix.nickname in

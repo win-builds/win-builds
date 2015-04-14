@@ -512,6 +512,27 @@ let do_adds builder =
       ]
     in
 
+    let gtk_3 = add ("gtk+3", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[ pango; atk; cairo; glib2 ]
+      ~version:"3.12.2"
+      ~build:1
+      ~sources:[
+        Tarball ("gtk+-${VERSION}.tar.xz", "9727843d1389306fcad80f92bb50201f1f43f894");
+        Patch "correctly-generate-def-files-again.patch";
+      ]
+    in
+
+    let gucharmap = add ("gucharmap", None)
+      ~dir:"slackware64-current/xap"
+      ~dependencies:[ gtk_3 ]
+      ~version:"3.8.2"
+      ~build:1
+      ~sources:[
+        Tarball ("gucharmap-${VERSION}.tar.xz", "1e5688ded508b2112b1bc5f1318fc2a170d8004c");
+      ]
+    in
+
     let glib_networking = add ("glib-networking", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[ glib2 ]
@@ -767,6 +788,16 @@ let do_adds builder =
       ]
     in
 
+    let bullet = add ("bullet", None)
+      ~dir:"slackbuilds.org/libraries"
+      ~dependencies:[]
+      ~version:"2.82"
+      ~build:1
+      ~sources:[
+        Tarball ("${PACKAGE}-${VERSION}-r2704.tgz", "a0867257b9b18e9829bbeb4c6c5872a5b29d1d33");
+      ]
+    in
+
     (* This is vulnerable to CVE-2014-7901 and probably others *)
     let openjpeg = add ("openjpeg", None)
       ~dir:"slackbuilds.org/libraries"
@@ -778,12 +809,52 @@ let do_adds builder =
       ]
     in
 
+    let orc = add ("orc", None)
+      ~dir:"slackbuilds.org/development"
+      ~dependencies:[]
+      ~version:"0.4.19"
+      ~build:1
+      ~sources:[
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "6186a6a5faefe6b61d55e5406c7365d69b91c982");
+      ]
+    in
+
+    let gstreamer1 = add ("gstreamer1", None)
+      ~dir:"slackbuilds.org/libraries"
+      ~dependencies:[ orc ]
+      ~version:"1.2.2"
+      ~build:1
+      ~sources:[
+        Tarball ("gstreamer-${VERSION}.tar.xz", "f57418b6de15fe2ed2e0b42209b3e1e0f7add70f");
+      ]
+    in
+
+    let gst1_plugins_base = add ("gst1-plugins-base", None)
+      ~dir:"slackbuilds.org/libraries"
+      ~dependencies:[ orc; libogg; pango; libvorbis ]
+      ~version:"1.2.2"
+      ~build:1
+      ~sources:[
+        Tarball ("gst-plugins-base-${VERSION}.tar.xz", "cce95c868bdfccb8bcd37ccaa543af5c464240e1");
+      ]
+    in
+
+    let gst1_plugins_good = add ("gst1-plugins-good", None)
+      ~dir:"slackbuilds.org/libraries"
+      ~dependencies:[ orc; cairo; flac; gdk_pixbuf2; libpng; libjpeg ]
+      ~version:"1.2.2"
+      ~build:1
+      ~sources:[
+        Tarball ("gst-plugins-good-${VERSION}.tar.xz", "d8c52f7883e98ffb35cd4b86cbd27420573ca864");
+      ]
+    in
+
     let efl_regular_deps = [
       libtiff; libpng; giflib; libjpeg;
       fontconfig; freetype; lua;
       fribidi; harfbuzz; libsndfile;
       gnutls; curl; c_ares; dbus;
-      openjpeg;
+      openjpeg; gstreamer1; gst1_plugins_base;
     ]
     in
 
@@ -1108,6 +1179,56 @@ let do_adds builder =
       ]
     in
 
+    let babl = add ("babl", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[]
+      ~version:"0.1.12"
+      ~build:1
+      ~sources:[
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "b9a811d9d05717d66bc107a18447fbd74cff7eea");
+      ]
+    in
+
+    let gegl = add ("gegl", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[ pango; cairo; libpng; gdk_pixbuf2; glib2; lua; babl; libjpeg ]
+      ~version:"0.2.0"
+      ~build:1
+      ~sources:[
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "2f16968355994f3a332d2bc72601ee74c88d393c");
+      ]
+    in
+
+    let gimp = add ("gimp", None)
+      ~dir:"slackware64-current/xap"
+      ~dependencies:[ babl; gegl; glib2; atk; gtk_2; gdk_pixbuf2; cairo; pango; fontconfig; curl; lcms; lcms2; libpng; libtiff ]
+      ~version:"2.8.14"
+      ~build:1
+      ~sources:[
+        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "b3be8cd5d4819c84b2152c472c7e3e637c6f8021");
+      ]
+    in
+
+    let bzip2 = add ("bzip2", None)
+      ~dir:"slackware64-current/a"
+      ~dependencies:[]
+      ~version:"1.0.6"
+      ~build:1
+      ~sources:[
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "3f89f861209ce81a6bab1fd1998c0ef311712002");
+      ]
+    in
+
+    let boost = add ("boost", None)
+      ~dir:"slackware64-current/l"
+      ~dependencies:[ icu4c; zlib; win_iconv; bzip2 ]
+      ~version:"1.57.0"
+      ~build:1
+      ~sources:[
+        Tarball ("${PACKAGE}_1_57_0.tar.bz2", "e151557ae47afd1b43dc3fac46f8b04a8fe51c12");
+      ]
+    in
+
     let zz_config = add ("zz_config", None)
       ~dir:"mingw"
       ~dependencies:[]
@@ -1258,7 +1379,7 @@ let do_adds builder =
       ~dependencies:[
         autoconf; automake; libtool; gettext_tools;
         gcc; binutils; mingw_w64; gdb;
-        elementary; gtk_2; ffmpeg;
+        elementary; gtk_2; gtk_3; gucharmap; ffmpeg;
         libtheora; opus; sox;
         madplay; icu4c; make; gperf; zz_config;
         jansson; libsigc_plus_plus;
@@ -1268,6 +1389,7 @@ let do_adds builder =
         glib_networking; libxml2; libsoup; djvulibre; a52dec; libmpeg2;
         pcre; libxslt; libdvdread; libdvdnav; libdvdcss;
         gendef; genidl; genpeimg; widl; libmangle; winstorecompat;
+        babl; gegl; gimp; gstreamer1; gst1_plugins_good; bullet;
         json_c;
         qt;
         check;
@@ -1394,10 +1516,6 @@ let do_adds builder =
       let webkitgtk = add ("webkitgtk", None)
         ~dir:"# slackbuilds.org/libraries"
         ~dependencies:[]
-
-      let gucharmap = add ("gucharmap", None)
-        ~dir:"slackware64-current/xap"
-        ~dependencies:[ gtk_3 ]
 
       (* includes <pwd.h> *)
       let geeqie = add ("geeqie", None)
