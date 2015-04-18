@@ -330,10 +330,10 @@ let do_adds builder =
     let openssl = add ("openssl", None)
       ~dir:"slackware64-current/n"
       ~dependencies:[ ca_certificates ]
-      ~version:"1.0.1l"
+      ~version:"1.0.1m"
       ~build:1
       ~sources:[
-        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "4547a0b4269acf76b1f9e7d188896867d6fc8c18");
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "4ccaf6e505529652f9fdafa01d1d8300bd9f3179");
       ]
     in
 
