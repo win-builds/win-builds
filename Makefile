@@ -5,7 +5,7 @@ PATH := $(PREFIX)/bin:$(PATH)
 LD_LIBRARY_PATH := $(PREFIX)/lib:$(LD_LIBRARY_PATH)
 
 ifneq ($(WITH_LXC),)
-LXC_EXECUTE=lxc-execute -f /dev/null -n win-builds-$(VERSION) -s lxc.mount=$(shell pwd)/lxc_mount --
+LXC_EXECUTE=lxc-execute -f $(shell pwd)/lxc.conf -n win-builds-$(VERSION) -s lxc.mount=$(shell pwd)/lxc_mount --
 else
 LXC_EXECUTE=
 endif
