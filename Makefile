@@ -14,18 +14,9 @@ default: build
 
 build_real:
 	cd .. \
-	&& LANG=C \
-	NATIVE_TOOLCHAIN="$(NATIVE_TOOLCHAIN)" \
-	CROSS_TOOLCHAIN_32="$(CROSS_TOOLCHAIN_32)" \
-	CROSS_TOOLCHAIN_64="$(CROSS_TOOLCHAIN_64)" \
-	WINDOWS_32="$(WINDOWS_32)" \
-	WINDOWS_64="$(WINDOWS_64)" \
-	PATH="$(PATH)" \
-	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH)" \
-	PREFIX="$(PREFIX)" \
-	MAKEFLAGS=-j5 \
-	echo '#mod_use "lib.ml";; #mod_use "config.ml";; #mod_use "sources.ml";; #mod_use "worker.ml";; #mod_use "common.ml";; #mod_use "native_toolchain.ml";; #mod_use "cross_toolchain.ml";; #mod_use "windows.ml";; #mod_use "build.ml";;' \
-	  | ocaml unix.cma str.cma -I +threads threads.cma -I "win-builds/build" -stdin $(VERSION)
+	&& echo '#mod_use "lib.ml";; #mod_use "config.ml";; #mod_use "sources.ml";; #mod_use "worker.ml";; #mod_use "common.ml";; #mod_use "native_toolchain.ml";; #mod_use "cross_toolchain.ml";; #mod_use "windows.ml";; #mod_use "build.ml";;' \
+	| LANG=C MAKEFLAGS="$(SUB_MAKEFLAGS)" \
+	  ocaml unix.cma str.cma -I +threads threads.cma -I "win-builds/build" -stdin $(VERSION)
 
 ifneq ($(WITH_LXC),)
 build: lxc_mount
@@ -44,6 +35,7 @@ endif
 		CROSS_TOOLCHAIN_64="$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_64)" \
 		WINDOWS_32="$(WINDOWS),$(WINDOWS_32)" \
 		WINDOWS_64="$(WINDOWS),$(WINDOWS_64)" \
+		YYBASEPATH="$(YYBASEPATH)" \
 		PATH="$(PATH)" \
 		LD_LIBRARY_PATH="$(LD_LIBRARY_PATH)" \
 		PREFIX="$(PREFIX)"
