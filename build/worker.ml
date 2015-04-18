@@ -136,12 +136,15 @@ let add ~push ~builder =
       "BUILD_TRIPLET", builder.prefix.build.triplet;
     ] in
     let sources =
-      List.concat [
-        (match variant with Some v -> [ WB ("config-" ^ v) ] | None -> []);
-        [ WB "${PACKAGE}.SlackBuild" ];
-        [ WB "${PACKAGE}.yypkg.script" ];
-        sources
-      ]
+      if dir <> "" then
+        List.concat [
+          (match variant with Some v -> [ WB ("config-" ^ v) ] | None -> []);
+          [ WB "${PACKAGE}.SlackBuild" ];
+          [ WB "${PACKAGE}.yypkg.script" ];
+          sources
+        ]
+      else
+        []
     in
     let p = {
       package; variant; dir; dependencies;
