@@ -421,9 +421,9 @@ let do_adds builder =
       ~dir:"slackware64-current/l"
       ~dependencies:[]
       ~version:"8.36"
-      ~build:1
+      ~build:2
       ~sources:[
-        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "9a074e9cbf3eb9f05213fd9ca5bc188644845ccc");
+        Tarball ("${PACKAGE}-${VERSION}.tar.bz2", "9a074e9cbf3eb9f05213fd9ca5bc188644845ccc");
       ]
     in
 
