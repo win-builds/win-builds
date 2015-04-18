@@ -360,10 +360,10 @@ let do_adds builder =
     let libtasn1 = add ("libtasn1", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[]
-      ~version:"3.9"
+      ~version:"4.4"
       ~build:1
       ~sources:[
-        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "0e4907b0ff00f0199858a904d476b2ae73c33338");
+        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "b0931ae018a771c6cc494003fd8808e2c281695e");
       ]
     in
 
