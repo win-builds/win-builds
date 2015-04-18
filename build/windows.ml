@@ -417,8 +417,6 @@ let do_adds builder =
       ]
     in
 
-    let pkg_config_bootstrap = pkg_config_add ~variant:"bootstrap" ~dependencies:[] in
-
     let pcre = add ("pcre", None)
       ~dir:"slackware64-current/l"
       ~dependencies:[]
@@ -429,9 +427,18 @@ let do_adds builder =
       ]
     in
 
+    (* Bootstrapping pkg-config is useful if autoreconf needs to be run for
+     * glib2: that autoreconf requires pkg.m4 which is provided by pkg-config.
+     * However the bootstrapping of pkg-config is force-disabled and builds an
+     * in-source copy of glib 1.2.10 which doesn't configure right for
+     * cross-compilation (at least one test tries to run the compilation
+     * output) so give up for now and avoid autoreconf in glib2.
+     * let pkg_config_bootstrap = pkg_config_add ~variant:"bootstrap" ~dependencies:[]
+     *)
+
     let glib2 = add ("glib2", None)
       ~dir:"slackware64-current/l"
-      ~dependencies:[ libffi; gettext; pkg_config_bootstrap; pcre ]
+      ~dependencies:[ libffi; gettext; pcre ]
       ~version:"2.42.1"
       ~build:1
       ~sources:[
