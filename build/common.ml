@@ -27,6 +27,23 @@ module Source = struct
   let elementary =
     Tarball ("${PACKAGE}-${VERSION}.tar.xz", "d756b9c4763beebfbf494b9d2ee42cc2828dd4d8")
 
+  let efl_git = Git.(T {
+    tarball = "${PACKAGE}-${VERSION}.tar.gz";
+    dir = "efl";
+    prefix = "${PACKAGE}-${VERSION}";
+    obj = Some "origin/master";
+    uri = Some "http://git.enlightenment.org/core/efl.git";
+    remote = Some "origin"
+  })
+  let elementary_git = Git.(T {
+    tarball = "${PACKAGE}-${VERSION}.tar.gz";
+    dir = "elementary";
+    prefix = "${PACKAGE}-${VERSION}";
+    obj = Some "origin/master";
+    uri = Some "http://git.enlightenment.org/core/elementary.git";
+    remote = Some "origin"
+  })
+
   let autoconf =
     Tarball ("${PACKAGE}-${VERSION}.tar.xz", "e891c3193029775e83e0534ac0ee0c4c711f6d23")
   let automake =

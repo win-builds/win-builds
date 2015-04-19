@@ -64,29 +64,6 @@ let do_adds builder =
       ]
   in
 
-  let efl ~variant ~dependencies =
-    add ("efl", Some variant)
-      ~dir:"slackbuilds.org/libraries"
-      ~dependencies
-      ~version:Version.efl
-      ~build:2
-      ~sources:[
-        Source.efl;
-        (* Tarball ("0001-Ecore_Win32-Fix-string-for-the-BackSpace-key-on-Wind.patch", ""); *)
-      ]
-  in
-
-  let elementary ~variant ~dependencies =
-    add ("elementary", Some variant)
-      ~dir:"slackbuilds.org/libraries"
-      ~dependencies
-      ~version:Version.elementary
-      ~build:2
-      ~sources:[
-        Source.elementary
-      ]
-  in
-
   let libjpeg ~variant ~dependencies =
     add ("libjpeg", Some variant)
       ~dir:"slackware64-current/l"
@@ -865,21 +842,41 @@ let do_adds builder =
     ]
     in
 
-    let efl = efl ~variant:"regular" ~dependencies:efl_regular_deps in
+    let efl =
+      add ("efl", Some "regular")
+        ~dir:"slackbuilds.org/libraries"
+        ~dependencies:efl_regular_deps
+        ~version:Version.efl
+        ~build:2
+        ~sources:[ Source.efl ]
+    in
+
+    let elementary =
+      add ("elementary", Some "regular")
+        ~dir:"slackbuilds.org/libraries"
+        ~dependencies:[ efl ]
+        ~version:Version.elementary
+        ~build:2
+        ~sources:[ Source.elementary ]
+    in
 
     let efl_git =
       add ("efl", Some "regular-git")
         ~dir:"slackbuilds.org/libraries"
-        ~dependencies:[]
+        ~dependencies:efl_regular_deps
         ~version:"git"
-        ~build:0
-        ~sources:[
-          Git.(T { tarball = "${PACKAGE}-${VERSION}.tar.gz"; dir = "efl"; prefix = "${PACKAGE}-${VERSION}"; obj = Some "origin/master"; uri = Some "http://git.enlightenment.org/core/efl.git"; remote = Some "origin" })
-          (* Tarball ("0001-Ecore_Win32-Fix-string-for-the-BackSpace-key-on-Wind.patch", ""); *)
-        ]
+        ~build:1
+        ~sources:[ Source.efl_git ]
     in
 
-    let elementary = elementary ~variant:"regular" ~dependencies:[ efl ] in
+    let elementary_git =
+      add ("elementary", Some "regular-git")
+        ~dir:"slackbuilds.org/libraries"
+        ~dependencies:[ efl_git ]
+        ~version:"git"
+        ~build:1
+        ~sources:[ Source.elementary_git ]
+    in
 
     let gdb = add ("gdb", None)
       ~dir:"slackware64-current/d"

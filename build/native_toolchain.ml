@@ -29,6 +29,7 @@ let add_full =
 let add = add_full ?outputs:None
 
 open Sources
+open Common
 
 let autoconf = add ("autoconf", None)
   ~dir:"slackware64-current/d"
@@ -80,20 +81,30 @@ let lua = add ("lua", None)
 let efl = add ("efl", Some "for-your-tools-only")
   ~dir:"slackbuilds.org/libraries"
   ~dependencies:[ lua ]
-  ~version:Common.Version.efl
+  ~version:Version.efl
   ~build:1
-  ~sources:[
-    Common.Source.efl
-  ]
+  ~sources:[ Source.efl ]
 
-let elementary = add ("elementary", None)
+let elementary = add ("elementary", Some "regular")
   ~dir:"slackbuilds.org/libraries"
   ~dependencies:[ efl ]
-  ~version:Common.Version.elementary
+  ~version:Version.elementary
   ~build:1
-  ~sources:[
-    Common.Source.elementary
-  ]
+  ~sources:[ Source.elementary ]
+
+let efl_git = add ("efl", Some "for-your-tools-only")
+  ~dir:"slackbuilds.org/libraries"
+  ~dependencies:[ lua ]
+  ~version:"git"
+  ~build:1
+  ~sources:[ Source.efl_git ]
+
+let elementary_git = add ("elementary", Some "regular-git")
+  ~dir:"slackbuilds.org/libraries"
+  ~dependencies:[ efl_git ]
+  ~version:"git"
+  ~build:1
+  ~sources:[ Source.elementary_git ]
 
 let qt = add ("qt", Some "native")
   ~dir:"slackware64-current/l"
