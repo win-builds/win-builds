@@ -26,8 +26,8 @@ let rec use ?(toplevel = false) ?(extras = []) file =
   else (
     let dir = Filename.dirname file in
     Printf.printf "# 1 \"%s [header]\"\n" file;
-    Printf.printf "let dir = %S in\n" dir;
-      Printf.printf "let name = %S in\n" (Filename.basename dir);
+    Printf.printf "let dir = %S in\n" (Filename.dirname dir);
+    Printf.printf "let name = %S in\n" (Filename.basename dir);
     if Str.string_match re_variant basename 0 then (
       Printf.printf "let variant = Some %S in\n" (Str.matched_group 1 basename);
     )
