@@ -25,143 +25,36 @@ let builder ~name ~target =
   }
 
 let do_adds builder =
-  let open Common in
   let open Sources in
   let add_full = Worker.register ~builder in
   let add = add_full ?outputs:None in
 
-  let binutils = add ("binutils", None)
-    ~dir:"slackware64-current/d"
-    ~dependencies:[]
-    ~version:Version.binutils
+#use "slackware64-current/d/binutils/wb.ml"
+#use "mingw/mingw-w64/wb:headers.ml"
+#use "slackware64-current/d/gcc/wb:core.ml"
+  let mingw_w64_full = mingw_w64_add (name, variant)
     ~build:2
-    ~sources:[
-      Source.binutils;
-      Patch "binutils.export.demangle.h.diff.gz";
-      Patch "binutils.no-config-h-check.diff.gz";
-      Patch "binutils-fix-seg-fault-in-strings-on-corrupt-pe.patch";
-    ]
-  in
-
-  let mingw_w64_add = add_full
-    ~dir:"mingw"
-    ~version:Version.mingw_w64
-    ~sources:[
-      Source.mingw_w64;
-    ]
-    ~outputs:[
-      "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz";
-    ]
-  in
-
-  let gcc_add = add_full
-    ~dir:"slackware64-current/d"
-    ~version:Version.gcc
-    ~sources:[
-      Source.gcc;
-    ]
-    ~outputs:[
-      "${PACKAGE}-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz";
-      "${PACKAGE}-g++-${VERSION}-${BUILD}-${TARGET_TRIPLET}-${HOST_TRIPLET}.txz"
-    ]
-  in
-
-  let mingw_w64_tool_add name = add_full (name, None)
-    ~dir:"mingw"
-    ~dependencies:[]
-    ~version:Version.mingw_w64
-    ~build:1
-    ~outputs:[
-      "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz";
-    ]
-    ~sources:[
-      Source.mingw_w64;
-    ]
-  in
-
-  let mingw_w64_headers = mingw_w64_add ("mingw-w64", Some "headers")
-    ~build:(-1)
-    ~dependencies:[]
-  in
-
-  let gcc_core = gcc_add ("gcc", Some "core")
-    ~build:(-1)
-    ~dependencies:[ binutils; mingw_w64_headers ]
-  in
-
-  let mingw_w64_full = mingw_w64_add ("mingw-w64", Some "full")
-    ~build:1
     ~dependencies:[ binutils; gcc_core ]
   in
-
-  let winpthreads = add_full ("winpthreads", None)
-    ~dir:"mingw"
+  let winpthreads = mingw_w64_add (name, variant)
     ~dependencies:[ binutils; gcc_core; mingw_w64_full ]
-    ~version:Version.mingw_w64
-    ~build:1
-    ~sources:[
-      Source.mingw_w64
-    ]
-    ~outputs:[
-      "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz";
-    ]
+    ~build:2
   in
-
-  let gcc_full = gcc_add ("gcc", Some "full")
+  let gcc_full = gcc_add (name, variant)
     ~build:2 ~dependencies:[ binutils; gcc_core; mingw_w64_full; winpthreads ]
   in
-
-  let gendef = mingw_w64_tool_add "gendef" in
-
-  let genidl = mingw_w64_tool_add "genidl" in
-
-  let genpeimg = mingw_w64_tool_add "genpeimg" in
-
-  let widl = mingw_w64_tool_add "widl" in
-
-  let flexdll = add ("flexdll", None)
-    ~dir:"mingw"
-    ~dependencies:[ binutils; gcc_full; mingw_w64_full; binutils ]
-    ~version:"0.31"
-    ~build:1
-    ~sources:[
-      Tarball ("${PACKAGE}-${VERSION}.tar.gz", "7ca63bf8d6c731fd95e0d434a8cfbcc718b99d62");
-    ]
-  in
-
-  let ocaml = add ("ocaml", None)
-    ~dir:"slackbuilds.org/ocaml"
+#use "mingw/gendef/wb.ml"
+#use "mingw/genidl/wb.ml"
+#use "mingw/genpeimg/wb.ml"
+#use "mingw/widl/wb.ml"
+#use "mingw/flexdll/wb.ml"
+#use "slackbuilds.org/ocaml/ocaml/wb.ml"
+  let ocaml = ocaml_add
     ~dependencies:[ binutils; flexdll; gcc_full; mingw_w64_full ]
-    ~version:"4.01.0-trunk"
-    ~build:2
-    ~sources:[
-      Tarball ("${PACKAGE}-${VERSION}.tar.gz", "8996881034bec1c222ed91259238ea151b42a11d");
-    ]
   in
 
-  let ocaml_findlib = add ("ocaml-findlib", None)
-    ~dir:"slackbuilds.org/ocaml"
-    ~dependencies:[ ocaml ]
-    ~version:"1.5.2"
-    ~build:1
-    ~sources:[
-      Tarball ("findlib-${VERSION}.tar.gz", "4c37dabd03abe5b594785427d8f5e4adf60e6d9f");
-      Patch "findlib.conf.in";
-    ]
-  in
-
-  let zz_config = add_full ("zz_config", None)
-    ~dir:"mingw"
-    ~dependencies:[]
-    ~version:"1.0.0"
-    ~build:6
-    ~sources:[
-      WB "win-builds-switch.in";
-    ]
-    ~outputs:[
-      "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz";
-    ]
-  in
+#use "slackbuilds.org/ocaml/ocaml-findlib/wb.ml"
+#use "mingw/zz_config/wb.ml"
 
   let _all = add_full ("all", None)
     ~dir:""

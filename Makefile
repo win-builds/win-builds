@@ -14,16 +14,16 @@ default: build
 
 build_real:
 	cd .. \
-	&& echo '#mod_use "lib.ml";; #mod_use "config.ml";; #mod_use "sources.ml";; #mod_use "worker.ml";; #mod_use "common.ml";; #mod_use "native_toolchain.ml";; #mod_use "cross_toolchain.ml";; #mod_use "windows.ml";; #mod_use "build.ml";;' \
+	&& ocaml str.cma ./win-builds/build/amalgation.ml \
 	| LANG=C MAKEFLAGS="$(SUB_MAKEFLAGS)" \
-	  ocaml unix.cma str.cma -I +threads threads.cma -I "win-builds/build" -stdin $(VERSION)
+	  ocaml unix.cma str.cma -I +threads threads.cma -stdin $(VERSION)
 
 ifneq ($(WITH_LXC),)
 build: lxc_mount
 	: > lxc_mount
 	P=$(shell cd .. && pwd)/opt; \
 	for f in native_toolchain {cross_toolchain,windows}_{32,64}; do \
-		mkdir -p "$${P}/$${f}"; \
+	  mkdir -p "$${P}/$${f}"; \
 	  echo "$${P}/$${f} /opt/$${f} none bind,create=dir 0 0" >> lxc_mount; \
 	done
 else

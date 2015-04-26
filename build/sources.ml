@@ -96,7 +96,7 @@ module Git = struct
       try run (git `Remote [ "add"; remote; uri]) () with _ -> ()
     ) remote
 
-  let get ({ tarball; dir; obj; uri; remote; prefix } as t) =
+  let get { tarball; dir; obj; uri; remote; prefix } =
     let git = git_invoke ~dir in
     match obj with
     | None ->
