@@ -1,5 +1,5 @@
 let re_use = Str.regexp "[ ]*#use \"\\(.*\\)\""
-let re_variant = Str.regexp "\\(.*\\):\\(.*\\)"
+let re_variant = Str.regexp ".*:\\(.*\\)"
 let re_extras_hook = Str.regexp "[ ]*#extras"
 let re_extras = Str.regexp ","
 
@@ -24,14 +24,14 @@ let rec use ?(toplevel = false) ?(extras = []) file =
     Printf.printf "module %s = struct\n" (String.capitalize modname)
   )
   else (
+    let dir = Filename.dirname file in
     Printf.printf "# 1 \"%s [header]\"\n" file;
-    Printf.printf "let dir = %S in\n" (Filename.dirname file);
+    Printf.printf "let dir = %S in\n" dir;
+      Printf.printf "let name = %S in\n" (Filename.basename dir);
     if Str.string_match re_variant basename 0 then (
-      Printf.printf "let name = %S in\n" (Str.matched_group 1 basename);
-      Printf.printf "let variant = Some %S in\n" (Str.matched_group 2 basename);
+      Printf.printf "let variant = Some %S in\n" (Str.matched_group 1 basename);
     )
     else (
-      Printf.printf "let name = %S in\n" basename;
       Printf.printf "let variant = None in\n";
     )
   ));
