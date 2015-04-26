@@ -40,6 +40,8 @@ let _ =
 #use "slackbuilds.org/libraries/elementary/wb:regular.ml"
 #use "slackware64-current/l/qt/wb:native.ml"
 
+#extras
+
   let _all = add_full ("all", None)
     ~dir:""
     ~dependencies:[ autoconf; automake; libtool; lua; qt; efl; elementary ]

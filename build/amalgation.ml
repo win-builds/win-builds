@@ -1,11 +1,25 @@
 let re_use = Str.regexp "[ ]*#use \"\\(.*\\)\""
 let re_variant = Str.regexp "\\(.*\\):\\(.*\\)"
+let re_extras_hook = Str.regexp "[ ]*#extras"
+let re_extras = Str.regexp ","
 
-let rec use ?(with_module = false) file =
+let extras_of_env basename =
+  let name = (String.uppercase basename) ^ "_EXTRAS" in
+  try
+    Str.split re_extras (Sys.getenv name)
+  with
+    Not_found -> []
+
+let rec use ?(toplevel = false) ?(extras = []) file =
   let lines = ref 0 in
-  let basename = Filename.chop_extension (Filename.basename file) in
+  let use_wb_ml s =
+    let file' = Str.matched_group 1 s in
+    use file';
+    Printf.printf "# %d %S\n" !lines file
+  in
   let ic = open_in_bin file in
-  (if with_module then (
+  let basename = Filename.chop_extension (Filename.basename file) in
+  (if toplevel then (
     let modname = String.capitalize basename in
     Printf.printf "module %s = struct\n" (String.capitalize modname)
   )
@@ -24,29 +38,28 @@ let rec use ?(with_module = false) file =
   Printf.printf "# 1 %S\n" file;
   (try
     while true do
-       let s = input_line ic in
-       incr lines;
-       if Str.string_match re_use s 0 then (
-         let file' = Str.matched_group 1 s in
-         use ~with_module:false file';
-         Printf.printf "# %d %S\n" !lines file;
-       )
-       else (
-         Printf.printf "%s\n" s
-       )
-     done
+      let s = input_line ic in
+      incr lines;
+      if Str.string_match re_use s 0 then
+        use_wb_ml s
+      else
+        if Str.string_match re_extras_hook s 0 then
+          List.iter use (extras_of_env basename)
+        else
+          Printf.printf "%s\n" s
+    done
   with End_of_file -> ());
-  (if with_module then
+  (if toplevel then
     Printf.printf "end\n");
   close_in ic
 ;;
 
-use ~with_module:true "win-builds/build/lib.ml";;
-use ~with_module:true "win-builds/build/config.ml";;
-use ~with_module:true "win-builds/build/sources.ml";;
-use ~with_module:true "win-builds/build/worker.ml";;
-use ~with_module:true "win-builds/build/native_toolchain.ml";;
-use ~with_module:true "win-builds/build/cross_toolchain.ml";;
-use ~with_module:true "win-builds/build/windows.ml";;
-use ~with_module:true "win-builds/build/build.ml";;
+use ~toplevel:true "win-builds/build/lib.ml";;
+use ~toplevel:true "win-builds/build/config.ml";;
+use ~toplevel:true "win-builds/build/sources.ml";;
+use ~toplevel:true "win-builds/build/worker.ml";;
+use ~toplevel:true "win-builds/build/native_toolchain.ml";;
+use ~toplevel:true "win-builds/build/cross_toolchain.ml";;
+use ~toplevel:true "win-builds/build/windows.ml";;
+use ~toplevel:true "win-builds/build/build.ml";;
 

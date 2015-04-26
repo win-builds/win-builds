@@ -396,6 +396,8 @@ ignore efl;
         ]
     in
 
+#extras
+
     add_full ("all", None)
       ~dir:""
       ~dependencies:[

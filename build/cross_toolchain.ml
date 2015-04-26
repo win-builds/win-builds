@@ -56,6 +56,8 @@ let do_adds builder =
 #use "slackbuilds.org/ocaml/ocaml-findlib/wb.ml"
 #use "mingw/zz_config/wb.ml"
 
+#extras
+
   let _all = add_full ("all", None)
     ~dir:""
     ~dependencies:[
