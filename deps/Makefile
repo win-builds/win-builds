@@ -27,7 +27,7 @@ BUILD_OASIS = \
 
 P = patch --verbose -p1 < "$(PATCHES)/$(1).patch"
 
-all: coreutils make sed findutils patch tar bash yypkg
+all: coreutils make sed findutils patch tar bash libarchive yypkg
 
 coreutils: make
 	$(call DOWNLOAD_AND_EXTRACT,coreutils-$(COREUTILS_VERSION),tar.xz)
@@ -58,6 +58,10 @@ tar:
 patch:
 	$(call DOWNLOAD_AND_EXTRACT,patch-$(PATCH_VERSION),tar.bz2)
 	$(call BUILD_AUTOTOOLS,patch,$(PATCH_VERSION),)
+
+libarchive:
+	$(call DOWNLOAD_AND_EXTRACT,libarchive-$(LIBARCHIVE_VERSION),tar.gz)
+	$(call BUILD_AUTOTOOLS,libarchive,$(LIBARCHIVE_VERSION),)
 
 ocaml: make
 	$(call DOWNLOAD_AND_EXTRACT,ocaml-$(OCAML_VERSION),tar.xz)
