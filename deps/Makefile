@@ -31,6 +31,7 @@ all: coreutils make sed findutils yypkg
 
 coreutils: make
 	$(call DOWNLOAD_AND_EXTRACT,coreutils-$(COREUTILS_VERSION),tar.xz)
+	export FORCE_UNSAFE_CONFIGURE=1; \
 	$(call BUILD_AUTOTOOLS,coreutils,$(COREUTILS_VERSION),--without-gmp)
 
 make:
