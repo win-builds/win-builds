@@ -42,6 +42,18 @@ sed:
 	$(call DOWNLOAD_AND_EXTRACT,sed-$(SED_VERSION),tar.xz)
 	$(call BUILD_AUTOTOOLS,sed,$(SED_VERSION),)
 
+bash:
+	$(call DOWNLOAD_AND_EXTRACT,bash-$(BASH_VERSION),tar.gz)
+	$(call BUILD_AUTOTOOLS,bash,$(BASH_VERSION),)
+
+tar:
+	$(call DOWNLOAD_AND_EXTRACT,tar-$(TAR_VERSION),tar.xz)
+	$(call BUILD_AUTOTOOLS,tar,$(TAR_VERSION),)
+
+patch:
+	$(call DOWNLOAD_AND_EXTRACT,patch-$(PATCH_VERSION),tar.bz2)
+	$(call BUILD_AUTOTOOLS,patch,$(PATCH_VERSION),)
+
 ocaml: make
 	$(call DOWNLOAD_AND_EXTRACT,ocaml-$(OCAML_VERSION),tar.xz)
 	(cd ocaml-$(OCAML_VERSION) \
