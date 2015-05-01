@@ -59,7 +59,6 @@ module Git = struct
     tar ();
     gzip ()
 
-
   let archive ~obj ~tarball ~git ~prefix =
     let open Unix in
     let snd_in, fst_out = pipe () in
@@ -108,7 +107,7 @@ module Git = struct
     )
 
   let ts _ =
-    "git-sources-are-always-more-recent", 0.
+    "git-sources-are-always-more-recent", infinity
 end
 
 module Tarball = struct
