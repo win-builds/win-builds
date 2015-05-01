@@ -1,9 +1,5 @@
 include Makefile.data
 
-PREFIX := $(shell pwd)/deps/prefix
-PATH := $(PREFIX)/bin:$(PATH)
-LD_LIBRARY_PATH := $(PREFIX)/lib:$(LD_LIBRARY_PATH)
-
 ifneq ($(WITH_LXC),)
 LXC_EXECUTE=lxc-execute -f $(shell pwd)/lxc.conf -n win-builds-$(VERSION) -s lxc.mount=$(shell pwd)/lxc_mount --
 else

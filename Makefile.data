@@ -21,4 +21,8 @@ export MIRROR := http://win-builds.org/$(VERSION)/tarballs
 
 -include Makefile.data.local
 
+PREFIX := $(shell cd $(dir $(lastword $(MAKEFILE_LIST))) && pwd)/deps/prefix
+PATH := $(PREFIX)/bin:$(PATH)
+LD_LIBRARY_PATH := $(PREFIX)/lib:$(LD_LIBRARY_PATH)
+
 SUB_MAKEFLAGS ?= -j5
