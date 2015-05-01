@@ -6,7 +6,7 @@ DOWNLOAD_AND_EXTRACT = \
 	rm -rf "$(1)" \
 	&& mkdir -p tarballs \
 	&& if ! [ -e "tarballs/$(1).$(2)" ]; then \
-		(cd tarballs && wget "$(YYPKG_FILES)/$(1).$(2)") \
+		(cd tarballs && curl "$(YYPKG_FILES)/$(1).$(2)" > "$(1).$(2)") \
 	fi \
 	&& tar xf "tarballs/$(1).$(2)"
 
