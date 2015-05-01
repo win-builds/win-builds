@@ -52,6 +52,7 @@ bash:
 
 tar:
 	$(call DOWNLOAD_AND_EXTRACT,tar-$(TAR_VERSION),tar.xz)
+	export FORCE_UNSAFE_CONFIGURE=1; \
 	$(call BUILD_AUTOTOOLS,tar,$(TAR_VERSION),)
 
 patch:
