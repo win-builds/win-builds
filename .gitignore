@@ -52,3 +52,5 @@ deps/yypkg-*
 deps/bash-*
 deps/tar-*
 deps/patch-*
+deps/libarchive-*
+deps/xz-*

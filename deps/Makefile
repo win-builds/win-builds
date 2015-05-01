@@ -29,7 +29,11 @@ P = patch --verbose -p1 < "$(PATCHES)/$(1).patch"
 
 all: coreutils make sed findutils patch tar bash libarchive yypkg
 
-coreutils: make
+xz:
+	$(call DOWNLOAD_AND_EXTRACT,xz-$(XZ_VERSION),tar.bz2)
+	$(call BUILD_AUTOTOOLS,xz,$(XZ_VERSION),)
+
+coreutils: make xz
 	$(call DOWNLOAD_AND_EXTRACT,coreutils-$(COREUTILS_VERSION),tar.xz)
 	export FORCE_UNSAFE_CONFIGURE=1; \
 	$(call BUILD_AUTOTOOLS,coreutils,$(COREUTILS_VERSION),--without-gmp)
@@ -38,11 +42,11 @@ make:
 	$(call DOWNLOAD_AND_EXTRACT,make-$(MAKE_VERSION),tar.bz2)
 	$(call BUILD_AUTOTOOLS,make,$(MAKE_VERSION),)
 
-findutils:
+findutils: xz
 	$(call DOWNLOAD_AND_EXTRACT,findutils-$(FINDUTILS_VERSION),tar.xz)
 	$(call BUILD_AUTOTOOLS,findutils,$(FINDUTILS_VERSION),)
 
-sed:
+sed: xz
 	$(call DOWNLOAD_AND_EXTRACT,sed-$(SED_VERSION),tar.xz)
 	$(call BUILD_AUTOTOOLS,sed,$(SED_VERSION),)
 
@@ -50,7 +54,7 @@ bash:
 	$(call DOWNLOAD_AND_EXTRACT,bash-$(BASH_VERSION),tar.gz)
 	$(call BUILD_AUTOTOOLS,bash,$(BASH_VERSION),)
 
-tar:
+tar: xz
 	$(call DOWNLOAD_AND_EXTRACT,tar-$(TAR_VERSION),tar.xz)
 	export FORCE_UNSAFE_CONFIGURE=1; \
 	$(call BUILD_AUTOTOOLS,tar,$(TAR_VERSION),)
@@ -59,11 +63,11 @@ patch:
 	$(call DOWNLOAD_AND_EXTRACT,patch-$(PATCH_VERSION),tar.bz2)
 	$(call BUILD_AUTOTOOLS,patch,$(PATCH_VERSION),)
 
-libarchive:
+libarchive: xz
 	$(call DOWNLOAD_AND_EXTRACT,libarchive-$(LIBARCHIVE_VERSION),tar.gz)
 	$(call BUILD_AUTOTOOLS,libarchive,$(LIBARCHIVE_VERSION),)
 
-ocaml: make
+ocaml: make xz
 	$(call DOWNLOAD_AND_EXTRACT,ocaml-$(OCAML_VERSION),tar.xz)
 	(cd ocaml-$(OCAML_VERSION) \
 		&& ./configure -no-debugger -prefix $(PREFIX) \
@@ -77,7 +81,7 @@ findlib: ocaml
 		&& gmake \
 		&& gmake install)
 
-libocaml: ocaml findlib
+libocaml: ocaml findlib xz
 	for s in exception option lexing plus ipv4_address ipv6_address uri http; do \
 		$(call DOWNLOAD_AND_EXTRACT,libocaml_$${s}.$(LIBOCAML_VERSION),tar.xz) \
 		&& sed -i '/-w @a-4-6-7-9-23-26-27-29-41/ s/@//' \
@@ -96,7 +100,7 @@ ocaml-fileutils: ocaml findlib
 	&& $(call P,fileutils/0002-FileUtil-symlinks-patch-2)
 	$(call BUILD_OASIS,ocaml-fileutils,$(FILEUTILS_VERSION),)
 
-ocaml-archive: ocaml findlib ocaml-fileutils
+ocaml-archive: ocaml findlib ocaml-fileutils libarchive
 	ocamlfind remove archive
 	$(call DOWNLOAD_AND_EXTRACT,ocaml-archive-$(ARCHIVE_VERSION),tar.gz)
 	cd ocaml-archive-$(ARCHIVE_VERSION) \
@@ -112,7 +116,7 @@ cryptokit: ocaml findlib
 	$(call DOWNLOAD_AND_EXTRACT,cryptokit-$(CRYPTOKIT_VERSION),tar.gz)
 	$(call BUILD_OASIS,cryptokit,$(CRYPTOKIT_VERSION),)
 
-yypkg: ocaml findlib libocaml ocaml-fileutils ocaml-archive cryptokit
+yypkg: ocaml findlib libocaml ocaml-fileutils ocaml-archive cryptokit xz
 	$(call DOWNLOAD_AND_EXTRACT,yypkg-$(YYPKG_VERSION),tar.xz)
 	cd yypkg-$(YYPKG_VERSION) && gmake yypkg-no-gui
 	cp -L yypkg-$(YYPKG_VERSION)/src/yypkg.native $(PREFIX)/bin/yypkg
