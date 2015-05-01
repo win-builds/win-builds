@@ -49,3 +49,6 @@ deps/cryptokit-*
 deps/libocaml_*
 deps/tarballs
 deps/yypkg-*
+deps/bash-*
+deps/tar-*
+deps/patch-*
