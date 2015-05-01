@@ -8,7 +8,10 @@ DOWNLOAD_AND_EXTRACT = \
 	&& if ! [ -e "tarballs/$(1).$(2)" ]; then \
 		(cd tarballs && curl "$(YYPKG_FILES)/$(1).$(2)" > "$(1).$(2)") \
 	fi \
-	&& tar xf "tarballs/$(1).$(2)"
+	&& (tar xzf "tarballs/$(1).$(2)" \
+	  || (xz -d < "tarballs/$(1).$(2)" | tar xf - ) \
+	  || tar xjf "tarballs/$(1).$(2)")
+
 
 BUILD_AUTOTOOLS = \
 	cd $(1)-$(2) \
