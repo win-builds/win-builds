@@ -27,7 +27,7 @@ BUILD_OASIS = \
 
 P = patch --verbose -p1 < "$(PATCHES)/$(1).patch"
 
-all: coreutils make sed findutils yypkg
+all: coreutils make sed findutils patch tar bash yypkg
 
 coreutils: make
 	$(call DOWNLOAD_AND_EXTRACT,coreutils-$(COREUTILS_VERSION),tar.xz)
