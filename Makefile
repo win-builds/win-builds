@@ -25,7 +25,7 @@ build: lxc_mount
 else
 build:
 endif
-	$(LXC_EXECUTE) $$(which make) build_real \
+	$(LXC_EXECUTE) $$(which gmake) build_real \
 		NATIVE_TOOLCHAIN="$(NATIVE_TOOLCHAIN)" \
 		CROSS_TOOLCHAIN_32="$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_32)" \
 		CROSS_TOOLCHAIN_64="$(CROSS_TOOLCHAIN),$(CROSS_TOOLCHAIN_64)" \
@@ -37,10 +37,10 @@ endif
 		PREFIX="$(PREFIX)"
 
 deps:
-	make -C deps PREFIX="$(PREFIX)" PATH="$(PATH)" LD_LIBRARY_PATH="$(LD_LIBRARY_PATH)"
+	gmake -C deps PREFIX="$(PREFIX)" PATH="$(PATH)" LD_LIBRARY_PATH="$(LD_LIBRARY_PATH)"
 
 tarballs-upload:
-	LOGLEVEL=dbg make WINDOWS= CROSS_TOOLCHAIN= NATIVE= 2>&1 \
+	LOGLEVEL=dbg gmake WINDOWS= CROSS_TOOLCHAIN= NATIVE= 2>&1 \
 	  | sed -n 's; [^ ]\+ -> source=\(.\+/.\+/.\+\);\1; p' > file_list
 	rsync -avP --delete-after --files-from=file_list .. $(WEB)/$(VERSION)/tarballs/$$dir/
 	rm file_list
