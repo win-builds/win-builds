@@ -19,8 +19,8 @@ DOWNLOAD_AND_EXTRACT = \
 BUILD_AUTOTOOLS = \
 	cd $(1)-$(2) \
 	&& ./configure --prefix=$(PREFIX) $(3) \
-	&& gmake -j4 \
-	&& gmake install
+	&& $(MAKE) \
+	&& $(MAKE) install
 
 BUILD_OASIS = \
 	cd $(1)-$(2) \
@@ -74,15 +74,15 @@ ocaml: make xz
 	$(call DOWNLOAD_AND_EXTRACT,ocaml-$(OCAML_VERSION),tar.xz)
 	(cd ocaml-$(OCAML_VERSION) \
 		&& ./configure -no-debugger -prefix $(PREFIX) \
-		&& gmake world.opt \
-		&& gmake install)
+		&& $(MAKE) -j1 world.opt \
+		&& $(MAKE) -j1 install)
 
 findlib: ocaml
 	$(call DOWNLOAD_AND_EXTRACT,findlib-$(FINDLIB_VERSION),tar.gz)
 	(cd findlib-$(FINDLIB_VERSION) \
 		&& ./configure -no-camlp4 \
-		&& gmake \
-		&& gmake install)
+		&& $(MAKE) \
+		&& $(MAKE) install)
 
 libocaml: ocaml findlib xz
 	for s in exception option lexing plus ipv4_address ipv6_address uri http; do \
@@ -92,7 +92,7 @@ libocaml: ocaml findlib xz
 	done
 	cp post-ocamllex libocaml_lexing.$(LIBOCAML_VERSION)/src
 	for s in exception option lexing plus ipv4_address ipv6_address uri http; do \
-		(cd libocaml_$${s}.$(LIBOCAML_VERSION) && gmake && gmake install); \
+		(cd libocaml_$${s}.$(LIBOCAML_VERSION) && $(MAKE) && $(MAKE) install); \
 	done
 
 ocaml-fileutils: ocaml findlib
@@ -121,7 +121,7 @@ cryptokit: ocaml findlib
 
 yypkg: ocaml findlib libocaml ocaml-fileutils ocaml-archive cryptokit xz
 	$(call DOWNLOAD_AND_EXTRACT,yypkg-$(YYPKG_VERSION),tar.xz)
-	cd yypkg-$(YYPKG_VERSION) && gmake yypkg-no-gui
+	cd yypkg-$(YYPKG_VERSION) && $(MAKE) yypkg-no-gui
 	cp -L yypkg-$(YYPKG_VERSION)/src/yypkg.native $(PREFIX)/bin/yypkg
 
 .PHONY: coreutils make ocaml findlib sed findutils yypkg
