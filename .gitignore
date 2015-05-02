@@ -54,3 +54,4 @@ deps/tar-*
 deps/patch-*
 deps/libarchive-*
 deps/xz-*
+deps/m4-*
