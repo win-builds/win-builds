@@ -36,7 +36,7 @@ xz:
 	$(call DOWNLOAD_AND_EXTRACT,xz-$(XZ_VERSION),tar.bz2)
 	$(call BUILD_AUTOTOOLS,xz,$(XZ_VERSION),)
 
-coreutils: make xz
+coreutils: xz
 	$(call DOWNLOAD_AND_EXTRACT,coreutils-$(COREUTILS_VERSION),tar.xz)
 	export FORCE_UNSAFE_CONFIGURE=1; \
 	$(call BUILD_AUTOTOOLS,coreutils,$(COREUTILS_VERSION),--without-gmp)
