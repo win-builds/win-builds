@@ -37,10 +37,10 @@ endif
 		PREFIX="$(PREFIX)"
 
 deps:
-	gmake -C deps PREFIX="$(PREFIX)" PATH="$(PATH)" LD_LIBRARY_PATH="$(LD_LIBRARY_PATH)"
+	$(MAKE) -C deps PREFIX="$(PREFIX)" PATH="$(PATH)" LD_LIBRARY_PATH="$(LD_LIBRARY_PATH)"
 
 tarballs-upload:
-	LOGLEVEL=dbg gmake WINDOWS= CROSS_TOOLCHAIN= NATIVE= 2>&1 \
+	LOGLEVEL=dbg $(MAKE) WINDOWS= CROSS_TOOLCHAIN= NATIVE= 2>&1 \
 	  | sed -n 's; [^ ]\+ -> source=\(.\+/.\+/.\+\);\1; p' > file_list
 	rsync -avP --delete-after --files-from=file_list .. $(WEB)/$(VERSION)/tarballs/$$dir/
 	rm file_list
