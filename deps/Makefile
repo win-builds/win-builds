@@ -1,5 +1,8 @@
 include ../Makefile.data
 
+export LIBRARY_PATH:=$(PREFIX)/lib:$(LIBRARY_PATH)
+export C_INCLUDE_PATH:=$(PREFIX)/include:$(C_INCLUDE_PATH)
+
 PATCHES := $(shell pwd)/patches
 
 DOWNLOAD_AND_EXTRACT = \
