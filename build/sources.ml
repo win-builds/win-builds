@@ -132,7 +132,7 @@ module Tarball = struct
           log dbg "File %S exists and has the right SHA1.\n%!" file;
           true
         with Failure _ ->
-          log dbg "File %S exists and doesn't have the right SHA1\n%!." file;
+          log dbg "File %S exists and doesn't have the right SHA1.\n%!" file;
           false
         )
         in
