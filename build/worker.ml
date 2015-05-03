@@ -156,7 +156,7 @@ let add ~push ~builder =
     let p = {
       package; variant; dir; dependencies;
       version; build;
-      sources = List.map (substitute_variables_sources ~dir ~package ~dict) sources;
+      sources;
       outputs = List.map (substitute_variables ~dict) outputs;
       to_build = false;
       devshell = false;
