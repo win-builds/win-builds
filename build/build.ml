@@ -69,7 +69,7 @@ let () =
     (if enough_ram = 0 then
       List.iter Thread.join (List.map run_builder builders)
     else (
-      Printf.eprintf "Detected less than 2GB of free RAM; building sequentially.";
+      Printf.eprintf "Detected less than 2GB of free RAM; building sequentially.\n%!";
       List.iter (fun builder -> Thread.join (run_builder builder)) builders;
     )
     );
