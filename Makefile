@@ -1,11 +1,5 @@
 include Makefile.data
 
-ifneq ($(WITH_LXC),)
-LXC_EXECUTE=lxc-execute -f $(shell pwd)/lxc.conf -n win-builds-$(VERSION) -s lxc.mount=$(shell pwd)/lxc_mount --
-else
-LXC_EXECUTE=
-endif
-
 default: build
 
 build_real:
@@ -15,15 +9,25 @@ build_real:
 	  ocaml unix.cma str.cma -I +threads threads.cma -stdin $(VERSION)
 
 ifneq ($(WITH_LXC),)
-build: lxc_mount
+
+YYBASEPATH = /opt
+LXC_EXECUTE = lxc-execute -f $(shell pwd)/lxc.conf -n win-builds-$(VERSION) -s lxc.mount=$(shell pwd)/lxc_mount --
+
+build:
 	: > lxc_mount
 	P=$(shell cd .. && pwd)/opt; \
 	for f in native_toolchain {cross_toolchain,windows}_{32,64}; do \
 	  mkdir -p "$${P}/$${f}"; \
 	  echo "$${P}/$${f} /opt/$${f} none bind,create=dir 0 0" >> lxc_mount; \
 	done
+
 else
+
+YYBASEPATH ?= $(shell cd .. && pwd)/opt
+LXC_EXECUTE =
+
 build:
+
 endif
 	$(LXC_EXECUTE) $$(which gmake) build_real \
 		NATIVE_TOOLCHAIN="$(NATIVE_TOOLCHAIN)" \
