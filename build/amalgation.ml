@@ -28,12 +28,12 @@ let rec use ?(toplevel = false) ?(extras = []) file =
     Printf.printf "# 1 \"%s [header]\"\n" file;
     Printf.printf "let dir = %S in\n" (Filename.dirname dir);
     Printf.printf "let name = %S in\n" (Filename.basename dir);
-    if Str.string_match re_variant basename 0 then (
+    (if Str.string_match re_variant basename 0 then (
       Printf.printf "let variant = Some %S in\n" (Str.matched_group 1 basename);
     )
     else (
       Printf.printf "let variant = None in\n";
-    )
+    ));
   ));
   Printf.printf "# 1 %S\n" file;
   (try
@@ -50,7 +50,13 @@ let rec use ?(toplevel = false) ?(extras = []) file =
     done
   with End_of_file -> ());
   (if toplevel then
-    Printf.printf "end\n");
+    Printf.printf "end\n"
+  else (
+    Printf.printf "# 1 \"%s [trailer]\"\n" file;
+    Printf.printf "let dir = Lib.Poison in\n";
+    Printf.printf "let name = Lib.Poison in\n";
+    Printf.printf "ignore dir; ignore name;\n";
+  ));
   close_in ic
 ;;
 

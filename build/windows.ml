@@ -90,11 +90,11 @@ let do_adds builder =
 #use "slackware64-current/d/libtool/wb.ml"
 #use "slackware64-current/d/automake/wb.ml"
 #use "mingw/mingw-w64/wb:headers.ml"
-  let mingw_w64_full = mingw_w64_add (name, variant)
+  let mingw_w64_full = mingw_w64_add ("mingw-w64", Some "full")
     ~build:2
     ~dependencies:[]
   in
-  let winpthreads = mingw_w64_add (name, variant)
+  let winpthreads = mingw_w64_add ("mingw-w64", None)
     ~dependencies:[]
     ~build:2
   in
@@ -160,8 +160,8 @@ let do_adds builder =
 #use "slackware64-current/l/libxml2/wb.ml"
 #use "slackware64-current/l/libcroco/wb.ml"
 
-    let gettext_tools = add (name, variant)
-      ~dir:gettext_dir
+    let gettext_tools = add ("gettext-tools", None)
+      ~dir:"slackware64-current/d"
       (* check that it indeed depends on gettext *)
       ~dependencies:[ libcroco; gettext ]
       ~version:gettext_version
@@ -187,7 +187,7 @@ let do_adds builder =
 #use "slackware64-current/n/wget/wb.ml"
 #use "slackware64-current/d/binutils/wb.ml"
 #use "slackware64-current/d/gcc/wb:core.ml"
-    let gcc_full = gcc_add (name, variant)
+    let gcc_full = gcc_add ("gcc", Some "full")
       ~build:2 ~dependencies:[ binutils; gcc_core; mpfr; gmp; libmpc ]
     in
 

@@ -1,3 +1,5 @@
+type poison = Poison
+
 let cri = 0
 let err = 1
 let wrn = 2

@@ -32,17 +32,12 @@ let do_adds builder =
 #use "slackware64-current/d/binutils/wb.ml"
 #use "mingw/mingw-w64/wb:headers.ml"
 #use "slackware64-current/d/gcc/wb:core.ml"
-  let mingw_w64_full = mingw_w64_add (name, variant)
-    ~build:2
-    ~dependencies:[ binutils; gcc_core ]
-  in
-  let winpthreads = mingw_w64_add (name, variant)
+#use "mingw/mingw-w64/wb:full.ml"
+  let winpthreads = mingw_w64_add ("winpthreads", None)
     ~dependencies:[ binutils; gcc_core; mingw_w64_full ]
     ~build:2
   in
-  let gcc_full = gcc_add (name, variant)
-    ~build:2 ~dependencies:[ binutils; gcc_core; mingw_w64_full; winpthreads ]
-  in
+#use "slackware64-current/d/gcc/wb:full.ml"
 #use "mingw/gendef/wb.ml"
 #use "mingw/genidl/wb.ml"
 #use "mingw/genpeimg/wb.ml"
