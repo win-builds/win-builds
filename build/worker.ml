@@ -82,7 +82,7 @@ let build_one ~env ~builder p =
   )
 
 let build_env builder =
-  run [| "mkdir"; "-p"; builder.yyoutput; builder.logs |] ();
+  run ~env:[||] [| "mkdir"; "-p"; builder.yyoutput; builder.logs |] ();
   let env = env builder in
   (if not (Sys.file_exists builder.prefix.yyprefix)
     || Sys.readdir builder.prefix.yyprefix = [| |] then

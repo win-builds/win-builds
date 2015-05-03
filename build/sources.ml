@@ -113,7 +113,7 @@ end
 module Tarball = struct
   let get (file, sha1) =
     let download ~file =
-      run [| "curl"; "-o"; file; Filename.concat (Sys.getenv "MIRROR") file |] ()
+      run ~env:[||] [| "curl"; "-o"; file; Filename.concat (Sys.getenv "MIRROR") file |] ()
     in
     let file_matches_sha1 ~sha1 ~file =
       if sha1 = "" then
@@ -125,7 +125,9 @@ module Tarball = struct
         assert (l = Unix.write pipe_write line 0 l);
         Unix.close pipe_write;
         let res = (try
-          run ~stdin:pipe_read [| "sha1sum"; "--status"; "--check"; "--strict" |] ();
+          run ~stdin:pipe_read ~env:[||]
+            [| "sha1sum"; "--status"; "--check"; "--strict" |] ();
+          log dbg "File %S exists and has the right SHA1.\n%!" file;
           true
         with Failure _ ->
           false
