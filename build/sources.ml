@@ -116,9 +116,11 @@ module Tarball = struct
       run ~env:[||] [| "curl"; "-o"; file; Filename.concat (Sys.getenv "MIRROR") file |] ()
     in
     let file_matches_sha1 ~sha1 ~file =
-      if sha1 = "" then
+      if sha1 = "" then (
+        log dbg "File %S exists and has no SHA1 constraint.\n%!" file;
         true
-      else
+      )
+      else (
         let pipe_read, pipe_write = Unix.pipe () in
         let line = Lib.sp "%s *%s\n" sha1 file in
         let l = String.length line in
@@ -130,11 +132,13 @@ module Tarball = struct
           log dbg "File %S exists and has the right SHA1.\n%!" file;
           true
         with Failure _ ->
+          log dbg "File %S exists and doesn't have the right SHA1\n%!." file;
           false
         )
         in
         Unix.close pipe_read;
         res
+      )
     in
     let rec get_file ?(tries=0) ~sha1 ~file =
       let retry () =
@@ -151,7 +155,10 @@ module Tarball = struct
       in
       let matches =
         try
-          (if not (Sys.file_exists file) then download ~file);
+          (if not (Sys.file_exists file) then (
+            log dbg "File %S doesn't exist: downloading.\n%!" file;
+            download ~file
+          ));
           file_matches_sha1 ~sha1 ~file
         with
           _ -> false
