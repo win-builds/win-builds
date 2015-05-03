@@ -161,14 +161,8 @@ module Tarball = struct
     in
     get_file ~tries:3 ~sha1 ~file
 
-  let get ~package = function
-    | Tarball (file, sha1) ->
-        Lib.(log dbg " %s -> source=%s\n%!" package file);
-        get (file, sha1)
-    | WB file ->
-        get (file, "")
-    | _ ->
-        assert false
+  let get ~package (file, sha1) =
+    get (file, sha1)
 
   let ts file =
     Unix.handle_unix_error (fun file -> (Unix.lstat file).Unix.st_mtime) file
@@ -184,9 +178,9 @@ let get =
           let p = Event.sync (Event.receive chan_send) in
           ListLabels.iter p.sources ~f:(fun x -> match x with
             | WB _ -> ()
-            | Tarball _ -> Tarball.get ~package:p.package x
+            | Tarball y -> Tarball.get ~package:p.package y
             | Git.T y -> Git.get y
-            | Patch _ -> Patch.get x
+            | Patch y -> Patch.get y
             | _ -> assert false
           );
           None

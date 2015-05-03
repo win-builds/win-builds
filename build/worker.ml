@@ -146,6 +146,13 @@ let add ~push ~builder =
       else
         []
     in
+    let sources = List.map (substitute_variables_sources ~dir ~package ~dict) sources in
+    (if not is_virtual then (
+      ListLabels.iter sources ~f:(function
+        | Tarball (file, _) -> Lib.(log dbg " %s -> source=%s\n%!" package file)
+        | _ -> ()
+      )
+    ));
     let p = {
       package; variant; dir; dependencies;
       version; build;
