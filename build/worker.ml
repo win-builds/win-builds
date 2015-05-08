@@ -103,6 +103,9 @@ let add ~push ~builder =
   let rec colorize p =
     if not p.to_build then (
       p.to_build <- true;
+      let native_deps = String.concat "," p.native_deps in
+      let cur = try Sys.getenv "NATIVE_TOOLCHAIN" with Not_found -> "" in
+      Unix.putenv "NATIVE_TOOLCHAIN" (String.concat "," [ cur; native_deps ]);
       List.iter colorize p.dependencies
     )
   in
@@ -115,6 +118,7 @@ let add ~push ~builder =
   in
   fun
     ?(outputs = [ default_output () ])
+    ?(native_deps = [])
     ~dir ~dependencies ~version ~build ~sources
     (package, variant)
   ->
@@ -155,7 +159,7 @@ let add ~push ~builder =
       )
     ));
     let p = {
-      package; variant; dir; dependencies;
+      package; variant; dir; dependencies; native_deps;
       version; build;
       sources;
       outputs = List.map (substitute_variables ~dict) outputs;

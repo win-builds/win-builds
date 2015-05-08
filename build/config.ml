@@ -106,6 +106,7 @@ module Package = struct
     package : string;
     variant : string option;
     dependencies : t list;
+    native_deps : string list;
     version : string;
     build : int;
     sources : source list;
