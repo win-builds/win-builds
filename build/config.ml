@@ -201,7 +201,7 @@ module Builder = struct
     Filename.concat prefix.Prefix.yyprefix "bin"
 
   let shall_build builder_name =
-    let l = try Sys.getenv (String.uppercase builder_name) with Not_found -> "all" in
+    let l = try Sys.getenv (String.uppercase builder_name) with Not_found -> "" in
     let h = Hashtbl.create 200 in
     ListLabels.iter (Str.split (Str.regexp ",") l) ~f:(fun e ->
       match Str.split (Str.regexp ":") e with
@@ -209,6 +209,7 @@ module Builder = struct
       | [ n; "devshell" ] -> Hashtbl.add h (n, None, true) true
       | [ n; v ] -> Hashtbl.add h (n, Some v, false) true
       | [ n; v; "devshell" ] -> Hashtbl.add h (n, Some v, true) true
+      | [ ] -> ()
       | _ -> assert false
     );
     fun p -> Hashtbl.mem h Package.(p.package, p.variant, p.devshell)
