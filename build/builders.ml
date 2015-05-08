@@ -20,8 +20,10 @@ module Native_toolchain = struct
       target_prefix = None;
       cross_prefix  = None;
       native_prefix = None;
+      cross_name = None;
       packages = [];
       redistributed = false;
+      default_cross_deps = [];
     }
 end
 
@@ -49,8 +51,10 @@ module Cross_toolchain = struct
       target_prefix = None; (* updated from the Windows module *)
       cross_prefix  = None;
       native_prefix = Some native_prefix.yyprefix;
+      cross_name = None;
       packages = [];
       redistributed = false;
+      default_cross_deps = [];
     }
 
   let builder_32 =
@@ -81,8 +85,10 @@ module Windows = struct
       target_prefix = None;
       cross_prefix  = Some cross.Config.Builder.prefix.Prefix.yyprefix;
       native_prefix = Some native_prefix.Prefix.yyprefix;
+      cross_name = Some cross.name;
       packages = [];
       redistributed = false;
+      default_cross_deps = [ "gcc:full" ];
     }
 
   let builder_32 = 

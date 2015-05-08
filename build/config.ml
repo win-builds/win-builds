@@ -107,6 +107,7 @@ module Package = struct
     variant : string option;
     dependencies : t list;
     native_deps : string list;
+    cross_deps : string list;
     version : string;
     build : int;
     sources : source list;
@@ -155,7 +156,9 @@ module Builder = struct
     mutable cross_prefix : string option;
     (* prefix of the cross system *)
     mutable target_prefix : string option;
+    cross_name : string option;
     mutable packages : Package.t list;
+    default_cross_deps : string list;
     redistributed : bool;
   }
 

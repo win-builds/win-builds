@@ -100,12 +100,18 @@ let build_env builder =
 
 let add ~push ~builder =
   let shall_build = shall_build builder.name in
+  let add_cross_builder_deps ~builder_name l =
+    let v = String.uppercase builder_name in
+    let new_deps = String.concat "," l in
+    let cur = try Sys.getenv v with Not_found -> "" in
+    Unix.putenv v (String.concat "," [ cur; new_deps ])
+  in
   let rec colorize p =
     if not p.to_build then (
       p.to_build <- true;
-      let native_deps = String.concat "," p.native_deps in
-      let cur = try Sys.getenv "NATIVE_TOOLCHAIN" with Not_found -> "" in
-      Unix.putenv "NATIVE_TOOLCHAIN" (String.concat "," [ cur; native_deps ]);
+      add_cross_builder_deps ~builder_name:"native_toolchain" p.native_deps;
+      may (fun n -> add_cross_builder_deps ~builder_name:n p.cross_deps)
+        builder.cross_name;
       List.iter colorize p.dependencies
     )
   in
@@ -119,6 +125,7 @@ let add ~push ~builder =
   fun
     ?(outputs = [ default_output () ])
     ?(native_deps = [])
+    ?(cross_deps = builder.default_cross_deps)
     ~dir ~dependencies ~version ~build ~sources
     (package, variant)
   ->
@@ -159,7 +166,7 @@ let add ~push ~builder =
       )
     ));
     let p = {
-      package; variant; dir; dependencies; native_deps;
+      package; variant; dir; dependencies; native_deps; cross_deps;
       version; build;
       sources;
       outputs = List.map (substitute_variables ~dict) outputs;
