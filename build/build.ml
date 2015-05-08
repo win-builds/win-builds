@@ -10,51 +10,41 @@ let check_euid () =
   )
 
 let build ~failer builder =
-  let something_to_do =
+  let did_something = ref false in
+  let packages = List.filter (fun p -> p.to_build) builder.packages in
+  (if packages <> [] then (
+    progress "[%s] Checking %s\n%!"
+      builder.prefix.nickname
+      (String.concat ", " (List.map to_name packages));
+    let env = Worker.build_env builder in
+    let rec aux = function
+      | { package = "download" } :: tl ->
+          run ~env [| "yypkg"; "--web"; "--auto"; "yes" |] ();
+          aux tl
+      | p :: tl ->
+          check_euid ();
+          if not (try Worker.build_one ~builder ~env p; true with _ -> false) then (
+            failer := true;
+            prerr_endline ("Build of " ^ p.package ^ " failed.")
+          )
+          else (
+            did_something := true;
+            if !failer then
+              prerr_endline "Aborting because another thread did so."
+            else
+              aux tl
+          )
+      | [] ->
+          ()
+    in
+    aux packages
+  ));
+  if !did_something then (
+    progress "[%s] Setting up repository.\n%!" builder.prefix.nickname;
     try
-      let l = Sys.getenv (String.uppercase builder.name) in
-      ignore (Str.search_forward (Str.regexp "[^,]") l 0);
-      true
-    with _ ->
-      false
-  in
-  if something_to_do then (
-    check_euid ();
-    let packages = List.filter (fun p -> p.to_build) builder.packages in
-    (if packages <> [] then (
-      progress "[%s] Checking %s\n%!"
-        builder.prefix.nickname
-        (String.concat ", " (List.map to_name packages));
-      let env = Worker.build_env builder in
-      let rec aux = function
-        | { package = "download" } :: tl ->
-            run ~env [| "yypkg"; "--web"; "--auto"; "yes" |] ();
-            aux tl
-        | p :: tl ->
-            if not (try Worker.build_one ~builder ~env p; true with _ -> false) then (
-              failer := true;
-              prerr_endline ("Build of " ^ p.package ^ " failed.")
-            )
-            else (
-              if !failer then
-                prerr_endline "Aborting because another thread did so."
-              else
-                aux tl
-            )
-        | [] ->
-            ()
-      in
-      aux packages
-    ));
-    if try (Sys.readdir builder.yyoutput) <> [| |] with _ -> false then (
-      progress "[%s] Setting up repository.\n%!" builder.prefix.nickname;
-      try
-        run [| "yypkg"; "--repository"; "--generate"; builder.yyoutput |] ()
-      with _ -> Printf.eprintf "ERROR: Couldn't create repository!\n%!"
-    )
+      run [| "yypkg"; "--repository"; "--generate"; builder.yyoutput |] ()
+    with _ -> Printf.eprintf "ERROR: Couldn't create repository!\n%!"
   )
-  else
-    ()
 
 (* This is the only acceptable umask when building packets. Any other gives
  * wrong permissions in the packages, like 711 for /usr, and will break
