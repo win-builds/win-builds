@@ -1,7 +1,6 @@
 let do_adds builder =
   let open Sources in
-  let add_full = Worker.register ~builder in
-  let add = add_full ?outputs:None in
+  let add = Worker.register ~builder in
 
   let xz_add ~variant ~dependencies =
     add ("xz", Some variant)
@@ -374,7 +373,7 @@ ignore efl;
 
 #extras
 
-    add_full ("all", None)
+    add ("all", None)
       ~dir:""
       ~dependencies:[
         autoconf; automake; libtool; gettext_tools;
@@ -479,7 +478,7 @@ ignore efl;
       ]
     in
 
-    add_full ("experimental", None)
+    add ("experimental", None)
       ~dir:""
       ~dependencies:[
       ]
@@ -550,7 +549,7 @@ ignore efl;
 
   let _download =
     (* fake package to reserve the name and make it known to the builder *)
-    add_full ("download", None)
+    add ("download", None)
       ~dir:""
       ~dependencies:[]
       ~version:"0.0.0"
@@ -580,7 +579,7 @@ ignore efl;
       ]
     in
 
-    add_full ("disabled", None)
+    add ("disabled", None)
       ~dir:""
       ~dependencies:[]
       ~version:"0.0.0"

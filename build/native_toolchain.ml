@@ -1,7 +1,5 @@
-let add_full =
+let add =
   Worker.register ~builder:Builders.Native_toolchain.builder
-
-let add = add_full ?outputs:None
 
 let _ =
   let open Sources in
@@ -17,7 +15,7 @@ let _ =
 
 #extras
 
-  let _all = add_full ("all", None)
+  let _all = add ("all", None)
     ~dir:""
     ~dependencies:[ autoconf; automake; libtool; lua; qt; efl; elementary ]
     ~version:"0.0.0"

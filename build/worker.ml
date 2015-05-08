@@ -113,9 +113,10 @@ let add ~push ~builder =
     else
       "${PACKAGE}-${VERSION}-${BUILD}-${HOST_TRIPLET}.txz"
   in
-  fun (package, variant)
-    ?(outputs=[default_output ()])
+  fun
+    ?(outputs = [ default_output () ])
     ~dir ~dependencies ~version ~build ~sources
+    (package, variant)
   ->
     let is_virtual = (sources = []) in
     let s_of_variant ?(pref="") = function Some v -> pref ^ v | None -> "" in

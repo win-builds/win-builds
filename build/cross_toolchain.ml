@@ -1,12 +1,12 @@
 let do_adds builder =
   let open Sources in
-  let add_full = Worker.register ~builder in
-  let add = add_full ?outputs:None in
+  let add = Worker.register ~builder in
 
 #use "slackware64-current/d/binutils/wb.ml"
 #use "mingw/mingw-w64/wb:headers.ml"
 #use "slackware64-current/d/gcc/wb:core.ml"
 #use "mingw/mingw-w64/wb:full.ml"
+(* pseh *)
   let winpthreads = mingw_w64_add ("winpthreads", None)
     ~dependencies:[ binutils; gcc_core; mingw_w64_full ]
     ~build:2
@@ -27,7 +27,7 @@ let do_adds builder =
 
 #extras
 
-  let _all = add_full ("all", None)
+  let _all = add ("all", None)
     ~dir:""
     ~dependencies:[
       gcc_full; mingw_w64_full; binutils; mingw_w64_full;
@@ -39,7 +39,7 @@ let do_adds builder =
     ~outputs:[]
   in
 
-  let _yypkg = add_full ("yypkg", None)
+  let _yypkg = add ("yypkg", None)
     ~dir:""
     ~dependencies:[ flexdll; ocaml; ocaml_findlib ]
     ~version:"1.0.0"
