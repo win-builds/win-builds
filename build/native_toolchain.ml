@@ -12,12 +12,18 @@ let _ =
 #use "slackbuilds.org/libraries/efl/wb:for-your-tools-only.ml"
 #use "slackbuilds.org/libraries/elementary/wb:regular.ml"
 #use "slackware64-current/l/qt/wb:native.ml"
+#use "mingw/mingw-w64/wb:common.ml"
+#use "mingw/gendef/wb.ml"
+#use "mingw/genidl/wb.ml"
+#use "mingw/genpeimg/wb.ml"
+#use "mingw/widl/wb.ml"
 
 #extras
 
   let _all = add ("all", None)
     ~dir:""
-    ~dependencies:[ autoconf; automake; libtool; lua; qt; efl; elementary ]
+    ~dependencies:[ autoconf; automake; libtool; lua; qt; efl; elementary;
+      gendef; genidl; genpeimg; widl ]
     ~version:"0.0.0"
     ~build:1
     ~sources:[]

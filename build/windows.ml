@@ -64,6 +64,7 @@ let do_adds builder =
 #use "slackware64-current/d/autoconf/wb.ml"
 #use "slackware64-current/d/libtool/wb.ml"
 #use "slackware64-current/d/automake/wb.ml"
+#use "mingw/mingw-w64/wb:common.ml"
 #use "mingw/mingw-w64/wb:headers.ml"
   let mingw_w64_full = mingw_w64_add ("mingw-w64", Some "full")
     ~build:2

@@ -3,6 +3,7 @@ let do_adds builder =
   let add = Worker.register ~builder in
 
 #use "slackware64-current/d/binutils/wb.ml"
+#use "mingw/mingw-w64/wb:common.ml"
 #use "mingw/mingw-w64/wb:headers.ml"
 #use "slackware64-current/d/gcc/wb:core.ml"
 #use "mingw/mingw-w64/wb:full.ml"
@@ -12,10 +13,6 @@ let do_adds builder =
     ~build:2
   in
 #use "slackware64-current/d/gcc/wb:full.ml"
-#use "mingw/gendef/wb.ml"
-#use "mingw/genidl/wb.ml"
-#use "mingw/genpeimg/wb.ml"
-#use "mingw/widl/wb.ml"
 #use "mingw/flexdll/wb.ml"
 #use "slackbuilds.org/ocaml/ocaml/wb.ml"
   let ocaml = ocaml_add
@@ -30,8 +27,7 @@ let do_adds builder =
   let _all = add ("all", None)
     ~dir:""
     ~dependencies:[
-      gcc_full; mingw_w64_full; binutils; mingw_w64_full;
-      gendef; genidl; genpeimg; widl; zz_config
+      gcc_full; mingw_w64_full; binutils; mingw_w64_full; zz_config
     ]
     ~version:"0.0.0"
     ~build:1
