@@ -1,30 +1,5 @@
-let builder =
-  let open Config in
-  let build = Arch.slackware in (* XXX *)
-  let host = Arch.slackware in (* XXX *)
-  let target = Arch.slackware in (* XXX *)
-  let prefix = Prefix.t ~build ~host ~target in
-  let logs, yyoutput = Package.logs_yyoutput ~nickname:prefix.Prefix.nickname in
-  let open Arch in
-  let open Prefix in
-  let open Package in
-  let open Builder in
-  {
-    name = "native_toolchain";
-    prefix; logs; yyoutput;
-    path = Env.Prepend [ bindir prefix ];
-    pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
-    pkg_config_libdir = Env.Keep;
-    tmp = Env.Set [ Filename.concat prefix.yyprefix "tmp" ];
-    target_prefix = None;
-    cross_prefix  = None;
-    native_prefix = None;
-    packages = [];
-    redistributed = false;
-  }
-
 let add_full =
-  Worker.register ~builder
+  Worker.register ~builder:Builders.Native_toolchain.builder
 
 let add = add_full ?outputs:None
 

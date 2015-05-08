@@ -1,27 +1,3 @@
-let builder ~cross ~name ~host =
-  let open Config in
-  let build = Arch.slackware in
-  let prefix = Prefix.t ~build ~host ~target:host in
-  let logs, yyoutput = Package.logs_yyoutput ~nickname:prefix.Prefix.nickname in
-  cross.Config.Builder.target_prefix <- Some prefix.Prefix.yyprefix;
-  let open Arch in
-  let open Prefix in
-  let open Package in
-  let open Builder in
-  {
-    name;
-    prefix; logs; yyoutput;
-    path = Env.Prepend [ bindir cross.prefix; bindir Native_toolchain.builder.prefix ];
-    pkg_config_path = Env.Clear;
-    pkg_config_libdir = Env.Set [ Filename.concat prefix.libdir "pkgconfig" ] ;
-    tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
-    target_prefix = None;
-    cross_prefix  = Some cross.Config.Builder.prefix.Prefix.yyprefix;
-    native_prefix = Some Native_toolchain.builder.prefix.Prefix.yyprefix;
-    packages = [];
-    redistributed = false;
-  }
-
 let do_adds builder =
   let open Sources in
   let add_full = Worker.register ~builder in
@@ -616,11 +592,5 @@ ignore efl;
 
   ()
 
-let builder_32 =
-  builder ~name:"windows_32" ~host:Config.Arch.windows_32 ~cross:Cross_toolchain.builder_32
-let builder_64 =
-  builder ~name:"windows_64" ~host:Config.Arch.windows_64 ~cross:Cross_toolchain.builder_64
-
 let () =
-  do_adds builder_32;
-  do_adds builder_64
+  List.iter do_adds Builders.Windows.[ builder_32; builder_64 ]

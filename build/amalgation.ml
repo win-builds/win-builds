@@ -64,8 +64,9 @@ use ~toplevel:true "win-builds/build/lib.ml";;
 use ~toplevel:true "win-builds/build/config.ml";;
 use ~toplevel:true "win-builds/build/sources.ml";;
 use ~toplevel:true "win-builds/build/worker.ml";;
-use ~toplevel:true "win-builds/build/native_toolchain.ml";;
-use ~toplevel:true "win-builds/build/cross_toolchain.ml";;
+use ~toplevel:true "win-builds/build/builders.ml";;
 use ~toplevel:true "win-builds/build/windows.ml";;
+use ~toplevel:true "win-builds/build/cross_toolchain.ml";;
+use ~toplevel:true "win-builds/build/native_toolchain.ml";;
 use ~toplevel:true "win-builds/build/build.ml";;
 

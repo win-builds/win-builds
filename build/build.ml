@@ -75,7 +75,7 @@ let () =
     );
     (if !failer then failwith "Build failed.")
   in
-  List.iter build [
+  List.iter build Builders.[
     [ Native_toolchain.builder ];
     [ Cross_toolchain.builder_32; Cross_toolchain.builder_64 ];
     [ Windows.builder_32; Windows.builder_64 ];
