@@ -128,8 +128,6 @@ module Package = struct
     Buffer.add_substitute b f s;
     Buffer.contents b
 
-  let sources_dir_ize p = Filename.concat (Filename.concat p.dir p.package)
-
   let logs_yyoutput ~nickname =
     let rel_path l = List.fold_left Filename.concat "" (Lib.work_dir :: l) in
     (rel_path [ "logs"; nickname ]), (rel_path [ "packages"; nickname ])
