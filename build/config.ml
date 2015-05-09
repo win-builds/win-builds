@@ -203,9 +203,6 @@ module Builder = struct
       "YYLOWCOMPRESS", (if t.redistributed then Env.Keep else Env.Set [ "1" ]);
     ])
 
-  let bindir prefix =
-    Filename.concat prefix.Prefix.yyprefix "bin"
-
   let shall_build builder_name =
     let l = try Sys.getenv (String.uppercase builder_name) with Not_found -> "" in
     let h = Hashtbl.create 200 in

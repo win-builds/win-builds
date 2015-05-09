@@ -1,5 +1,7 @@
 type poison = Poison
 
+let (^/) = Filename.concat
+
 let cri = 0
 let err = 1
 let wrn = 2
@@ -61,7 +63,7 @@ let run ?(stdin=Unix.stdin) ?(stdout=Unix.stdout) ?(stderr=Unix.stderr) ?env a =
 let make_path_absolute_if_not path =
   let cwd = Sys.getcwd () in
   if Filename.is_relative path then
-    Filename.concat cwd path
+    cwd ^/ path
   else
     path
 

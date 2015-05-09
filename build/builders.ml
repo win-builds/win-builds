@@ -1,3 +1,5 @@
+open Lib
+
 module Native_toolchain = struct
   let builder =
     let open Config in
@@ -13,7 +15,7 @@ module Native_toolchain = struct
     {
       name = "native_toolchain";
       prefix; logs; yyoutput;
-      path = Env.Prepend [ bindir prefix ];
+      path = Env.Prepend [ prefix.yyprefix ^/ "bin" ];
       pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
       pkg_config_libdir = Env.Keep;
       tmp = Env.Set [ Filename.concat prefix.yyprefix "tmp" ];
@@ -44,7 +46,10 @@ module Cross_toolchain = struct
     {
       name;
       prefix; logs; yyoutput;
-      path = Env.Prepend [ bindir prefix; bindir native_prefix ];
+      path = Env.Prepend [
+        prefix.yyprefix ^/ "bin";
+        native_prefix.yyprefix ^/ "bin"
+      ];
       (* FIXME: this should also include native_prefix *)
       pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
       pkg_config_libdir = Env.Keep;
@@ -80,10 +85,13 @@ module Windows = struct
     {
       name;
       prefix; logs; yyoutput;
-      path = Env.Prepend [ bindir cross.prefix; bindir native_prefix ];
+      path = Env.Prepend [
+        cross.prefix.yyprefix ^/ "bin";
+        native_prefix.yyprefix ^/ "bin"
+      ];
       pkg_config_path = Env.Clear;
-      pkg_config_libdir = Env.Set [ Filename.concat prefix.libdir "pkgconfig" ] ;
-      tmp = Env.Set [ Filename.concat prefix.Prefix.yyprefix "tmp" ];
+      pkg_config_libdir = Env.Set [ prefix.libdir ^/ "pkgconfig" ] ;
+      tmp = Env.Set [ prefix.Prefix.yyprefix ^/ "tmp" ];
       target_prefix = None;
       cross_prefix  = Some cross.Config.Builder.prefix.Prefix.yyprefix;
       native_prefix = Some native_prefix.Prefix.yyprefix;
@@ -91,7 +99,10 @@ module Windows = struct
       packages = [];
       redistributed = false;
       default_cross_deps = [ "gcc:full" ];
-      ld_library_path = Env.Prepend [ cross.prefix.libdir; native_prefix.libdir ];
+      ld_library_path = Env.Prepend [
+        cross.prefix.libdir;
+        native_prefix.libdir
+      ];
     }
 
   let builder_32 = 
