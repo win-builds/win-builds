@@ -3,12 +3,6 @@ open Config.Package
 open Config.Builder
 open Lib
 
-let check_euid () =
-  if Unix.geteuid () != 0 then (
-    Printf.eprintf "This program must be run as root or under fakeroot. Aborting.\n";
-    exit (-1)
-  )
-
 let build ~failer builder =
   let did_something = ref false in
   let packages = List.filter (fun p -> p.to_build) builder.packages in
@@ -22,7 +16,6 @@ let build ~failer builder =
           run ~env [| "yypkg"; "--web"; "--auto"; "yes" |] ();
           aux tl
       | p :: tl ->
-          check_euid ();
           if not (try Worker.build_one ~builder ~env p; true with _ -> false) then (
             failer := true;
             prerr_endline ("Build of " ^ p.package ^ " failed.")

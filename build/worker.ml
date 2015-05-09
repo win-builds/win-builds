@@ -38,6 +38,7 @@ let run_build_shell ~devshell ~run p =
       sp "export PREFIX=\"$(echo \"${YYPREFIX}\" | sed 's;^/;;')\"";
       sp "export VERSION=%S" p.version;
       sp "export BUILD=%d" p.build;
+      sp "if ! chown root:root / 2>/dev/null; then chown() { : ; }; export -f chown; fi";
       sp "if [ -e config%s ]; then . ./config%s; fi" variant variant;
       if not devshell then
         sp "exec bash -x %s.SlackBuild" p.package
