@@ -212,7 +212,7 @@ let timestamp = function
   | _ -> assert false
 
 let substitute_variables_sources ~dir ~package ~dict source =
-  let sources_dir_ize s = Filename.concat (Filename.concat dir package) s in
+  let sources_dir_ize s = (dir ^/ package) ^/ s in
   let subst s = substitute_variables ~dict s in
   match source with
   | WB file -> WB (sources_dir_ize (subst file))

@@ -28,7 +28,7 @@ let needs_rebuild ~sources ~outputs =
     false
 
 let run_build_shell ~devshell ~run p =
-  let dir = Filename.concat p.dir p.package in
+  let dir = p.dir ^/ p.package in
   let variant = match p.variant with None -> "" | Some s -> "-" ^ s in
   run [|
     "sh"; "-cex";
@@ -49,7 +49,7 @@ let run_build_shell ~devshell ~run p =
 
 let build_one_package ~builder ~outputs ~env p =
   let log =
-    let filename = Filename.concat builder.logs (to_name p) in
+    let filename = builder.logs ^/ (to_name p) in
     let flags = [ Unix.O_RDWR; Unix.O_CREAT; Unix.O_TRUNC ] in
     Unix.openfile filename flags 0o644
   in
@@ -68,7 +68,7 @@ let build_one_devshell ~env p =
   run_build_shell ~devshell:true ~run:(run ~env) p
 
 let build_one ~env ~builder p =
-  let outputs = List.map (Filename.concat builder.yyoutput) p.outputs in
+  let outputs = List.map ((^/) builder.yyoutput) p.outputs in
   Sources.get p;
   if p.devshell then
     build_one_devshell ~env p

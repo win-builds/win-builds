@@ -16,9 +16,9 @@ module Native_toolchain = struct
       name = "native_toolchain";
       prefix; logs; yyoutput;
       path = Env.Prepend [ prefix.yyprefix ^/ "bin" ];
-      pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
+      pkg_config_path = Env.Prepend [ prefix.libdir ^/ "pkgconfig" ];
       pkg_config_libdir = Env.Keep;
-      tmp = Env.Set [ Filename.concat prefix.yyprefix "tmp" ];
+      tmp = Env.Set [ prefix.yyprefix ^/ "tmp" ];
       target_prefix = None;
       cross_prefix  = None;
       native_prefix = None;
@@ -51,9 +51,9 @@ module Cross_toolchain = struct
         native_prefix.yyprefix ^/ "bin"
       ];
       (* FIXME: this should also include native_prefix *)
-      pkg_config_path = Env.Prepend [ Filename.concat prefix.libdir "pkgconfig" ];
+      pkg_config_path = Env.Prepend [ prefix.libdir ^/ "pkgconfig" ];
       pkg_config_libdir = Env.Keep;
-      tmp = Env.Set [ Filename.concat prefix.yyprefix "tmp" ];
+      tmp = Env.Set [ prefix.yyprefix ^/ "tmp" ];
       target_prefix = None; (* updated from the Windows module *)
       cross_prefix  = None;
       native_prefix = Some native_prefix.yyprefix;

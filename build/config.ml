@@ -1,3 +1,5 @@
+open Lib
+
 module Env = struct
   type t =
     | Prepend of string list
@@ -80,7 +82,7 @@ module Prefix = struct
   let t ~build ~host ~target =
     let basepath =
       try Sys.getenv "YYBASEPATH" with
-      | Not_found -> Filename.concat (Sys.getcwd ()) "opt"
+      | Not_found -> (Sys.getcwd ()) ^/ "opt"
     in
     let nickname, kind = (* FIXME *)
       if build = host then
@@ -91,9 +93,9 @@ module Prefix = struct
       else
         Lib.sp "windows_%d" host.Arch.bits, "windows"
     in
-    let path = Filename.concat basepath nickname in
+    let path = basepath ^/ nickname in
     let libdir =
-      Filename.concat path (if target.Arch.bits = 32 then "lib" else "lib64")
+      path ^/ (if target.Arch.bits = 32 then "lib" else "lib64")
     in
     { build; host; target; nickname; kind; yyprefix = path; libdir }
 end
@@ -129,7 +131,7 @@ module Package = struct
     Buffer.contents b
 
   let logs_yyoutput ~nickname =
-    let rel_path l = List.fold_left Filename.concat "" (Lib.work_dir :: l) in
+    let rel_path l = List.fold_left (^/) "" (Lib.work_dir :: l) in
     (rel_path [ "logs"; nickname ]), (rel_path [ "packages"; nickname ])
 
   let to_name p =
