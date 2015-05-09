@@ -27,6 +27,8 @@ module Native_toolchain = struct
       redistributed = false;
       default_cross_deps = [];
       ld_library_path = Env.Prepend [ prefix.libdir ];
+      c_path = Env.Prepend [ prefix.yyprefix ^/ "include" ];
+      library_path = Env.Prepend [ prefix.libdir ];
     }
 end
 
@@ -62,6 +64,14 @@ module Cross_toolchain = struct
       redistributed = false;
       default_cross_deps = [];
       ld_library_path = Env.Prepend [ prefix.libdir; native_prefix.libdir ];
+      c_path = Env.Prepend [
+        prefix.yyprefix ^/ "include";
+        native_prefix.yyprefix ^/ "include";
+      ];
+      library_path = Env.Prepend [
+        prefix.libdir;
+        native_prefix.libdir;
+      ];
     }
 
   let builder_32 =
@@ -101,8 +111,10 @@ module Windows = struct
       default_cross_deps = [ "gcc:full" ];
       ld_library_path = Env.Prepend [
         cross.prefix.libdir;
-        native_prefix.libdir
+        native_prefix.libdir;
       ];
+      c_path = Env.Clear;
+      library_path = Env.Clear;
     }
 
   let builder_32 = 

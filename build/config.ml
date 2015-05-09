@@ -161,6 +161,8 @@ module Builder = struct
     default_cross_deps : string list;
     redistributed : bool;
     ld_library_path : Env.t;
+    c_path : Env.t;
+    library_path : Env.t;
   }
 
   let env t =
@@ -173,6 +175,8 @@ module Builder = struct
     Env.to_array (Env.process (Env.get ()) [
       "PATH", t.path;
       "LD_LIBRARY_PATH", t.ld_library_path;
+      "C_PATH", t.c_path;
+      "LIBRARY_PATH", t.library_path;
       "PKG_CONFIG_PATH", t.pkg_config_path; (* FIXME: base on libdir *)
       "PKG_CONFIG_LIBDIR", t.pkg_config_libdir; (* FIXME: base on libdir *)
       "OCAMLFIND_CONF", Env.Set [ t.prefix.P.yyprefix ^ "/etc/findlib.conf" ];
