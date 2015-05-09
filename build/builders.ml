@@ -24,6 +24,7 @@ module Native_toolchain = struct
       packages = [];
       redistributed = false;
       default_cross_deps = [];
+      ld_library_path = Env.Prepend [ prefix.libdir ];
     }
 end
 
@@ -55,6 +56,7 @@ module Cross_toolchain = struct
       packages = [];
       redistributed = false;
       default_cross_deps = [];
+      ld_library_path = Env.Prepend [ prefix.libdir; native_prefix.libdir ];
     }
 
   let builder_32 =
@@ -89,6 +91,7 @@ module Windows = struct
       packages = [];
       redistributed = false;
       default_cross_deps = [ "gcc:full" ];
+      ld_library_path = Env.Prepend [ cross.prefix.libdir; native_prefix.libdir ];
     }
 
   let builder_32 = 
