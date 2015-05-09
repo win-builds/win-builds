@@ -6,6 +6,9 @@ let _ =
 #use "slackware64-current/d/autoconf/wb.ml"
 #use "slackware64-current/d/libtool/wb.ml"
 #use "slackware64-current/d/automake/wb.ml"
+#use "slackware64-current/l/gmp/wb.ml"
+#use "slackware64-current/l/mpfr/wb.ml"
+#use "slackware64-current/l/libmpc/wb.ml"
 #use "slackbuilds.org/ocaml/ocaml/wb.ml"
   let ocaml = ocaml_add ~dependencies:[] in
 #use "slackbuilds.org/development/lua/wb.ml"
@@ -23,7 +26,7 @@ let _ =
   let _all = add ("all", None)
     ~dir:""
     ~dependencies:[ autoconf; automake; libtool; lua; qt; efl; elementary;
-      gendef; genidl; genpeimg; widl ]
+      gendef; genidl; genpeimg; widl; gmp; mpfr; libmpc ]
     ~version:"0.0.0"
     ~build:1
     ~sources:[]
