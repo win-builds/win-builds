@@ -3,10 +3,7 @@ open Lib
 module Native_toolchain = struct
   let builder =
     let open Config in
-    let build = Arch.slackware in (* XXX *)
-    let host = Arch.slackware in (* XXX *)
-    let target = Arch.slackware in (* XXX *)
-    let prefix = Prefix.t ~build ~host ~target in
+    let prefix = Arch.(Prefix.t ~build ~host:build ~target:build) in
     let logs, yyoutput = Package.logs_yyoutput ~nickname:prefix.Prefix.nickname in
     let open Arch in
     let open Prefix in
@@ -35,10 +32,7 @@ end
 module Cross_toolchain = struct
   let make ~name ~target =
     let open Config in
-    let build = Arch.slackware in (* XXX *)
-    (* TODO *)
-    let host = Arch.slackware in (* XXX *)
-    let prefix = Prefix.t ~build ~host ~target in
+    let prefix = Prefix.t ~build:Arch.build ~host:Arch.build ~target in
     let logs, yyoutput = Package.logs_yyoutput ~nickname:prefix.Prefix.nickname in
     let open Arch in
     let open Prefix in
@@ -83,8 +77,7 @@ end
 module Windows = struct
   let make ~cross ~name ~host =
     let open Config in
-    let build = Arch.slackware in
-    let prefix = Prefix.t ~build ~host ~target:host in
+    let prefix = Prefix.t ~build:Arch.build ~host ~target:host in
     let logs, yyoutput = Package.logs_yyoutput ~nickname:prefix.Prefix.nickname in
     cross.Config.Builder.target_prefix <- Some prefix.Prefix.yyprefix;
     let open Arch in

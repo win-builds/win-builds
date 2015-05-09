@@ -32,4 +32,6 @@ PREFIX := $(shell cd $(dir $(lastword $(MAKEFILE_LIST))) && pwd)/deps/prefix
 PATH := $(PREFIX)/bin:$(PATH)
 LD_LIBRARY_PATH := $(PREFIX)/lib:$(LD_LIBRARY_PATH)
 
+BUILD_TRIPLET ?= $(shell ./config.guess)
+
 SUB_MAKEFLAGS ?= -j5

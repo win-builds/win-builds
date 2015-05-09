@@ -46,12 +46,31 @@ module Arch = struct
     exe_format : string;
   }
 
-  let slackware = {
-    triplet = "x86_64-slackware-linux";
-    bits = 64; (* XXX *)
-    strip = "strip";
-    exe_format = "ELF";
-  }
+  let build =
+    let triplet = Sys.getenv "BUILD_TRIPLET" in
+    let components = Str.split (Str.regexp "-") triplet in
+    let bits =
+      match List.hd components with
+      | "x86_64" -> 64
+      | "i686" | "i586" | "i486" | "i386" -> 32
+      | _ -> assert false
+    in
+    let exe_format =
+      match components with
+      | [ _; _; "msys" ] -> "PE"
+      (* The Mac OS X case is listed below but file says
+       * "dynamically linked shared library" while the greps in the slackbuilds
+       * use "executable|shared object". Therefore, build-only libs won't be
+       * stripped but that shouldn't be an issue in practice. *)
+      | [ _; "apple"; _ ] -> "Mach-O"
+      | _ -> "ELF"
+    in
+    {
+      triplet;
+      bits;
+      strip = "strip";
+      exe_format;
+    }
 
   let windows_32 = {
     triplet = "i686-w64-mingw32";
