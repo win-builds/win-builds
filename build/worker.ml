@@ -31,7 +31,7 @@ let run_build_shell ~devshell ~run p =
   let dir = p.dir ^/ p.package in
   let variant = match p.variant with None -> "" | Some s -> "-" ^ s in
   run [|
-    "sh"; "-cex";
+    "bash"; "-cex";
     String.concat "; " [
       sp "cd %S" dir;
       sp "export DESCR=\"$(sed -n 's;^[^:]\\+: ;; p' slack-desc | sed -e 's;\";\\\\\\\\\";g' -e 's;/;\\\\/;g' | tr '\\n' ' ')\"";
