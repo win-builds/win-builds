@@ -2,17 +2,6 @@ let do_adds builder =
   let open Sources in
   let add = Worker.register ~builder in
 
-  let xz_add ~variant ~dependencies =
-    add ("xz", Some variant)
-      ~dir:"slackware64-current/a"
-      ~dependencies
-      ~version:"5.0.5"
-      ~build:(if variant = "regular" then 1 else -1)
-      ~sources:[
-        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "56f1d78117f0c32bbb1cfd40117aa7f55bee8765");
-      ]
-  in
-
   let libarchive_add ~variant ~dependencies =
     add ("libarchive", Some variant)
       ~dir:"slackware64-current/l"
