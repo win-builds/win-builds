@@ -92,6 +92,7 @@ let do_adds builder =
 #use "slackware64-current/n/curl/wb.ml"
 #use "slackbuilds.org/libraries/c-ares/wb.ml"
 #use "mingw/pixman/wb.ml"
+#use "slackware64-current/a/bzip2/wb.ml"
 #use "slackware64-current/l/pcre/wb.ml"
 #use "slackware64-current/l/libffi/wb.ml"
 #use "slackware64-current/l/glib2/wb.ml"
@@ -214,7 +215,6 @@ ignore efl;
 #use "slackware64-current/l/babl/wb.ml"
 #use "slackware64-current/l/gegl/wb.ml"
 #use "slackware64-current/xap/gimp/wb.ml"
-#use "slackware64-current/a/bzip2/wb.ml"
 #use "slackware64-current/l/boost/wb.ml"
 #use "mingw/zz_config/wb.ml"
 
