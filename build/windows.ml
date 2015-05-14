@@ -26,17 +26,6 @@ let do_adds builder =
       ]
   in
 
-  let dbus_add ~variant ~dependencies =
-    add ("dbus", Some variant)
-      ~dir:"slackware64-current/a"
-      ~dependencies
-      ~version:"1.6.28"
-      ~build:(if variant = "regular" then 1 else -1)
-      ~sources:[
-        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "cc8fd21f2123a58ad78c4e50c8f5b330a39cc21f");
-      ]
-  in
-
   let harfbuzz_add ~variant ~dependencies =
     add ("harfbuzz", Some variant)
       ~dir:"slackware64-current/l"
@@ -45,17 +34,6 @@ let do_adds builder =
       ~build:(if variant = "regular" then 2 else -1)
       ~sources:[
         Tarball ("${PACKAGE}-${VERSION}.tar.xz", "d7fa8ef7f2eca07e29d94f448f6196c9b3022d64");
-      ]
-  in
-
-  let fontconfig_add ~variant ~dependencies =
-    add ("fontconfig", Some variant)
-      ~dir:"slackware64-current/x"
-      ~dependencies
-      ~version:"2.11.1"
-      ~build:(if variant = "regular" then 1 else -1)
-      ~sources:[
-        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "4f83bab1834f60345f1ef3920ac393d9f9c609ab");
       ]
   in
 
@@ -90,6 +68,7 @@ let do_adds builder =
       ~sources:gettext_sources
     in
 
+#use "slackware64-current/a/xz/wb:common.ml"
     let xz = xz_add ~variant:"regular" ~dependencies:[ gettext ] in
 
 #use "slackware64-current/l/zlib/wb:regular.ml"
@@ -97,6 +76,7 @@ let do_adds builder =
 #use "slackware64-current/l/expat/wb:regular.ml"
 #use "slackware64-current/l/libpng/wb.ml"
 #use "slackware64-current/l/freetype/wb.ml"
+#use "slackware64-current/x/fontconfig/wb:common.ml"
 
     let fontconfig = fontconfig_add ~variant:"regular" ~dependencies:[ freetype; expat ] in
 
@@ -155,6 +135,7 @@ let do_adds builder =
 #use "slackware64-current/l/libtheora/wb.ml"
 #use "slackware64-current/l/fribidi/wb.ml"
 #use "slackbuilds.org/development/check/wb.ml"
+#use "slackware64-current/a/dbus/wb:common.ml"
 
     let dbus = dbus_add ~variant:"regular" ~dependencies:[ expat ] in
 
