@@ -43,7 +43,7 @@ let run_build_shell ~devshell ~run p =
       if not devshell then
         sp "exec bash -x %s.SlackBuild" p.package
       else
-        sp "exec /bin/bash --norc"
+        sp "exec bash --norc"
 
     ]
   |] ()
