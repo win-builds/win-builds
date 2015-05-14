@@ -61,7 +61,7 @@ let do_adds builder =
     let xz = xz_add ~variant:"regular" ~dependencies:[ gettext ] in
 
 #use "slackware64-current/l/zlib/wb:regular.ml"
-#use "slackware64-current/l/libjpeg/wb:regular.ml"
+#use "slackware64-current/l/libjpeg-turbo/wb.ml"
 #use "slackware64-current/l/expat/wb:regular.ml"
 #use "slackware64-current/l/libpng/wb.ml"
 #use "slackware64-current/l/freetype/wb.ml"
@@ -355,7 +355,7 @@ ignore efl;
         jansson; libsigc_plus_plus;
         zlib; xz; winpthreads; pkg_config; libarchive;
         wget; dejavu_fonts_ttf;
-        openjpeg; sdl2; libgcrypt;
+        libjpeg_turbo; openjpeg; sdl2; libgcrypt;
         glib_networking; libxml2; libsoup; djvulibre; a52dec; libmpeg2;
         pcre; libxslt; libdvdread; libdvdnav; libdvdcss;
         gendef; genidl; genpeimg; widl; libmangle; winstorecompat;
