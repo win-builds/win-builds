@@ -134,9 +134,8 @@ let do_adds builder =
 #use "slackware64-current/n/wget/wb.ml"
 #use "slackware64-current/d/binutils/wb.ml"
 #use "slackware64-current/d/gcc/wb:core.ml"
-    let gcc_full = gcc_add ("gcc", Some "full")
-      ~build:2 ~dependencies:[ binutils; gcc_core; mpfr; gmp; libmpc ]
-    in
+    let gcc_dependencies = [ binutils; mpfr; gmp; libmpc; winpthreads ] in
+#use "slackware64-current/d/gcc/wb:full.ml"
 
 #use "slackbuilds.org/multimedia/x264/wb.ml"
 #use "slackware64-current/l/libao/wb.ml"
