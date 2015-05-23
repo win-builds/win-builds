@@ -115,6 +115,7 @@ let do_adds builder =
     let libarchive = libarchive_add ~variant:"regular" ~dependencies:[ nettle ] in
 
 #use "slackware64-current/n/wget/wb.ml"
+    let binutils_dependencies = [ zlib ] in
 #use "slackware64-current/d/binutils/wb.ml"
 #use "slackware64-current/d/gcc/wb:core.ml"
     let gcc_dependencies = [ binutils; mpfr; gmp; libmpc; winpthreads ] in

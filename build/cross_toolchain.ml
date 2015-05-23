@@ -2,6 +2,7 @@ let do_adds builder =
   let open Sources in
   let add = Worker.register ~builder in
 
+  let binutils_dependencies = [] in
 #use "slackware64-current/d/binutils/wb.ml"
 #use "mingw/mingw-w64/wb:common.ml"
 #use "mingw/mingw-w64/wb:headers.ml"
