@@ -74,6 +74,7 @@ let do_adds builder =
 #use "slackware64-current/l/pcre/wb.ml"
 #use "slackware64-current/l/libffi/wb.ml"
 #use "slackware64-current/l/glib2/wb.ml"
+#use "slackware64-current/d/pkg-config/wb:common.ml"
 #use "slackware64-current/d/pkg-config/wb.ml"
 #use "slackware64-current/l/cairo/wb.ml"
 #use "slackware64-current/l/atk/wb.ml"

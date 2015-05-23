@@ -12,6 +12,8 @@ let _ =
 #use "slackbuilds.org/ocaml/ocaml/wb.ml"
   let ocaml = ocaml_add ~dependencies:[] in
 #use "slackbuilds.org/development/lua/wb.ml"
+#use "slackware64-current/d/pkg-config/wb:common.ml"
+#use "slackware64-current/d/pkg-config/wb:only-pkg-m4.ml"
 #use "slackbuilds.org/libraries/efl/wb:for-your-tools-only.ml"
 #use "slackbuilds.org/libraries/elementary/wb:regular.ml"
 #use "slackware64-current/l/qt/wb:native.ml"
