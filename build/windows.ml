@@ -132,8 +132,8 @@ let do_adds builder =
 #use "slackware64-current/l/gstreamer/wb.ml"
 #use "slackware64-current/l/gst-plugins-base/wb.ml"
 #use "slackware64-current/l/gst-plugins-good/wb.ml"
-#use "slackbuilds.org/libraries/efl/wb:for-your-tools-only.ml"
-ignore efl;
+#use "slackbuilds.org/libraries/efl/wb:common.ml"
+#use "slackbuilds.org/libraries/efl/wb:common-git.ml"
 #use "slackbuilds.org/libraries/efl/wb:regular.ml"
 #use "slackbuilds.org/libraries/efl/wb:regular-git.ml"
 #use "slackbuilds.org/libraries/elementary/wb:regular.ml"
