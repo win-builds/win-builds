@@ -15,17 +15,6 @@ let do_adds builder =
       ]
   in
 
-  let harfbuzz_add ~variant ~dependencies =
-    add ("harfbuzz", Some variant)
-      ~dir:"slackware64-current/l"
-      ~dependencies
-      ~version:"0.9.16"
-      ~build:(if variant = "regular" then 2 else -1)
-      ~sources:[
-        Tarball ("${PACKAGE}-${VERSION}.tar.xz", "d7fa8ef7f2eca07e29d94f448f6196c9b3022d64");
-      ]
-  in
-
   let _all =
 
 #use "slackware64-current/d/autoconf/wb.ml"
@@ -89,14 +78,7 @@ let do_adds builder =
 #use "slackware64-current/l/cairo/wb.ml"
 #use "slackware64-current/l/atk/wb.ml"
 #use "slackware64-current/l/icu4c/wb.ml"
-
-    let harfbuzz = harfbuzz_add
-      ~variant:"regular"
-      (* TODO: the cairo dependency is only build-time and the glib2 and icu4c
-       * ones are probably dlopen()'ed *)
-      ~dependencies:[ cairo; freetype; glib2; icu4c; libpng ]
-    in
-
+#use "slackware64-current/l/harfbuzz/wb.ml"
 #use "slackware64-current/l/pango/wb.ml"
 #use "slackware64-current/l/gdk-pixbuf2/wb.ml"
 #use "slackware64-current/l/gtk+2/wb.ml"
@@ -306,7 +288,7 @@ ignore efl;
 
       let dbus = dbus_add ~variant ~dependencies:[ expat ] in
 
-      let harfbuzz = harfbuzz_add ~variant ~dependencies:[ freetype ] in
+      let harfbuzz = harfbuzz_add ~variant:(Some variant) ~dependencies:[ freetype ] in
 
       let fontconfig = fontconfig_add ~variant ~dependencies:[ freetype; expat ] in
 
