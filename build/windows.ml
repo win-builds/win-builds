@@ -173,6 +173,7 @@ let do_adds builder =
       ]
     in *)
 
+#use "slackbuilds.org/audio/speex/wb.ml"
 #use "slackbuilds.org/multimedia/ffmpeg/wb.ml"
 #use "slackware64-current/d/make/wb.ml"
 #use "slackbuilds.org/libraries/json-c/wb.ml"
@@ -520,16 +521,6 @@ let do_adds builder =
       ~build:1
       ~sources:[
         Tarball ("${PACKAGE}-${VERSION}.tar.gz", "321527194e937371c83b5e7c38e46fca4f109304");
-      ]
-    in
-
-    let _speex = add ("speex", None)
-      ~dir:"slackbuilds.org/audio"
-      ~dependencies:[ (* libogg *) ]
-      ~version:"1.2rc1"
-      ~build:3
-      ~sources:[
-        Tarball ("${PACKAGE}-${VERSION}.tar.gz", "52daa72572e844e5165315e208da539b2a55c5eb");
       ]
     in
 
