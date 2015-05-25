@@ -3,6 +3,17 @@ include ../Makefile.data
 export LIBRARY_PATH:=$(PREFIX)/lib:$(LIBRARY_PATH)
 export C_INCLUDE_PATH:=$(PREFIX)/include:$(C_INCLUDE_PATH)
 
+NEEDS = $(shell $(1) --version | grep '$(2)' >/dev/null 2>/dev/null || echo '$(3)')
+NEEDS_XZ := $(call NEEDS,xz,XZ Utils,xz)
+NEEDS_COREUTILS := $(call NEEDS,cp,GNU coreutils,coreutils)
+NEEDS_PATCH := $(call NEEDS,patch,GNU patch,patch)
+NEEDS_TAR := $(call NEEDS,tar,GNU tar,tar)
+NEEDS_MAKE := $(call NEEDS,make,GNU Make,make)
+NEEDS_SED := $(call NEEDS,sed,GNU sed,sed)
+NEEDS_FINDUTILS := $(call NEEDS,find,GNU findutils,findutils)
+NEEDS_BASH := $(call NEEDS,bash,GNU bash,bash)
+NEEDS_LIBARCHIVE := $(call NEEDS,bsdtar,bsdtar,libarchive)
+
 PATCHES := $(shell pwd)/patches
 
 DOWNLOAD_AND_EXTRACT = \
@@ -30,17 +41,17 @@ BUILD_OASIS = \
 
 P = patch --verbose -p1 < "$(PATCHES)/$(1).patch"
 
-all: coreutils make sed findutils patch tar bash libarchive yypkg
+all: $(NEEDS_COREUTILS) $(NEEDS_MAKE) $(NEEDS_SED) $(NEEDS_FINDUTILS) $(NEEDS_PATCH) $(NEEDS_TAR) $(NEEDS_BASH) $(NEEDS_LIBARCHIVE) yypkg
 
 xz:
 	$(call DOWNLOAD_AND_EXTRACT,xz-$(XZ_VERSION),tar.bz2)
 	$(call BUILD_AUTOTOOLS,xz,$(XZ_VERSION),)
 
-m4: xz
+m4: $(NEEDS_XZ)
 	$(call DOWNLOAD_AND_EXTRACT,m4-$(M4_VERSION),tar.xz)
 	$(call BUILD_AUTOTOOLS,m4,$(M4_VERSION),)
 
-coreutils: xz
+coreutils: $(NEEDS_XZ)
 	$(call DOWNLOAD_AND_EXTRACT,coreutils-$(COREUTILS_VERSION),tar.xz)
 	export FORCE_UNSAFE_CONFIGURE=1; \
 	$(call BUILD_AUTOTOOLS,coreutils,$(COREUTILS_VERSION),--without-gmp)
@@ -49,11 +60,11 @@ make:
 	$(call DOWNLOAD_AND_EXTRACT,make-$(MAKE_VERSION),tar.bz2)
 	$(call BUILD_AUTOTOOLS,make,$(MAKE_VERSION),)
 
-findutils: xz
+findutils: $(NEEDS_XZ)
 	$(call DOWNLOAD_AND_EXTRACT,findutils-$(FINDUTILS_VERSION),tar.xz)
 	$(call BUILD_AUTOTOOLS,findutils,$(FINDUTILS_VERSION),)
 
-sed: xz
+sed: $(NEEDS_XZ)
 	$(call DOWNLOAD_AND_EXTRACT,sed-$(SED_VERSION),tar.xz)
 	$(call BUILD_AUTOTOOLS,sed,$(SED_VERSION),)
 
@@ -61,7 +72,7 @@ bash:
 	$(call DOWNLOAD_AND_EXTRACT,bash-$(BASH_VERSION),tar.gz)
 	$(call BUILD_AUTOTOOLS,bash,$(BASH_VERSION),)
 
-tar: xz
+tar: $(NEEDS_XZ)
 	$(call DOWNLOAD_AND_EXTRACT,tar-$(TAR_VERSION),tar.xz)
 	export FORCE_UNSAFE_CONFIGURE=1; \
 	$(call BUILD_AUTOTOOLS,tar,$(TAR_VERSION),)
@@ -70,11 +81,11 @@ patch:
 	$(call DOWNLOAD_AND_EXTRACT,patch-$(PATCH_VERSION),tar.bz2)
 	$(call BUILD_AUTOTOOLS,patch,$(PATCH_VERSION),)
 
-libarchive: xz
+libarchive: $(NEEDS_XZ)
 	$(call DOWNLOAD_AND_EXTRACT,libarchive-$(LIBARCHIVE_VERSION),tar.gz)
 	$(call BUILD_AUTOTOOLS,libarchive,$(LIBARCHIVE_VERSION),)
 
-ocaml: make xz
+ocaml: $(NEEDS_MAKE) $(NEEDS_XZ)
 	$(call DOWNLOAD_AND_EXTRACT,ocaml-$(OCAML_VERSION),tar.xz)
 	(cd ocaml-$(OCAML_VERSION) \
 		&& ./configure -no-debugger -prefix $(PREFIX) \
@@ -88,7 +99,7 @@ findlib: ocaml
 		&& $(MAKE) \
 		&& $(MAKE) install)
 
-libocaml: ocaml findlib xz
+libocaml: ocaml findlib $(NEEDS_XZ)
 	for s in exception option lexing plus ipv4_address ipv6_address uri http; do \
 		$(call DOWNLOAD_AND_EXTRACT,libocaml_$${s}.$(LIBOCAML_VERSION),tar.xz) \
 		&& sed -i '/-w @a-4-6-7-9-23-26-27-29-41/ s/@//' \
@@ -107,7 +118,7 @@ ocaml-fileutils: ocaml findlib
 	&& $(call P,fileutils/0002-FileUtil-symlinks-patch-2)
 	$(call BUILD_OASIS,ocaml-fileutils,$(FILEUTILS_VERSION),)
 
-ocaml-archive: ocaml findlib ocaml-fileutils libarchive
+ocaml-archive: ocaml findlib $(NEEDS_LIBARCHIVE)
 	ocamlfind remove archive
 	$(call DOWNLOAD_AND_EXTRACT,ocaml-archive-$(ARCHIVE_VERSION),tar.gz)
 	cd ocaml-archive-$(ARCHIVE_VERSION) \
@@ -123,7 +134,7 @@ cryptokit: ocaml findlib
 	$(call DOWNLOAD_AND_EXTRACT,cryptokit-$(CRYPTOKIT_VERSION),tar.gz)
 	$(call BUILD_OASIS,cryptokit,$(CRYPTOKIT_VERSION),)
 
-yypkg: ocaml findlib libocaml ocaml-fileutils ocaml-archive cryptokit xz
+yypkg: ocaml findlib libocaml ocaml-fileutils ocaml-archive cryptokit $(NEEDS_XZ)
 	$(call DOWNLOAD_AND_EXTRACT,yypkg-$(YYPKG_VERSION),tar.xz)
 	cd yypkg-$(YYPKG_VERSION) && $(MAKE) yypkg-no-gui
 	cp -L yypkg-$(YYPKG_VERSION)/src/yypkg.native $(PREFIX)/bin/yypkg
