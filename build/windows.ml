@@ -38,6 +38,13 @@ let geoip = add ("GeoIP", None)
   ~build:1
   ~sources:[Tarball ("GeoIP-${VERSION}.tar.gz", "bf29626ea665c3302059853ad41b31ea42daed1e");]
 in
+let libmaxminddb = add ("libmaxminddb", None)
+  ~dir:"slackbuilds.org/network"
+  ~dependencies:[]
+  ~version:"1.0.4"
+  ~build:1
+  ~sources:[Tarball ("libmaxminddb-${VERSION}.tar.gz", "57548d426d43b9b43c77786b08594d48d0c88c62");]
+in
 #use "mingw/gendef/wb.ml"
 #use "mingw/genidl/wb.ml"
 #use "mingw/genpeimg/wb.ml"
