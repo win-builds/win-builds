@@ -30,6 +30,14 @@ let do_adds builder =
     ~dependencies:[]
     ~build:2
   in
+let geoip = add ("GeoIP", None)
+  ~dir:"slackbuilds.org/network"
+  ~dependencies:[]
+  ~native_deps:[ "autoconf"; "automake"; "libtool" ]
+  ~version:"1.6.5"
+  ~build:1
+  ~sources:[Tarball ("GeoIP-${VERSION}.tar.gz", "bf29626ea665c3302059853ad41b31ea42daed1e");]
+in
 #use "mingw/gendef/wb.ml"
 #use "mingw/genidl/wb.ml"
 #use "mingw/genpeimg/wb.ml"
